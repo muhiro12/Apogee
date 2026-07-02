@@ -1,7 +1,3 @@
-public enum ApogeeCore {
-    public static let version = "0.1.0"
-}
-
 public enum OperationMode: Sendable, Hashable {
     case dryRun
     case apply

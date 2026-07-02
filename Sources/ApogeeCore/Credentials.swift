@@ -3,7 +3,7 @@ import Foundation
 public struct AppStoreConnectCredentials: Sendable, Hashable {
     public var keyID: String
     public var issuerID: String
-    public var privateKeySource: AppStoreConnectPrivateKeySource
+    var privateKeySource: AppStoreConnectPrivateKeySource
 
     public var privateKeyPath: String? {
         guard case let .path(path) = privateKeySource else {
@@ -73,7 +73,7 @@ public struct AppStoreConnectCredentials: Sendable, Hashable {
     }
 }
 
-public enum AppStoreConnectPrivateKeySource: Sendable, Hashable {
+enum AppStoreConnectPrivateKeySource: Sendable, Hashable {
     case path(String)
     case pem(String)
 

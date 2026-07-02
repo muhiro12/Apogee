@@ -624,7 +624,7 @@ public struct ReleaseAutomation: Sendable {
     }
 
     private func webhookSummary(_ webhook: DesiredWebhook) -> String {
-        "\(webhook.name) \(webhook.url) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ","))"
+        "\(webhook.name) \(webhook.url) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ",")) secretEnv=\(webhook.secretEnvironmentVariable) rotateSecret=\(webhook.rotateSecret)"
     }
 }
 

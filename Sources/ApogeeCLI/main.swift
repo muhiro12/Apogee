@@ -7,7 +7,6 @@ struct ApogeeCommand: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "apogee",
         abstract: "Automate App Store Connect release operations with dry-run plans by default.",
-        version: ApogeeCore.version,
         subcommands: [
             UpdateReleaseNotes.self,
             UpdateMetadata.self,

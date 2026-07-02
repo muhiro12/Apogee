@@ -286,6 +286,47 @@ func destructivePlanTokenIncludesActionValues() async throws {
 }
 
 @Test
+func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
+    let api = FakeAppStoreConnectAPI()
+    let automation = ReleaseAutomation(
+        api: api,
+        secretEnvironment: .init(values: ["WEBHOOK_SECRET": "secret-value"])
+    )
+    let configURL = temporaryDirectory().appendingPathComponent("webhooks.json")
+    try """
+    {
+      "webhooks": [
+        {
+          "name": "release",
+          "url": "https://example.com/release",
+          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "secretEnvironmentVariable": "WEBHOOK_SECRET",
+          "rotateSecret": true
+        },
+        {
+          "name": "obsolete",
+          "url": "https://example.com/obsolete",
+          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "secretEnvironmentVariable": "WEBHOOK_SECRET"
+        }
+      ]
+    }
+    """.write(to: configURL, atomically: true, encoding: .utf8)
+
+    let plan = try await automation.syncWebhooks(
+        appLookup: .appID("app-1"),
+        configPath: configURL.path,
+        options: .init(mode: .dryRun)
+    )
+    let renderedPlan = PlanRenderer().render(plan)
+
+    #expect(plan.actions.contains { $0.kind == .update && $0.resource == "webhook/webhook-1" })
+    #expect(renderedPlan.contains("secretEnv=WEBHOOK_SECRET"))
+    #expect(renderedPlan.contains("rotateSecret=true"))
+    #expect(!renderedPlan.contains("secret-value"))
+}
+
+@Test
 func webhookSyncRejectsDuplicateDesiredNames() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(

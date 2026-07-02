@@ -45,9 +45,12 @@ installed local tool.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhiro12/Apogee.git", exact: "0.1.0"),
+    .package(url: "https://github.com/muhiro12/Apogee.git", exact: "<release-tag>"),
 ]
 ```
+
+Replace `<release-tag>` with the GitHub Release tag your repository should pin,
+such as the first public release tag `1.0.0`.
 
 Run Apogee through the command plugin from that package:
 
@@ -131,6 +134,11 @@ export ASC_PRIVATE_KEY_BASE64="BASE64_ENCODED_P8_CONTENTS"
 `ASC_PRIVATE_KEY_BASE64` takes priority over `ASC_PRIVATE_KEY_PATH` when both
 are present. Private keys are never stored in the repository. JWTs are signed
 with ES256 and sent as bearer tokens to App Store Connect.
+
+Plans and command output must not include private key material, JWT bearer
+tokens, or webhook secret values. Webhook plans may include the secret
+environment variable name so dry-runs remain reviewable without exposing the
+secret itself.
 
 ## Metadata Layout
 
@@ -217,6 +225,26 @@ dry-run and `--allow-destructive`. The token is derived from the exact plan
 title and action values, including current and desired values, so a changed plan
 requires a fresh dry-run token. This prevents accidental deletion from a single
 command invocation.
+
+## Versioning and Stability
+
+Apogee starts at `1.0.0` and follows semantic versioning for its documented
+package products, CLI commands and options, configuration keys, default
+repository layout, and release-safety behavior. New commands, options,
+configuration keys, and supported App Store Connect operations can be added in
+minor releases when they are backward-compatible. Renaming or removing existing
+public surfaces, changing documented defaults, or weakening the dry-run/apply
+safety model requires a new major version.
+
+The Git tag and GitHub Release are the package version source of truth. Avoid
+adding a separate checked-in source version string or README "current version"
+value that release automation must keep in sync with tags.
+
+The safety contract is intentionally more stable than any individual
+capability: dry-run remains the default, `--apply` is required for every App
+Store Connect mutation, destructive operations require a prior plan token plus
+`--allow-destructive`, and operations without a safe verification path must fail
+closed or remain unsupported.
 
 ## Maintainer OpenAPI Update
 

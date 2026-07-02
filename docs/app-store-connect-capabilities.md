@@ -34,5 +34,7 @@ generated Swift client sources needed by the first CLI surface.
 - Destructive operations require an explicit dry-run plan token before they can
   be applied, and that token is bound to the exact planned action values.
 - Secrets are read from environment variables and local key files only.
+- Plans and command output must not include private key material, JWT bearer
+  tokens, or webhook secret values.
 - Unsupported or unsafe operations fail with an explicit `UnsupportedCapability`
   value instead of falling back to untyped HTTP behavior.
