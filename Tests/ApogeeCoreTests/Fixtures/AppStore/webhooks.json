@@ -1,0 +1,11 @@
+{
+  "webhooks": [
+    {
+      "name": "release",
+      "url": "https://example.com/release",
+      "eventTypes": ["BUILD_STATE_CHANGED"],
+      "enabled": true,
+      "secretEnvironmentVariable": "WEBHOOK_SECRET"
+    }
+  ]
+}
