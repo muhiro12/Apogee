@@ -4,8 +4,8 @@ Apogee is a Swift Package for automating App Store release operations through
 the official App Store Connect API. It provides:
 
 - `ApogeeCore`: reusable release automation library
-- `AppStoreConnectGenerated`: Swift OpenAPI Generator target for the trimmed
-  App Store Connect client surface
+- `AppStoreConnectGenerated`: committed Swift OpenAPI Generator output for the
+  App Store Connect client surface Apogee uses
 - `ApogeeCommandPlugin`: SwiftPM command plugin for repository-pinned tool use
 - `apogee`: command line tool
 
@@ -44,7 +44,7 @@ SwiftPM dependency. This lets the repository pin the Apogee version in
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/YOUR_ORG/Apogee.git", exact: "0.1.0"),
+    .package(url: "https://github.com/muhiro12/Apogee.git", exact: "0.1.0"),
 ]
 ```
 
@@ -217,23 +217,22 @@ title and action values, including current and desired values, so a changed plan
 requires a fresh dry-run token. This prevents accidental deletion from a single
 command invocation.
 
-## OpenAPI Regeneration
+## Maintainer OpenAPI Update
 
-The repository keeps the official source spec and generated-client inputs:
-
-- `OpenAPI/AppStoreConnect/openapi.oas.json`
-- `Sources/AppStoreConnectGenerated/openapi.json`
-- `Sources/AppStoreConnectGenerated/openapi-generator-config.yaml`
-- `Scripts/update-app-store-connect-openapi.sh`
-- `Scripts/trim-app-store-connect-openapi.swift`
-
-Regenerate the trimmed OpenAPI document with:
+Apogee does not redistribute Apple's App Store Connect OpenAPI document.
+Maintainers download it from Apple and update the committed generated Swift
+client sources with:
 
 ```sh
-Scripts/update-app-store-connect-openapi.sh
+Scripts/update-generated-app-store-connect-client.sh
 ```
 
-Then build or test with SwiftPM:
+The script writes temporary OpenAPI files under `.build/` and copies only the
+generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
+See [`docs/openapi-generation.md`](docs/openapi-generation.md) for the current
+generation baseline.
+
+Build or test with SwiftPM:
 
 ```sh
 swift build

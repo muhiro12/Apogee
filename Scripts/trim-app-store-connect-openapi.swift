@@ -39,8 +39,15 @@ let selectedOperationIDs: Set<String> = [
 ]
 
 let methodNames: Set<String> = ["get", "post", "patch", "delete"]
-let sourcePath = CommandLine.arguments.dropFirst().first ?? "OpenAPI/AppStoreConnect/openapi.oas.json"
-let outputPath = CommandLine.arguments.dropFirst().dropFirst().first ?? "Sources/AppStoreConnectGenerated/openapi.json"
+guard CommandLine.arguments.count == 3 else {
+    FileHandle.standardError.write(
+        Data("Usage: trim-app-store-connect-openapi.swift <source-openapi-json> <output-openapi-json>\n".utf8)
+    )
+    exit(64)
+}
+
+let sourcePath = CommandLine.arguments[1]
+let outputPath = CommandLine.arguments[2]
 
 let sourceURL = URL(fileURLWithPath: sourcePath)
 let outputURL = URL(fileURLWithPath: outputPath)
@@ -161,6 +168,8 @@ func sanitized(_ value: Any) -> Any {
         if let enumValues = dictionary["enum"] as? [Any], enumValues.isEmpty {
             dictionary.removeValue(forKey: "enum")
         }
+
+        dictionary.removeValue(forKey: "deprecated")
 
         for (key, nestedValue) in dictionary {
             dictionary[key] = sanitized(nestedValue)

@@ -6,13 +6,13 @@ specification.
 - Source: `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`
 - Download checked: `2026-07-02`
 - Apple artifact timestamp: `2026-06-13 07:24` in the zip, with HTTP `Last-Modified: 2026-06-12 22:26:57 GMT`
-- OpenAPI document: `openapi.oas.json`
+- Apple OpenAPI document inside the downloaded zip: `openapi.oas.json`
 - OpenAPI version: `3.0.1`
 - App Store Connect API version in spec: `4.4`
 
-The full spec contains 929 paths and 1346 schemas. Apogee keeps the full
-downloaded source under `OpenAPI/AppStoreConnect/` and uses a trimmed generated
-client for the operations needed by the first CLI surface.
+The full spec contains 929 paths and 1346 schemas. Apogee does not redistribute
+Apple's OpenAPI document. Maintainers download it locally and commit only the
+generated Swift client sources needed by the first CLI surface.
 
 ## Capability Matrix
 
