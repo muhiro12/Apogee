@@ -28,14 +28,15 @@ struct UpdateReleaseNotes: AsyncParsableCommand {
     @OptionGroup var release: ReleaseOptions
 
     @Option(name: .customLong("metadata-path"), help: "Path to AppStore/Metadata.")
-    var metadataPath: String
+    var metadataPath: String?
 
     func run() async throws {
-        let plan = try await makeAutomation().updateReleaseNotes(
-            appLookup: try release.appLookup(),
+        let configuration = try release.configuration()
+        let plan = try await makeAutomation(configuration: configuration).updateReleaseNotes(
+            appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            metadataPath: metadataPath,
-            platform: release.platform.platform,
+            metadataPath: try release.metadataPath(metadataPath, configuration: configuration),
+            platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
         print(PlanRenderer().render(plan))
@@ -51,14 +52,15 @@ struct UpdateMetadata: AsyncParsableCommand {
     @OptionGroup var release: ReleaseOptions
 
     @Option(name: .customLong("metadata-path"), help: "Path to AppStore/Metadata.")
-    var metadataPath: String
+    var metadataPath: String?
 
     func run() async throws {
-        let plan = try await makeAutomation().updateMetadata(
-            appLookup: try release.appLookup(),
+        let configuration = try release.configuration()
+        let plan = try await makeAutomation(configuration: configuration).updateMetadata(
+            appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            metadataPath: metadataPath,
-            platform: release.platform.platform,
+            metadataPath: try release.metadataPath(metadataPath, configuration: configuration),
+            platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
         print(PlanRenderer().render(plan))
@@ -77,11 +79,12 @@ struct AttachBuild: AsyncParsableCommand {
     var buildVersion: String
 
     func run() async throws {
-        let plan = try await makeAutomation().attachBuild(
-            appLookup: try release.appLookup(),
+        let configuration = try release.configuration()
+        let plan = try await makeAutomation(configuration: configuration).attachBuild(
+            appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             buildVersion: buildVersion,
-            platform: release.platform.platform,
+            platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
         print(PlanRenderer().render(plan))
@@ -97,14 +100,15 @@ struct UpdateScreenshots: AsyncParsableCommand {
     @OptionGroup var release: ReleaseOptions
 
     @Option(name: .customLong("screenshots-path"), help: "Path to AppStore/Screenshots.")
-    var screenshotsPath: String
+    var screenshotsPath: String?
 
     func run() async throws {
-        let plan = try await makeAutomation().updateScreenshots(
-            appLookup: try release.appLookup(),
+        let configuration = try release.configuration()
+        let plan = try await makeAutomation(configuration: configuration).updateScreenshots(
+            appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            screenshotsPath: screenshotsPath,
-            platform: release.platform.platform,
+            screenshotsPath: try release.screenshotsPath(screenshotsPath, configuration: configuration),
+            platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
         print(PlanRenderer().render(plan))
@@ -120,10 +124,11 @@ struct SubmitForReview: AsyncParsableCommand {
     @OptionGroup var release: ReleaseOptions
 
     func run() async throws {
-        let plan = try await makeAutomation().submitForReview(
-            appLookup: try release.appLookup(),
+        let configuration = try release.configuration()
+        let plan = try await makeAutomation(configuration: configuration).submitForReview(
+            appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            platform: release.platform.platform,
+            platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
         print(PlanRenderer().render(plan))
@@ -138,9 +143,10 @@ struct SyncWebhooks: AsyncParsableCommand {
 
     @OptionGroup var lookup: AppLookupOptions
     @OptionGroup var mode: ExecutionModeOptions
+    @OptionGroup var configurationOptions: ConfigurationOptions
 
     @Option(help: "Path to a webhooks JSON configuration file.")
-    var config: String
+    var config: String?
 
     @Flag(name: .customLong("allow-destructive"), help: "Allow destructive webhook deletions when used with --apply and --plan-token.")
     var allowDestructive = false
@@ -149,9 +155,13 @@ struct SyncWebhooks: AsyncParsableCommand {
     var planToken: String?
 
     func run() async throws {
-        let plan = try await makeAutomation().syncWebhooks(
-            appLookup: try lookup.appLookup(),
-            configPath: config,
+        let configuration = try configurationOptions.configuration()
+        let plan = try await makeAutomation(configuration: configuration).syncWebhooks(
+            appLookup: try lookup.appLookup(configuration: configuration),
+            configPath: try resolvedPath(
+                config ?? configuration.webhooksPath,
+                fallbackDescription: "--config or webhooksPath in Apogee configuration"
+            ),
             options: try mode.executionOptions(
                 allowDestructive: allowDestructive,
                 planToken: planToken
@@ -164,19 +174,42 @@ struct SyncWebhooks: AsyncParsableCommand {
 struct ReleaseOptions: ParsableArguments {
     @OptionGroup var lookup: AppLookupOptions
     @OptionGroup var mode: ExecutionModeOptions
+    @OptionGroup var configurationOptions: ConfigurationOptions
 
     @Option(help: "Target App Store version string.")
     var version: String
 
     @Option(help: "App Store platform.")
-    var platform: PlatformArgument = .iOS
+    var platform: PlatformArgument?
 
-    func appLookup() throws -> AppLookup {
-        try lookup.appLookup()
+    func configuration() throws -> ApogeeConfiguration {
+        try configurationOptions.configuration()
+    }
+
+    func appLookup(configuration: ApogeeConfiguration) throws -> AppLookup {
+        try lookup.appLookup(configuration: configuration)
+    }
+
+    func platform(configuration: ApogeeConfiguration) -> Platform {
+        platform?.platform ?? configuration.defaultPlatform ?? .iOS
     }
 
     func executionOptions() throws -> ReleaseExecutionOptions {
         try mode.executionOptions()
+    }
+
+    func metadataPath(_ path: String?, configuration: ApogeeConfiguration) throws -> String {
+        try resolvedPath(
+            path ?? configuration.metadataPath,
+            fallbackDescription: "--metadata-path or metadataPath in Apogee configuration"
+        )
+    }
+
+    func screenshotsPath(_ path: String?, configuration: ApogeeConfiguration) throws -> String {
+        try resolvedPath(
+            path ?? configuration.screenshotsPath,
+            fallbackDescription: "--screenshots-path or screenshotsPath in Apogee configuration"
+        )
     }
 }
 
@@ -187,16 +220,33 @@ struct AppLookupOptions: ParsableArguments {
     @Option(name: .customLong("bundle-id"), help: "Bundle ID used to resolve the app when --app-id is omitted.")
     var bundleID: String?
 
-    func appLookup() throws -> AppLookup {
-        if let appID, !appID.isEmpty {
+    func appLookup(configuration: ApogeeConfiguration = .init()) throws -> AppLookup {
+        if let appID = appID.nonEmpty {
             return .appID(appID)
         }
 
-        if let bundleID, !bundleID.isEmpty {
+        if let bundleID = bundleID.nonEmpty {
             return .bundleID(bundleID)
         }
 
-        throw ValidationError("Provide --app-id or --bundle-id.")
+        if let appID = configuration.appID.nonEmpty {
+            return .appID(appID)
+        }
+
+        if let bundleID = configuration.bundleID.nonEmpty {
+            return .bundleID(bundleID)
+        }
+
+        throw ValidationError("Provide --app-id, --bundle-id, or appID/bundleID in Apogee configuration.")
+    }
+}
+
+struct ConfigurationOptions: ParsableArguments {
+    @Option(name: .customLong("apogee-config"), help: "Path to Apogee JSON configuration. Defaults to AppStore/apogee.json when present.")
+    var apogeeConfigPath: String?
+
+    func configuration() throws -> ApogeeConfiguration {
+        try ApogeeConfiguration.loadIfPresent(path: apogeeConfigPath)
     }
 }
 
@@ -240,8 +290,26 @@ enum PlatformArgument: String, ExpressibleByArgument {
     }
 }
 
-private func makeAutomation() throws -> ReleaseAutomation {
-    let credentials = try AppStoreConnectCredentials.load()
+private func makeAutomation(configuration: ApogeeConfiguration) throws -> ReleaseAutomation {
+    let credentials = try AppStoreConnectCredentials.load(credentialEnvironment: configuration.credentials)
     let api = GeneratedAppStoreConnectAPI(credentials: credentials)
     return ReleaseAutomation(api: api)
+}
+
+private func resolvedPath(_ path: String?, fallbackDescription: String) throws -> String {
+    guard let path = path.nonEmpty else {
+        throw ValidationError("Provide \(fallbackDescription).")
+    }
+
+    return path
+}
+
+private extension Optional where Wrapped == String {
+    var nonEmpty: String? {
+        guard let value = self?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return nil
+        }
+
+        return value
+    }
 }

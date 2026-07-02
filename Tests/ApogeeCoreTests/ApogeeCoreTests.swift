@@ -21,6 +21,20 @@ func screenshotLoaderReadsFixtureLayout() throws {
 }
 
 @Test
+func apogeeConfigurationReadsFixtureDefaults() throws {
+    let configuration = try ApogeeConfiguration.load(from: fixturePath("AppStore/apogee.json"))
+
+    #expect(configuration.appID == "app-1")
+    #expect(configuration.bundleID == "com.example.app")
+    #expect(configuration.defaultPlatform == .iOS)
+    #expect(configuration.metadataPath == "AppStore/Metadata")
+    #expect(configuration.screenshotsPath == "AppStore/Screenshots")
+    #expect(configuration.webhooksPath == "AppStore/webhooks.json")
+    #expect(configuration.credentials.keyIDEnvironment == "TEST_ASC_KEY_ID")
+    #expect(configuration.credentials.privateKeyBase64Environment == "TEST_ASC_PRIVATE_KEY_BASE64")
+}
+
+@Test
 func jwtSignerCreatesES256AppStoreConnectToken() throws {
     let privateKey = P256.Signing.PrivateKey()
     let keyURL = temporaryDirectory().appendingPathComponent("AuthKey_TEST.p8")
@@ -49,6 +63,34 @@ func jwtSignerCreatesES256AppStoreConnectToken() throws {
 
     let signingInput = "\(parts[0]).\(parts[1])"
     let signature = try P256.Signing.ECDSASignature(rawRepresentation: base64URLDecoded(parts[2]))
+    #expect(privateKey.publicKey.isValidSignature(signature, for: Data(signingInput.utf8)))
+}
+
+@Test
+func credentialsLoadPrivateKeyBase64FromConfiguredEnvironment() throws {
+    let privateKey = P256.Signing.PrivateKey()
+    let privateKeyBase64 = Data(privateKey.pemRepresentation.utf8).base64EncodedString()
+    let credentialEnvironment = AppStoreConnectCredentialEnvironment(
+        keyIDEnvironment: "TEST_ASC_KEY_ID",
+        issuerIDEnvironment: "TEST_ASC_ISSUER_ID",
+        privateKeyPathEnvironment: "TEST_ASC_PRIVATE_KEY_PATH",
+        privateKeyBase64Environment: "TEST_ASC_PRIVATE_KEY_BASE64"
+    )
+    let credentials = try AppStoreConnectCredentials.load(
+        environment: [
+            "TEST_ASC_KEY_ID": "KEY123",
+            "TEST_ASC_ISSUER_ID": "ISSUER456",
+            "TEST_ASC_PRIVATE_KEY_BASE64": privateKeyBase64,
+        ],
+        credentialEnvironment: credentialEnvironment
+    )
+
+    let token = try JSONWebTokenSigner(credentials: credentials).signedToken(now: Date(timeIntervalSince1970: 1_700_000_000))
+    let parts = token.value.split(separator: ".").map(String.init)
+    let signingInput = "\(parts[0]).\(parts[1])"
+    let signature = try P256.Signing.ECDSASignature(rawRepresentation: base64URLDecoded(parts[2]))
+
+    #expect(credentials.privateKeyPath == nil)
     #expect(privateKey.publicKey.isValidSignature(signature, for: Data(signingInput.utf8)))
 }
 

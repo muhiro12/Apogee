@@ -7,3 +7,5 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+AuthKey_*.p8
+AppStore/apogee.local.json

@@ -28,7 +28,7 @@ public struct JSONWebTokenSigner: Sendable {
         let headerData = try JSONSerialization.data(withJSONObject: header, options: [.sortedKeys])
         let payloadData = try JSONSerialization.data(withJSONObject: payload, options: [.sortedKeys])
         let signingInput = "\(headerData.base64URLEncodedString()).\(payloadData.base64URLEncodedString())"
-        let privateKeyPEM = try String(contentsOfFile: credentials.privateKeyPath, encoding: .utf8)
+        let privateKeyPEM = try credentials.privateKeySource.pemString()
 
         let privateKey: P256.Signing.PrivateKey
         do {

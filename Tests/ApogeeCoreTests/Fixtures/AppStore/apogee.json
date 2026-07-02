@@ -1,0 +1,14 @@
+{
+  "appID": "app-1",
+  "bundleID": "com.example.app",
+  "defaultPlatform": "IOS",
+  "metadataPath": "AppStore/Metadata",
+  "screenshotsPath": "AppStore/Screenshots",
+  "webhooksPath": "AppStore/webhooks.json",
+  "credentials": {
+    "keyIDEnvironment": "TEST_ASC_KEY_ID",
+    "issuerIDEnvironment": "TEST_ASC_ISSUER_ID",
+    "privateKeyPathEnvironment": "TEST_ASC_PRIVATE_KEY_PATH",
+    "privateKeyBase64Environment": "TEST_ASC_PRIVATE_KEY_BASE64"
+  }
+}
