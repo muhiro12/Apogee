@@ -1,16 +1,14 @@
 .DS_Store
-__MACOSX/
 /.build
-/Tools/OpenAPIGeneration/.build
 /Packages
 xcuserdata/
 DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+
+# Apogee local files
+/Tools/OpenAPIGeneration/.build
 *.p8
 AuthKey_*.p8
-.env
-.env.*
-!.env.example
 apogee.local.json
