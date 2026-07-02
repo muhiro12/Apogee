@@ -35,7 +35,7 @@ struct UpdateReleaseNotes: AsyncParsableCommand {
         let plan = try await makeAutomation(configuration: configuration).updateReleaseNotes(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            metadataPath: try release.metadataPath(metadataPath, configuration: configuration),
+            metadataPath: release.metadataPath(metadataPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
@@ -59,7 +59,7 @@ struct UpdateMetadata: AsyncParsableCommand {
         let plan = try await makeAutomation(configuration: configuration).updateMetadata(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            metadataPath: try release.metadataPath(metadataPath, configuration: configuration),
+            metadataPath: release.metadataPath(metadataPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
@@ -107,7 +107,7 @@ struct UpdateScreenshots: AsyncParsableCommand {
         let plan = try await makeAutomation(configuration: configuration).updateScreenshots(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
-            screenshotsPath: try release.screenshotsPath(screenshotsPath, configuration: configuration),
+            screenshotsPath: release.screenshotsPath(screenshotsPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
@@ -158,10 +158,7 @@ struct SyncWebhooks: AsyncParsableCommand {
         let configuration = try configurationOptions.configuration()
         let plan = try await makeAutomation(configuration: configuration).syncWebhooks(
             appLookup: try lookup.appLookup(configuration: configuration),
-            configPath: try resolvedPath(
-                config ?? configuration.webhooksPath,
-                fallbackDescription: "--config or webhooksPath in Apogee configuration"
-            ),
+            configPath: config.nonEmpty ?? configuration.resolvedWebhooksPath,
             options: try mode.executionOptions(
                 allowDestructive: allowDestructive,
                 planToken: planToken
@@ -198,18 +195,12 @@ struct ReleaseOptions: ParsableArguments {
         try mode.executionOptions()
     }
 
-    func metadataPath(_ path: String?, configuration: ApogeeConfiguration) throws -> String {
-        try resolvedPath(
-            path ?? configuration.metadataPath,
-            fallbackDescription: "--metadata-path or metadataPath in Apogee configuration"
-        )
+    func metadataPath(_ path: String?, configuration: ApogeeConfiguration) -> String {
+        path.nonEmpty ?? configuration.resolvedMetadataPath
     }
 
-    func screenshotsPath(_ path: String?, configuration: ApogeeConfiguration) throws -> String {
-        try resolvedPath(
-            path ?? configuration.screenshotsPath,
-            fallbackDescription: "--screenshots-path or screenshotsPath in Apogee configuration"
-        )
+    func screenshotsPath(_ path: String?, configuration: ApogeeConfiguration) -> String {
+        path.nonEmpty ?? configuration.resolvedScreenshotsPath
     }
 }
 
@@ -242,7 +233,7 @@ struct AppLookupOptions: ParsableArguments {
 }
 
 struct ConfigurationOptions: ParsableArguments {
-    @Option(name: .customLong("apogee-config"), help: "Path to Apogee JSON configuration. Defaults to AppStore/apogee.json when present.")
+    @Option(name: .customLong("apogee-config"), help: "Path to Apogee JSON configuration. Defaults to apogee.json when present.")
     var apogeeConfigPath: String?
 
     func configuration() throws -> ApogeeConfiguration {
@@ -294,14 +285,6 @@ private func makeAutomation(configuration: ApogeeConfiguration) throws -> Releas
     let credentials = try AppStoreConnectCredentials.load(credentialEnvironment: configuration.credentials)
     let api = GeneratedAppStoreConnectAPI(credentials: credentials)
     return ReleaseAutomation(api: api)
-}
-
-private func resolvedPath(_ path: String?, fallbackDescription: String) throws -> String {
-    guard let path = path.nonEmpty else {
-        throw ValidationError("Provide \(fallbackDescription).")
-    }
-
-    return path
 }
 
 private extension Optional where Wrapped == String {

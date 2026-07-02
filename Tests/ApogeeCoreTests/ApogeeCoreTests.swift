@@ -22,16 +22,37 @@ func screenshotLoaderReadsFixtureLayout() throws {
 
 @Test
 func apogeeConfigurationReadsFixtureDefaults() throws {
-    let configuration = try ApogeeConfiguration.load(from: fixturePath("AppStore/apogee.json"))
+    let configuration = try ApogeeConfiguration.load(from: fixturePath("apogee.json"))
 
-    #expect(configuration.appID == "app-1")
     #expect(configuration.bundleID == "com.example.app")
-    #expect(configuration.defaultPlatform == .iOS)
-    #expect(configuration.metadataPath == "AppStore/Metadata")
-    #expect(configuration.screenshotsPath == "AppStore/Screenshots")
-    #expect(configuration.webhooksPath == "AppStore/webhooks.json")
-    #expect(configuration.credentials.keyIDEnvironment == "TEST_ASC_KEY_ID")
-    #expect(configuration.credentials.privateKeyBase64Environment == "TEST_ASC_PRIVATE_KEY_BASE64")
+    #expect(configuration.appID == nil)
+    #expect(configuration.defaultPlatform == nil)
+    #expect(configuration.resolvedMetadataPath == "AppStore/Metadata")
+    #expect(configuration.resolvedScreenshotsPath == "AppStore/Screenshots")
+    #expect(configuration.resolvedWebhooksPath == "AppStore/webhooks.json")
+    #expect(configuration.credentials.keyIDEnvironment == "ASC_KEY_ID")
+    #expect(configuration.credentials.privateKeyBase64Environment == "ASC_PRIVATE_KEY_BASE64")
+}
+
+@Test
+func apogeeConfigurationAllowsPartialOverrides() throws {
+    let data = Data("""
+    {
+      "bundleID": "com.example.other",
+      "metadataPath": "Release/Metadata",
+      "credentials": {
+        "privateKeyBase64Environment": "CI_ASC_PRIVATE_KEY_BASE64"
+      }
+    }
+    """.utf8)
+    let configuration = try JSONDecoder().decode(ApogeeConfiguration.self, from: data)
+
+    #expect(configuration.bundleID == "com.example.other")
+    #expect(configuration.resolvedMetadataPath == "Release/Metadata")
+    #expect(configuration.resolvedScreenshotsPath == "AppStore/Screenshots")
+    #expect(configuration.resolvedWebhooksPath == "AppStore/webhooks.json")
+    #expect(configuration.credentials.keyIDEnvironment == "ASC_KEY_ID")
+    #expect(configuration.credentials.privateKeyBase64Environment == "CI_ASC_PRIVATE_KEY_BASE64")
 }
 
 @Test

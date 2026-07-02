@@ -1,7 +1,10 @@
 import Foundation
 
 public struct ApogeeConfiguration: Codable, Sendable, Hashable {
-    public static let defaultPath = "AppStore/apogee.json"
+    public static let defaultPath = "apogee.json"
+    public static let defaultMetadataPath = "AppStore/Metadata"
+    public static let defaultScreenshotsPath = "AppStore/Screenshots"
+    public static let defaultWebhooksPath = "AppStore/webhooks.json"
 
     public var appID: String?
     public var bundleID: String?
@@ -10,6 +13,28 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
     public var screenshotsPath: String?
     public var webhooksPath: String?
     public var credentials: AppStoreConnectCredentialEnvironment
+
+    public var resolvedMetadataPath: String {
+        metadataPath.nonEmpty ?? Self.defaultMetadataPath
+    }
+
+    public var resolvedScreenshotsPath: String {
+        screenshotsPath.nonEmpty ?? Self.defaultScreenshotsPath
+    }
+
+    public var resolvedWebhooksPath: String {
+        webhooksPath.nonEmpty ?? Self.defaultWebhooksPath
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case appID
+        case bundleID
+        case defaultPlatform
+        case metadataPath
+        case screenshotsPath
+        case webhooksPath
+        case credentials
+    }
 
     public init(
         appID: String? = nil,
@@ -27,6 +52,22 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
         self.screenshotsPath = screenshotsPath
         self.webhooksPath = webhooksPath
         self.credentials = credentials
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            appID: try container.decodeIfPresent(String.self, forKey: .appID),
+            bundleID: try container.decodeIfPresent(String.self, forKey: .bundleID),
+            defaultPlatform: try container.decodeIfPresent(Platform.self, forKey: .defaultPlatform),
+            metadataPath: try container.decodeIfPresent(String.self, forKey: .metadataPath),
+            screenshotsPath: try container.decodeIfPresent(String.self, forKey: .screenshotsPath),
+            webhooksPath: try container.decodeIfPresent(String.self, forKey: .webhooksPath),
+            credentials: try container.decodeIfPresent(
+                AppStoreConnectCredentialEnvironment.self,
+                forKey: .credentials
+            ) ?? .init()
+        )
     }
 
     public static func loadIfPresent(
@@ -57,6 +98,13 @@ public struct AppStoreConnectCredentialEnvironment: Codable, Sendable, Hashable 
     public var privateKeyPathEnvironment: String
     public var privateKeyBase64Environment: String
 
+    private enum CodingKeys: String, CodingKey {
+        case keyIDEnvironment
+        case issuerIDEnvironment
+        case privateKeyPathEnvironment
+        case privateKeyBase64Environment
+    }
+
     public init(
         keyIDEnvironment: String = "ASC_KEY_ID",
         issuerIDEnvironment: String = "ASC_ISSUER_ID",
@@ -67,5 +115,38 @@ public struct AppStoreConnectCredentialEnvironment: Codable, Sendable, Hashable 
         self.issuerIDEnvironment = issuerIDEnvironment
         self.privateKeyPathEnvironment = privateKeyPathEnvironment
         self.privateKeyBase64Environment = privateKeyBase64Environment
+    }
+
+    public init(from decoder: Decoder) throws {
+        let defaultEnvironment = Self()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            keyIDEnvironment: try container.decodeIfPresent(
+                String.self,
+                forKey: .keyIDEnvironment
+            ) ?? defaultEnvironment.keyIDEnvironment,
+            issuerIDEnvironment: try container.decodeIfPresent(
+                String.self,
+                forKey: .issuerIDEnvironment
+            ) ?? defaultEnvironment.issuerIDEnvironment,
+            privateKeyPathEnvironment: try container.decodeIfPresent(
+                String.self,
+                forKey: .privateKeyPathEnvironment
+            ) ?? defaultEnvironment.privateKeyPathEnvironment,
+            privateKeyBase64Environment: try container.decodeIfPresent(
+                String.self,
+                forKey: .privateKeyBase64Environment
+            ) ?? defaultEnvironment.privateKeyBase64Environment
+        )
+    }
+}
+
+private extension Optional where Wrapped == String {
+    var nonEmpty: String? {
+        guard let value = self?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return nil
+        }
+
+        return value
     }
 }

@@ -84,32 +84,32 @@ install -m 755 .build/release/apogee /usr/local/bin/apogee
 
 ## Authentication
 
-Apogee keeps repository-safe defaults in `AppStore/apogee.json` and reads App
-Store Connect API key material from environment variables.
+Apogee keeps repository-safe defaults in a root `apogee.json` file and reads
+App Store Connect API key material from environment variables.
 
-Example `AppStore/apogee.json`:
+Minimal `apogee.json`:
 
 ```json
 {
-  "appID": "1234567890",
-  "bundleID": "com.example.app",
-  "defaultPlatform": "IOS",
-  "metadataPath": "AppStore/Metadata",
-  "screenshotsPath": "AppStore/Screenshots",
-  "webhooksPath": "AppStore/webhooks.json",
-  "credentials": {
-    "keyIDEnvironment": "ASC_KEY_ID",
-    "issuerIDEnvironment": "ASC_ISSUER_ID",
-    "privateKeyPathEnvironment": "ASC_PRIVATE_KEY_PATH",
-    "privateKeyBase64Environment": "ASC_PRIVATE_KEY_BASE64"
-  }
+  "bundleID": "com.example.app"
 }
 ```
 
-Commit this file when it contains only non-secret identifiers and paths. CLI
-options such as `--app-id`, `--bundle-id`, `--metadata-path`,
-`--screenshots-path`, `--config`, and `--platform` override values from the
-configuration file. Use `--apogee-config` to point at a different JSON file.
+Commit this file when it contains only non-secret identifiers and paths. When
+paths are omitted, Apogee uses these repository layout defaults:
+
+```json
+{
+  "metadataPath": "AppStore/Metadata",
+  "screenshotsPath": "AppStore/Screenshots",
+  "webhooksPath": "AppStore/webhooks.json"
+}
+```
+
+`defaultPlatform` is optional and defaults to `IOS`. CLI options such as
+`--app-id`, `--bundle-id`, `--metadata-path`, `--screenshots-path`, `--config`,
+and `--platform` override values from the configuration file. Use
+`--apogee-config` to point at a different JSON file.
 
 For local use, point Apogee at a private key file outside the repository:
 
@@ -194,9 +194,11 @@ apogee sync-webhooks \
   --dry-run
 ```
 
-These examples assume `AppStore/apogee.json` provides the app lookup and file
-paths. Use `--app-id` when you already know the App Store Connect app id. If
-both `--app-id` and `--bundle-id` are provided, `--app-id` wins.
+These examples assume root `apogee.json` provides the app lookup. The
+`AppStore/Metadata`, `AppStore/Screenshots`, and `AppStore/webhooks.json` paths
+are used by default unless overridden. Use `--app-id` when you already know the
+App Store Connect app id. If both `--app-id` and `--bundle-id` are provided,
+`--app-id` wins.
 
 ## Dry Run and Apply
 
