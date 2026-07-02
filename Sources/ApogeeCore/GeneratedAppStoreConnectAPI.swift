@@ -72,9 +72,10 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         return try mapLocalization(output.ok.body.json.data)
     }
 
-    public func builds(appID: String, buildVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild] {
+    public func builds(appID: String, buildVersion: String, appStoreVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild] {
         let output = try await client.builds_getCollection(.init(query: .init(
             filter_lbrack_version_rbrack_: [buildVersion],
+            filter_lbrack_preReleaseVersion_period_version_rbrack_: [appStoreVersion],
             filter_lbrack_preReleaseVersion_period_platform_rbrack_: [platform.buildsQuery],
             filter_lbrack_app_rbrack_: [appID],
             limit: 200
@@ -114,7 +115,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         let output = try await client.reviewSubmissions_getCollection(.init(query: .init(
             filter_lbrack_platform_rbrack_: [platform.reviewSubmissionsQuery],
             filter_lbrack_app_rbrack_: [appID],
-            limit: 200
+            limit: 200,
+            include: [.appStoreVersionForReview]
         )))
         return try output.ok.body.json.data.map(mapReviewSubmission)
     }
@@ -157,7 +159,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
     public func reviewSubmission(id: String) async throws -> AppStoreConnectReviewSubmission {
         let output = try await client.reviewSubmissions_getInstance(.init(
             path: .init(id: id),
-            query: .init()
+            query: .init(include: [.appStoreVersionForReview])
         ))
         return try mapReviewSubmission(output.ok.body.json.data)
     }
@@ -251,7 +253,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         .init(
             id: submission.id,
             state: submission.attributes?.state?.rawValue,
-            platform: submission.attributes?.platform.flatMap(Platform.init(generated:))
+            platform: submission.attributes?.platform.flatMap(Platform.init(generated:)),
+            appStoreVersionID: submission.relationships?.appStoreVersionForReview?.data?.id
         )
     }
 

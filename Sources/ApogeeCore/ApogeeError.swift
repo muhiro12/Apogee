@@ -12,6 +12,10 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case localizationMissing(locale: String)
     case buildNotFound(appID: String, buildVersion: String)
     case buildAmbiguous(appID: String, buildVersion: String, matches: Int)
+    case reviewSubmissionAmbiguous(versionID: String, matches: Int)
+    case reviewSubmissionStateUnexpected(id: String, state: String?, expected: [String])
+    case reviewSubmissionVersionMismatch(id: String, expectedVersionID: String, actualVersionID: String?)
+    case duplicateWebhookName(String, source: String)
     case applyRequiresPlanToken(expected: String)
     case destructiveApplyRequiresConfirmation
     case unexpectedAPIResponse(String)
@@ -42,6 +46,14 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "No build \(buildVersion) was found for app \(appID)."
         case let .buildAmbiguous(appID, buildVersion, matches):
             "Build \(buildVersion) for app \(appID) matched \(matches) builds."
+        case let .reviewSubmissionAmbiguous(versionID, matches):
+            "App Store version \(versionID) matched \(matches) review submissions."
+        case let .reviewSubmissionStateUnexpected(id, state, expected):
+            "Review submission \(id) read back state \(state ?? "nil"), expected one of: \(expected.joined(separator: ", "))."
+        case let .reviewSubmissionVersionMismatch(id, expectedVersionID, actualVersionID):
+            "Review submission \(id) read back appStoreVersionForReview \(actualVersionID ?? "nil"), expected \(expectedVersionID)."
+        case let .duplicateWebhookName(name, source):
+            "Duplicate webhook name \(name) in \(source)."
         case let .applyRequiresPlanToken(expected):
             "Destructive apply requires a prior dry-run plan token. Expected token: \(expected)."
         case .destructiveApplyRequiresConfirmation:

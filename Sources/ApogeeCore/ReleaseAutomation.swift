@@ -13,6 +13,9 @@ public struct ReleaseExecutionOptions: Sendable, Hashable {
 }
 
 public struct ReleaseAutomation: Sendable {
+    private static let readyReviewState = "READY_FOR_REVIEW"
+    private static let submittedReviewStates = ["WAITING_FOR_REVIEW", "IN_REVIEW", "COMPLETE"]
+
     private let api: any AppStoreConnectAPI
     private let metadataLoader: MetadataLoader
     private let screenshotLoader: ScreenshotLoader
@@ -122,7 +125,12 @@ public struct ReleaseAutomation: Sendable {
         options: ReleaseExecutionOptions
     ) async throws -> ReleasePlan {
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
-        let builds = try await api.builds(appID: context.app.id, buildVersion: buildVersion, platform: platform)
+        let builds = try await api.builds(
+            appID: context.app.id,
+            buildVersion: buildVersion,
+            appStoreVersion: version,
+            platform: platform
+        )
         let build = try exactlyOneBuild(builds, appID: context.app.id, buildVersion: buildVersion)
         let currentBuild = try await api.build(versionID: context.version.id)
         var plan = ReleasePlan(
@@ -193,6 +201,74 @@ public struct ReleaseAutomation: Sendable {
         options: ReleaseExecutionOptions
     ) async throws -> ReleasePlan {
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+        let existingSubmissions = try await api.reviewSubmissions(appID: context.app.id, platform: platform)
+        let existingSubmission = try existingReviewSubmission(
+            in: existingSubmissions,
+            versionID: context.version.id
+        )
+
+        if let existingSubmission {
+            if isSubmittedReviewState(existingSubmission.state) {
+                var plan = ReleasePlan(
+                    title: "Submit \(context.app.id) \(version) for review",
+                    actions: [
+                        .init(
+                            kind: .unchanged,
+                            resource: "reviewSubmission/\(existingSubmission.id)",
+                            currentValue: existingSubmission.state,
+                            desiredValue: existingSubmission.state
+                        ),
+                    ]
+                )
+
+                if options.mode == .apply {
+                    let readBack = try await api.reviewSubmission(id: existingSubmission.id)
+                    try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+                    plan.actions.append(.init(
+                        kind: .verify,
+                        resource: "reviewSubmission/\(readBack.id)",
+                        desiredValue: readBack.state
+                    ))
+                }
+
+                return plan
+            }
+
+            guard existingSubmission.state == Self.readyReviewState else {
+                throw ApogeeError.reviewSubmissionStateUnexpected(
+                    id: existingSubmission.id,
+                    state: existingSubmission.state,
+                    expected: [Self.readyReviewState] + Self.submittedReviewStates
+                )
+            }
+
+            var plan = ReleasePlan(
+                title: "Submit \(context.app.id) \(version) for review",
+                actions: [
+                    .init(
+                        kind: .update,
+                        resource: "reviewSubmission/\(existingSubmission.id).submitted",
+                        currentValue: "false",
+                        desiredValue: "true"
+                    ),
+                ]
+            )
+
+            guard options.mode == .apply else {
+                return plan
+            }
+
+            let submitted = try await api.submitReviewSubmission(id: existingSubmission.id)
+            let readBack = try await api.reviewSubmission(id: submitted.id)
+            try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+            plan.actions.append(.init(
+                kind: .verify,
+                resource: "reviewSubmission/\(readBack.id)",
+                desiredValue: readBack.state
+            ))
+            return plan
+        }
+
         var plan = ReleasePlan(
             title: "Submit \(context.app.id) \(version) for review",
             actions: [
@@ -210,7 +286,8 @@ public struct ReleaseAutomation: Sendable {
         _ = try await api.createReviewSubmissionItem(submissionID: submission.id, versionID: context.version.id)
         let submitted = try await api.submitReviewSubmission(id: submission.id)
         let readBack = try await api.reviewSubmission(id: submitted.id)
-        plan.actions.append(.init(kind: .verify, resource: "reviewSubmission/\(readBack.id)", desiredValue: readBack.state ?? "submitted"))
+        try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+        plan.actions.append(.init(kind: .verify, resource: "reviewSubmission/\(readBack.id)", desiredValue: readBack.state))
         return plan
     }
 
@@ -222,8 +299,8 @@ public struct ReleaseAutomation: Sendable {
         let configuration = try webhookLoader.load(from: configPath)
         let app = try await resolveApp(appLookup)
         let remoteWebhooks = try await api.webhooks(appID: app.id)
-        let remoteByName = Dictionary(uniqueKeysWithValues: remoteWebhooks.map { ($0.name, $0) })
-        let desiredByName = Dictionary(uniqueKeysWithValues: configuration.webhooks.map { ($0.name, $0) })
+        let remoteByName = try uniqueWebhooksByName(remoteWebhooks, source: "App Store Connect")
+        let desiredByName = try uniqueWebhooksByName(configuration.webhooks, source: "desired configuration")
         var actions: [PlannedAction] = []
 
         for desired in configuration.webhooks {
@@ -275,7 +352,11 @@ public struct ReleaseAutomation: Sendable {
             try await api.deleteWebhook(id: remote.id)
         }
 
-        return plan
+        let readBackWebhooks = try await api.webhooks(appID: app.id)
+        try verifyWebhookSync(configuration: configuration, readBack: readBackWebhooks)
+        var verifiedPlan = plan
+        verifiedPlan.actions.append(.init(kind: .verify, resource: "app/\(app.id)/webhooks", desiredValue: "webhooks read-back matched"))
+        return verifiedPlan
     }
 
     private func releaseContext(appLookup: AppLookup, version: String, platform: Platform) async throws -> ReleaseContext {
@@ -325,6 +406,50 @@ public struct ReleaseAutomation: Sendable {
         }
 
         return builds[0]
+    }
+
+    private func existingReviewSubmission(
+        in submissions: [AppStoreConnectReviewSubmission],
+        versionID: String
+    ) throws -> AppStoreConnectReviewSubmission? {
+        let matches = submissions.filter { submission in
+            submission.appStoreVersionID == versionID
+        }
+
+        if matches.count > 1 {
+            throw ApogeeError.reviewSubmissionAmbiguous(versionID: versionID, matches: matches.count)
+        }
+
+        return matches.first
+    }
+
+    private func isSubmittedReviewState(_ state: String?) -> Bool {
+        guard let state else {
+            return false
+        }
+
+        return Self.submittedReviewStates.contains(state)
+    }
+
+    private func verifySubmittedReviewSubmission(
+        _ submission: AppStoreConnectReviewSubmission,
+        versionID: String
+    ) throws {
+        guard submission.appStoreVersionID == versionID else {
+            throw ApogeeError.reviewSubmissionVersionMismatch(
+                id: submission.id,
+                expectedVersionID: versionID,
+                actualVersionID: submission.appStoreVersionID
+            )
+        }
+
+        guard isSubmittedReviewState(submission.state) else {
+            throw ApogeeError.reviewSubmissionStateUnexpected(
+                id: submission.id,
+                state: submission.state,
+                expected: Self.submittedReviewStates
+            )
+        }
     }
 
     private func metadataPatch(local: LocalizedMetadata, remote: LocalizedMetadata, fields: Set<MetadataField>) -> MetadataPatch {
@@ -429,11 +554,69 @@ public struct ReleaseAutomation: Sendable {
         }
     }
 
+    private func uniqueWebhooksByName(
+        _ webhooks: [AppStoreConnectWebhook],
+        source: String
+    ) throws -> [String: AppStoreConnectWebhook] {
+        var result: [String: AppStoreConnectWebhook] = [:]
+        for webhook in webhooks {
+            guard result[webhook.name] == nil else {
+                throw ApogeeError.duplicateWebhookName(webhook.name, source: source)
+            }
+
+            result[webhook.name] = webhook
+        }
+
+        return result
+    }
+
+    private func uniqueWebhooksByName(
+        _ webhooks: [DesiredWebhook],
+        source: String
+    ) throws -> [String: DesiredWebhook] {
+        var result: [String: DesiredWebhook] = [:]
+        for webhook in webhooks {
+            guard result[webhook.name] == nil else {
+                throw ApogeeError.duplicateWebhookName(webhook.name, source: source)
+            }
+
+            result[webhook.name] = webhook
+        }
+
+        return result
+    }
+
+    private func verifyWebhookSync(
+        configuration: WebhookSyncConfiguration,
+        readBack: [AppStoreConnectWebhook]
+    ) throws {
+        let readBackByName = try uniqueWebhooksByName(readBack, source: "App Store Connect read-back")
+        let desiredByName = try uniqueWebhooksByName(configuration.webhooks, source: "desired configuration")
+
+        for desired in configuration.webhooks {
+            guard let actual = readBackByName[desired.name] else {
+                throw ApogeeError.unexpectedAPIResponse("Webhook \(desired.name) was missing during read-back.")
+            }
+
+            guard webhookMatches(remote: actual, desired: desired) else {
+                throw ApogeeError.unexpectedAPIResponse("Webhook \(desired.name) read-back did not match desired configuration.")
+            }
+        }
+
+        for actual in readBack where desiredByName[actual.name] == nil {
+            throw ApogeeError.unexpectedAPIResponse("Webhook \(actual.name) still existed during read-back.")
+        }
+    }
+
     private func webhookNeedsUpdate(remote: AppStoreConnectWebhook, desired: DesiredWebhook) -> Bool {
-        remote.url != desired.url
-            || remote.enabled != desired.enabled
-            || Set(remote.eventTypes) != Set(desired.eventTypes)
+        !webhookMatches(remote: remote, desired: desired)
             || desired.rotateSecret
+    }
+
+    private func webhookMatches(remote: AppStoreConnectWebhook, desired: DesiredWebhook) -> Bool {
+        remote.url == desired.url
+            && remote.enabled == desired.enabled
+            && Set(remote.eventTypes) == Set(desired.eventTypes)
     }
 
     private func webhookSummary(_ webhook: AppStoreConnectWebhook) -> String {

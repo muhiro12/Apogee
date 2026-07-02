@@ -105,6 +105,63 @@ func updateMetadataRejectsMissingLocale() async throws {
 }
 
 @Test
+func attachBuildPassesAppStoreVersionToBuildLookup() async throws {
+    let api = FakeAppStoreConnectAPI()
+    let automation = ReleaseAutomation(api: api)
+
+    _ = try await automation.attachBuild(
+        appLookup: .appID("app-1"),
+        version: "1.2.3",
+        buildVersion: "123",
+        options: .init(mode: .dryRun)
+    )
+
+    #expect(await api.buildLookupRequests == [
+        .init(appID: "app-1", buildVersion: "123", appStoreVersion: "1.2.3", platform: .iOS),
+    ])
+}
+
+@Test
+func submitForReviewRejectsUnexpectedReadBackState() async throws {
+    let api = FakeAppStoreConnectAPI(submittedReviewState: "UNRESOLVED_ISSUES")
+    let automation = ReleaseAutomation(api: api)
+
+    do {
+        _ = try await automation.submitForReview(
+            appLookup: .appID("app-1"),
+            version: "1.2.3",
+            options: .init(mode: .apply)
+        )
+        Issue.record("Expected review submission state error.")
+    } catch let error as ApogeeError {
+        #expect(error == .reviewSubmissionStateUnexpected(
+            id: "review-1",
+            state: "UNRESOLVED_ISSUES",
+            expected: ["WAITING_FOR_REVIEW", "IN_REVIEW", "COMPLETE"]
+        ))
+    }
+}
+
+@Test
+func submitForReviewReusesExistingReadySubmission() async throws {
+    let api = FakeAppStoreConnectAPI(reviewSubmissions: [
+        .init(id: "review-existing", state: "READY_FOR_REVIEW", platform: .iOS, appStoreVersionID: "version-1"),
+    ])
+    let automation = ReleaseAutomation(api: api)
+
+    let plan = try await automation.submitForReview(
+        appLookup: .appID("app-1"),
+        version: "1.2.3",
+        options: .init(mode: .apply)
+    )
+
+    #expect(await api.createdReviewSubmissionIDs.isEmpty)
+    #expect(plan.actions.contains { $0.kind == .verify && $0.resource == "reviewSubmission/review-existing" })
+    let submissions = try await api.reviewSubmissions(appID: "app-1", platform: .iOS)
+    #expect(submissions.first?.state == "WAITING_FOR_REVIEW")
+}
+
+@Test
 func webhookApplyRequiresDryRunTokenForDeletion() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(
@@ -131,13 +188,53 @@ func webhookApplyRequiresDryRunTokenForDeletion() async throws {
         #expect(error == .applyRequiresPlanToken(expected: dryRun.token))
     }
 
-    _ = try await automation.syncWebhooks(
+    let applyPlan = try await automation.syncWebhooks(
         appLookup: .appID("app-1"),
         configPath: configPath,
         options: .init(mode: .apply, allowDestructive: true, planToken: dryRun.token)
     )
     let webhooks = try await api.webhooks(appID: "app-1")
     #expect(webhooks.map(\.name) == ["release"])
+    #expect(applyPlan.actions.contains { $0.kind == .verify && $0.resource == "app/app-1/webhooks" })
+}
+
+@Test
+func webhookSyncRejectsDuplicateDesiredNames() async throws {
+    let api = FakeAppStoreConnectAPI()
+    let automation = ReleaseAutomation(
+        api: api,
+        secretEnvironment: .init(values: ["WEBHOOK_SECRET": "secret-value"])
+    )
+    let configURL = temporaryDirectory().appendingPathComponent("webhooks.json")
+    try """
+    {
+      "webhooks": [
+        {
+          "name": "release",
+          "url": "https://example.com/one",
+          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "secretEnvironmentVariable": "WEBHOOK_SECRET"
+        },
+        {
+          "name": "release",
+          "url": "https://example.com/two",
+          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "secretEnvironmentVariable": "WEBHOOK_SECRET"
+        }
+      ]
+    }
+    """.write(to: configURL, atomically: true, encoding: .utf8)
+
+    do {
+        _ = try await automation.syncWebhooks(
+            appLookup: .appID("app-1"),
+            configPath: configURL.path,
+            options: .init(mode: .dryRun)
+        )
+        Issue.record("Expected duplicate webhook name error.")
+    } catch let error as ApogeeError {
+        #expect(error == .duplicateWebhookName("release", source: "desired configuration"))
+    }
 }
 
 private func fixturePath(_ relativePath: String) -> String {
@@ -176,10 +273,19 @@ private func base64URLDecoded(_ text: String) throws -> Data {
 actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     private var localizationsByVersionID: [String: [AppStoreConnectLocalization]]
     private var webhooksByAppID: [String: [AppStoreConnectWebhook]]
+    private var reviewSubmissionsByAppID: [String: [AppStoreConnectReviewSubmission]]
+    private let submittedReviewState: String
     private var attachedBuildByVersionID: [String: AppStoreConnectBuild?] = ["version-1": nil]
     private(set) var updatedLocalizationIDs: [String] = []
+    private(set) var buildLookupRequests: [BuildLookupRequest] = []
+    private(set) var createdReviewSubmissionIDs: [String] = []
 
-    init(locales: [String] = ["en-US", "ja"]) {
+    init(
+        locales: [String] = ["en-US", "ja"],
+        reviewSubmissions: [AppStoreConnectReviewSubmission] = [],
+        submittedReviewState: String = "WAITING_FOR_REVIEW"
+    ) {
+        self.submittedReviewState = submittedReviewState
         localizationsByVersionID = [
             "version-1": locales.map { locale in
                 .init(
@@ -200,6 +306,9 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
                 .init(id: "webhook-1", name: "release", url: "https://example.com/release", eventTypes: ["BUILD_STATE_CHANGED"], enabled: true),
                 .init(id: "webhook-2", name: "obsolete", url: "https://example.com/obsolete", eventTypes: ["BUILD_STATE_CHANGED"], enabled: true),
             ],
+        ]
+        reviewSubmissionsByAppID = [
+            "app-1": reviewSubmissions,
         ]
     }
 
@@ -238,8 +347,14 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         throw ApogeeError.unexpectedAPIResponse("Missing localization \(id).")
     }
 
-    func builds(appID: String, buildVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild] {
-        appID == "app-1" && buildVersion == "123" ? [.init(id: "build-123", version: buildVersion, processingState: "VALID")] : []
+    func builds(appID: String, buildVersion: String, appStoreVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild] {
+        buildLookupRequests.append(.init(
+            appID: appID,
+            buildVersion: buildVersion,
+            appStoreVersion: appStoreVersion,
+            platform: platform
+        ))
+        return appID == "app-1" && buildVersion == "123" && appStoreVersion == "1.2.3" ? [.init(id: "build-123", version: buildVersion, processingState: "VALID")] : []
     }
 
     func build(versionID: String) async throws -> AppStoreConnectBuild? {
@@ -251,23 +366,50 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     }
 
     func reviewSubmissions(appID: String, platform: Platform) async throws -> [AppStoreConnectReviewSubmission] {
-        []
+        reviewSubmissionsByAppID[appID] ?? []
     }
 
     func createReviewSubmission(appID: String, platform: Platform) async throws -> AppStoreConnectReviewSubmission {
-        .init(id: "review-1", state: "READY_FOR_REVIEW", platform: platform)
+        let id = "review-\((reviewSubmissionsByAppID[appID] ?? []).count + 1)"
+        let submission = AppStoreConnectReviewSubmission(id: id, state: "READY_FOR_REVIEW", platform: platform)
+        reviewSubmissionsByAppID[appID, default: []].append(submission)
+        createdReviewSubmissionIDs.append(id)
+        return submission
     }
 
     func createReviewSubmissionItem(submissionID: String, versionID: String) async throws -> AppStoreConnectReviewSubmissionItem {
-        .init(id: "review-item-1")
+        for appID in reviewSubmissionsByAppID.keys {
+            guard let index = reviewSubmissionsByAppID[appID]?.firstIndex(where: { $0.id == submissionID }) else {
+                continue
+            }
+
+            reviewSubmissionsByAppID[appID]?[index].appStoreVersionID = versionID
+        }
+
+        return .init(id: "review-item-1")
     }
 
     func submitReviewSubmission(id: String) async throws -> AppStoreConnectReviewSubmission {
-        .init(id: id, state: "WAITING_FOR_REVIEW", platform: .iOS)
+        for appID in reviewSubmissionsByAppID.keys {
+            guard let index = reviewSubmissionsByAppID[appID]?.firstIndex(where: { $0.id == id }) else {
+                continue
+            }
+
+            reviewSubmissionsByAppID[appID]?[index].state = submittedReviewState
+            return reviewSubmissionsByAppID[appID]?[index] ?? .init(id: id, state: submittedReviewState, platform: .iOS)
+        }
+
+        throw ApogeeError.unexpectedAPIResponse("Missing review submission \(id).")
     }
 
     func reviewSubmission(id: String) async throws -> AppStoreConnectReviewSubmission {
-        .init(id: id, state: "WAITING_FOR_REVIEW", platform: .iOS)
+        for submissions in reviewSubmissionsByAppID.values {
+            if let submission = submissions.first(where: { $0.id == id }) {
+                return submission
+            }
+        }
+
+        throw ApogeeError.unexpectedAPIResponse("Missing review submission \(id).")
     }
 
     func webhooks(appID: String) async throws -> [AppStoreConnectWebhook] {
@@ -311,4 +453,11 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
             webhooksByAppID[appID]?.removeAll { $0.id == id }
         }
     }
+}
+
+struct BuildLookupRequest: Sendable, Hashable {
+    var appID: String
+    var buildVersion: String
+    var appStoreVersion: String
+    var platform: Platform
 }

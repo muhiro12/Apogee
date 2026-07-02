@@ -6,7 +6,7 @@ public protocol AppStoreConnectAPI: Sendable {
     func appStoreVersions(appID: String, version: String, platform: Platform) async throws -> [AppStoreConnectVersion]
     func appStoreVersionLocalizations(versionID: String) async throws -> [AppStoreConnectLocalization]
     func updateLocalization(id: String, patch: MetadataPatch) async throws -> AppStoreConnectLocalization
-    func builds(appID: String, buildVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild]
+    func builds(appID: String, buildVersion: String, appStoreVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild]
     func build(versionID: String) async throws -> AppStoreConnectBuild?
     func attachBuild(versionID: String, buildID: String) async throws
     func reviewSubmissions(appID: String, platform: Platform) async throws -> [AppStoreConnectReviewSubmission]
@@ -97,11 +97,13 @@ public struct AppStoreConnectReviewSubmission: Sendable, Hashable {
     public var id: String
     public var state: String?
     public var platform: Platform?
+    public var appStoreVersionID: String?
 
-    public init(id: String, state: String? = nil, platform: Platform? = nil) {
+    public init(id: String, state: String? = nil, platform: Platform? = nil, appStoreVersionID: String? = nil) {
         self.id = id
         self.state = state
         self.platform = platform
+        self.appStoreVersionID = appStoreVersionID
     }
 }
 
