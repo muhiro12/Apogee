@@ -85,8 +85,7 @@ struct Updater {
         let specJSON = workDirectory.appendingPath("/openapi.oas.json")
         let trimmedJSON = generatorInputDirectory.appendingPath("/openapi.json")
         let configURL = generatorInputDirectory.appendingPath("/openapi-generator-config.yaml")
-        let sourceConfigURL = repositoryRoot.appendingPath("/Scripts/OpenAPIGeneration/openapi-generator-config.yaml")
-        let trimScriptURL = repositoryRoot.appendingPath("/Scripts/trim-app-store-connect-openapi.swift")
+        let sourceConfigURL = repositoryRoot.appendingPath("/Tools/OpenAPIGeneration/openapi-generator-config.yaml")
         let specZipURL = fileManager.temporaryDirectory.appendingPathComponent(
             "apogee-app-store-connect-openapi-\(UUID().uuidString).zip"
         )
@@ -104,11 +103,11 @@ struct Updater {
         )
         try openAPIData.write(to: specJSON)
 
-        try processRunner.run(
-            "swift",
-            arguments: [trimScriptURL.path, specJSON.path, trimmedJSON.path],
-            currentDirectory: repositoryRoot
+        let trimResult = try OpenAPITrimmer().trim(sourceData: openAPIData, outputURL: trimmedJSON)
+        print(
+            "Wrote \(trimmedJSON.path) with \(trimResult.pathCount) paths and \(trimResult.componentReferenceCount) referenced components."
         )
+        fflush(stdout)
         try fileManager.copyReplacingItem(at: sourceConfigURL, to: configURL)
         try writeGeneratorPackageManifest(to: generatorPackageDirectory)
 
@@ -154,7 +153,7 @@ struct Updater {
             .standardizedFileURL
         while true {
             let hasGenerationConfig = fileManager.fileExists(
-                atPath: candidate.appendingPath("/Scripts/OpenAPIGeneration/openapi-generator-config.yaml").path
+                atPath: candidate.appendingPath("/Tools/OpenAPIGeneration/openapi-generator-config.yaml").path
             )
             let hasGeneratedTarget = fileManager.fileExists(
                 atPath: candidate.appendingPath("/Sources/AppStoreConnectGenerated").path

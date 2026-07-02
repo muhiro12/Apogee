@@ -224,7 +224,7 @@ Maintainers download it from Apple and update the committed generated Swift
 client sources with:
 
 ```sh
-swift run --package-path Scripts/OpenAPIGeneration update-app-store-connect-client
+swift run --package-path Tools/OpenAPIGeneration update-app-store-connect-client
 ```
 
 The maintainer tool writes temporary OpenAPI files under `.build/` and copies

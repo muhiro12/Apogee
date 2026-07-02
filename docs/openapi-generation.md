@@ -7,11 +7,11 @@ this repository.
 Maintainers update the generated client by running:
 
 ```sh
-swift run --package-path Scripts/OpenAPIGeneration update-app-store-connect-client
+swift run --package-path Tools/OpenAPIGeneration update-app-store-connect-client
 ```
 
 The updater is a separate maintainer-only Swift package under
-`Scripts/OpenAPIGeneration`. The root Apogee package does not depend on Swift
+`Tools/OpenAPIGeneration`. The root Apogee package does not depend on Swift
 OpenAPI Generator during normal package resolution or builds.
 
 The tool downloads the current Apple OpenAPI zip, trims it to the operations
