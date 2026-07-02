@@ -7,13 +7,17 @@ this repository.
 Maintainers update the generated client by running:
 
 ```sh
-Scripts/update-generated-app-store-connect-client.sh
+swift run --package-path Scripts/OpenAPIGeneration update-app-store-connect-client
 ```
 
-The script downloads the current Apple OpenAPI zip, trims it to the operations
-Apogee uses, creates a temporary Swift package under `.build/`, runs Swift
-OpenAPI Generator, and copies only the generated Swift sources into
-`Sources/AppStoreConnectGenerated/GeneratedSources/`.
+The updater is a separate maintainer-only Swift package under
+`Scripts/OpenAPIGeneration`. The root Apogee package does not depend on Swift
+OpenAPI Generator during normal package resolution or builds.
+
+The tool downloads the current Apple OpenAPI zip, trims it to the operations
+Apogee uses, creates a temporary Swift package under `.build/`, resolves and
+runs Swift OpenAPI Generator from that temporary package, and copies only the
+generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
 
 The trim step keeps the selected fields and operations but removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently
