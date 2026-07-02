@@ -9,8 +9,7 @@ the official App Store Connect API. It provides:
 - `apogee`: command line tool
 
 The package uses Swift Package Manager, Swift OpenAPI Generator, and Apple's
-official App Store Connect API OpenAPI specification. It does not depend on Ruby
-or fastlane.
+official App Store Connect API OpenAPI specification.
 
 ## Current Capability Status
 
