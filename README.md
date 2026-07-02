@@ -9,8 +9,8 @@ the official App Store Connect API. It provides:
 - `ApogeeCommandPlugin`: SwiftPM command plugin for repository-pinned tool use
 - `apogee`: command line tool
 
-The package uses Swift Package Manager, Swift OpenAPI Generator, and Apple's
-official App Store Connect API OpenAPI specification.
+The package uses Swift Package Manager and committed Swift client sources
+generated from Apple's official App Store Connect API OpenAPI specification.
 
 ## Current Capability Status
 
@@ -39,8 +39,9 @@ Partial or unsupported:
 ### SwiftPM Command Plugin
 
 For team use, prefer adding Apogee to the app or release-tools package as a
-SwiftPM dependency. This lets the repository pin the Apogee version in
-`Package.resolved` and avoids relying on a globally installed local tool.
+SwiftPM dependency after publishing a release tag. This lets the repository pin
+the Apogee version in `Package.resolved` and avoids relying on a globally
+installed local tool.
 
 ```swift
 dependencies: [
