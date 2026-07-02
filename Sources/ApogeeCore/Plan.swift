@@ -23,11 +23,30 @@ public struct ReleasePlan: Sendable, Hashable {
     }
 
     public var token: String {
-        let stableText = actions
-            .map { "\($0.kind.rawValue)|\($0.resource)|\($0.field ?? "")|\($0.locale ?? "")|\($0.isDestructive)" }
-            .joined(separator: "\n")
+        let planParts = [
+            Self.tokenPart("ReleasePlanTokenV2"),
+            Self.tokenPart(title),
+        ] + actions.map(Self.tokenText(for:))
+        let stableText = planParts.joined(separator: "\n")
         let digest = SHA256.hash(data: Data(stableText.utf8))
         return digest.map { String(format: "%02x", $0) }.joined().prefix(16).description
+    }
+
+    private static func tokenText(for action: PlannedAction) -> String {
+        [
+            Self.tokenPart(action.kind.rawValue),
+            Self.tokenPart(action.resource),
+            Self.tokenPart(action.locale),
+            Self.tokenPart(action.field),
+            Self.tokenPart(action.currentValue),
+            Self.tokenPart(action.desiredValue),
+            Self.tokenPart(action.isDestructive.description),
+        ].joined(separator: "\n")
+    }
+
+    private static func tokenPart(_ value: String?) -> String {
+        let value = value ?? ""
+        return "\(value.utf8.count):\(value)"
     }
 }
 

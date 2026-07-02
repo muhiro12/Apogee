@@ -199,6 +199,30 @@ func webhookApplyRequiresDryRunTokenForDeletion() async throws {
 }
 
 @Test
+func destructivePlanTokenIncludesActionValues() async throws {
+    let api = FakeAppStoreConnectAPI()
+    let automation = ReleaseAutomation(api: api)
+    let firstConfigPath = try writeWebhookConfig(url: "https://example.com/one")
+    let secondConfigPath = try writeWebhookConfig(url: "https://example.com/two")
+
+    let firstPlan = try await automation.syncWebhooks(
+        appLookup: .appID("app-1"),
+        configPath: firstConfigPath,
+        options: .init(mode: .dryRun)
+    )
+    let secondPlan = try await automation.syncWebhooks(
+        appLookup: .appID("app-1"),
+        configPath: secondConfigPath,
+        options: .init(mode: .dryRun)
+    )
+
+    #expect(firstPlan.hasDestructiveActions)
+    #expect(secondPlan.hasDestructiveActions)
+    #expect(firstPlan.actions.map(actionShape) == secondPlan.actions.map(actionShape))
+    #expect(firstPlan.token != secondPlan.token)
+}
+
+@Test
 func webhookSyncRejectsDuplicateDesiredNames() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(
@@ -251,6 +275,33 @@ private func temporaryDirectory() -> URL {
         .appendingPathComponent(UUID().uuidString)
     try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
+}
+
+private func writeWebhookConfig(url: String) throws -> String {
+    let configURL = temporaryDirectory().appendingPathComponent("webhooks.json")
+    try """
+    {
+      "webhooks": [
+        {
+          "name": "release",
+          "url": "\(url)",
+          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "secretEnvironmentVariable": "WEBHOOK_SECRET"
+        }
+      ]
+    }
+    """.write(to: configURL, atomically: true, encoding: .utf8)
+    return configURL.path
+}
+
+private func actionShape(_ action: PlannedAction) -> String {
+    [
+        action.kind.rawValue,
+        action.resource,
+        action.locale ?? "",
+        action.field ?? "",
+        action.isDestructive.description,
+    ].joined(separator: "|")
 }
 
 private func decodedJSONObject(_ text: String) throws -> [String: Any] {
