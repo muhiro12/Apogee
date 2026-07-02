@@ -23,7 +23,8 @@ Supported in the first implementation:
 - Description, keywords, and promotional text updates
 - Build attachment
 - Review submission with dry-run and read-back verification
-- Webhook create/update sync, with destructive deletion gated separately
+- Webhook create/update sync with read-back verification, with destructive
+  deletion gated separately
 
 Partial or unsupported:
 
@@ -124,8 +125,10 @@ Dry-run mode is the default. `--apply` is required before Apogee mutates App
 Store Connect.
 
 For destructive operations, Apogee also requires a plan token from a prior
-dry-run and `--allow-destructive`. This prevents accidental deletion from a
-single command invocation.
+dry-run and `--allow-destructive`. The token is derived from the exact plan
+title and action values, including current and desired values, so a changed plan
+requires a fresh dry-run token. This prevents accidental deletion from a single
+command invocation.
 
 ## OpenAPI Regeneration
 
