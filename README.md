@@ -6,6 +6,7 @@ the official App Store Connect API. It provides:
 - `ApogeeCore`: reusable release automation library
 - `AppStoreConnectGenerated`: Swift OpenAPI Generator target for the trimmed
   App Store Connect client surface
+- `ApogeeCommandPlugin`: SwiftPM command plugin for repository-pinned tool use
 - `apogee`: command line tool
 
 The package uses Swift Package Manager, Swift OpenAPI Generator, and Apple's
@@ -32,6 +33,56 @@ Partial or unsupported:
   processing verification.
 - Xcode Cloud workflow sync is visible in OpenAPI but intentionally unsupported
   until Apogee has a dedicated workflow config model.
+
+## Installation and Invocation
+
+### SwiftPM Command Plugin
+
+For team use, prefer adding Apogee to the app or release-tools package as a
+SwiftPM dependency. This lets the repository pin the Apogee version in
+`Package.resolved` and avoids relying on a globally installed local tool.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/YOUR_ORG/Apogee.git", exact: "0.1.0"),
+]
+```
+
+Run Apogee through the command plugin from that package:
+
+```sh
+swift package plugin --allow-network-connections all apogee update-release-notes \
+  --bundle-id com.example.app \
+  --version 1.2.3 \
+  --metadata-path AppStore/Metadata \
+  --dry-run
+```
+
+SwiftPM command plugins are sandboxed. Apogee talks to App Store Connect, so
+plugin invocations must allow network access explicitly with
+`--allow-network-connections all`.
+
+For Apogee's top-level help, pass SwiftPM's argument separator before `--help`:
+
+```sh
+swift package plugin --allow-network-connections all apogee -- --help
+```
+
+### Direct Executable
+
+For local exploration or a globally installed tool, run the executable directly
+from an Apogee checkout:
+
+```sh
+swift run apogee --help
+```
+
+Or build and install the release binary somewhere on your `PATH`:
+
+```sh
+swift build -c release
+install -m 755 .build/release/apogee /usr/local/bin/apogee
+```
 
 ## Authentication
 
@@ -78,6 +129,10 @@ changes is explicitly unsupported until the upload adapter is implemented and
 verified.
 
 ## CLI Examples
+
+The examples below use the direct `apogee` executable. When using the SwiftPM
+command plugin, replace the leading `apogee` with
+`swift package plugin --allow-network-connections all apogee`.
 
 ```sh
 apogee update-release-notes \

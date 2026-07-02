@@ -14,7 +14,11 @@ let package = Package(
         ),
         .executable(
             name: "apogee",
-            targets: ["ApogeeCLI"]
+            targets: ["apogee"]
+        ),
+        .plugin(
+            name: "ApogeeCommandPlugin",
+            targets: ["ApogeeCommandPlugin"]
         ),
     ],
     dependencies: [
@@ -52,13 +56,32 @@ let package = Package(
             ]
         ),
         .executableTarget(
-            name: "ApogeeCLI",
+            name: "apogee",
             dependencies: [
                 "ApogeeCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
+            path: "Sources/ApogeeCLI",
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+            ]
+        ),
+        .plugin(
+            name: "ApogeeCommandPlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "apogee",
+                    description: "Run the Apogee release automation command line tool."
+                ),
+                permissions: [
+                    .allowNetworkConnections(
+                        scope: .all(),
+                        reason: "Apogee reads and writes App Store Connect API resources."
+                    ),
+                ]
+            ),
+            dependencies: [
+                "apogee",
             ]
         ),
         .testTarget(
