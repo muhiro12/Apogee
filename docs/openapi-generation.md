@@ -14,6 +14,10 @@ The updater is a separate maintainer-only Swift package under
 `Tools/OpenAPIGeneration`. The root Apogee package does not depend on Swift
 OpenAPI Generator during normal package resolution or builds.
 
+The maintainer package follows Apogee's public Swift tools baseline unless the
+generator itself requires a newer version. If that happens, the higher
+requirement should stay isolated to maintainer-only tooling.
+
 The tool downloads the current Apple OpenAPI zip, trims it to the operations
 Apogee uses, creates a temporary Swift package under `.build/`, resolves and
 runs Swift OpenAPI Generator from that temporary package, and copies only the

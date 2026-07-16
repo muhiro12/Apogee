@@ -240,6 +240,13 @@ The Git tag and GitHub Release are the package version source of truth. Avoid
 adding a separate checked-in source version string or README "current version"
 value that release automation must keep in sync with tags.
 
+Apogee's minimum Swift tools version tracks the Swift version bundled with the
+first official release of the Xcode major series that Apogee supports. The
+initial public baseline is Xcode 26.0 / Swift tools 6.2. Later Xcode point
+releases can build the package, but the public SwiftPM manifests should not move
+to a later tools version unless Apogee intentionally raises its supported Xcode
+major baseline.
+
 The safety contract is intentionally more stable than any individual
 capability: dry-run remains the default, `--apply` is required for every App
 Store Connect mutation, destructive operations require a prior plan token plus

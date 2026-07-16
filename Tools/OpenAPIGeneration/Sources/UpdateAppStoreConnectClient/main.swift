@@ -5,22 +5,16 @@ import Foundation
 let defaultSpecURL = "https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip"
 let defaultGeneratorVersion = "1.12.2"
 
-@main
-enum UpdateAppStoreConnectClient {
-    static func main() {
-        do {
-            let options = try Options(arguments: Array(CommandLine.arguments.dropFirst()))
-            if options.showsHelp {
-                print(Options.help)
-                return
-            }
-
-            try Updater(options: options).run()
-        } catch {
-            FileHandle.standardError.write(Data("error: \(error)\n".utf8))
-            Darwin.exit(1)
-        }
+do {
+    let options = try Options(arguments: Array(CommandLine.arguments.dropFirst()))
+    if options.showsHelp {
+        print(Options.help)
+    } else {
+        try Updater(options: options).run()
     }
+} catch {
+    FileHandle.standardError.write(Data("error: \(error)\n".utf8))
+    Darwin.exit(1)
 }
 
 struct Options {
@@ -172,7 +166,7 @@ struct Updater {
 
     private func writeGeneratorPackageManifest(to packageDirectory: URL) throws {
         let manifest = """
-        // swift-tools-version: 6.4
+        // swift-tools-version: 6.2
 
         import PackageDescription
 
