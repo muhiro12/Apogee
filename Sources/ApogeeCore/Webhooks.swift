@@ -66,8 +66,16 @@ public struct WebhookConfigurationLoader: Sendable {
     }
 }
 
-public struct SecretEnvironment: Sendable {
+public struct SecretEnvironment: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
     private var values: [String: String]
+
+    public var description: String {
+        "SecretEnvironment(<redacted>)"
+    }
+
+    public var debugDescription: String {
+        description
+    }
 
     public init(values: [String: String] = ProcessInfo.processInfo.environment) {
         self.values = values

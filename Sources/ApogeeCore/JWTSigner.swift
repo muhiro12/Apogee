@@ -43,9 +43,17 @@ public struct JSONWebTokenSigner: Sendable {
     }
 }
 
-public struct SignedToken: Sendable, Hashable {
+public struct SignedToken: Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
     public var value: String
     public var expiresAt: Date
+
+    public var description: String {
+        "SignedToken(value: <redacted>, expiresAt: \(expiresAt))"
+    }
+
+    public var debugDescription: String {
+        description
+    }
 
     public init(value: String, expiresAt: Date) {
         self.value = value

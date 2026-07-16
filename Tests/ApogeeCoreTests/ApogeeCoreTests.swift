@@ -347,6 +347,111 @@ func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
 }
 
 @Test
+func webhookCreateFailureDoesNotExposeSecret() async throws {
+    let secret = "apogee-create-webhook-secret-sentinel"
+    let privateKey = P256.Signing.PrivateKey()
+    let serverURL = try #require(URL(string: "http://127.0.0.1:1"))
+    let api = GeneratedAppStoreConnectAPI(credentials: .init(
+        keyID: "KEY123",
+        issuerID: "ISSUER456",
+        privateKeyPEM: privateKey.pemRepresentation
+    ), serverURL: serverURL)
+    let webhook = DesiredWebhook(
+        name: "release",
+        url: "https://example.com/release",
+        eventTypes: ["BUILD_UPLOAD_STATE_UPDATED"],
+        secretEnvironmentVariable: "WEBHOOK_SECRET"
+    )
+
+    do {
+        _ = try await api.createWebhook(appID: "app-1", webhook: webhook, secret: secret)
+        Issue.record("Expected webhook creation to fail.")
+    } catch {
+        #expect(error as? ApogeeError == .appStoreConnectRequestFailed(operation: "create a webhook"))
+        #expect(!String(describing: error).contains(secret))
+        #expect(!String(reflecting: error).contains(secret))
+    }
+}
+
+@Test
+func webhookUpdateFailureDoesNotExposeSecret() async throws {
+    let secret = "apogee-update-webhook-secret-sentinel"
+    let privateKey = P256.Signing.PrivateKey()
+    let serverURL = try #require(URL(string: "http://127.0.0.1:1"))
+    let api = GeneratedAppStoreConnectAPI(credentials: .init(
+        keyID: "KEY123",
+        issuerID: "ISSUER456",
+        privateKeyPEM: privateKey.pemRepresentation
+    ), serverURL: serverURL)
+    let webhook = DesiredWebhook(
+        name: "release",
+        url: "https://example.com/release",
+        eventTypes: ["BUILD_UPLOAD_STATE_UPDATED"],
+        secretEnvironmentVariable: "WEBHOOK_SECRET"
+    )
+
+    do {
+        _ = try await api.updateWebhook(id: "webhook-1", webhook: webhook, secret: secret)
+        Issue.record("Expected webhook update to fail.")
+    } catch {
+        #expect(error as? ApogeeError == .appStoreConnectRequestFailed(operation: "update a webhook"))
+        #expect(!String(describing: error).contains(secret))
+        #expect(!String(reflecting: error).contains(secret))
+    }
+}
+
+@Test
+func webhookCreatePreservesInputValidationError() async {
+    let api = GeneratedAppStoreConnectAPI(credentials: .init(
+        keyID: "KEY123",
+        issuerID: "ISSUER456",
+        privateKeyPEM: "invalid-private-key"
+    ))
+    let webhook = DesiredWebhook(
+        name: "release",
+        url: "https://example.com/release",
+        eventTypes: ["NOT_A_WEBHOOK_EVENT"],
+        secretEnvironmentVariable: "WEBHOOK_SECRET"
+    )
+
+    do {
+        _ = try await api.createWebhook(appID: "app-1", webhook: webhook, secret: "secret")
+        Issue.record("Expected invalid webhook event type error.")
+    } catch {
+        #expect(error as? ApogeeError == .invalidWebhookEventType("NOT_A_WEBHOOK_EVENT"))
+    }
+}
+
+@Test
+func secretBearingValuesUseRedactedDescriptions() {
+    let secret = "apogee-secret-value-sentinel"
+    let credentials = AppStoreConnectCredentials(
+        keyID: "KEY123",
+        issuerID: "ISSUER456",
+        privateKeyPEM: secret
+    )
+    let signedToken = SignedToken(value: secret, expiresAt: Date(timeIntervalSince1970: 1_700_000_000))
+    let secretEnvironment = SecretEnvironment(values: ["WEBHOOK_SECRET": secret])
+    let signer = JSONWebTokenSigner(credentials: credentials)
+    let renderedValues = [
+        String(describing: credentials),
+        String(reflecting: credentials),
+        String(describing: signedToken),
+        String(reflecting: signedToken),
+        String(describing: secretEnvironment),
+        String(reflecting: secretEnvironment),
+        String(reflecting: signer),
+    ]
+
+    #expect(renderedValues.allSatisfy { value in
+        !value.contains(secret)
+    })
+    #expect(renderedValues.allSatisfy { value in
+        value.contains("<redacted>")
+    })
+}
+
+@Test
 func webhookSyncRejectsDuplicateDesiredNames() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(

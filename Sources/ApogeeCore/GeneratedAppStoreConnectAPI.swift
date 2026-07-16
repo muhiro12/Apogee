@@ -184,7 +184,12 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
             relationships: .init(app: .init(data: .init(id: appID, _type: .apps))),
             _type: .webhooks
         ))
-        let output = try await client.webhooks_createInstance(.init(body: .json(request)))
+        let output: Operations.webhooks_createInstance.Output
+        do {
+            output = try await client.webhooks_createInstance(.init(body: .json(request)))
+        } catch let error as ClientError {
+            throw sanitizedWebhookError(error, operation: "create a webhook")
+        }
         return try mapWebhook(output.created.body.json.data)
     }
 
@@ -200,10 +205,15 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
             id: id,
             _type: .webhooks
         ))
-        let output = try await client.webhooks_updateInstance(.init(
-            path: .init(id: id),
-            body: .json(request)
-        ))
+        let output: Operations.webhooks_updateInstance.Output
+        do {
+            output = try await client.webhooks_updateInstance(.init(
+                path: .init(id: id),
+                body: .json(request)
+            ))
+        } catch let error as ClientError {
+            throw sanitizedWebhookError(error, operation: "update a webhook")
+        }
         return try mapWebhook(output.ok.body.json.data)
     }
 
@@ -275,6 +285,18 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         }
 
         return eventType
+    }
+
+    private func sanitizedWebhookError(_ error: ClientError, operation: String) -> any Error {
+        if let apogeeError = error.underlyingError as? ApogeeError {
+            return apogeeError
+        }
+
+        if error.underlyingError is CancellationError {
+            return CancellationError()
+        }
+
+        return ApogeeError.appStoreConnectRequestFailed(operation: operation)
     }
 }
 

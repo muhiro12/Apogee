@@ -18,6 +18,7 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case duplicateWebhookName(String, source: String)
     case applyRequiresPlanToken(expected: String)
     case destructiveApplyRequiresConfirmation
+    case appStoreConnectRequestFailed(operation: String)
     case unexpectedAPIResponse(String)
     case invalidWebhookEventType(String)
     case unsupported(UnsupportedCapability)
@@ -58,6 +59,8 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "Destructive apply requires a prior dry-run plan token. Expected token: \(expected)."
         case .destructiveApplyRequiresConfirmation:
             "Destructive apply requires --allow-destructive."
+        case let .appStoreConnectRequestFailed(operation):
+            "App Store Connect request failed while attempting to \(operation)."
         case let .unexpectedAPIResponse(message):
             "Unexpected App Store Connect API response: \(message)."
         case let .invalidWebhookEventType(eventType):

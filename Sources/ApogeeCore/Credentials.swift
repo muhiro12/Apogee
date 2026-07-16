@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AppStoreConnectCredentials: Sendable, Hashable {
+public struct AppStoreConnectCredentials: Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
     public var keyID: String
     public var issuerID: String
     var privateKeySource: AppStoreConnectPrivateKeySource
@@ -11,6 +11,14 @@ public struct AppStoreConnectCredentials: Sendable, Hashable {
         }
 
         return path
+    }
+
+    public var description: String {
+        "AppStoreConnectCredentials(<redacted>)"
+    }
+
+    public var debugDescription: String {
+        description
     }
 
     public init(keyID: String, issuerID: String, privateKeyPath: String) {
