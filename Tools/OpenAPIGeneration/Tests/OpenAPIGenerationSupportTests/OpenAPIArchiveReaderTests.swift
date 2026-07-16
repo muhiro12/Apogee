@@ -54,6 +54,83 @@ func archiveReaderRejectsMultipleOpenAPIDocuments() {
     }
 }
 
+@Test
+func archiveReaderRejectsTooManyCandidateDocuments() {
+    let reader = OpenAPIArchiveReader(
+        limits: .init(maximumCandidateCount: 1)
+    )
+
+    do {
+        _ = try reader.document(in: "first.json\nsecond.json\n") { _ in
+            openAPIDocumentData()
+        }
+        Issue.record("Expected the archive reader to enforce its candidate limit.")
+    } catch {
+        #expect(
+            error as? OpenAPIArchiveError
+                == .tooManyCandidateDocuments(maximum: 1)
+        )
+    }
+}
+
+@Test
+func archiveReaderRejectsOversizedDocuments() {
+    let reader = OpenAPIArchiveReader(
+        limits: .init(maximumDocumentByteCount: 8)
+    )
+
+    do {
+        _ = try reader.document(in: "openapi.json\n") { _ in
+            Data(repeating: 0, count: 9)
+        }
+        Issue.record("Expected the archive reader to enforce its document limit.")
+    } catch {
+        #expect(
+            error as? OpenAPIArchiveError
+                == .documentTooLarge(path: "openapi.json", maximumByteCount: 8)
+        )
+    }
+}
+
+@Test
+func openAPITrimmerRejectsExcessiveNesting() throws {
+    let sourceData = try JSONSerialization.data(withJSONObject: [
+        "openapi": "3.0.1",
+        "paths": [
+            "/v1/apps": [
+                "get": [
+                    "operationId": "apps_getCollection",
+                    "responses": [
+                        "200": [
+                            "content": [
+                                "application/json": [
+                                    "schema": [
+                                        "type": "object",
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        "components": [:],
+    ])
+    let outputURL = FileManager.default.temporaryDirectory
+        .appendingPathComponent(UUID().uuidString)
+        .appendingPathComponent("openapi.json")
+
+    do {
+        _ = try OpenAPITrimmer(maximumNestingDepth: 2).trim(
+            sourceData: sourceData,
+            outputURL: outputURL
+        )
+        Issue.record("Expected the trimmer to enforce its nesting limit.")
+    } catch {
+        #expect(error as? TrimmerError == .nestingDepthExceeded(maximum: 2))
+    }
+}
+
 private func openAPIDocumentData() -> Data {
     Data(
         """

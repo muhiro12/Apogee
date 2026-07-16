@@ -1,11 +1,11 @@
 import Foundation
 
-struct OpenAPITrimResult {
-    var pathCount: Int
-    var componentReferenceCount: Int
+package struct OpenAPITrimResult {
+    package let pathCount: Int
+    package let componentReferenceCount: Int
 }
 
-struct OpenAPITrimmer {
+package struct OpenAPITrimmer {
     private let selectedOperationIDs: Set<String> = [
         "apps_getCollection",
         "apps_getInstance",
@@ -43,8 +43,14 @@ struct OpenAPITrimmer {
     ]
 
     private let methodNames: Set<String> = ["get", "post", "patch", "delete"]
+    private let maximumNestingDepth: Int
 
-    func trim(sourceData: Data, outputURL: URL) throws -> OpenAPITrimResult {
+    package init(maximumNestingDepth: Int = 128) {
+        precondition(maximumNestingDepth > 0)
+        self.maximumNestingDepth = maximumNestingDepth
+    }
+
+    package func trim(sourceData: Data, outputURL: URL) throws -> OpenAPITrimResult {
         guard
             let root = try JSONSerialization.jsonObject(with: sourceData) as? [String: Any],
             let sourcePaths = root["paths"] as? [String: Any],
@@ -57,7 +63,11 @@ struct OpenAPITrimmer {
         var referencedComponents: Set<ComponentReference> = []
         var queuedComponents: [ComponentReference] = []
 
-        func enqueueReferences(in value: Any) {
+        func enqueueReferences(in value: Any, depth: Int = 0) throws {
+            guard depth <= maximumNestingDepth else {
+                throw TrimmerError.nestingDepthExceeded(maximum: maximumNestingDepth)
+            }
+
             if let dictionary = value as? [String: Any] {
                 if let ref = dictionary["$ref"] as? String,
                    let componentReference = ComponentReference(ref: ref),
@@ -67,11 +77,11 @@ struct OpenAPITrimmer {
                 }
 
                 for nestedValue in dictionary.values {
-                    enqueueReferences(in: nestedValue)
+                    try enqueueReferences(in: nestedValue, depth: depth + 1)
                 }
             } else if let array = value as? [Any] {
                 for element in array {
-                    enqueueReferences(in: element)
+                    try enqueueReferences(in: element, depth: depth + 1)
                 }
             }
         }
@@ -84,9 +94,9 @@ struct OpenAPITrimmer {
             var trimmedPathItem: [String: Any] = [:]
 
             if let parameters = pathItem["parameters"] {
-                let sanitizedParameters = sanitized(parameters)
+                let sanitizedParameters = try sanitized(parameters)
                 trimmedPathItem["parameters"] = sanitizedParameters
-                enqueueReferences(in: sanitizedParameters)
+                try enqueueReferences(in: sanitizedParameters)
             }
 
             for (key, value) in pathItem where methodNames.contains(key) {
@@ -98,9 +108,9 @@ struct OpenAPITrimmer {
                     continue
                 }
 
-                let sanitizedOperation = sanitized(operation)
+                let sanitizedOperation = try sanitized(operation)
                 trimmedPathItem[key] = sanitizedOperation
-                enqueueReferences(in: sanitizedOperation)
+                try enqueueReferences(in: sanitizedOperation)
             }
 
             if trimmedPathItem.keys.contains(where: methodNames.contains) {
@@ -119,31 +129,37 @@ struct OpenAPITrimmer {
             }
 
             var outputGroup = trimmedComponents[componentReference.section] as? [String: Any] ?? [:]
-            let sanitizedComponentValue = sanitized(componentValue)
+            let sanitizedComponentValue = try sanitized(componentValue)
             outputGroup[componentReference.name] = sanitizedComponentValue
             trimmedComponents[componentReference.section] = outputGroup
-            enqueueReferences(in: sanitizedComponentValue)
+            try enqueueReferences(in: sanitizedComponentValue)
         }
 
         if let securitySchemes = sourceComponents["securitySchemes"] {
-            trimmedComponents["securitySchemes"] = securitySchemes
+            trimmedComponents["securitySchemes"] = try sanitized(securitySchemes)
         }
 
+        let info = try root["info"].map { value in
+            try sanitized(value)
+        } ?? [
+            "title": "App Store Connect API",
+            "version": "trimmed",
+        ]
+        let servers = try root["servers"].map { value in
+            try sanitized(value)
+        } ?? [
+            ["url": "https://api.appstoreconnect.apple.com"],
+        ]
         var output: [String: Any] = [
             "openapi": root["openapi"] ?? "3.0.1",
-            "info": root["info"] ?? [
-                "title": "App Store Connect API",
-                "version": "trimmed",
-            ],
-            "servers": root["servers"] ?? [
-                ["url": "https://api.appstoreconnect.apple.com"],
-            ],
+            "info": info,
+            "servers": servers,
             "paths": trimmedPaths,
             "components": trimmedComponents,
         ]
 
         if let security = root["security"] {
-            output["security"] = security
+            output["security"] = try sanitized(security)
         }
 
         let outputData = try JSONSerialization.data(withJSONObject: output, options: [.prettyPrinted, .sortedKeys])
@@ -156,7 +172,11 @@ struct OpenAPITrimmer {
         )
     }
 
-    private func sanitized(_ value: Any) -> Any {
+    private func sanitized(_ value: Any, depth: Int = 0) throws -> Any {
+        guard depth <= maximumNestingDepth else {
+            throw TrimmerError.nestingDepthExceeded(maximum: maximumNestingDepth)
+        }
+
         if var dictionary = value as? [String: Any] {
             if let enumValues = dictionary["enum"] as? [Any], enumValues.isEmpty {
                 dictionary.removeValue(forKey: "enum")
@@ -165,14 +185,16 @@ struct OpenAPITrimmer {
             dictionary.removeValue(forKey: "deprecated")
 
             for (key, nestedValue) in dictionary {
-                dictionary[key] = sanitized(nestedValue)
+                dictionary[key] = try sanitized(nestedValue, depth: depth + 1)
             }
 
             return dictionary
         }
 
         if let array = value as? [Any] {
-            return array.map(sanitized)
+            return try array.map { element in
+                try sanitized(element, depth: depth + 1)
+            }
         }
 
         return value
@@ -203,16 +225,19 @@ private struct ComponentReference: Hashable {
     }
 }
 
-private enum TrimmerError: Error, CustomStringConvertible {
+package enum TrimmerError: Error, Equatable, CustomStringConvertible {
     case invalidOpenAPIDocument
     case missingComponent(String)
+    case nestingDepthExceeded(maximum: Int)
 
-    var description: String {
+    package var description: String {
         switch self {
         case .invalidOpenAPIDocument:
             "Invalid OpenAPI document."
         case let .missingComponent(ref):
             "Missing component referenced by trimmed OpenAPI document: \(ref)."
+        case let .nestingDepthExceeded(maximum):
+            "The OpenAPI document exceeds the maximum nesting depth of \(maximum)."
         }
     }
 }

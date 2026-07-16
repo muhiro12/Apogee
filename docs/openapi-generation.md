@@ -23,6 +23,13 @@ Apogee uses, creates a temporary Swift package under `.build/`, resolves and
 runs Swift OpenAPI Generator from that temporary package, and copies only the
 generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
 
+The updater fails closed when the archive or extracted specification exceeds its
+resource limits. Downloads and individual JSON documents are limited to 64 MiB,
+archive listings to 1 MiB, candidate JSON entries to 16, and JSON traversal to
+128 nested levels. These limits are intentionally above the current Apple
+specification while preventing an alternate or compromised archive from
+consuming unbounded maintainer or CI resources.
+
 The trim step keeps the selected fields and operations but removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently
 turns those markers into Swift deprecation annotations that are then referenced

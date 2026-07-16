@@ -66,6 +66,9 @@ struct Options {
 }
 
 struct Updater {
+    private static let maximumArchiveByteCount = 64 * 1_024 * 1_024
+    private static let maximumArchiveListingByteCount = 1 * 1_024 * 1_024
+
     let options: Options
     let fileManager = FileManager.default
     let processRunner = ProcessRunner()
@@ -90,7 +93,27 @@ struct Updater {
         try fileManager.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
         defer { try? fileManager.removeItem(at: specZipURL) }
 
-        try processRunner.run("curl", arguments: ["-fL", options.specURL, "-o", specZipURL.path])
+        try processRunner.run(
+            "curl",
+            arguments: [
+                "-fL",
+                "--connect-timeout",
+                "30",
+                "--max-time",
+                "300",
+                "--max-filesize",
+                String(Self.maximumArchiveByteCount),
+                options.specURL,
+                "-o",
+                specZipURL.path,
+            ]
+        )
+        let archiveByteCount = try specZipURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+        guard archiveByteCount <= Self.maximumArchiveByteCount else {
+            throw UpdateError.archiveTooLarge(
+                maximumByteCount: Self.maximumArchiveByteCount
+            )
+        }
 
         let openAPIData = try openAPIData(from: specZipURL)
         try openAPIData.write(to: specJSON)
@@ -163,18 +186,21 @@ struct Updater {
     }
 
     private func openAPIData(from archiveURL: URL) throws -> Data {
+        let archiveLimits = OpenAPIArchiveLimits()
         let archiveListingData = try processRunner.capture(
             "unzip",
-            arguments: ["-Z1", archiveURL.path]
+            arguments: ["-Z1", archiveURL.path],
+            maximumOutputByteCount: Self.maximumArchiveListingByteCount
         )
         guard let archiveListing = String(data: archiveListingData, encoding: .utf8) else {
             throw UpdateError.invalidArchiveListing
         }
 
-        let document = try OpenAPIArchiveReader().document(in: archiveListing) { entryPath in
+        let document = try OpenAPIArchiveReader(limits: archiveLimits).document(in: archiveListing) { entryPath in
             try processRunner.capture(
                 "unzip",
-                arguments: ["-p", archiveURL.path, entryPath]
+                arguments: ["-p", archiveURL.path, entryPath],
+                maximumOutputByteCount: archiveLimits.maximumDocumentByteCount
             )
         }
         return document.data
@@ -235,8 +261,10 @@ struct ProcessRunner {
     func capture(
         _ command: String,
         arguments: [String],
+        maximumOutputByteCount: Int,
         currentDirectory: URL? = nil
     ) throws -> Data {
+        precondition(maximumOutputByteCount > 0)
         let process = Process()
         let output = Pipe()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
@@ -245,7 +273,34 @@ struct ProcessRunner {
         process.standardOutput = output
 
         try process.run()
-        let data = output.fileHandleForReading.readDataToEndOfFile()
+        var data = Data()
+        do {
+            while true {
+                let remainingByteCount = maximumOutputByteCount - data.count
+                let readByteCount = min(64 * 1_024, remainingByteCount + 1)
+                guard
+                    let chunk = try output.fileHandleForReading.read(upToCount: readByteCount),
+                    !chunk.isEmpty
+                else {
+                    break
+                }
+
+                guard chunk.count <= remainingByteCount else {
+                    throw UpdateError.commandOutputTooLarge(
+                        command: command,
+                        maximumByteCount: maximumOutputByteCount
+                    )
+                }
+                data.append(chunk)
+            }
+        } catch {
+            try? output.fileHandleForReading.close()
+            if process.isRunning {
+                process.terminate()
+            }
+            process.waitUntilExit()
+            throw error
+        }
         process.waitUntilExit()
 
         guard process.terminationStatus == 0 else {
@@ -256,7 +311,9 @@ struct ProcessRunner {
 }
 
 enum UpdateError: Error, CustomStringConvertible {
+    case archiveTooLarge(maximumByteCount: Int)
     case commandFailed(command: String, status: Int32)
+    case commandOutputTooLarge(command: String, maximumByteCount: Int)
     case invalidArchiveListing
     case missingValue(String)
     case repositoryRootNotFound
@@ -264,8 +321,12 @@ enum UpdateError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
+        case let .archiveTooLarge(maximumByteCount):
+            "The OpenAPI archive exceeds the \(maximumByteCount)-byte limit."
         case let .commandFailed(command, status):
             "\(command) exited with status \(status)."
+        case let .commandOutputTooLarge(command, maximumByteCount):
+            "\(command) output exceeds the \(maximumByteCount)-byte limit."
         case .invalidArchiveListing:
             "The OpenAPI archive listing is not valid UTF-8."
         case let .missingValue(argument):

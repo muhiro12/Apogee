@@ -5,32 +5,63 @@ package struct OpenAPIArchiveDocument: Sendable {
     package var data: Data
 }
 
+package struct OpenAPIArchiveLimits: Sendable {
+    package let maximumCandidateCount: Int
+    package let maximumDocumentByteCount: Int
+
+    package init(
+        maximumCandidateCount: Int = 16,
+        maximumDocumentByteCount: Int = 64 * 1_024 * 1_024
+    ) {
+        precondition(maximumCandidateCount > 0)
+        precondition(maximumDocumentByteCount > 0)
+        self.maximumCandidateCount = maximumCandidateCount
+        self.maximumDocumentByteCount = maximumDocumentByteCount
+    }
+}
+
 package struct OpenAPIArchiveReader: Sendable {
-    package init() {}
+    private let limits: OpenAPIArchiveLimits
+
+    package init(limits: OpenAPIArchiveLimits = .init()) {
+        self.limits = limits
+    }
 
     package func document(
         in archiveListing: String,
         entryData: (String) throws -> Data
     ) throws -> OpenAPIArchiveDocument {
-        var documents: [OpenAPIArchiveDocument] = []
+        let candidateEntryPaths = candidateEntryPaths(in: archiveListing)
+        guard candidateEntryPaths.count <= limits.maximumCandidateCount else {
+            throw OpenAPIArchiveError.tooManyCandidateDocuments(
+                maximum: limits.maximumCandidateCount
+            )
+        }
 
-        for entryPath in candidateEntryPaths(in: archiveListing) {
+        var document: OpenAPIArchiveDocument?
+        for entryPath in candidateEntryPaths {
             let data = try entryData(entryPath)
+            guard data.count <= limits.maximumDocumentByteCount else {
+                throw OpenAPIArchiveError.documentTooLarge(
+                    path: entryPath,
+                    maximumByteCount: limits.maximumDocumentByteCount
+                )
+            }
+
             guard isOpenAPIDocument(data) else {
                 continue
             }
 
-            documents.append(.init(path: entryPath, data: data))
+            if let document {
+                throw OpenAPIArchiveError.multipleDocuments([document.path, entryPath])
+            }
+            document = .init(path: entryPath, data: data)
         }
 
-        switch documents.count {
-        case 1:
-            return documents[0]
-        case 0:
+        guard let document else {
             throw OpenAPIArchiveError.documentNotFound
-        default:
-            throw OpenAPIArchiveError.multipleDocuments(documents.map(\.path))
         }
+        return document
     }
 
     private func candidateEntryPaths(in archiveListing: String) -> [String] {
@@ -63,14 +94,20 @@ package struct OpenAPIArchiveReader: Sendable {
 
 package enum OpenAPIArchiveError: Error, Equatable, CustomStringConvertible {
     case documentNotFound
+    case documentTooLarge(path: String, maximumByteCount: Int)
     case multipleDocuments([String])
+    case tooManyCandidateDocuments(maximum: Int)
 
     package var description: String {
         switch self {
         case .documentNotFound:
             "The archive does not contain an OpenAPI JSON document."
+        case let .documentTooLarge(path, maximumByteCount):
+            "OpenAPI archive entry \(path) exceeds the \(maximumByteCount)-byte limit."
         case let .multipleDocuments(paths):
             "The archive contains multiple OpenAPI JSON documents: \(paths.joined(separator: ", "))."
+        case let .tooManyCandidateDocuments(maximum):
+            "The archive contains more than \(maximum) candidate JSON documents."
         }
     }
 }
