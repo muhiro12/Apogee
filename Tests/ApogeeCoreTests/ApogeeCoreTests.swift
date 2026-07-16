@@ -286,6 +286,26 @@ func destructivePlanTokenIncludesActionValues() async throws {
 }
 
 @Test
+func releasePlanTokenDoesNotDependOnActionOrder() {
+    let firstPlan = ReleasePlan(
+        title: "Sync webhooks",
+        actions: [
+            .init(kind: .delete, resource: "webhook/b", currentValue: "beta", isDestructive: true),
+            .init(kind: .delete, resource: "webhook/a", currentValue: "alpha", isDestructive: true),
+        ]
+    )
+    let secondPlan = ReleasePlan(
+        title: "Sync webhooks",
+        actions: [
+            .init(kind: .delete, resource: "webhook/a", currentValue: "alpha", isDestructive: true),
+            .init(kind: .delete, resource: "webhook/b", currentValue: "beta", isDestructive: true),
+        ]
+    )
+
+    #expect(firstPlan.token == secondPlan.token)
+}
+
+@Test
 func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(

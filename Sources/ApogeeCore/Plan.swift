@@ -26,7 +26,7 @@ public struct ReleasePlan: Sendable, Hashable {
         let planParts = [
             Self.tokenPart("ReleasePlanTokenV2"),
             Self.tokenPart(title),
-        ] + actions.map(Self.tokenText(for:))
+        ] + actions.map(Self.tokenText(for:)).sorted()
         let stableText = planParts.joined(separator: "\n")
         let digest = SHA256.hash(data: Data(stableText.utf8))
         return digest.map { String(format: "%02x", $0) }.joined().prefix(16).description

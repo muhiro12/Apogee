@@ -301,9 +301,11 @@ public struct ReleaseAutomation: Sendable {
         let remoteWebhooks = try await api.webhooks(appID: app.id)
         let remoteByName = try uniqueWebhooksByName(remoteWebhooks, source: "App Store Connect")
         let desiredByName = try uniqueWebhooksByName(configuration.webhooks, source: "desired configuration")
+        let desiredWebhooks = configuration.webhooks.sorted { $0.name < $1.name }
+        let orderedRemoteWebhooks = remoteWebhooks.sorted(by: remoteWebhookComesBefore)
         var actions: [PlannedAction] = []
 
-        for desired in configuration.webhooks {
+        for desired in desiredWebhooks {
             if let remote = remoteByName[desired.name] {
                 if webhookNeedsUpdate(remote: remote, desired: desired) {
                     actions.append(.init(
@@ -320,7 +322,7 @@ public struct ReleaseAutomation: Sendable {
             }
         }
 
-        for remote in remoteWebhooks where desiredByName[remote.name] == nil {
+        for remote in orderedRemoteWebhooks where desiredByName[remote.name] == nil {
             actions.append(.init(
                 kind: .delete,
                 resource: "webhook/\(remote.id)",
@@ -336,7 +338,7 @@ public struct ReleaseAutomation: Sendable {
             return plan
         }
 
-        for desired in configuration.webhooks {
+        for desired in desiredWebhooks {
             if let remote = remoteByName[desired.name] {
                 if webhookNeedsUpdate(remote: remote, desired: desired) {
                     let secret = desired.rotateSecret ? try secretEnvironment.secret(named: desired.secretEnvironmentVariable) : nil
@@ -348,7 +350,7 @@ public struct ReleaseAutomation: Sendable {
             }
         }
 
-        for remote in remoteWebhooks where desiredByName[remote.name] == nil {
+        for remote in orderedRemoteWebhooks where desiredByName[remote.name] == nil {
             try await api.deleteWebhook(id: remote.id)
         }
 
@@ -625,6 +627,17 @@ public struct ReleaseAutomation: Sendable {
 
     private func webhookSummary(_ webhook: DesiredWebhook) -> String {
         "\(webhook.name) \(webhook.url) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ",")) secretEnv=\(webhook.secretEnvironmentVariable) rotateSecret=\(webhook.rotateSecret)"
+    }
+
+    private func remoteWebhookComesBefore(
+        _ lhs: AppStoreConnectWebhook,
+        _ rhs: AppStoreConnectWebhook
+    ) -> Bool {
+        if lhs.name == rhs.name {
+            return lhs.id < rhs.id
+        }
+
+        return lhs.name < rhs.name
     }
 }
 
