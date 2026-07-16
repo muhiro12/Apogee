@@ -1,6 +1,7 @@
 import CryptoKit
 import Darwin
 import Foundation
+import OpenAPIGenerationSupport
 
 let defaultSpecURL = "https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip"
 let defaultGeneratorVersion = "1.12.2"
@@ -91,10 +92,7 @@ struct Updater {
 
         try processRunner.run("curl", arguments: ["-fL", options.specURL, "-o", specZipURL.path])
 
-        let openAPIData = try processRunner.capture(
-            "unzip",
-            arguments: ["-p", specZipURL.path, "openapi.oas.json"]
-        )
+        let openAPIData = try openAPIData(from: specZipURL)
         try openAPIData.write(to: specJSON)
 
         let trimResult = try OpenAPITrimmer().trim(sourceData: openAPIData, outputURL: trimmedJSON)
@@ -162,6 +160,24 @@ struct Updater {
             }
             candidate = parent
         }
+    }
+
+    private func openAPIData(from archiveURL: URL) throws -> Data {
+        let archiveListingData = try processRunner.capture(
+            "unzip",
+            arguments: ["-Z1", archiveURL.path]
+        )
+        guard let archiveListing = String(data: archiveListingData, encoding: .utf8) else {
+            throw UpdateError.invalidArchiveListing
+        }
+
+        let document = try OpenAPIArchiveReader().document(in: archiveListing) { entryPath in
+            try processRunner.capture(
+                "unzip",
+                arguments: ["-p", archiveURL.path, entryPath]
+            )
+        }
+        return document.data
     }
 
     private func writeGeneratorPackageManifest(to packageDirectory: URL) throws {
@@ -241,6 +257,7 @@ struct ProcessRunner {
 
 enum UpdateError: Error, CustomStringConvertible {
     case commandFailed(command: String, status: Int32)
+    case invalidArchiveListing
     case missingValue(String)
     case repositoryRootNotFound
     case unknownArgument(String)
@@ -249,6 +266,8 @@ enum UpdateError: Error, CustomStringConvertible {
         switch self {
         case let .commandFailed(command, status):
             "\(command) exited with status \(status)."
+        case .invalidArchiveListing:
+            "The OpenAPI archive listing is not valid UTF-8."
         case let .missingValue(argument):
             "Missing value for \(argument)."
         case .repositoryRootNotFound:

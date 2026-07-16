@@ -14,9 +14,28 @@ let package = Package(
         ),
     ],
     targets: [
+        .target(
+            name: "OpenAPIGenerationSupport",
+            path: "Sources/OpenAPIGenerationSupport",
+            swiftSettings: [
+                .enableUpcomingFeature("ApproachableConcurrency"),
+            ]
+        ),
         .executableTarget(
             name: "UpdateAppStoreConnectClient",
+            dependencies: [
+                "OpenAPIGenerationSupport",
+            ],
             path: "Sources/UpdateAppStoreConnectClient",
+            swiftSettings: [
+                .enableUpcomingFeature("ApproachableConcurrency"),
+            ]
+        ),
+        .testTarget(
+            name: "OpenAPIGenerationSupportTests",
+            dependencies: [
+                "OpenAPIGenerationSupport",
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ]
