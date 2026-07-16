@@ -552,7 +552,7 @@ public struct ReleaseAutomation: Sendable {
         }
 
         guard options.planToken == plan.token else {
-            throw ApogeeError.applyRequiresPlanToken(expected: plan.token)
+            throw ApogeeError.applyRequiresPlanToken
         }
     }
 

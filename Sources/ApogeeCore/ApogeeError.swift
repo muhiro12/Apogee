@@ -16,7 +16,7 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case reviewSubmissionStateUnexpected(id: String, state: String?, expected: [String])
     case reviewSubmissionVersionMismatch(id: String, expectedVersionID: String, actualVersionID: String?)
     case duplicateWebhookName(String, source: String)
-    case applyRequiresPlanToken(expected: String)
+    case applyRequiresPlanToken
     case destructiveApplyRequiresConfirmation
     case appStoreConnectRequestFailed(operation: String)
     case unexpectedAPIResponse(String)
@@ -55,8 +55,8 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "Review submission \(id) read back appStoreVersionForReview \(actualVersionID ?? "nil"), expected \(expectedVersionID)."
         case let .duplicateWebhookName(name, source):
             "Duplicate webhook name \(name) in \(source)."
-        case let .applyRequiresPlanToken(expected):
-            "Destructive apply requires a prior dry-run plan token. Expected token: \(expected)."
+        case .applyRequiresPlanToken:
+            "Destructive apply requires the plan token printed by a prior dry run."
         case .destructiveApplyRequiresConfirmation:
             "Destructive apply requires --allow-destructive."
         case let .appStoreConnectRequestFailed(operation):

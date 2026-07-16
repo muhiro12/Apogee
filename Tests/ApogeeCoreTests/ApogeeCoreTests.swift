@@ -248,7 +248,8 @@ func webhookApplyRequiresDryRunTokenForDeletion() async throws {
         )
         Issue.record("Expected destructive plan token error.")
     } catch let error as ApogeeError {
-        #expect(error == .applyRequiresPlanToken(expected: dryRun.token))
+        #expect(error == .applyRequiresPlanToken)
+        #expect(!String(describing: error).contains(dryRun.token))
     }
 
     let applyPlan = try await automation.syncWebhooks(
