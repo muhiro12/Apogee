@@ -13,6 +13,60 @@ func metadataLoaderReadsFixtureLayout() throws {
 }
 
 @Test
+func metadataLoaderRejectsSymbolicLinkFiles() throws {
+    let rootURL = temporaryDirectory()
+    let metadataURL = rootURL.appendingPathComponent("Metadata")
+    let localeURL = metadataURL.appendingPathComponent("en-US")
+    let externalURL = rootURL.appendingPathComponent("external-release-notes.txt")
+    let symbolicLinkURL = localeURL.appendingPathComponent("release_notes.txt")
+    try FileManager.default.createDirectory(at: localeURL, withIntermediateDirectories: true)
+    try "external sentinel".write(to: externalURL, atomically: true, encoding: .utf8)
+    try FileManager.default.createSymbolicLink(at: symbolicLinkURL, withDestinationURL: externalURL)
+
+    do {
+        _ = try MetadataLoader().load(from: metadataURL.path)
+        Issue.record("Expected the metadata loader to reject a symbolic link.")
+    } catch let error as ApogeeError {
+        guard case let .invalidPath(invalidPath) = error else {
+            Issue.record("Expected invalidPath, got \(error).")
+            return
+        }
+
+        #expect(invalidPath.hasSuffix("/Metadata/en-US/release_notes.txt"))
+    }
+}
+
+@Test
+func metadataLoaderRejectsSymbolicLinkRoots() throws {
+    let rootURL = temporaryDirectory()
+    let externalMetadataURL = rootURL.appendingPathComponent("ExternalMetadata")
+    let localeURL = externalMetadataURL.appendingPathComponent("en-US")
+    let symbolicLinkURL = rootURL.appendingPathComponent("Metadata")
+    try FileManager.default.createDirectory(at: localeURL, withIntermediateDirectories: true)
+    try "external sentinel".write(
+        to: localeURL.appendingPathComponent("release_notes.txt"),
+        atomically: true,
+        encoding: .utf8
+    )
+    try FileManager.default.createSymbolicLink(
+        at: symbolicLinkURL,
+        withDestinationURL: externalMetadataURL
+    )
+
+    do {
+        _ = try MetadataLoader().load(from: symbolicLinkURL.path)
+        Issue.record("Expected the metadata loader to reject a symbolic-link root.")
+    } catch let error as ApogeeError {
+        guard case let .invalidPath(invalidPath) = error else {
+            Issue.record("Expected invalidPath, got \(error).")
+            return
+        }
+
+        #expect(invalidPath.hasSuffix("/Metadata"))
+    }
+}
+
+@Test
 func screenshotLoaderReadsFixtureLayout() throws {
     let screenshots = try ScreenshotLoader().load(from: fixturePath("AppStore/Screenshots"))
 
@@ -307,6 +361,32 @@ func releasePlanTokenDoesNotDependOnActionOrder() {
 }
 
 @Test
+func planRendererEscapesTerminalControlCharacters() {
+    let terminalControlText = "visible\u{001B}[2J\u{0008}\u{202E}hidden"
+    let plan = ReleasePlan(
+        title: terminalControlText,
+        actions: [
+            .init(
+                kind: .update,
+                resource: terminalControlText,
+                locale: terminalControlText,
+                field: terminalControlText,
+                desiredValue: terminalControlText
+            ),
+        ]
+    )
+
+    let renderedPlan = PlanRenderer().render(plan)
+
+    #expect(!renderedPlan.contains("\u{001B}"))
+    #expect(!renderedPlan.contains("\u{0008}"))
+    #expect(!renderedPlan.contains("\u{202E}"))
+    #expect(renderedPlan.contains("\\u{1B}"))
+    #expect(renderedPlan.contains("\\b"))
+    #expect(renderedPlan.contains("\\u{202E}"))
+}
+
+@Test
 func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
     let api = FakeAppStoreConnectAPI()
     let automation = ReleaseAutomation(
@@ -319,7 +399,7 @@ func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
       "webhooks": [
         {
           "name": "release",
-          "url": "https://example.com/release",
+          "url": "https://webhook-user:webhook-password@example.com/path-secret?signature=query-secret",
           "eventTypes": ["BUILD_STATE_CHANGED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET",
           "rotateSecret": true
@@ -345,6 +425,11 @@ func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
     #expect(renderedPlan.contains("secretEnv=WEBHOOK_SECRET"))
     #expect(renderedPlan.contains("rotateSecret=true"))
     #expect(!renderedPlan.contains("secret-value"))
+    #expect(!renderedPlan.contains("webhook-user"))
+    #expect(!renderedPlan.contains("webhook-password"))
+    #expect(!renderedPlan.contains("path-secret"))
+    #expect(!renderedPlan.contains("query-secret"))
+    #expect(renderedPlan.contains("url=https://example.com/<redacted>#"))
 }
 
 @Test

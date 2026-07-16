@@ -32,6 +32,11 @@ public struct ReleasePlan: Sendable, Hashable {
         return digest.map { String(format: "%02x", $0) }.joined().prefix(16).description
     }
 
+    static func fingerprint(of value: String) -> String {
+        let digest = SHA256.hash(data: Data(value.utf8))
+        return digest.map { String(format: "%02x", $0) }.joined().prefix(16).description
+    }
+
     private static func tokenText(for action: PlannedAction) -> String {
         [
             Self.tokenPart(action.kind.rawValue),
@@ -92,7 +97,7 @@ public struct PlanRenderer: Sendable {
     public init() {}
 
     public func render(_ plan: ReleasePlan) -> String {
-        var lines = [plan.title, "Plan token: \(plan.token)"]
+        var lines = [oneLine(plan.title), "Plan token: \(plan.token)"]
 
         if plan.actions.isEmpty {
             lines.append("No actions.")
@@ -100,14 +105,14 @@ public struct PlanRenderer: Sendable {
         }
 
         for action in plan.actions {
-            var parts = ["- \(action.kind.rawValue.uppercased())", action.resource]
+            var parts = ["- \(action.kind.rawValue.uppercased())", oneLine(action.resource)]
 
             if let locale = action.locale {
-                parts.append("[\(locale)]")
+                parts.append("[\(oneLine(locale))]")
             }
 
             if let field = action.field {
-                parts.append(field)
+                parts.append(oneLine(field))
             }
 
             if action.isDestructive {
@@ -131,9 +136,27 @@ public struct PlanRenderer: Sendable {
     }
 
     private func oneLine(_ text: String) -> String {
-        let collapsed = text
-            .replacingOccurrences(of: "\n", with: "\\n")
-            .replacingOccurrences(of: "\r", with: "")
+        let collapsed = text.unicodeScalars.map { scalar in
+            switch scalar.value {
+            case 0x08:
+                "\\b"
+            case 0x09:
+                "\\t"
+            case 0x0A:
+                "\\n"
+            case 0x0D:
+                "\\r"
+            default:
+                switch scalar.properties.generalCategory {
+                case .control, .format, .lineSeparator, .paragraphSeparator:
+                    "\\u{\(String(scalar.value, radix: 16, uppercase: true))}"
+                default:
+                    String(scalar)
+                }
+            }
+        }
+        .joined()
+
         if collapsed.count > 160 {
             return "\(collapsed.prefix(157))..."
         }

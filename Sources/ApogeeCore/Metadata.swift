@@ -66,17 +66,35 @@ public struct MetadataLoader: Sendable {
             throw ApogeeError.invalidPath(path)
         }
 
-        let localeURLs = try FileManager.default.contentsOfDirectory(
+        let rootResourceValues = try rootURL.resourceValues(forKeys: [.isSymbolicLinkKey])
+        guard rootResourceValues.isSymbolicLink != true else {
+            throw ApogeeError.invalidPath(path)
+        }
+
+        let childURLs = try FileManager.default.contentsOfDirectory(
             at: rootURL,
-            includingPropertiesForKeys: [.isDirectoryKey],
+            includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey],
             options: [.skipsHiddenFiles]
         )
-        .filter { url in
-            ((try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false)
-        }
-        .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        var localeURLs: [URL] = []
 
-        return try localeURLs.map { localeURL in
+        for childURL in childURLs {
+            let resourceValues = try childURL.resourceValues(
+                forKeys: [.isDirectoryKey, .isSymbolicLinkKey]
+            )
+            guard resourceValues.isSymbolicLink != true else {
+                throw ApogeeError.invalidPath(childURL.path)
+            }
+
+            if resourceValues.isDirectory == true {
+                localeURLs.append(childURL)
+            }
+        }
+
+        let orderedLocaleURLs = localeURLs.sorted { lhs, rhs in
+            lhs.lastPathComponent < rhs.lastPathComponent
+        }
+        return try orderedLocaleURLs.map { localeURL in
             try loadLocale(localeURL)
         }
     }
@@ -95,6 +113,13 @@ public struct MetadataLoader: Sendable {
     private func optionalTextFile(_ url: URL) throws -> String? {
         guard FileManager.default.fileExists(atPath: url.path) else {
             return nil
+        }
+
+        let resourceValues = try url.resourceValues(
+            forKeys: [.isRegularFileKey, .isSymbolicLinkKey]
+        )
+        guard resourceValues.isRegularFile == true, resourceValues.isSymbolicLink != true else {
+            throw ApogeeError.invalidPath(url.path)
         }
 
         let contents = try String(contentsOf: url, encoding: .utf8)

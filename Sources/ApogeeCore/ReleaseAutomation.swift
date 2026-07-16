@@ -622,11 +622,29 @@ public struct ReleaseAutomation: Sendable {
     }
 
     private func webhookSummary(_ webhook: AppStoreConnectWebhook) -> String {
-        "\(webhook.name) \(webhook.url) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ","))"
+        "\(webhook.name) url=\(webhookURLSummary(webhook.url)) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ","))"
     }
 
     private func webhookSummary(_ webhook: DesiredWebhook) -> String {
-        "\(webhook.name) \(webhook.url) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ",")) secretEnv=\(webhook.secretEnvironmentVariable) rotateSecret=\(webhook.rotateSecret)"
+        "\(webhook.name) url=\(webhookURLSummary(webhook.url)) enabled=\(webhook.enabled) events=\(webhook.eventTypes.sorted().joined(separator: ",")) secretEnv=\(webhook.secretEnvironmentVariable) rotateSecret=\(webhook.rotateSecret)"
+    }
+
+    private func webhookURLSummary(_ value: String) -> String {
+        let fingerprint = ReleasePlan.fingerprint(of: value)
+        guard
+            let components = URLComponents(string: value),
+            let scheme = components.scheme,
+            let host = components.host
+        else {
+            return "<redacted-url>#\(fingerprint)"
+        }
+
+        var originComponents = URLComponents()
+        originComponents.scheme = scheme
+        originComponents.host = host
+        originComponents.port = components.port
+        let origin = originComponents.string ?? "\(scheme)://\(host)"
+        return "\(origin)/<redacted>#\(fingerprint)"
     }
 
     private func remoteWebhookComesBefore(
