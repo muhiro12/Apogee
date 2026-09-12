@@ -26,11 +26,17 @@ an app's deployment target, architecture, branching strategy, or release dates.
    screenshots, review details, privacy declarations, subscriptions, or a release
    date decision may still require App Store Connect or other Apple tools.
 
-The sample manifest does not imply a published release tag. Settle package
-publication, licensing, and the adopter's selected version before distributing
-a pinned dependency to other repositories.
+The sample manifest does not imply a published release tag. Confirm permission
+to use Apogee, package publication, and the adopter's selected version before
+distributing a pinned dependency to other repositories.
 
 ## Commands and paths
+
+Remote commands currently require a team API key, key ID, issuer ID, and private
+key. Configure credentials as described in the [README](../README.md#configuration).
+Keep the private key outside the repository. Team keys have account-wide app
+access; a configured app ID selects Apogee's target but does not restrict the
+key's permissions. Individual API keys are not supported by the current signer.
 
 From the adopting release-tools package directory:
 

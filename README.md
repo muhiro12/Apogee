@@ -98,6 +98,9 @@ install -m 755 .build/release/apogee /usr/local/bin/apogee
 
 Apogee keeps repository-safe defaults in a root `apogee.json` file and reads
 App Store Connect API key material from environment variables.
+The current authentication flow requires a **team API key** and its issuer ID;
+individual API keys are not supported. See Apple's
+[API key setup](https://developer.apple.com/help/app-store-connect/get-started/app-store-connect-api/).
 
 Minimal `apogee.json`:
 
@@ -268,6 +271,13 @@ capability: dry-run remains the default, `--apply` is required for every App
 Store Connect mutation, destructive operations require a prior plan token plus
 `--allow-destructive`, and operations without a safe verification path must fail
 closed or remain unsupported.
+
+## Licensing and Third-Party Software
+
+Apogee does not grant a license for its original source code. Public visibility
+does not grant general permission to reuse or redistribute that code.
+Third-party components retain their own licenses; see the
+[dependency license inventory](docs/third-party-software.md).
 
 ## Maintainer OpenAPI Update
 
