@@ -31,7 +31,7 @@ The baseline is tag `0.4.0`, commit
 changed generated access modifiers without changing operations. It falls within
 baseline variation, so it does **not** establish a performance improvement.
 
-The final candidate combines package access with the 18-operation graph and the
+The trimmed candidate combines package access with the 18-operation graph and the
 public API documentation/consumer examples. Generated-file SHA-256 values are:
 
 - Client.swift: `50e78bc149922cca13b07a1569eb6086c936e4c9910651761db77fde98a37843`
@@ -43,6 +43,10 @@ guarantee or a comparison with earlier uncontrolled 24-minute reports. No-op
 incremental builds do not measure a source-change rebuild. Current CI timings
 also include different caches, hardware, build modes, and plugin preparation;
 they should be reported separately from this benchmark.
+
+All timed runs used OpenAPI Runtime 1.12.0. The subsequent 1.12.1 maintenance
+update is verified separately for correctness; it is not the basis of the
+performance comparison above.
 
 ## Compatibility and maintenance tradeoffs
 
