@@ -12,3 +12,8 @@ DerivedData/
 *.p8
 AuthKey_*.p8
 apogee.local.json
+.env
+.env.*
+!/Examples/**/.env.example
+/Examples/ReleaseTools/.build/
+/Examples/ReleaseTools/Package.resolved

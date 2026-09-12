@@ -18,6 +18,8 @@ generated Swift client sources needed by the first CLI surface.
 
 | Capability | Status | OpenAPI evidence | Apogee behavior |
 | --- | --- | --- | --- |
+| Release status and publication timing | Read-only | `AppStoreVersion.attributes.appVersionState`, `releaseType`, `earliestReleaseDate`, build and review submission resources | Reports version state separately from review state. It does not change release timing or publish an approved version. |
+| Local metadata validation | Offline | No API request | Reads selected UTF-8 metadata files and rejects empty input or unsafe paths. Account permissions, locale availability, and Apple field limits require remote checks. |
 | Multiple-locale What's New updates | Supported | `GET /v1/appStoreVersions/{id}/appStoreVersionLocalizations`, `PATCH /v1/appStoreVersionLocalizations/{id}`, `AppStoreVersionLocalizationUpdateRequest.attributes.whatsNew` | Reads local `release_notes.txt`, compares with existing ASC localizations, updates existing locales only, and verifies by reading back after `--apply`. |
 | Description, keywords, promotional text updates | Supported | `AppStoreVersionLocalizationUpdateRequest.attributes.description`, `keywords`, and `promotionalText` | Reads `description.txt`, `keywords.txt`, and `promotional_text.txt`, compares with existing ASC localizations, updates existing locales only, and verifies by reading back after `--apply`. |
 | Build attachment | Supported | `GET /v1/builds` with `filter[app]`, `filter[version]`, and `filter[preReleaseVersion.version]`; `PATCH /v1/appStoreVersions/{id}/relationships/build` | Resolves the target build by app, build version, platform, and target App Store marketing version, attaches it to the target App Store version, and verifies the relationship after `--apply`. |
@@ -38,3 +40,13 @@ generated Swift client sources needed by the first CLI surface.
   tokens, or webhook secret values.
 - Unsupported or unsafe operations fail with an explicit `UnsupportedCapability`
   value instead of falling back to untyped HTTP behavior.
+
+Collection reads follow same-origin, same-resource `links.next` URLs while keeping
+their filters, and reject loops or more than 100 pages. Build attachment requires
+`VALID` processing state. Review submission checks complete item linkage before
+submission, reuses an unambiguous empty draft after an interrupted attempt, and
+rejects additional or unknown items. These behaviors have simulated API tests;
+real-account acceptance remains an adopter verification step.
+
+See [the adoption guide](adoption.md) for publication timing, staged rollout,
+partial-write recovery, and the capabilities that remain outside Apogee.

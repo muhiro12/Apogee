@@ -12,6 +12,11 @@ the official App Store Connect API. It provides:
 The package uses Swift Package Manager and committed Swift client sources
 generated from Apple's official App Store Connect API OpenAPI specification.
 
+Apogee runs on macOS; an iOS app does not link it at runtime. See the
+[adoption guide](docs/adoption.md) for introducing it alongside an existing
+release process, and the [consumer example](Examples/ReleaseTools) for a runnable
+library and command-plugin integration.
+
 ## Current Capability Status
 
 The initial capability review is recorded in
@@ -19,6 +24,8 @@ The initial capability review is recorded in
 
 Supported in the first implementation:
 
+- Read-only release status, including publication timing and review state
+- Offline metadata validation without API credentials
 - Multiple-locale What's New updates
 - Description, keywords, and promotional text updates
 - Build attachment
@@ -38,7 +45,7 @@ Partial or unsupported:
 
 ### SwiftPM Command Plugin
 
-For team use, prefer adding Apogee to the app or release-tools package as a
+Prefer adding Apogee to a dedicated macOS release-tools package as a
 SwiftPM dependency after publishing a release tag. This lets the repository pin
 the Apogee version in `Package.resolved` and avoids relying on a globally
 installed local tool.
@@ -50,7 +57,8 @@ dependencies: [
 ```
 
 Replace `<release-tag>` with the GitHub Release tag your repository should pin,
-such as the first public release tag `1.0.0`.
+after that tag is published. Use the local consumer example before publication;
+a version mentioned in documentation is not evidence that a tag exists.
 
 Run Apogee through the command plugin from that package:
 
@@ -115,6 +123,10 @@ paths are omitted, Apogee uses these repository layout defaults:
 and `--platform` override values from the configuration file. Use
 `--apogee-config` to point at a different JSON file.
 
+Relative configured paths and omitted layout defaults resolve beside the loaded
+JSON file. Explicit CLI path overrides resolve from the working directory. The
+plugin uses the consumer package directory as its working directory.
+
 For local use, point Apogee at a private key file outside the repository:
 
 ```sh
@@ -178,6 +190,10 @@ command plugin, replace the leading `apogee` with
 `swift package plugin --allow-network-connections all apogee`.
 
 ```sh
+apogee validate-metadata --release-notes-only
+
+apogee release-status --version 1.2.3
+
 apogee update-release-notes \
   --version 1.2.3 \
   --dry-run
@@ -274,3 +290,6 @@ Build or test with SwiftPM:
 swift build
 swift test
 ```
+
+The full local verification contract, including maintainer-tool tests, CLI smoke
+checks, and a separate consumer build, is documented in [AGENTS.md](AGENTS.md).
