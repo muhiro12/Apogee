@@ -18,6 +18,11 @@ pull requests per ecosystem. Maintainers review the changes and supported
 toolchains before merging. Updates are not automatically merged, and security
 alerts should not wait for the monthly version-update schedule.
 
+Swift dependency major upgrades require an intentional compatibility decision
+and are excluded from routine version-update proposals. This does not replace
+security alert triage. Dependabot branches run verification through their pull
+request event only, avoiding a duplicate push workflow for the same update.
+
 The generator version is an explicit pin in the maintainer command, outside
 Dependabot's manifest discovery. Review its upstream release notes and
 advisories when running the OpenAPI updater. The maintainer package has no

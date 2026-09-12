@@ -2,7 +2,7 @@ name: Verify
 
 on:
   push:
-    branches-ignore: [main]
+    branches-ignore: [main, 'dependabot/**']
   pull_request:
   workflow_dispatch:
   workflow_call:
