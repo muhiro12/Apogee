@@ -123,7 +123,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         try await perform(operation: "build") {
             let output = try await client().appStoreVersions_getInstance(.init(
                 path: .init(id: versionID),
-                query: .init(fields_lbrack_appStoreVersions_rbrack_: [.build])
+                query: .init(fields_lbrack_appStoreVersions_rbrack_: [.build], include: [.build])
             ))
             guard let relationship = try output.ok.body.json.data.relationships?.build else {
                 throw ApogeeError.unexpectedAPIResponse("The version response omitted its build relationship.")
@@ -338,7 +338,9 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
             id: version.id,
             versionString: version.attributes?.versionString,
             state: version.attributes?.appVersionState?.rawValue,
-            platform: version.attributes?.platform.flatMap(Platform.init(generated:))
+            platform: version.attributes?.platform.flatMap(Platform.init(generated:)),
+            releaseType: version.attributes?.releaseType?.rawValue,
+            earliestReleaseDate: version.attributes?.earliestReleaseDate
         )
     }
 

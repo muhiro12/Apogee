@@ -81,9 +81,9 @@ func apogeeConfigurationReadsFixtureDefaults() throws {
     #expect(configuration.bundleID == "com.example.app")
     #expect(configuration.appID == nil)
     #expect(configuration.defaultPlatform == nil)
-    #expect(configuration.resolvedMetadataPath == "AppStore/Metadata")
-    #expect(configuration.resolvedScreenshotsPath == "AppStore/Screenshots")
-    #expect(configuration.resolvedWebhooksPath == "AppStore/webhooks.json")
+    #expect(configuration.resolvedMetadataPath == fixturePath("AppStore/Metadata"))
+    #expect(configuration.resolvedScreenshotsPath == fixturePath("AppStore/Screenshots"))
+    #expect(configuration.resolvedWebhooksPath == fixturePath("AppStore/webhooks.json"))
     #expect(configuration.credentials.keyIDEnvironment == "ASC_KEY_ID")
     #expect(configuration.credentials.privateKeyBase64Environment == "ASC_PRIVATE_KEY_BASE64")
 }

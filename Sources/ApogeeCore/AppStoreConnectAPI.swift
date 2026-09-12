@@ -37,12 +37,16 @@ public struct AppStoreConnectVersion: Sendable, Hashable {
     public var versionString: String?
     public var state: String?
     public var platform: Platform?
+    public var releaseType: String?
+    public var earliestReleaseDate: Date?
 
-    public init(id: String, versionString: String? = nil, state: String? = nil, platform: Platform? = nil) {
+    public init(id: String, versionString: String? = nil, state: String? = nil, platform: Platform? = nil, releaseType: String? = nil, earliestReleaseDate: Date? = nil) {
         self.id = id
         self.versionString = versionString
         self.state = state
         self.platform = platform
+        self.releaseType = releaseType
+        self.earliestReleaseDate = earliestReleaseDate
     }
 }
 

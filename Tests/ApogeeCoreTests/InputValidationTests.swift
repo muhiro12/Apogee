@@ -6,7 +6,9 @@ import Testing
 func metadataRejectsEmptySelectedInput() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory.appendingPathComponent("en-US"), withIntermediateDirectories: true)
-    defer { try? FileManager.default.removeItem(at: directory) }
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
     try "Description".write(to: directory.appendingPathComponent("en-US/description.txt"), atomically: true, encoding: .utf8)
     #expect(throws: ApogeeError.emptyMetadata) {
         _ = try MetadataLoader().load(from: directory.path, fields: [.releaseNotes])
@@ -32,7 +34,9 @@ func webhookSecretsAreCheckedBeforeAnyWrite() async throws {
     let before = try await api.webhooks(appID: "app-1")
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-    defer { try? FileManager.default.removeItem(at: directory) }
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
     let config = WebhookSyncConfiguration(webhooks: before.map { webhook in
         .init(
             name: webhook.name, url: webhook.url, eventTypes: webhook.eventTypes,
@@ -54,7 +58,9 @@ func webhookSecretsAreCheckedBeforeAnyWrite() async throws {
 func webhookLoaderRejectsUnknownEventsDuringPlanning() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-    defer { try? FileManager.default.removeItem(at: directory) }
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
     let config = WebhookSyncConfiguration(webhooks: [
         .init(name: "release", url: "https://example.com/hook", eventTypes: ["INVALID_EVENT"], secretEnvironmentVariable: "SECRET"),
     ])

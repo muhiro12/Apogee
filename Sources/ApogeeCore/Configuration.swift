@@ -13,17 +13,18 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
     public var screenshotsPath: String?
     public var webhooksPath: String?
     public var credentials: AppStoreConnectCredentialEnvironment
+    private var configurationDirectory: URL?
 
     public var resolvedMetadataPath: String {
-        metadataPath.nonEmpty ?? Self.defaultMetadataPath
+        resolvePath(metadataPath.nonEmpty ?? Self.defaultMetadataPath)
     }
 
     public var resolvedScreenshotsPath: String {
-        screenshotsPath.nonEmpty ?? Self.defaultScreenshotsPath
+        resolvePath(screenshotsPath.nonEmpty ?? Self.defaultScreenshotsPath)
     }
 
     public var resolvedWebhooksPath: String {
-        webhooksPath.nonEmpty ?? Self.defaultWebhooksPath
+        resolvePath(webhooksPath.nonEmpty ?? Self.defaultWebhooksPath)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -88,7 +89,16 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
         }
 
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
-        return try JSONDecoder().decode(Self.self, from: data)
+        var configuration = try JSONDecoder().decode(Self.self, from: data)
+        configuration.configurationDirectory = URL(fileURLWithPath: path).deletingLastPathComponent()
+        return configuration
+    }
+
+    private func resolvePath(_ path: String) -> String {
+        guard let configurationDirectory else {
+            return path
+        }
+        return URL(fileURLWithPath: path, relativeTo: configurationDirectory).standardizedFileURL.path
     }
 }
 

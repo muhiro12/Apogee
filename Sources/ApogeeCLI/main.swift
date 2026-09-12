@@ -8,6 +8,8 @@ struct ApogeeCommand: AsyncParsableCommand {
         commandName: "apogee",
         abstract: "Automate App Store Connect release operations with dry-run plans by default.",
         subcommands: [
+            ReleaseStatusCommand.self,
+            ValidateMetadata.self,
             UpdateReleaseNotes.self,
             UpdateMetadata.self,
             AttachBuild.self,
@@ -16,6 +18,54 @@ struct ApogeeCommand: AsyncParsableCommand {
             SyncWebhooks.self,
         ]
     )
+}
+
+struct ReleaseStatusCommand: AsyncParsableCommand {
+    static let configuration = CommandConfiguration(
+        commandName: "release-status",
+        abstract: "Read version state, release timing, the attached build, and review status."
+    )
+
+    @OptionGroup var lookup: AppLookupOptions
+    @OptionGroup var configurationOptions: ConfigurationOptions
+    @Option(help: "Target App Store version string.")
+    var version: String
+    @Option(help: "App Store platform.")
+    var platform: PlatformArgument?
+
+    func run() async throws {
+        let configuration = try configurationOptions.configuration()
+        let status = try await makeAutomation(configuration: configuration).releaseStatus(
+            appLookup: try lookup.appLookup(configuration: configuration), version: version,
+            platform: platform?.platform ?? configuration.defaultPlatform ?? .iOS
+        )
+        print(PlanRenderer().render(status))
+    }
+}
+
+struct ValidateMetadata: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        commandName: "validate-metadata",
+        abstract: "Validate local metadata files without credentials or network access."
+    )
+
+    @OptionGroup var configurationOptions: ConfigurationOptions
+    @Option(name: .customLong("metadata-path"), help: "Path to AppStore/Metadata.")
+    var metadataPath: String?
+    @Flag(help: "Validate only release_notes.txt files.")
+    var releaseNotesOnly = false
+
+    func run() throws {
+        let configuration = try configurationOptions.configuration()
+        let metadata = try MetadataLoader().load(
+            from: metadataPath ?? configuration.resolvedMetadataPath,
+            fields: releaseNotesOnly ? [.releaseNotes] : Set(MetadataField.allCases)
+        )
+        let plan = ReleasePlan(title: "Local metadata validation", actions: metadata.map { metadata in
+            .init(kind: .verify, resource: "metadata", locale: metadata.locale, desiredValue: "UTF-8 files are readable")
+        })
+        print(PlanRenderer().render(plan))
+    }
 }
 
 struct UpdateReleaseNotes: AsyncParsableCommand {
@@ -246,6 +296,12 @@ struct ExecutionModeOptions: ParsableArguments {
 
     @Flag(help: "Apply the plan to App Store Connect.")
     var apply = false
+
+    func validate() throws {
+        if dryRun && apply {
+            throw ValidationError("Use either --dry-run or --apply, not both.")
+        }
+    }
 
     func executionOptions(allowDestructive: Bool = false, planToken: String? = nil) throws -> ReleaseExecutionOptions {
         if dryRun && apply {

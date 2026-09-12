@@ -12,7 +12,12 @@ public struct ReleasePlan: Sendable, Hashable {
 
     public var hasChanges: Bool {
         actions.contains { action in
-            action.kind != .unchanged
+            switch action.kind {
+            case .create, .update, .delete, .attach:
+                true
+            case .verify, .unchanged, .unsupported:
+                false
+            }
         }
     }
 
@@ -96,6 +101,25 @@ public enum PlannedActionKind: String, Sendable, Hashable {
 public struct PlanRenderer: Sendable {
     public init() {}
 
+    public func render(_ status: ReleaseStatus) -> String {
+        var lines = [
+            "App: \(status.app.id) (\(status.app.bundleID ?? "unknown bundle ID"))",
+            "Version: \(status.version.versionString ?? "unknown") [\(status.version.platform?.rawValue ?? "unknown platform")]",
+            "App Store state: \(status.version.state ?? "unknown")",
+            "Release type: \(status.version.releaseType ?? "unknown")",
+            "Earliest release date (UTC): \(status.version.earliestReleaseDate?.ISO8601Format() ?? "not set")",
+            "Build: \(status.build?.version ?? status.build?.id ?? "not attached")",
+            "Build processing state: \(status.build?.processingState ?? "unknown")",
+        ]
+        if status.reviewSubmissions.isEmpty {
+            lines.append("Review submission: none for this version")
+        }
+        for submission in status.reviewSubmissions.sorted(by: { $0.id < $1.id }) {
+            lines.append("Review submission: \(submission.id) [\(submission.state ?? "unknown")]")
+        }
+        return lines.map { oneLine($0) }.joined(separator: "\n")
+    }
+
     public func render(_ plan: ReleasePlan) -> String {
         var lines = [oneLine(plan.title), "Plan token: \(plan.token)"]
 
@@ -123,11 +147,11 @@ public struct PlanRenderer: Sendable {
 
             if action.currentValue != action.desiredValue {
                 if let currentValue = action.currentValue {
-                    lines.append("  current: \(oneLine(currentValue))")
+                    lines.append("  current: \(oneLine(currentValue, truncate: false))")
                 }
 
                 if let desiredValue = action.desiredValue {
-                    lines.append("  desired: \(oneLine(desiredValue))")
+                    lines.append("  desired: \(oneLine(desiredValue, truncate: false))")
                 }
             }
         }
@@ -135,7 +159,7 @@ public struct PlanRenderer: Sendable {
         return lines.joined(separator: "\n")
     }
 
-    private func oneLine(_ text: String) -> String {
+    private func oneLine(_ text: String, truncate: Bool = true) -> String {
         let collapsed = text.unicodeScalars.map { scalar in
             switch scalar.value {
             case 0x08:
@@ -157,7 +181,7 @@ public struct PlanRenderer: Sendable {
         }
         .joined()
 
-        if collapsed.count > 160 {
+        if truncate && collapsed.count > 160 {
             return "\(collapsed.prefix(157))..."
         }
 

@@ -72,14 +72,35 @@ func paginationRejectsRepeatingLinks() async throws {
 
 @Test
 func unattachedBuildDecodesNullRelationship() async throws {
-    let transport = StubTransport { _, _, _ in
-        try jsonResponse([
+    let transport = StubTransport { request, _, _ in
+        #expect(request.path?.contains("include=build") == true)
+        return try jsonResponse([
             "data": ["id": "version-1", "type": "appStoreVersions", "relationships": ["build": ["data": NSNull()]]],
             "links": ["self": "unused"],
         ])
     }
     #expect(try await testAPI(transport: transport).build(versionID: "version-1") == nil)
     #expect(await transport.requests.count == 1)
+}
+
+@Test
+func versionMappingIncludesReleaseTiming() async throws {
+    let transport = StubTransport { _, _, _ in
+        try jsonResponse([
+            "data": [[
+                "id": "version-1", "type": "appStoreVersions",
+                "attributes": [
+                    "versionString": "1.2.3", "platform": "IOS",
+                    "appVersionState": "PENDING_DEVELOPER_RELEASE",
+                    "releaseType": "SCHEDULED", "earliestReleaseDate": "2027-01-15T08:00:00Z",
+                ],
+            ]],
+            "links": ["self": "unused"],
+        ])
+    }
+    let versions = try await testAPI(transport: transport).appStoreVersions(appID: "app-1", version: "1.2.3", platform: .iOS)
+    #expect(versions.first?.releaseType == "SCHEDULED")
+    #expect(versions.first?.earliestReleaseDate?.timeIntervalSince1970 == 1_800_000_000)
 }
 
 @Test

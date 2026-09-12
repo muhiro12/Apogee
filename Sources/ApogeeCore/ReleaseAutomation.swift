@@ -53,6 +53,22 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
+    public func releaseStatus(
+        appLookup: AppLookup,
+        version: String,
+        platform: Platform = .iOS
+    ) async throws -> ReleaseStatus {
+        let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+        let build = try await api.build(versionID: context.version.id)
+        let submissions = try await api.reviewSubmissions(appID: context.app.id, platform: platform)
+        return .init(
+            app: context.app, version: context.version, build: build,
+            reviewSubmissions: submissions.filter { submission in
+                submission.appStoreVersionID == context.version.id
+            }
+        )
+    }
+
     public func updateMetadata(
         appLookup: AppLookup,
         version: String,
@@ -198,12 +214,18 @@ public struct ReleaseAutomation: Sendable {
             in: existingSubmissions,
             versionID: context.version.id
         )
+        let releaseTiming = PlannedAction(
+            kind: .unchanged,
+            resource: "appStoreVersion/\(context.version.id)/releaseTiming",
+            desiredValue: "\(context.version.releaseType ?? "unknown") earliestReleaseDate=\(context.version.earliestReleaseDate?.ISO8601Format() ?? "not set")"
+        )
 
         if let existingSubmission {
             if isSubmittedReviewState(existingSubmission.state) {
                 var plan = ReleasePlan(
                     title: "Submit \(context.app.id) \(version) for review",
                     actions: [
+                        releaseTiming,
                         .init(
                             kind: .unchanged,
                             resource: "reviewSubmission/\(existingSubmission.id)",
@@ -240,6 +262,7 @@ public struct ReleaseAutomation: Sendable {
             var plan = ReleasePlan(
                 title: "Submit \(context.app.id) \(version) for review",
                 actions: [
+                    releaseTiming,
                     .init(
                         kind: .update,
                         resource: "reviewSubmission/\(existingSubmission.id).submitted",
@@ -281,6 +304,7 @@ public struct ReleaseAutomation: Sendable {
         var plan = ReleasePlan(
             title: "Submit \(context.app.id) \(version) for review",
             actions: [
+                releaseTiming,
                 .init(
                     kind: emptyDraft == nil ? .create : .unchanged,
                     resource: emptyDraft.map { "reviewSubmission/\($0.id)" } ?? "reviewSubmission",

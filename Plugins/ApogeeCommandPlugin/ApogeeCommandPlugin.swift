@@ -7,6 +7,7 @@ struct ApogeeCommandPlugin: CommandPlugin {
         let tool = try apogeeTool(context: context)
         let process = Process()
         process.executableURL = tool.url
+        process.currentDirectoryURL = context.package.directoryURL
         process.arguments = forwardedArguments(arguments)
 
         try process.run()
