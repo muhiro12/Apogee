@@ -7,6 +7,22 @@ an app's deployment target, architecture, branching strategy, or release dates.
 
 ## Stage adoption around a release
 
+Start read-only adoption while the current version is in review or awaiting
+publication. `release-status` does not change that version. Keep developing the
+app while waiting for an editable version on which to verify writes.
+
+| Current release stage | Adoption work to complete now | Work to complete later |
+| --- | --- | --- |
+| In review or awaiting publication | Install and pin the package, configure authentication, validate local metadata, and compare read-only status with App Store Connect. | Verify writes against the actual next version when it exists and is editable. |
+| The next version can be created and the target version is editable | Dry-run finalized metadata, apply approved changes, and verify read-back. | Attach the build and submit for review when the app release is ready. |
+
+Apple requires the current version to be **Ready for Distribution** before
+creating the next version; follow its
+[new-version procedure](https://developer.apple.com/help/app-store-connect/update-your-app/create-a-new-version/).
+Confirm that the target fields are editable before testing writes. Read-only
+success proves neither write access nor field editability. Adoption does not
+require withdrawing a review or creating a dummy version.
+
 1. Keep the existing release process available while introducing Apogee. A
    version already in review or awaiting publication need not be resubmitted for
    adoption. Use `release-status` to observe it.
@@ -41,16 +57,28 @@ key's permissions. Individual API keys are not supported by the current signer.
 From the adopting release-tools package directory:
 
 ```sh
+CURRENT_VERSION=1.2.3
 swift package plugin --allow-network-connections all apogee validate-metadata \
   --release-notes-only
 swift package plugin --allow-network-connections all apogee release-status \
-  --version 1.2.3
+  --version "$CURRENT_VERSION"
+```
+
+Once the actual next version exists and its metadata is editable:
+
+```sh
+NEXT_VERSION=1.3.0
 swift package plugin --allow-network-connections all apogee update-release-notes \
-  --version 1.2.3 --dry-run
+  --version "$NEXT_VERSION" --dry-run
+```
+
+After metadata verification, when the app build is ready:
+
+```sh
 swift package plugin --allow-network-connections all apogee attach-build \
-  --version 1.2.3 --build-version 123 --dry-run
+  --version "$NEXT_VERSION" --build-version 124 --dry-run
 swift package plugin --allow-network-connections all apogee submit-for-review \
-  --version 1.2.3 --dry-run
+  --version "$NEXT_VERSION" --dry-run
 ```
 
 The plugin runs in the consumer package directory. Relative paths inside
@@ -64,8 +92,15 @@ character limits, editability, or account permissions. It needs no API credentia
 and makes no network requests; SwiftPM may still fetch dependencies. Remote dry
 runs authenticate and read App Store Connect.
 
+The default API transport uses an ephemeral session with response caching
+disabled, so plans and read-back fetch current state without a disk cache.
+No cache-directory setup is needed for the command plugin. Library consumers
+can still inject their own transport.
+
 Replace `--dry-run` with `--apply` only for the operation being approved. They
-are mutually exclusive. `release-status` has no apply mode.
+are mutually exclusive. After an approved metadata apply, inspect the target in
+App Store Connect and run a fresh metadata dry run to confirm no differences
+remain. `release-status` has no apply mode and does not display metadata text.
 
 ## Coordinate review and publication
 
@@ -111,6 +146,11 @@ publish an approved version. See Apple's
 - HTTP errors preserve status and operation without response bodies or credentials.
   Resolve authentication, permission, resource-state, or rate-limit issues before
   retrying. Repeated, unsafe, or over-100-page collections fail closed.
+- Transport failures and response-decoding failures have separate messages.
+  Decoding errors identify the operation and observed HTTP status; invalid dates
+  are identified when the date decoder detects them. A successful HTTP status
+  with a decoding error does not establish valid release state. Error messages
+  omit response content, request metadata, and authentication details.
 
 Keep one writer per app/version or webhook configuration during apply. A dry run
 does not lock remote resources, and these operations have no shared transaction.
