@@ -144,6 +144,25 @@ func generatedAPIPreservesCancellation() async throws {
     }
 }
 
+@Test(arguments: [0, 1, 2])
+func reviewMappingRejectsTruncatedItemLinkage(total: Int) async throws {
+    let transport = StubTransport { request, _, _ in
+        #expect(request.path?.contains("items") == true)
+        return try jsonResponse([
+            "data": [
+                "id": "review-1", "type": "reviewSubmissions",
+                "relationships": ["items": [
+                    "data": total == 0 ? [] : [["type": "reviewSubmissionItems", "id": "item-1"]],
+                    "meta": ["paging": ["total": total, "limit": 50]],
+                ]],
+            ],
+            "links": ["self": "unused"],
+        ])
+    }
+    let submission = try await testAPI(transport: transport).reviewSubmission(id: "review-1")
+    #expect(submission.itemIDs == (total == 0 ? [] : total == 1 ? ["item-1"] : nil))
+}
+
 private struct StubFailure: Error {}
 
 func testAPI(transport: any ClientTransport) -> GeneratedAppStoreConnectAPI {

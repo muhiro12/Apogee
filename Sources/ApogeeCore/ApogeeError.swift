@@ -12,6 +12,8 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case localizationMissing(locale: String)
     case buildNotFound(appID: String, buildVersion: String)
     case buildAmbiguous(appID: String, buildVersion: String, matches: Int)
+    case buildNotReady(id: String, state: String?)
+    case reviewSubmissionContentsUnsafe(id: String)
     case reviewSubmissionAmbiguous(versionID: String, matches: Int)
     case reviewSubmissionStateUnexpected(id: String, state: String?, expected: [String])
     case reviewSubmissionVersionMismatch(id: String, expectedVersionID: String, actualVersionID: String?)
@@ -48,6 +50,10 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "No build \(buildVersion) was found for app \(appID)."
         case let .buildAmbiguous(appID, buildVersion, matches):
             "Build \(buildVersion) for app \(appID) matched \(matches) builds."
+        case let .buildNotReady(id, state):
+            "Build \(id) is not ready: processing state is \(state ?? "unknown"), expected VALID."
+        case let .reviewSubmissionContentsUnsafe(id):
+            "Review submission \(id) has unknown or additional items. Reconcile its contents in App Store Connect before retrying."
         case let .reviewSubmissionAmbiguous(versionID, matches):
             "App Store version \(versionID) matched \(matches) review submissions."
         case let .reviewSubmissionStateUnexpected(id, state, expected):

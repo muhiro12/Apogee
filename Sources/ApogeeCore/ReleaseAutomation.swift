@@ -132,6 +132,7 @@ public struct ReleaseAutomation: Sendable {
             platform: platform
         )
         let build = try exactlyOneBuild(builds, appID: context.app.id, buildVersion: buildVersion)
+        try validateBuild(build)
         let currentBuild = try await api.build(versionID: context.version.id)
         var plan = ReleasePlan(
             title: "Attach build \(buildVersion) to \(context.app.id) \(version)",
@@ -223,7 +224,7 @@ public struct ReleaseAutomation: Sendable {
 
                 if options.mode == .apply {
                     let readBack = try await api.reviewSubmission(id: existingSubmission.id)
-                    try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+                    try verifySubmittedReviewSubmission(readBack, versionID: context.version.id, expectedID: existingSubmission.id)
                     plan.actions.append(.init(
                         kind: .verify,
                         resource: "reviewSubmission/\(readBack.id)",
@@ -242,6 +243,9 @@ public struct ReleaseAutomation: Sendable {
                 )
             }
 
+            try validateReviewContents(existingSubmission, versionID: context.version.id)
+            try await validateSubmissionBuild(versionID: context.version.id)
+
             var plan = ReleasePlan(
                 title: "Submit \(context.app.id) \(version) for review",
                 actions: [
@@ -258,9 +262,11 @@ public struct ReleaseAutomation: Sendable {
                 return plan
             }
 
-            let submitted = try await api.submitReviewSubmission(id: existingSubmission.id)
-            let readBack = try await api.reviewSubmission(id: submitted.id)
-            try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+            let current = try await api.reviewSubmission(id: existingSubmission.id)
+            try validateReadySubmission(current, versionID: context.version.id, expectedID: existingSubmission.id)
+            _ = try await api.submitReviewSubmission(id: existingSubmission.id)
+            let readBack = try await api.reviewSubmission(id: existingSubmission.id)
+            try verifySubmittedReviewSubmission(readBack, versionID: context.version.id, expectedID: existingSubmission.id)
             plan.actions.append(.init(
                 kind: .verify,
                 resource: "reviewSubmission/\(readBack.id)",
@@ -269,10 +275,26 @@ public struct ReleaseAutomation: Sendable {
             return plan
         }
 
+        let emptyDrafts = existingSubmissions.filter { submission in
+            submission.state == Self.readyReviewState && submission.appStoreVersionID == nil
+        }
+        guard emptyDrafts.count <= 1 else {
+            throw ApogeeError.reviewSubmissionAmbiguous(versionID: context.version.id, matches: emptyDrafts.count)
+        }
+        let emptyDraft = emptyDrafts.first
+        if let emptyDraft, emptyDraft.itemIDs != [] {
+            throw ApogeeError.reviewSubmissionContentsUnsafe(id: emptyDraft.id)
+        }
+        try await validateSubmissionBuild(versionID: context.version.id)
+
         var plan = ReleasePlan(
             title: "Submit \(context.app.id) \(version) for review",
             actions: [
-                .init(kind: .create, resource: "reviewSubmission", desiredValue: platform.rawValue),
+                .init(
+                    kind: emptyDraft == nil ? .create : .unchanged,
+                    resource: emptyDraft.map { "reviewSubmission/\($0.id)" } ?? "reviewSubmission",
+                    desiredValue: platform.rawValue
+                ),
                 .init(kind: .create, resource: "reviewSubmissionItem", desiredValue: "appStoreVersion/\(context.version.id)"),
                 .init(kind: .update, resource: "reviewSubmission.submitted", desiredValue: "true"),
             ]
@@ -282,11 +304,23 @@ public struct ReleaseAutomation: Sendable {
             return plan
         }
 
-        let submission = try await api.createReviewSubmission(appID: context.app.id, platform: platform)
+        let submission: AppStoreConnectReviewSubmission
+        if let emptyDraft {
+            submission = emptyDraft
+        } else {
+            submission = try await api.createReviewSubmission(appID: context.app.id, platform: platform)
+        }
+        let draft = try await api.reviewSubmission(id: submission.id)
+        guard draft.id == submission.id, draft.state == Self.readyReviewState,
+              draft.appStoreVersionID == nil, draft.itemIDs == [] else {
+            throw ApogeeError.reviewSubmissionContentsUnsafe(id: submission.id)
+        }
         _ = try await api.createReviewSubmissionItem(submissionID: submission.id, versionID: context.version.id)
-        let submitted = try await api.submitReviewSubmission(id: submission.id)
-        let readBack = try await api.reviewSubmission(id: submitted.id)
-        try verifySubmittedReviewSubmission(readBack, versionID: context.version.id)
+        let prepared = try await api.reviewSubmission(id: submission.id)
+        try validateReadySubmission(prepared, versionID: context.version.id, expectedID: submission.id)
+        _ = try await api.submitReviewSubmission(id: submission.id)
+        let readBack = try await api.reviewSubmission(id: submission.id)
+        try verifySubmittedReviewSubmission(readBack, versionID: context.version.id, expectedID: submission.id)
         plan.actions.append(.init(kind: .verify, resource: "reviewSubmission/\(readBack.id)", desiredValue: readBack.state))
         return plan
     }
@@ -433,10 +467,44 @@ public struct ReleaseAutomation: Sendable {
         return Self.submittedReviewStates.contains(state)
     }
 
+    private func validateBuild(_ build: AppStoreConnectBuild) throws {
+        guard build.processingState == "VALID" else {
+            throw ApogeeError.buildNotReady(id: build.id, state: build.processingState)
+        }
+    }
+
+    private func validateSubmissionBuild(versionID: String) async throws {
+        guard let build = try await api.build(versionID: versionID) else {
+            throw ApogeeError.unexpectedAPIResponse("Attach a processed build before submitting this version for review.")
+        }
+        try validateBuild(build)
+    }
+
+    private func validateReviewContents(_ submission: AppStoreConnectReviewSubmission, versionID: String) throws {
+        guard submission.appStoreVersionID == versionID, submission.itemIDs?.count == 1 else {
+            throw ApogeeError.reviewSubmissionContentsUnsafe(id: submission.id)
+        }
+    }
+
+    private func validateReadySubmission(
+        _ submission: AppStoreConnectReviewSubmission,
+        versionID: String,
+        expectedID: String
+    ) throws {
+        guard submission.id == expectedID, submission.state == Self.readyReviewState else {
+            throw ApogeeError.reviewSubmissionStateUnexpected(id: expectedID, state: submission.state, expected: [Self.readyReviewState])
+        }
+        try validateReviewContents(submission, versionID: versionID)
+    }
+
     private func verifySubmittedReviewSubmission(
         _ submission: AppStoreConnectReviewSubmission,
-        versionID: String
+        versionID: String,
+        expectedID: String
     ) throws {
+        guard submission.id == expectedID else {
+            throw ApogeeError.unexpectedAPIResponse("Review submission identity changed during read-back.")
+        }
         guard submission.appStoreVersionID == versionID else {
             throw ApogeeError.reviewSubmissionVersionMismatch(
                 id: submission.id,
@@ -452,6 +520,7 @@ public struct ReleaseAutomation: Sendable {
                 expected: Self.submittedReviewStates
             )
         }
+        try validateReviewContents(submission, versionID: versionID)
     }
 
     private func metadataPatch(local: LocalizedMetadata, remote: LocalizedMetadata, fields: Set<MetadataField>) -> MetadataPatch {

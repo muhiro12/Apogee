@@ -262,7 +262,7 @@ func submitForReviewRejectsUnexpectedReadBackState() async throws {
 @Test
 func submitForReviewReusesExistingReadySubmission() async throws {
     let api = FakeAppStoreConnectAPI(reviewSubmissions: [
-        .init(id: "review-existing", state: "READY_FOR_REVIEW", platform: .iOS, appStoreVersionID: "version-1"),
+        .init(id: "review-existing", state: "READY_FOR_REVIEW", platform: .iOS, appStoreVersionID: "version-1", itemIDs: ["item-1"]),
     ])
     let automation = ReleaseAutomation(api: api)
 
@@ -641,17 +641,30 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     private var webhooksByAppID: [String: [AppStoreConnectWebhook]]
     private var reviewSubmissionsByAppID: [String: [AppStoreConnectReviewSubmission]]
     private let submittedReviewState: String
+    private let availableBuildState: String?
+    private let reviewReadBackOverride: AppStoreConnectReviewSubmission?
+    private var failItemCreationOnce: Bool
     private var attachedBuildByVersionID: [String: AppStoreConnectBuild?] = ["version-1": nil]
     private(set) var updatedLocalizationIDs: [String] = []
     private(set) var buildLookupRequests: [BuildLookupRequest] = []
     private(set) var createdReviewSubmissionIDs: [String] = []
+    private(set) var attachedBuildIDs: [String] = []
+    private(set) var submittedReviewSubmissionIDs: [String] = []
 
     init(
         locales: [String] = ["en-US", "ja"],
         reviewSubmissions: [AppStoreConnectReviewSubmission] = [],
-        submittedReviewState: String = "WAITING_FOR_REVIEW"
+        submittedReviewState: String = "WAITING_FOR_REVIEW",
+        attachedBuild: AppStoreConnectBuild? = .init(id: "build-123", version: "123", processingState: "VALID"),
+        availableBuildState: String? = "VALID",
+        reviewReadBackOverride: AppStoreConnectReviewSubmission? = nil,
+        failItemCreationOnce: Bool = false
     ) {
         self.submittedReviewState = submittedReviewState
+        self.availableBuildState = availableBuildState
+        self.reviewReadBackOverride = reviewReadBackOverride
+        self.failItemCreationOnce = failItemCreationOnce
+        attachedBuildByVersionID = ["version-1": attachedBuild]
         localizationsByVersionID = [
             "version-1": locales.map { locale in
                 .init(
@@ -720,7 +733,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
             appStoreVersion: appStoreVersion,
             platform: platform
         ))
-        return appID == "app-1" && buildVersion == "123" && appStoreVersion == "1.2.3" ? [.init(id: "build-123", version: buildVersion, processingState: "VALID")] : []
+        return appID == "app-1" && buildVersion == "123" && appStoreVersion == "1.2.3" ? [.init(id: "build-123", version: buildVersion, processingState: availableBuildState)] : []
     }
 
     func build(versionID: String) async throws -> AppStoreConnectBuild? {
@@ -728,6 +741,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     }
 
     func attachBuild(versionID: String, buildID: String) async throws {
+        attachedBuildIDs.append(buildID)
         attachedBuildByVersionID[versionID] = .init(id: buildID, version: "123", processingState: "VALID")
     }
 
@@ -737,25 +751,31 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
 
     func createReviewSubmission(appID: String, platform: Platform) async throws -> AppStoreConnectReviewSubmission {
         let id = "review-\((reviewSubmissionsByAppID[appID] ?? []).count + 1)"
-        let submission = AppStoreConnectReviewSubmission(id: id, state: "READY_FOR_REVIEW", platform: platform)
+        let submission = AppStoreConnectReviewSubmission(id: id, state: "READY_FOR_REVIEW", platform: platform, itemIDs: [])
         reviewSubmissionsByAppID[appID, default: []].append(submission)
         createdReviewSubmissionIDs.append(id)
         return submission
     }
 
     func createReviewSubmissionItem(submissionID: String, versionID: String) async throws -> AppStoreConnectReviewSubmissionItem {
+        if failItemCreationOnce {
+            failItemCreationOnce = false
+            throw ApogeeError.appStoreConnectRequestFailed(operation: "createReviewSubmissionItem")
+        }
         for appID in reviewSubmissionsByAppID.keys {
             guard let index = reviewSubmissionsByAppID[appID]?.firstIndex(where: { $0.id == submissionID }) else {
                 continue
             }
 
             reviewSubmissionsByAppID[appID]?[index].appStoreVersionID = versionID
+            reviewSubmissionsByAppID[appID]?[index].itemIDs = ["review-item-1"]
         }
 
         return .init(id: "review-item-1")
     }
 
     func submitReviewSubmission(id: String) async throws -> AppStoreConnectReviewSubmission {
+        submittedReviewSubmissionIDs.append(id)
         for appID in reviewSubmissionsByAppID.keys {
             guard let index = reviewSubmissionsByAppID[appID]?.firstIndex(where: { $0.id == id }) else {
                 continue
@@ -769,6 +789,9 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     }
 
     func reviewSubmission(id: String) async throws -> AppStoreConnectReviewSubmission {
+        if let reviewReadBackOverride {
+            return reviewReadBackOverride
+        }
         for submissions in reviewSubmissionsByAppID.values {
             if let submission = submissions.first(where: { $0.id == id }) {
                 return submission

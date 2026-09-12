@@ -157,7 +157,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
                     filter_lbrack_platform_rbrack_: [platform.reviewSubmissionsQuery],
                     filter_lbrack_app_rbrack_: [appID],
                     limit: 200,
-                    include: [.appStoreVersionForReview]
+                    include: [.appStoreVersionForReview, .items],
+                    limit_lbrack_items_rbrack_: 50
                 )))
                 let response = try output.ok.body.json
                 return (response.data.map(mapReviewSubmission), response.links.next)
@@ -210,7 +211,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         try await perform(operation: "reviewSubmission") {
             let output = try await client().reviewSubmissions_getInstance(.init(
                 path: .init(id: id),
-                query: .init(include: [.appStoreVersionForReview])
+                query: .init(include: [.appStoreVersionForReview, .items], limit_lbrack_items_rbrack_: 50)
             ))
             return try mapReviewSubmission(output.ok.body.json.data)
         }
@@ -366,11 +367,21 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
     }
 
     private func mapReviewSubmission(_ submission: Components.Schemas.ReviewSubmission) -> AppStoreConnectReviewSubmission {
-        .init(
+        let items = submission.relationships?.items
+        let itemIDs: [String]?
+        if let data = items?.data,
+           items?.meta?.paging.nextCursor == nil,
+           items?.meta?.paging.total.map({ $0 == data.count }) ?? (data.count < 50) {
+            itemIDs = data.map(\.id)
+        } else {
+            itemIDs = nil
+        }
+        return .init(
             id: submission.id,
             state: submission.attributes?.state?.rawValue,
             platform: submission.attributes?.platform.flatMap(Platform.init(generated:)),
-            appStoreVersionID: submission.relationships?.appStoreVersionForReview?.data?.id
+            appStoreVersionID: submission.relationships?.appStoreVersionForReview?.data?.id,
+            itemIDs: itemIDs
         )
     }
 

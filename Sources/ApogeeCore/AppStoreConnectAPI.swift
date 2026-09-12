@@ -98,12 +98,15 @@ public struct AppStoreConnectReviewSubmission: Sendable, Hashable {
     public var state: String?
     public var platform: Platform?
     public var appStoreVersionID: String?
+    /// The complete item linkage, or nil when it was omitted or truncated.
+    public var itemIDs: [String]?
 
-    public init(id: String, state: String? = nil, platform: Platform? = nil, appStoreVersionID: String? = nil) {
+    public init(id: String, state: String? = nil, platform: Platform? = nil, appStoreVersionID: String? = nil, itemIDs: [String]? = nil) {
         self.id = id
         self.state = state
         self.platform = platform
         self.appStoreVersionID = appStoreVersionID
+        self.itemIDs = itemIDs
     }
 }
 
