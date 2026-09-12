@@ -137,3 +137,24 @@ Tests prove simulated API behavior and local consumer execution. They do not
 establish real-account permissions, successful App Store Connect mutations,
 App Review acceptance, storefront publication, or the adopting app's quality.
 Those checks belong to the actual adopter and its intended release.
+
+### Moving from 0.x to 1.0
+
+Use the 0.x series to verify package distribution and the first adopter workflow.
+Before declaring the documented interfaces stable:
+
+- Confirm that the Release workflow publishes the intended commit, automatically
+  increments a subsequent version, and reuses the same tag when rerun.
+- Resolve an exact published tag from a separate macOS package and exercise both
+  the library and command plugin. A local path dependency does not prove that
+  the published package can be consumed.
+- Pass the supported Xcode checks, then compare read-only release status with
+  App Store Connect for the adopting app. Verify an approved metadata update on
+  an editable version, including read-back and a fresh dry run with no changes.
+- Review the documented API, CLI, configuration, and safety guarantees in the
+  [versioning contract](../README.md#versioning-and-stability). Keep unsupported
+  operations explicit and preserve the adopter's existing release process.
+
+Keep real account results, unpublished metadata, and adoption decisions in the
+adopting repository or private evidence storage. A successful package release
+does not authorize an app submission or publication.
