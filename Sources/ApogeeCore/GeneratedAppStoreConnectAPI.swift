@@ -9,10 +9,24 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
     private let transport: any ClientTransport
     private let tokenProvider: AppStoreConnectTokenProvider
 
+    private static let defaultTransport: URLSessionTransport = {
+        let configuration = URLSessionConfiguration.ephemeral
+        // Release plans and read-back must observe fresh state without disk caches.
+        configuration.urlCache = nil
+        return .init(configuration: .init(session: .init(configuration: configuration)))
+    }()
+
+    public init(
+        credentials: AppStoreConnectCredentials,
+        serverURL: URL = URL(string: "https://api.appstoreconnect.apple.com")!
+    ) {
+        self.init(credentials: credentials, serverURL: serverURL, transport: Self.defaultTransport)
+    }
+
     public init(
         credentials: AppStoreConnectCredentials,
         serverURL: URL = URL(string: "https://api.appstoreconnect.apple.com")!,
-        transport: any ClientTransport = URLSessionTransport()
+        transport: any ClientTransport
     ) {
         self.serverURL = serverURL
         self.transport = transport
