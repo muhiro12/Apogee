@@ -84,7 +84,64 @@ func unattachedBuildDecodesNullRelationship() async throws {
 }
 
 @Test
-func versionMappingIncludesReleaseTiming() async throws {
+func reviewSubmissionsDecodeMixedDatePrecisionAcrossPages() async throws {
+    let transport = StubTransport { request, _, index in
+        let submittedDate = index == 0 ? "2026-01-02T03:04:05.123Z" : "2026-01-02T12:04:05+09:00"
+        let createdDate = index == 0 ? "2026-01-01T20:04:05-07:00" : "2026-01-02T03:04:05.123456Z"
+        let next = "https://api.appstoreconnect.apple.com" + (request.path ?? "") + "&cursor=second"
+        return try jsonResponse([
+            "data": [[
+                "id": "review-\(index)", "type": "reviewSubmissions",
+                "attributes": ["platform": "IOS", "state": "COMPLETE", "submittedDate": submittedDate],
+                "relationships": [
+                    "appStoreVersionForReview": ["data": ["id": "version-\(index)", "type": "appStoreVersions"]],
+                    "items": ["data": []],
+                ],
+            ]],
+            "included": [[
+                "id": "version-\(index)", "type": "appStoreVersions",
+                "attributes": ["createdDate": createdDate],
+            ]],
+            "links": index == 0 ? ["self": "unused", "next": next] : ["self": "unused"],
+        ])
+    }
+    let submissions = try await testAPI(transport: transport).reviewSubmissions(appID: "app-1", platform: .iOS)
+    #expect(submissions == [
+        .init(id: "review-0", state: "COMPLETE", platform: .iOS, appStoreVersionID: "version-0", itemIDs: []),
+        .init(id: "review-1", state: "COMPLETE", platform: .iOS, appStoreVersionID: "version-1", itemIDs: []),
+    ])
+    #expect(await transport.requests.count == 2)
+}
+
+@Test(arguments: ["not-a-date-response-sentinel", "", "2026-01-02"])
+func reviewSubmissionsRejectInvalidDatesWithoutExposingResponses(date: String) async throws {
+    let transport = StubTransport { _, _, _ in
+        try jsonResponse([
+            "data": [[
+                "id": "review-1", "type": "reviewSubmissions",
+                "attributes": ["submittedDate": date],
+            ]],
+            "links": ["self": "unused"],
+        ])
+    }
+    await #expect(throws: ApogeeError.appStoreConnectRequestFailed(operation: "reviewSubmissions")) {
+        _ = try await testAPI(transport: transport).reviewSubmissions(appID: "app-1", platform: .iOS)
+    }
+    #expect(await transport.requests.count == 1)
+}
+
+@Test(arguments: [
+    ("2027-01-15T08:00:00Z", 0.0),
+    ("2027-01-15T08:00:00.1Z", 0.1),
+    ("2027-01-15T08:00:00.12Z", 0.12),
+    ("2027-01-15T08:00:00.123Z", 0.123),
+    ("2027-01-15T08:00:00.123456Z", 0.123456),
+    ("2027-01-15T17:00:00+09:00", 0.0),
+    ("2027-01-15T01:00:00-07:00", 0.0),
+    ("2027-01-15T17:00:00.123+09:00", 0.123),
+    ("2027-01-15T01:00:00.123-07:00", 0.123),
+])
+func versionMappingIncludesReleaseTiming(date: String, fractionalSeconds: Double) async throws {
     let transport = StubTransport { _, _, _ in
         try jsonResponse([
             "data": [[
@@ -92,7 +149,7 @@ func versionMappingIncludesReleaseTiming() async throws {
                 "attributes": [
                     "versionString": "1.2.3", "platform": "IOS",
                     "appVersionState": "PENDING_DEVELOPER_RELEASE",
-                    "releaseType": "SCHEDULED", "earliestReleaseDate": "2027-01-15T08:00:00Z",
+                    "releaseType": "SCHEDULED", "earliestReleaseDate": date,
                 ],
             ]],
             "links": ["self": "unused"],
@@ -100,7 +157,9 @@ func versionMappingIncludesReleaseTiming() async throws {
     }
     let versions = try await testAPI(transport: transport).appStoreVersions(appID: "app-1", version: "1.2.3", platform: .iOS)
     #expect(versions.first?.releaseType == "SCHEDULED")
-    #expect(versions.first?.earliestReleaseDate?.timeIntervalSince1970 == 1_800_000_000)
+    let releaseDate = try #require(versions.first?.earliestReleaseDate)
+    // Foundation's ISO8601DateFormatter supports millisecond precision.
+    #expect(abs(releaseDate.timeIntervalSince1970 - (1_800_000_000 + fractionalSeconds)) < 0.001)
 }
 
 @Test

@@ -22,6 +22,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
     private func client(nextPageURL: String? = nil) -> Client {
         .init(
             serverURL: serverURL,
+            configuration: .init(dateTranscoder: AppStoreConnectDateTranscoder()),
             transport: transport,
             middlewares: [
                 AppStoreConnectPageMiddleware(nextPageURL: nextPageURL),
