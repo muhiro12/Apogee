@@ -19,6 +19,7 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case applyRequiresPlanToken
     case destructiveApplyRequiresConfirmation
     case appStoreConnectRequestFailed(operation: String)
+    case appStoreConnectHTTPError(operation: String, statusCode: Int)
     case unexpectedAPIResponse(String)
     case invalidWebhookEventType(String)
     case unsupported(UnsupportedCapability)
@@ -61,6 +62,8 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "Destructive apply requires --allow-destructive."
         case let .appStoreConnectRequestFailed(operation):
             "App Store Connect request failed while attempting to \(operation)."
+        case let .appStoreConnectHTTPError(operation, statusCode):
+            "App Store Connect returned HTTP \(statusCode) for \(operation). Check API key access, the resource state, and rate limits before retrying."
         case let .unexpectedAPIResponse(message):
             "Unexpected App Store Connect API response: \(message)."
         case let .invalidWebhookEventType(eventType):

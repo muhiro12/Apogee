@@ -86,6 +86,8 @@ let package = Package(
             dependencies: [
                 "ApogeeCore",
                 .product(name: "Crypto", package: "swift-crypto"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
             ],
             exclude: [
                 "Fixtures",
