@@ -1,5 +1,6 @@
 import Foundation
 
+/// Locale-specific metadata; nil leaves a field unchanged and an empty string clears it.
 public struct LocalizedMetadata: Sendable, Hashable {
     public var locale: String
     public var releaseNotes: String?
@@ -21,6 +22,7 @@ public struct LocalizedMetadata: Sendable, Hashable {
         self.promotionalText = promotionalText
     }
 
+    /// Returns a copy retaining only the selected fields; locale is preserved.
     public func filtered(fields: Set<MetadataField>) -> Self {
         .init(
             locale: locale,
@@ -32,6 +34,7 @@ public struct LocalizedMetadata: Sendable, Hashable {
     }
 }
 
+/// A supported metadata field whose raw value is its text file basename.
 public enum MetadataField: String, Sendable, Hashable, CaseIterable {
     case releaseNotes = "release_notes"
     case description
@@ -56,9 +59,16 @@ public enum MetadataField: String, Sendable, Hashable, CaseIterable {
     }
 }
 
+/// Loads local UTF-8 metadata without contacting App Store Connect.
 public struct MetadataLoader: Sendable {
     public init() {}
 
+    /// Loads locale directories in sorted order and trims leading/trailing newlines.
+    ///
+    /// Missing selected files become nil; empty files remain explicit empty values.
+    /// Hidden entries are ignored, symbolic links at inspected entries are rejected,
+    /// and no matching fields throws ``ApogeeError/emptyMetadata``. This does not validate
+    /// App Store field length limits or whether remote localizations already exist.
     public func load(from path: String, fields: Set<MetadataField> = Set(MetadataField.allCases)) throws -> [LocalizedMetadata] {
         let rootURL = URL(fileURLWithPath: path)
         var isDirectory: ObjCBool = false

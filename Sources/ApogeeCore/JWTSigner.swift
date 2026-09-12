@@ -1,16 +1,16 @@
 import Crypto
 import Foundation
 
-public struct JSONWebTokenSigner: Sendable {
-    public var credentials: AppStoreConnectCredentials
-    public var lifetime: TimeInterval
+struct JSONWebTokenSigner: Sendable {
+    var credentials: AppStoreConnectCredentials
+    var lifetime: TimeInterval
 
-    public init(credentials: AppStoreConnectCredentials, lifetime: TimeInterval = 19 * 60) {
+    init(credentials: AppStoreConnectCredentials, lifetime: TimeInterval = 19 * 60) {
         self.credentials = credentials
         self.lifetime = lifetime
     }
 
-    public func signedToken(now: Date = .init()) throws -> SignedToken {
+    func signedToken(now: Date = .init()) throws -> SignedToken {
         let issuedAt = Int(now.timeIntervalSince1970)
         let expiration = Int(now.addingTimeInterval(lifetime).timeIntervalSince1970)
         let header: [String: String] = [
@@ -43,33 +43,33 @@ public struct JSONWebTokenSigner: Sendable {
     }
 }
 
-public struct SignedToken: Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
-    public var value: String
-    public var expiresAt: Date
+struct SignedToken: Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
+    var value: String
+    var expiresAt: Date
 
-    public var description: String {
+    var description: String {
         "SignedToken(value: <redacted>, expiresAt: \(expiresAt))"
     }
 
-    public var debugDescription: String {
+    var debugDescription: String {
         description
     }
 
-    public init(value: String, expiresAt: Date) {
+    init(value: String, expiresAt: Date) {
         self.value = value
         self.expiresAt = expiresAt
     }
 }
 
-public actor AppStoreConnectTokenProvider {
+actor AppStoreConnectTokenProvider {
     private var cachedToken: SignedToken?
     private let signer: JSONWebTokenSigner
 
-    public init(signer: JSONWebTokenSigner) {
+    init(signer: JSONWebTokenSigner) {
         self.signer = signer
     }
 
-    public func token(now: Date = .init()) throws -> String {
+    func token(now: Date = .init()) throws -> String {
         if let cachedToken, cachedToken.expiresAt.timeIntervalSince(now) > 60 {
             return cachedToken.value
         }

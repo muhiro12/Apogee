@@ -1,10 +1,15 @@
 import Foundation
 
+/// Team API key identifiers and a private key source used for App Store Connect requests.
+///
+/// Descriptions redact all values. Construction does not validate the signing key;
+/// the generated adapter reads and parses it when it first needs an authorization token.
 public struct AppStoreConnectCredentials: Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible {
     public var keyID: String
     public var issuerID: String
     var privateKeySource: AppStoreConnectPrivateKeySource
 
+    /// The configured file path, or nil when the key was supplied as PEM.
     public var privateKeyPath: String? {
         guard case let .path(path) = privateKeySource else {
             return nil
@@ -33,6 +38,10 @@ public struct AppStoreConnectCredentials: Sendable, Hashable, CustomStringConver
         privateKeySource = .pem(privateKeyPEM)
     }
 
+    /// Loads required identifiers and a private key source from the selected environment.
+    ///
+    /// A nonempty base64 variable takes precedence over the file-path variable. Base64
+    /// is decoded as UTF-8 PEM; key validity and file readability are checked on use.
     public static func load(
         environment: [String: String] = ProcessInfo.processInfo.environment,
         credentialEnvironment: AppStoreConnectCredentialEnvironment = .init()

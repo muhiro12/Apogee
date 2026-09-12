@@ -1,5 +1,9 @@
 import Foundation
 
+/// Explicit execution mode and optional destructive-change confirmation.
+///
+/// Library callers must choose a mode. CLI callers default to dry-run. Destructive
+/// apply requires both `allowDestructive` and a token from a prior matching dry-run.
 public struct ReleaseExecutionOptions: Sendable, Hashable {
     public var mode: OperationMode
     public var allowDestructive: Bool
@@ -12,6 +16,12 @@ public struct ReleaseExecutionOptions: Sendable, Hashable {
     }
 }
 
+/// Plans release operations and verifies supported writes through an injected API.
+///
+/// Dry-run reads remote state but never writes. Apply performs sequential requests,
+/// not a transaction: earlier writes can persist if a later request or verification
+/// fails or the task is cancelled. Inspect remote state and run a fresh dry-run
+/// before retrying. Custom API implementations must honor ``AppStoreConnectAPI``.
 public struct ReleaseAutomation: Sendable {
     private static let readyReviewState = "READY_FOR_REVIEW"
     private static let submittedReviewStates = ["WAITING_FOR_REVIEW", "IN_REVIEW", "COMPLETE"]
@@ -36,6 +46,9 @@ public struct ReleaseAutomation: Sendable {
         self.secretEnvironment = secretEnvironment
     }
 
+    /// Plans or applies only `release_notes.txt` changes for existing remote locales.
+    ///
+    /// Uses the same validation, partial-failure, and read-back rules as metadata updates.
     public func updateReleaseNotes(
         appLookup: AppLookup,
         version: String,
@@ -53,6 +66,9 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
+    /// Reads a uniquely resolved app version, attached build, and matching review submissions.
+    ///
+    /// Never mutates remote resources. Unknown attributes remain unavailable in the snapshot.
     public func releaseStatus(
         appLookup: AppLookup,
         version: String,
@@ -69,6 +85,11 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
+    /// Plans selected fields or sequentially applies patches and reads back their values.
+    ///
+    /// All selected local locales must already exist remotely. Nil fields are untouched;
+    /// empty strings request clearing. Remote editability and content rules may reject a
+    /// write, and successful earlier patches are not rolled back on failure.
     public func updateMetadata(
         appLookup: AppLookup,
         version: String,
@@ -124,6 +145,10 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Plans or attaches a uniquely matched `VALID` build, then verifies its identity.
+    ///
+    /// Build lookup is scoped to the app, marketing version, and platform. Reusing the
+    /// currently attached build is unchanged; acceptance remains subject to server rules.
     public func attachBuild(
         appLookup: AppLookup,
         version: String,
@@ -167,6 +192,10 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Produces a provisional screenshot inventory plan; screenshot writes are unsupported.
+    ///
+    /// After preflight succeeds, apply throws unsupported. No assets are reserved,
+    /// uploaded, committed, or remotely verified.
     public func updateScreenshots(
         appLookup: AppLookup,
         version: String,
@@ -202,6 +231,11 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Plans or submits the selected version using a safely matched review draft.
+    ///
+    /// Unknown states, ambiguous drafts, and incomplete or additional item linkage fail
+    /// closed. A partial failure can leave a created draft or item; inspect and retry
+    /// from a fresh dry-run. Submission is distinct from approval and publication.
     public func submitForReview(
         appLookup: AppLookup,
         version: String,
@@ -340,6 +374,11 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Reconciles the app's complete webhook list by name and verifies observable settings.
+    ///
+    /// Remote entries absent locally are deletions requiring destructive confirmation.
+    /// Apply resolves all needed secrets before writes. Rotation cannot be read back;
+    /// clear `rotateSecret` after an intended successful rotation. No rollback is attempted.
     public func syncWebhooks(
         appLookup: AppLookup,
         configPath: String,

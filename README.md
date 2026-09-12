@@ -4,8 +4,6 @@ Apogee is a Swift Package for automating App Store release operations through
 the official App Store Connect API. It provides:
 
 - `ApogeeCore`: reusable release automation library
-- `AppStoreConnectGenerated`: committed Swift OpenAPI Generator output for the
-  App Store Connect client surface Apogee uses
 - `ApogeeCommandPlugin`: SwiftPM command plugin for repository-pinned tool use
 - `apogee`: command line tool
 
@@ -16,6 +14,11 @@ Apogee runs on macOS; an iOS app does not link it at runtime. See the
 [adoption guide](docs/adoption.md) for introducing it alongside an existing
 release process, and the [consumer example](Examples/ReleaseTools) for a runnable
 library and command-plugin integration.
+
+See the [public API contract](docs/public-api.md) for supported and provisional
+surfaces, migration notes, and how to build the DocC reference. The generated
+`AppStoreConnectGenerated` target is package-scoped implementation, not a consumer
+product. Use `ApogeeCore` to access supported operations.
 
 ## Current Capability Status
 

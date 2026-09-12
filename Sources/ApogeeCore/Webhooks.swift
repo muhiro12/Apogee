@@ -1,6 +1,9 @@
 import AppStoreConnectGenerated
 import Foundation
 
+/// The complete desired webhook list for the selected app.
+///
+/// Remote webhooks absent from this list are planned for deletion.
 public struct WebhookSyncConfiguration: Codable, Sendable, Hashable {
     public var webhooks: [DesiredWebhook]
 
@@ -9,6 +12,10 @@ public struct WebhookSyncConfiguration: Codable, Sendable, Hashable {
     }
 }
 
+/// Desired settings for a named webhook, including the name of its secret variable.
+///
+/// `rotateSecret` defaults to false. Set it only for an intended rotation and remove
+/// it after success; the remote secret cannot be read back or compared.
 public struct DesiredWebhook: Codable, Sendable, Hashable {
     public var name: String
     public var url: String
@@ -53,9 +60,14 @@ public struct DesiredWebhook: Codable, Sendable, Hashable {
     }
 }
 
+/// Decodes webhook JSON and validates names, HTTPS endpoints, and known event types.
 public struct WebhookConfigurationLoader: Sendable {
     public init() {}
 
+    /// Loads a complete desired configuration and validates its basic shape.
+    ///
+    /// Duplicate names and remote differences are checked by release automation.
+    /// Unreadable or malformed JSON can throw Foundation errors.
     public func load(from path: String) throws -> WebhookSyncConfiguration {
         let url = URL(fileURLWithPath: path)
         guard FileManager.default.fileExists(atPath: url.path) else {
@@ -80,6 +92,9 @@ public struct WebhookConfigurationLoader: Sendable {
     }
 }
 
+/// A captured environment used to resolve webhook secrets only when applying changes.
+///
+/// Descriptions redact values. The accessor returns the actual secret and must not be logged.
 public struct SecretEnvironment: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
     private var values: [String: String]
 
@@ -95,6 +110,9 @@ public struct SecretEnvironment: Sendable, CustomStringConvertible, CustomDebugS
         self.values = values
     }
 
+    /// Returns a nonempty secret or throws for a missing environment variable.
+    ///
+    /// The returned string is sensitive even though this container's descriptions are redacted.
     public func secret(named name: String) throws -> String {
         guard let value = values[name], !value.isEmpty else {
             throw ApogeeError.missingEnvironmentVariable(name)

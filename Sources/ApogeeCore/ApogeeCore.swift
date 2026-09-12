@@ -1,8 +1,10 @@
+/// Whether release automation only plans changes or also performs verified writes.
 public enum OperationMode: Sendable, Hashable {
     case dryRun
     case apply
 }
 
+/// An App Store Connect platform; raw values match the API and configuration JSON.
 public enum Platform: String, Sendable, Hashable, Codable {
     case iOS = "IOS"
     case macOS = "MAC_OS"
@@ -10,11 +12,13 @@ public enum Platform: String, Sendable, Hashable, Codable {
     case visionOS = "VISION_OS"
 }
 
+/// An explicit app resource ID or a bundle ID that must resolve to exactly one app.
 public enum AppLookup: Sendable, Hashable {
     case appID(String)
     case bundleID(String)
 }
 
+/// A capability that cannot yet execute through Apogee safely.
 public enum UnsupportedCapability: String, Error, Sendable, CustomStringConvertible {
     case screenshotUpload
     case ciWorkflowSync

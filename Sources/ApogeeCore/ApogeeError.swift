@@ -1,5 +1,12 @@
 import Foundation
 
+/// Domain validation and categorized App Store Connect request failures.
+///
+/// Switch on cases and associated values, not description text. Request diagnostics
+/// retain operation names and HTTP status without raw headers, bodies, or wrapped
+/// transport errors. Local file loaders can also throw Foundation errors, and custom
+/// API implementations can throw their own errors. Cancellation remains
+/// `CancellationError`; a failed write does not imply that no remote change occurred.
 public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, LocalizedError {
     case missingEnvironmentVariable(String)
     case missingCredentialFile(String)
@@ -20,6 +27,7 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case reviewSubmissionStateUnexpected(id: String, state: String?, expected: [String])
     case reviewSubmissionVersionMismatch(id: String, expectedVersionID: String, actualVersionID: String?)
     case duplicateWebhookName(String, source: String)
+    /// A destructive plan has no matching token, including a stale dry-run token.
     case applyRequiresPlanToken
     case destructiveApplyRequiresConfirmation
     case appStoreConnectRequestFailed(operation: String)
@@ -27,6 +35,7 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case appStoreConnectHTTPError(operation: String, statusCode: Int)
     case appStoreConnectResponseDecodingFailed(operation: String, statusCode: Int)
     case appStoreConnectDateDecodingFailed(operation: String, statusCode: Int)
+    /// Required linkage, pagination, or read-back state could not be verified safely.
     case unexpectedAPIResponse(String)
     case invalidWebhookEventType(String)
     case unsupported(UnsupportedCapability)

@@ -1,5 +1,9 @@
 import Foundation
 
+/// Portable repository defaults loaded from an optional `apogee.json` file.
+///
+/// Relative content paths resolve against the configuration file when loaded with
+/// ``load(from:)``. Direct construction or JSON decoding does not establish that base.
 public struct ApogeeConfiguration: Codable, Sendable, Hashable {
     public static let defaultPath = "apogee.json"
     public static let defaultMetadataPath = "AppStore/Metadata"
@@ -71,6 +75,9 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
         )
     }
 
+    /// Loads the selected configuration, or returns defaults when the implicit default file is absent.
+    ///
+    /// An explicitly supplied missing path throws rather than silently using defaults.
     public static func loadIfPresent(
         path: String? = nil,
         fileManager: FileManager = .default
@@ -83,6 +90,9 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
         return try load(from: resolvedPath)
     }
 
+    /// Decodes JSON and anchors relative content paths to the containing directory.
+    ///
+    /// Throws for missing files, unreadable data, or malformed configuration.
     public static func load(from path: String) throws -> Self {
         guard FileManager.default.fileExists(atPath: path) else {
             throw ApogeeError.invalidPath(path)
@@ -102,6 +112,7 @@ public struct ApogeeConfiguration: Codable, Sendable, Hashable {
     }
 }
 
+/// Names of environment variables containing team API credentials, never their values.
 public struct AppStoreConnectCredentialEnvironment: Codable, Sendable, Hashable {
     public var keyIDEnvironment: String
     public var issuerIDEnvironment: String

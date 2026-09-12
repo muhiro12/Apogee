@@ -6,40 +6,27 @@ package struct OpenAPITrimResult {
 }
 
 package struct OpenAPITrimmer {
+    // Keep only operations called by the adapter. Unsupported capabilities do
+    // not reserve generated endpoints; add them with their verified implementation.
     private let selectedOperationIDs: Set<String> = [
+        "appStoreVersionLocalizations_updateInstance",
+        "appStoreVersions_appStoreVersionLocalizations_getToManyRelated",
+        "appStoreVersions_build_updateToOneRelationship",
+        "appStoreVersions_getInstance",
+        "apps_appStoreVersions_getToManyRelated",
         "apps_getCollection",
         "apps_getInstance",
-        "apps_appStoreVersions_getToManyRelated",
         "apps_webhooks_getToManyRelated",
-        "appStoreVersions_getInstance",
-        "appStoreVersions_appStoreVersionLocalizations_getToManyRelated",
-        "appStoreVersions_build_getToOneRelated",
-        "appStoreVersions_build_updateToOneRelationship",
-        "appStoreVersionLocalizations_getInstance",
-        "appStoreVersionLocalizations_updateInstance",
         "builds_getCollection",
         "builds_getInstance",
-        "appScreenshotSets_createInstance",
-        "appScreenshotSets_getInstance",
-        "appScreenshotSets_deleteInstance",
-        "appScreenshotSets_appScreenshots_getToManyRelated",
-        "appScreenshotSets_appScreenshots_replaceToManyRelationship",
-        "appScreenshots_createInstance",
-        "appScreenshots_getInstance",
-        "appScreenshots_updateInstance",
-        "appScreenshots_deleteInstance",
-        "appStoreVersionLocalizations_appScreenshotSets_getToManyRelated",
-        "reviewSubmissions_getCollection",
+        "reviewSubmissionItems_createInstance",
         "reviewSubmissions_createInstance",
+        "reviewSubmissions_getCollection",
         "reviewSubmissions_getInstance",
         "reviewSubmissions_updateInstance",
-        "reviewSubmissionItems_createInstance",
-        "reviewSubmissionItems_updateInstance",
-        "reviewSubmissionItems_deleteInstance",
         "webhooks_createInstance",
-        "webhooks_getInstance",
-        "webhooks_updateInstance",
         "webhooks_deleteInstance",
+        "webhooks_updateInstance",
     ]
 
     private let methodNames: Set<String> = ["get", "post", "patch", "delete"]

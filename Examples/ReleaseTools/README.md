@@ -15,6 +15,12 @@ swift package --package-path Examples/ReleaseTools plugin \
 Neither command uses API credentials or contacts App Store Connect. SwiftPM may
 download package dependencies. The plugin executes in the consumer package
 directory, including when invoked with `--package-path` from another directory.
+The executable also compiles the DocC release-notes example against the public
+library without executing its account-dependent function.
+`CustomTransport.swift` verifies the optional `ClientTransport` initializer from
+outside the Apogee package; its direct OpenAPI runtime dependency can be removed
+when that example is omitted. The default adapter and command plugin do not need
+an adopter to declare that extra dependency.
 
 For adoption, place the package under the app repository's `Tools/Release`, change
 the local dependency to an exact published Apogee tag, and commit the consumer's

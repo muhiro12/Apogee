@@ -192,6 +192,7 @@ Before declaring the documented interfaces stable:
   App Store Connect for the adopting app. Verify an approved metadata update on
   an editable version, including read-back and a fresh dry run with no changes.
 - Review the documented API, CLI, configuration, and safety guarantees in the
+  [public API contract](public-api.md) and
   [versioning contract](../README.md#versioning-and-stability). Keep unsupported
   operations explicit and preserve the adopter's existing release process.
 

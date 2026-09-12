@@ -4,6 +4,11 @@ import HTTPTypes
 import OpenAPIRuntime
 import OpenAPIURLSession
 
+/// The production App Store Connect adapter backed by the package-scoped generated client.
+///
+/// Prefer ``ReleaseAutomation`` for guarded operations. Direct mutation methods
+/// write immediately. The default transport is an ephemeral URLSession without a
+/// URL cache. Cancellation is preserved; other request failures use ``ApogeeError``.
 public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
     private let serverURL: URL
     private let transport: any ClientTransport
@@ -16,6 +21,11 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         return .init(configuration: .init(session: .init(configuration: configuration)))
     }()
 
+    /// Creates the default uncached adapter; credentials are validated when first used.
+    ///
+    /// - Parameters:
+    ///   - credentials: A team API key source, read and validated when first used.
+    ///   - serverURL: A trusted endpoint. Requests carry authorization credentials.
     public init(
         credentials: AppStoreConnectCredentials,
         serverURL: URL = URL(string: "https://api.appstoreconnect.apple.com")!
@@ -23,6 +33,16 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         self.init(credentials: credentials, serverURL: serverURL, transport: Self.defaultTransport)
     }
 
+    /// Creates an adapter with an explicit OpenAPI runtime transport.
+    ///
+    /// The transport controls network and cache behavior and receives sensitive
+    /// authorization data. Custom implementations need a direct dependency on
+    /// `OpenAPIRuntime` (and typically `HTTPTypes`) and must not log secrets.
+    ///
+    /// - Parameters:
+    ///   - credentials: A team API key source, read and validated when first used.
+    ///   - serverURL: A trusted endpoint that receives authorization credentials.
+    ///   - transport: The caller-owned network/cache implementation.
     public init(
         credentials: AppStoreConnectCredentials,
         serverURL: URL = URL(string: "https://api.appstoreconnect.apple.com")!,

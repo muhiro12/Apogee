@@ -1,5 +1,6 @@
 import Foundation
 
+/// A provisional local screenshot group, identified by locale and display directory.
 public struct ScreenshotSet: Sendable, Hashable {
     public var locale: String
     public var displayType: String
@@ -12,6 +13,7 @@ public struct ScreenshotSet: Sendable, Hashable {
     }
 }
 
+/// Provisional file inventory information, not a validated or uploaded screenshot.
 public struct ScreenshotFile: Sendable, Hashable {
     public var path: String
     public var fileName: String
@@ -24,9 +26,15 @@ public struct ScreenshotFile: Sendable, Hashable {
     }
 }
 
+/// Inventories local screenshot files for planning only.
+///
+/// This provisional loader does not validate image content, dimensions, or upload readiness.
 public struct ScreenshotLoader: Sendable {
     public init() {}
 
+    /// Lists PNG and JPEG paths under locale/display-type directories in sorted order.
+    ///
+    /// This provisional inventory reads file sizes only and cannot prove upload readiness.
     public func load(from path: String) throws -> [ScreenshotSet] {
         let rootURL = URL(fileURLWithPath: path)
         var isDirectory: ObjCBool = false

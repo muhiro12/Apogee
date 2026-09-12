@@ -1,6 +1,10 @@
 import Crypto
 import Foundation
 
+/// A proposed change set derived from observed remote state.
+///
+/// A plan is not an executable transaction or proof of approval. Values can contain
+/// unpublished metadata; keep plans and rendered output within the adopting repository.
 public struct ReleasePlan: Sendable, Hashable {
     public var title: String
     public var actions: [PlannedAction]
@@ -10,6 +14,9 @@ public struct ReleasePlan: Sendable, Hashable {
         self.actions = actions
     }
 
+    /// Whether any action creates, updates, deletes, or attaches a resource.
+    ///
+    /// Verification, unchanged, and unsupported entries alone do not count as changes.
     public var hasChanges: Bool {
         actions.contains { action in
             switch action.kind {
@@ -21,12 +28,18 @@ public struct ReleasePlan: Sendable, Hashable {
         }
     }
 
+    /// Whether any action explicitly requires destructive-change confirmation.
     public var hasDestructiveActions: Bool {
         actions.contains { action in
             action.isDestructive
         }
     }
 
+    /// An opaque confirmation fingerprint of this plan's title and action values.
+    ///
+    /// Ordering alone does not change the token. Obtain a fresh token after any state
+    /// or package-version change; its encoding is not a persistent compatibility format.
+    /// The token is an accidental-change guard, not authorization or a remote-state lock.
     public var token: String {
         let planParts = [
             Self.tokenPart("ReleasePlanTokenV2"),
@@ -60,6 +73,7 @@ public struct ReleasePlan: Sendable, Hashable {
     }
 }
 
+/// One observed difference or verification in a release plan.
 public struct PlannedAction: Sendable, Hashable {
     public var kind: PlannedActionKind
     public var resource: String
@@ -88,6 +102,7 @@ public struct PlannedAction: Sendable, Hashable {
     }
 }
 
+/// The operation or observation represented by a planned action.
 public enum PlannedActionKind: String, Sendable, Hashable {
     case create
     case update
@@ -98,6 +113,9 @@ public enum PlannedActionKind: String, Sendable, Hashable {
     case unsupported
 }
 
+/// Formats plans and status for people, escaping terminal control characters.
+///
+/// The text layout is not a machine-readable API. Metadata values are not redacted.
 public struct PlanRenderer: Sendable {
     public init() {}
 

@@ -23,6 +23,13 @@ Apogee uses, creates a temporary Swift package under `.build/`, resolves and
 runs Swift OpenAPI Generator from that temporary package, and copies only the
 generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
 
+Generated declarations use `accessModifier: package`: only targets in Apogee can
+use them. The supported consumer boundary is `ApogeeCore`. Change generation
+configuration and rerun this tool instead of editing generated Swift directly.
+For a reproducible configuration-only update, use `--spec-url file:///.../spec.zip`
+with a locally retained baseline archive. Keep the archive and extracted JSON
+outside source control, and compare the reported SHA-256 before accepting output.
+
 The updater fails closed when the archive or extracted specification exceeds its
 resource limits. Downloads and individual JSON documents are limited to 64 MiB,
 archive listings to 1 MiB, candidate JSON entries to 16, and JSON traversal to
@@ -30,7 +37,10 @@ archive listings to 1 MiB, candidate JSON entries to 16, and JSON traversal to
 specification while preventing an alternate or compromised archive from
 consuming unbounded maintainer or CI resources.
 
-The trim step keeps the selected fields and operations but removes OpenAPI
+The trim step keeps only the operations called by the production adapter and
+their transitive referenced schemas. Unsupported screenshot uploads and unused
+resource endpoints are not generated speculatively; add an operation when its
+adapter implementation and verification require it. The trim step removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently
 turns those markers into Swift deprecation annotations that are then referenced
 inside generated initializers, producing noisy build warnings for package users.
@@ -45,3 +55,4 @@ Current generation baseline:
 - Apple zip `Last-Modified`: `2026-06-12 22:26:57 GMT`
 - App Store Connect API version in spec: `4.4`
 - Swift OpenAPI Generator version: `1.12.2`
+- Specification SHA-256: `ed0202ef37155b9334772482d2ea0be688c3046b284c895bcbea5455fbe54fd8`
