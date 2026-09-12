@@ -14,6 +14,11 @@ struct AppStoreConnectDateTranscoder: DateTranscoder {
         if let date = try? fractionalSeconds.decode(value) {
             return date
         }
-        return try wholeSeconds.decode(value)
+        if let date = try? wholeSeconds.decode(value) {
+            return date
+        }
+        throw AppStoreConnectDateDecodingError()
     }
 }
+
+struct AppStoreConnectDateDecodingError: Error {}

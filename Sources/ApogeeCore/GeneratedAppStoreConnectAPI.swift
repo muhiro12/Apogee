@@ -244,12 +244,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
                 relationships: .init(app: .init(data: .init(id: appID, _type: .apps))),
                 _type: .webhooks
             ))
-            let output: Operations.webhooks_createInstance.Output
-            do {
-                output = try await client().webhooks_createInstance(.init(body: .json(request)))
-            } catch let error as ClientError {
-                throw sanitizedWebhookError(error, operation: "create a webhook")
-            }
+            let output = try await client().webhooks_createInstance(.init(body: .json(request)))
             return try mapWebhook(output.created.body.json.data)
         }
     }
@@ -267,15 +262,10 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
                 id: id,
                 _type: .webhooks
             ))
-            let output: Operations.webhooks_updateInstance.Output
-            do {
-                output = try await client().webhooks_updateInstance(.init(
-                    path: .init(id: id),
-                    body: .json(request)
-                ))
-            } catch let error as ClientError {
-                throw sanitizedWebhookError(error, operation: "update a webhook")
-            }
+            let output = try await client().webhooks_updateInstance(.init(
+                path: .init(id: id),
+                body: .json(request)
+            ))
             return try mapWebhook(output.ok.body.json.data)
         }
     }
@@ -321,8 +311,19 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
             if let underlying = error.underlyingError as? ApogeeError {
                 throw underlying
             }
-            if error.underlyingError is CancellationError {
+            if error.underlyingError is CancellationError || (error.underlyingError as? URLError)?.code == .cancelled {
                 throw CancellationError()
+            }
+            if error.underlyingError is AppStoreConnectTransportError || error.underlyingError is URLError {
+                throw ApogeeError.appStoreConnectTransportFailed(operation: operation)
+            }
+            if let response = error.response {
+                if error.underlyingError is AppStoreConnectDateDecodingError {
+                    throw ApogeeError.appStoreConnectDateDecodingFailed(operation: operation, statusCode: response.status.code)
+                }
+                if error.underlyingError is DecodingError {
+                    throw ApogeeError.appStoreConnectResponseDecodingFailed(operation: operation, statusCode: response.status.code)
+                }
             }
             throw ApogeeError.appStoreConnectRequestFailed(operation: operation)
         } catch {
@@ -406,19 +407,9 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
 
         return eventType
     }
-
-    private func sanitizedWebhookError(_ error: ClientError, operation: String) -> any Error {
-        if let apogeeError = error.underlyingError as? ApogeeError {
-            return apogeeError
-        }
-
-        if error.underlyingError is CancellationError {
-            return CancellationError()
-        }
-
-        return ApogeeError.appStoreConnectRequestFailed(operation: operation)
-    }
 }
+
+private struct AppStoreConnectTransportError: Error {}
 
 private struct AppStoreConnectAuthorizationMiddleware: ClientMiddleware {
     var tokenProvider: AppStoreConnectTokenProvider
@@ -432,7 +423,19 @@ private struct AppStoreConnectAuthorizationMiddleware: ClientMiddleware {
     ) async throws -> (HTTPResponse, HTTPBody?) {
         var request = request
         request.headerFields[.authorization] = "Bearer \(try await tokenProvider.token())"
-        let response = try await next(request, body, baseURL)
+        let response: (HTTPResponse, HTTPBody?)
+        do {
+            response = try await next(request, body, baseURL)
+        } catch let error as ClientError {
+            if let underlying = error.underlyingError as? ApogeeError {
+                throw underlying
+            }
+            if error.underlyingError is CancellationError || (error.underlyingError as? URLError)?.code == .cancelled {
+                throw CancellationError()
+            }
+            // Classify at the transport boundary without retaining request data.
+            throw AppStoreConnectTransportError()
+        }
         guard (200..<300).contains(response.0.status.code) else {
             throw ApogeeError.appStoreConnectHTTPError(operation: operationID, statusCode: response.0.status.code)
         }

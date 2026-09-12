@@ -453,7 +453,7 @@ func webhookCreateFailureDoesNotExposeSecret() async throws {
         _ = try await api.createWebhook(appID: "app-1", webhook: webhook, secret: secret)
         Issue.record("Expected webhook creation to fail.")
     } catch {
-        #expect(error as? ApogeeError == .appStoreConnectRequestFailed(operation: "create a webhook"))
+        #expect(error as? ApogeeError == .appStoreConnectTransportFailed(operation: "create a webhook"))
         #expect(!String(describing: error).contains(secret))
         #expect(!String(reflecting: error).contains(secret))
     }
@@ -480,7 +480,7 @@ func webhookUpdateFailureDoesNotExposeSecret() async throws {
         _ = try await api.updateWebhook(id: "webhook-1", webhook: webhook, secret: secret)
         Issue.record("Expected webhook update to fail.")
     } catch {
-        #expect(error as? ApogeeError == .appStoreConnectRequestFailed(operation: "update a webhook"))
+        #expect(error as? ApogeeError == .appStoreConnectTransportFailed(operation: "update a webhook"))
         #expect(!String(describing: error).contains(secret))
         #expect(!String(reflecting: error).contains(secret))
     }

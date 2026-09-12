@@ -23,7 +23,10 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case applyRequiresPlanToken
     case destructiveApplyRequiresConfirmation
     case appStoreConnectRequestFailed(operation: String)
+    case appStoreConnectTransportFailed(operation: String)
     case appStoreConnectHTTPError(operation: String, statusCode: Int)
+    case appStoreConnectResponseDecodingFailed(operation: String, statusCode: Int)
+    case appStoreConnectDateDecodingFailed(operation: String, statusCode: Int)
     case unexpectedAPIResponse(String)
     case invalidWebhookEventType(String)
     case unsupported(UnsupportedCapability)
@@ -74,8 +77,14 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "Destructive apply requires --allow-destructive."
         case let .appStoreConnectRequestFailed(operation):
             "App Store Connect request failed while attempting to \(operation)."
+        case let .appStoreConnectTransportFailed(operation):
+            "App Store Connect transport failed while attempting to \(operation). Check network connectivity before retrying."
         case let .appStoreConnectHTTPError(operation, statusCode):
             "App Store Connect returned HTTP \(statusCode) for \(operation). Check API key access, the resource state, and rate limits before retrying."
+        case let .appStoreConnectResponseDecodingFailed(operation, statusCode):
+            "App Store Connect response decoding failed for \(operation) (HTTP \(statusCode)): invalid JSON or unexpected field types."
+        case let .appStoreConnectDateDecodingFailed(operation, statusCode):
+            "App Store Connect response decoding failed for \(operation) (HTTP \(statusCode)): invalid date format."
         case let .unexpectedAPIResponse(message):
             "Unexpected App Store Connect API response: \(message)."
         case let .invalidWebhookEventType(eventType):

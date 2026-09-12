@@ -124,8 +124,13 @@ func reviewSubmissionsRejectInvalidDatesWithoutExposingResponses(date: String) a
             "links": ["self": "unused"],
         ])
     }
-    await #expect(throws: ApogeeError.appStoreConnectRequestFailed(operation: "reviewSubmissions")) {
+    do {
         _ = try await testAPI(transport: transport).reviewSubmissions(appID: "app-1", platform: .iOS)
+        Issue.record("Expected invalid date decoding to fail.")
+    } catch {
+        #expect(error as? ApogeeError == .appStoreConnectDateDecodingFailed(operation: "reviewSubmissions", statusCode: 200))
+        #expect(error.localizedDescription.contains("invalid date format"))
+        #expect(!String(reflecting: error).contains("not-a-date-response-sentinel"))
     }
     #expect(await transport.requests.count == 1)
 }
@@ -208,9 +213,54 @@ func metadataTransportErrorsDoNotExposeReleaseTextOrAuthorization() async throws
         )
         Issue.record("Expected a transport error.")
     } catch {
-        #expect(error as? ApogeeError == .appStoreConnectRequestFailed(operation: "updateLocalization"))
+        #expect(error as? ApogeeError == .appStoreConnectTransportFailed(operation: "updateLocalization"))
         #expect(!String(reflecting: error).contains("unpublished-release-sentinel"))
         #expect(!String(reflecting: error).contains("Bearer"))
+    }
+}
+
+@Test
+func responseDecodingFailureDoesNotExposeRequestOrResponseSecrets() async throws {
+    let transport = StubTransport { request, body, _ in
+        #expect(request.headerFields[.authorization]?.hasPrefix("Bearer ") == true)
+        #expect(body?.contains("unpublished-release-sentinel") == true)
+        return try jsonResponse([
+            "data": ["type": "appStoreVersionLocalizations", "id": ["response-secret-sentinel"]],
+            "links": ["self": "unused"],
+        ])
+    }
+    do {
+        _ = try await testAPI(transport: transport).updateLocalization(
+            id: "locale-1", patch: .init(releaseNotes: "unpublished-release-sentinel")
+        )
+        Issue.record("Expected response decoding to fail.")
+    } catch {
+        #expect(error as? ApogeeError == .appStoreConnectResponseDecodingFailed(operation: "updateLocalization", statusCode: 200))
+        #expect(error.localizedDescription.contains("response decoding failed"))
+        for secret in ["response-secret-sentinel", "unpublished-release-sentinel", "Bearer"] {
+            #expect(!String(reflecting: error).contains(secret))
+            #expect(!error.localizedDescription.contains(secret))
+        }
+    }
+}
+
+@Test(arguments: ["{response-secret-sentinel", "{}", "null"])
+func malformedResponsesFailClosed(json: String) async throws {
+    let transport = StubTransport { _, _, _ in
+        (.init(status: .ok, headerFields: [.contentType: "application/json"]), .init(json))
+    }
+    await #expect(throws: ApogeeError.appStoreConnectResponseDecodingFailed(operation: "apps", statusCode: 200)) {
+        _ = try await testAPI(transport: transport).apps(bundleID: "com.example.app")
+    }
+}
+
+@Test
+func networkCancellationRemainsCancellation() async throws {
+    let transport = StubTransport { _, _, _ in
+        throw URLError(.cancelled)
+    }
+    await #expect(throws: CancellationError.self) {
+        _ = try await testAPI(transport: transport).app(id: "app-1")
     }
 }
 
