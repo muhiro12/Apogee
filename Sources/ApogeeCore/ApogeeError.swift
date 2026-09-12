@@ -5,6 +5,8 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
     case missingCredentialFile(String)
     case invalidPrivateKey(String)
     case invalidPath(String)
+    case emptyMetadata
+    case invalidWebhookConfiguration
     case appNotFound(bundleID: String)
     case appAmbiguous(bundleID: String, matches: Int)
     case appStoreVersionNotFound(appID: String, version: String)
@@ -36,6 +38,10 @@ public enum ApogeeError: Error, Sendable, CustomStringConvertible, Equatable, Lo
             "Invalid App Store Connect private key: \(reason)."
         case let .invalidPath(path):
             "Invalid path: \(path)."
+        case .emptyMetadata:
+            "No metadata files matched the selected fields. Check the metadata path and file names."
+        case .invalidWebhookConfiguration:
+            "Each webhook requires a name, an HTTPS URL with a host, event types, and a secret environment variable name."
         case let .appNotFound(bundleID):
             "No App Store Connect app matched bundle id \(bundleID)."
         case let .appAmbiguous(bundleID, matches):

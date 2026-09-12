@@ -3,7 +3,7 @@
     {
       "name": "release",
       "url": "https://example.com/release",
-      "eventTypes": ["BUILD_STATE_CHANGED"],
+      "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
       "enabled": true,
       "secretEnvironmentVariable": "WEBHOOK_SECRET"
     }

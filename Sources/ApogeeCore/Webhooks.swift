@@ -1,3 +1,4 @@
+import AppStoreConnectGenerated
 import Foundation
 
 public struct WebhookSyncConfiguration: Codable, Sendable, Hashable {
@@ -62,7 +63,20 @@ public struct WebhookConfigurationLoader: Sendable {
         }
 
         let data = try Data(contentsOf: url)
-        return try JSONDecoder().decode(WebhookSyncConfiguration.self, from: data)
+        let configuration = try JSONDecoder().decode(WebhookSyncConfiguration.self, from: data)
+        for webhook in configuration.webhooks {
+            guard !webhook.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  !webhook.secretEnvironmentVariable.isEmpty,
+                  !webhook.eventTypes.isEmpty,
+                  let url = URLComponents(string: webhook.url),
+                  url.scheme == "https", url.host?.isEmpty == false else {
+                throw ApogeeError.invalidWebhookConfiguration
+            }
+            for eventType in webhook.eventTypes where Components.Schemas.WebhookEventType(rawValue: eventType) == nil {
+                throw ApogeeError.invalidWebhookEventType(eventType)
+            }
+        }
+        return configuration
     }
 }
 

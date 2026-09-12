@@ -400,14 +400,14 @@ func webhookPlanRendersSecretEnvironmentNameWithoutSecretValue() async throws {
         {
           "name": "release",
           "url": "https://webhook-user:webhook-password@example.com/path-secret?signature=query-secret",
-          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET",
           "rotateSecret": true
         },
         {
           "name": "obsolete",
           "url": "https://example.com/obsolete",
-          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET"
         }
       ]
@@ -551,13 +551,13 @@ func webhookSyncRejectsDuplicateDesiredNames() async throws {
         {
           "name": "release",
           "url": "https://example.com/one",
-          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET"
         },
         {
           "name": "release",
           "url": "https://example.com/two",
-          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET"
         }
       ]
@@ -600,7 +600,7 @@ private func writeWebhookConfig(url: String) throws -> String {
         {
           "name": "release",
           "url": "\(url)",
-          "eventTypes": ["BUILD_STATE_CHANGED"],
+          "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"],
           "secretEnvironmentVariable": "WEBHOOK_SECRET"
         }
       ]
@@ -650,6 +650,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     private(set) var createdReviewSubmissionIDs: [String] = []
     private(set) var attachedBuildIDs: [String] = []
     private(set) var submittedReviewSubmissionIDs: [String] = []
+    private(set) var updatedWebhookIDs: [String] = []
 
     init(
         locales: [String] = ["en-US", "ja"],
@@ -682,8 +683,8 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         ]
         webhooksByAppID = [
             "app-1": [
-                .init(id: "webhook-1", name: "release", url: "https://example.com/release", eventTypes: ["BUILD_STATE_CHANGED"], enabled: true),
-                .init(id: "webhook-2", name: "obsolete", url: "https://example.com/obsolete", eventTypes: ["BUILD_STATE_CHANGED"], enabled: true),
+                .init(id: "webhook-1", name: "release", url: "https://example.com/release", eventTypes: ["BUILD_UPLOAD_STATE_UPDATED"], enabled: true),
+                .init(id: "webhook-2", name: "obsolete", url: "https://example.com/obsolete", eventTypes: ["BUILD_UPLOAD_STATE_UPDATED"], enabled: true),
             ],
         ]
         reviewSubmissionsByAppID = [
@@ -818,6 +819,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     }
 
     func updateWebhook(id: String, webhook: DesiredWebhook, secret: String?) async throws -> AppStoreConnectWebhook {
+        updatedWebhookIDs.append(id)
         for (appID, webhooks) in webhooksByAppID {
             guard let index = webhooks.firstIndex(where: { $0.id == id }) else {
                 continue

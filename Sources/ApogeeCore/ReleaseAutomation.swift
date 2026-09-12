@@ -61,20 +61,11 @@ public struct ReleaseAutomation: Sendable {
         platform: Platform = .iOS,
         options: ReleaseExecutionOptions
     ) async throws -> ReleasePlan {
-        let localMetadata = try metadataLoader.load(from: metadataPath)
-            .map { metadata in
-                metadata.filtered(fields: fields)
-            }
-            .filter { metadata in
-                metadata.releaseNotes != nil
-                    || metadata.description != nil
-                    || metadata.keywords != nil
-                    || metadata.promotionalText != nil
-            }
+        let localMetadata = try metadataLoader.load(from: metadataPath, fields: fields)
 
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
         let remoteLocalizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
-        let localizationsByLocale = Dictionary(uniqueKeysWithValues: remoteLocalizations.map { ($0.locale, $0) })
+        let localizationsByLocale = try uniqueLocalizations(remoteLocalizations, key: \.locale)
         var actions: [PlannedAction] = []
         var patches: [(remote: AppStoreConnectLocalization, patch: MetadataPatch)] = []
 
@@ -372,14 +363,21 @@ public struct ReleaseAutomation: Sendable {
             return plan
         }
 
+        var secrets: [String: String] = [:]
+        for desired in desiredWebhooks where remoteByName[desired.name] == nil || desired.rotateSecret {
+            secrets[desired.name] = try secretEnvironment.secret(named: desired.secretEnvironmentVariable)
+        }
+
         for desired in desiredWebhooks {
             if let remote = remoteByName[desired.name] {
                 if webhookNeedsUpdate(remote: remote, desired: desired) {
-                    let secret = desired.rotateSecret ? try secretEnvironment.secret(named: desired.secretEnvironmentVariable) : nil
+                    let secret = secrets[desired.name]
                     _ = try await api.updateWebhook(id: remote.id, webhook: desired, secret: secret)
                 }
             } else {
-                let secret = try secretEnvironment.secret(named: desired.secretEnvironmentVariable)
+                guard let secret = secrets[desired.name] else {
+                    throw ApogeeError.missingEnvironmentVariable(desired.secretEnvironmentVariable)
+                }
                 _ = try await api.createWebhook(appID: app.id, webhook: desired, secret: secret)
             }
         }
@@ -586,7 +584,7 @@ public struct ReleaseAutomation: Sendable {
         _ patches: [(remote: AppStoreConnectLocalization, patch: MetadataPatch)],
         readBack: [AppStoreConnectLocalization]
     ) throws {
-        let readBackByID = Dictionary(uniqueKeysWithValues: readBack.map { ($0.id, $0) })
+        let readBackByID = try uniqueLocalizations(readBack, key: \.id)
 
         for item in patches {
             guard let readBackLocalization = readBackByID[item.remote.id] else {
@@ -623,6 +621,19 @@ public struct ReleaseAutomation: Sendable {
         guard options.planToken == plan.token else {
             throw ApogeeError.applyRequiresPlanToken
         }
+    }
+
+    private func uniqueLocalizations(
+        _ localizations: [AppStoreConnectLocalization],
+        key: KeyPath<AppStoreConnectLocalization, String>
+    ) throws -> [String: AppStoreConnectLocalization] {
+        var result: [String: AppStoreConnectLocalization] = [:]
+        for localization in localizations {
+            guard result.updateValue(localization, forKey: localization[keyPath: key]) == nil else {
+                throw ApogeeError.unexpectedAPIResponse("Duplicate localization identity in App Store Connect response.")
+            }
+        }
+        return result
     }
 
     private func uniqueWebhooksByName(
