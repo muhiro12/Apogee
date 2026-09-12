@@ -2,8 +2,10 @@ name: Verify
 
 on:
   push:
+    branches-ignore: [main]
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -13,6 +15,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  release-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check versioning without publishing
+        run: bash Tests/Integration/release-automation.sh
+
   package:
     name: Xcode ${{ matrix.xcode }}
     runs-on: macos-26

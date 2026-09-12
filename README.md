@@ -247,9 +247,11 @@ command invocation.
 
 ## Versioning and Stability
 
-Apogee starts at `1.0.0` and follows semantic versioning for its documented
-package products, CLI commands and options, configuration keys, default
-repository layout, and release-safety behavior. New commands, options,
+Release tags use `major.minor.patch` without a `v` prefix. Before `1.0.0`, public
+interfaces may change between minor versions; review the release notes and pin
+an exact version. Starting with `1.0.0`, Apogee follows semantic versioning for
+its documented package products, CLI commands and options, configuration keys,
+default repository layout, and release-safety behavior. New commands, options,
 configuration keys, and supported App Store Connect operations can be added in
 minor releases when they are backward-compatible. Renaming or removing existing
 public surfaces, changing documented defaults, or weakening the dry-run/apply
@@ -258,6 +260,18 @@ safety model requires a new major version.
 The Git tag and GitHub Release are the package version source of truth. Avoid
 adding a separate checked-in source version string or README "current version"
 value that release automation must keep in sync with tags.
+
+The [Release workflow](.github/workflows/release.yml) verifies `main` with the
+same checks as pull requests before publishing. The first release requires an
+explicit version, which can be supplied through
+**Actions → Release → Run workflow** on `main`.
+After that, a push to `main` automatically increments the minor version and
+resets the patch to zero, such as `1.0.0` to `1.1.0`. To select a major or patch
+version for a push, add a `Release-Version: 2.0.0` trailer to that push's final
+commit message. Select the major version before merging a breaking change to
+`main`. A manually dispatched version takes precedence over the trailer.
+Rerunning a completed release reuses its tag. Releases contain source archives;
+the workflow does not upload compiled binaries or contact App Store Connect.
 
 Apogee's minimum Swift tools version tracks the Swift version bundled with the
 first official release of the Xcode major series that Apogee supports. The
