@@ -320,3 +320,5 @@ swift test
 
 The full local verification contract, including maintainer-tool tests, CLI smoke
 checks, and a separate consumer build, is documented in [AGENTS.md](AGENTS.md).
+CI and dependency alert ownership are documented in
+[dependency maintenance](docs/dependency-maintenance.md).
