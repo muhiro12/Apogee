@@ -250,15 +250,22 @@ command invocation.
 
 ## Versioning and Stability
 
-Release tags use `major.minor.patch` without a `v` prefix. Before `1.0.0`, public
+Release tags and titles use `major.minor` when the patch is zero, such as `1.0`,
+and `major.minor.patch` for a nonzero patch, such as `1.0.1`, without a `v` prefix.
+The omitted patch means zero for semantic version ordering. Before `1.0`, public
 interfaces may change between minor versions; review the release notes and pin
-an exact version. Starting with `1.0.0`, Apogee follows semantic versioning for
+an exact version. Starting with `1.0`, Apogee follows semantic versioning for
 its documented package products, CLI commands and options, configuration keys,
 default repository layout, and release-safety behavior. New commands, options,
 configuration keys, and supported App Store Connect operations can be added in
 minor releases when they are backward-compatible. Renaming or removing existing
 public surfaces, changing documented defaults, or weakening the dry-run/apply
 safety model requires a new major version.
+
+SwiftPM accepts these short Git tags but requires three components in manifest
+version requirements: use `exact: "1.0.0"` to consume tag `1.0`. Its generated
+`Package.resolved` also records the normalized `1.0.0` version. Keep those
+machine-readable versions intact; the public tag and release title remain `1.0`.
 
 The Git tag and GitHub Release are the package version source of truth. Avoid
 adding a separate checked-in source version string or README "current version"
@@ -269,12 +276,20 @@ same checks as pull requests before publishing. The first release requires an
 explicit version, which can be supplied through
 **Actions → Release → Run workflow** on `main`.
 After that, a push to `main` automatically increments the minor version and
-resets the patch to zero, such as `1.0.0` to `1.1.0`. To select a major or patch
-version for a push, add a `Release-Version: 2.0.0` trailer to that push's final
-commit message. Select the major version before merging a breaking change to
-`main`. A manually dispatched version takes precedence over the trailer.
+omits the zero patch, such as `1.0` or `1.0.1` to `1.1`. To select a major or patch
+version for a push, add a `Release-Version: 2.0` or `Release-Version: 1.0.1`
+trailer to that push's final commit message. Select the major version before
+merging a breaking change to `main`. A manually dispatched version takes
+precedence over the trailer.
+Explicit zero-patch inputs such as `2.0.0` are normalized to `2.0`. Legacy
+three-component tags are still recognized when ordering versions; conflicting
+short and zero-patch aliases fail rather than changing a published revision.
 Rerunning a completed release reuses its tag. Releases contain source archives;
 the workflow does not upload compiled binaries or contact App Store Connect.
+
+For documentation or release-automation maintenance that should not publish a
+package, use a `Release-Version: none` commit trailer or dispatch with version
+`none`. All CI checks still run, but no tag or release is created or changed.
 
 Apogee's minimum Swift tools version tracks the Swift version bundled with the
 first official release of the Xcode major series that Apogee supports. The

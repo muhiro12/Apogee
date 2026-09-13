@@ -50,15 +50,21 @@ expect_failure() {
 # An unversioned main must not choose an initial stability promise.
 run_release
 test ! -s "$MOCK_RELEASE_LOG"
+REQUESTED_VERSION=none
+run_release
+test ! -s "$MOCK_RELEASE_LOG"
+REQUESTED_VERSION=0.1
+run_release
+expect_creation 0.1 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=0.1.0
 run_release
-expect_creation 0.1.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.1 --target "$GITHUB_SHA" --generate-notes
 
 # Recover a missing release, then make retries idempotent.
-git tag 0.1.0
+git tag 0.1
 REQUESTED_VERSION=
 run_release
-expect_creation 0.1.0 --verify-tag --generate-notes
+expect_creation 0.1 --verify-tag --generate-notes
 MOCK_RELEASE_EXISTS=true
 run_release
 test ! -s "$MOCK_RELEASE_LOG"
@@ -66,26 +72,33 @@ MOCK_RELEASE_EXISTS=false
 
 git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Next fixture'
 GITHUB_SHA=$(git rev-parse HEAD)
+next_commit=$GITHUB_SHA
 run_release
-expect_creation 0.2.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.2 --target "$GITHUB_SHA" --generate-notes
+REQUESTED_VERSION=1.0
+run_release
+expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=1.0.0
 run_release
-expect_creation 1.0.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=0.1.1
 run_release
 expect_creation 0.1.1 --target "$GITHUB_SHA" --generate-notes
 
 # A breaking change selects its major before automatic publication on main.
 git -c commit.gpgsign=false commit --quiet --allow-empty \
-    -m 'Change the public fixture' -m 'Release-Version: 2.0.0'
+    -m 'Change the public fixture' -m 'Release-Version: 2.0'
 GITHUB_SHA=$(git rev-parse HEAD)
 REQUESTED_VERSION=
 run_release
-expect_creation 2.0.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 2.0 --target "$GITHUB_SHA" --generate-notes
+REQUESTED_VERSION=2.1.1
+run_release
+expect_creation 2.1.1 --target "$GITHUB_SHA" --generate-notes
 git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Continue fixture'
 GITHUB_SHA=$(git rev-parse HEAD)
 
-for REQUESTED_VERSION in 01.2.3 v1.0.0 1.0 1.0.0-beta.1 0.0.9 0.1.0; do
+for REQUESTED_VERSION in 01.2.3 1.02 1.0.01 v1.0.0 1 1.0.0-beta.1 1.0.0.0 0.0.9 0.1 0.1.0; do
     expect_failure
 done
 REQUESTED_VERSION=
@@ -96,8 +109,70 @@ GITHUB_SHA=$initial_commit
 expect_failure
 GITHUB_SHA=$(git rev-parse HEAD)
 
+# Numeric ordering includes nonzero patches and multi-digit minor versions.
+git tag 0.1.2 "$next_commit"
+git tag 0.1.10 "$next_commit"
+REQUESTED_VERSION=0.1.9
+expect_failure
+REQUESTED_VERSION=0.1.11
+run_release
+expect_creation 0.1.11 --target "$GITHUB_SHA" --generate-notes
+REQUESTED_VERSION=
+run_release
+expect_creation 0.2 --target "$GITHUB_SHA" --generate-notes
+git tag 0.2 "$next_commit"
+git tag 0.10 "$next_commit"
+run_release
+expect_creation 0.11 --target "$GITHUB_SHA" --generate-notes
+REQUESTED_VERSION=0.9
+expect_failure
+
+# Legacy tags retain their source identity during a naming migration.
+git tag 1.0.0 "$next_commit"
+REQUESTED_VERSION=1.0
+expect_failure
+git tag 1.0
+expect_failure
+git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Continue after conflicting aliases'
+GITHUB_SHA=$(git rev-parse HEAD)
+REQUESTED_VERSION=
+expect_failure
+git tag -d 1.0 >/dev/null
+git checkout --quiet --detach "$next_commit"
+GITHUB_SHA=$next_commit
+REQUESTED_VERSION=
+run_release
+expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
+git tag 1.0
+git tag v99.0
+git tag 99.00
+run_release
+expect_creation 1.0 --verify-tag --generate-notes
+MOCK_RELEASE_EXISTS=true
+REQUESTED_VERSION=1.0.0
+run_release
+test ! -s "$MOCK_RELEASE_LOG"
+MOCK_RELEASE_EXISTS=false
+REQUESTED_VERSION=
+
+# Maintenance still requires the verified main commit but performs no publishing.
+git -c commit.gpgsign=false commit --quiet --allow-empty \
+    -m 'Maintain the fixture workflow' -m 'Release-Version: none'
+GITHUB_SHA=$(git rev-parse HEAD)
+run_release
+test ! -s "$MOCK_RELEASE_LOG"
+GITHUB_REF=refs/heads/develop
+expect_failure
+GITHUB_REF=refs/heads/main
+GITHUB_SHA=$initial_commit
+expect_failure
+GITHUB_SHA=$(git rev-parse HEAD)
+REQUESTED_VERSION=1.1
+run_release
+expect_creation 1.1 --target "$GITHUB_SHA" --generate-notes
+REQUESTED_VERSION=
+
 # An older queued run must not publish after a newer release.
-git tag 0.2.0
 git checkout --quiet --detach "$initial_commit"
 GITHUB_SHA=$initial_commit
 expect_failure

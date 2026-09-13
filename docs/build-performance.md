@@ -17,7 +17,7 @@ separate dependency resolution, and sequential dependency-target warm-up. Global
 source/OS caches and host temperature were not reset. Runs were sequential in the
 order baseline 1, package-scope-only, baseline 2, then trimmed candidate.
 
-| Phase (seconds) | 0.4.0 run 1 | Package scope only | 0.4.0 run 2 | Trimmed candidate |
+| Phase (seconds) | 0.4 run 1 | Package scope only | 0.4 run 2 | Trimmed candidate |
 | --- | ---: | ---: | ---: | ---: |
 | Generated target, dependencies warm | 112.782 | 97.984 | 88.132 | 73.561 |
 | Core target, generated target warm | 7.818 | 9.297 | 7.928 | 7.292 |
@@ -26,7 +26,7 @@ order baseline 1, package-scope-only, baseline 2, then trimmed candidate.
 | Separate consumer, clean build | 120.842 | 118.613 | 113.326 | 92.642 |
 | Separate consumer, no-op incremental | 2.713 | 2.684 | 2.665 | 2.555 |
 
-The baseline is tag `0.4.0`, commit
+The baseline is tag `0.4`, commit
 `c1b60dd84ef5492fcc93210315bfd268fc089462`. The package-scope-only experiment
 changed generated access modifiers without changing operations. It falls within
 baseline variation, so it does **not** establish a performance improvement.
