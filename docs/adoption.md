@@ -14,7 +14,7 @@ app while waiting for an editable version on which to verify writes.
 | Current release stage | Adoption work to complete now | Work to complete later |
 | --- | --- | --- |
 | In review or awaiting publication | Install and pin the package, configure authentication, validate local metadata, and compare read-only status with App Store Connect. | Verify writes against the actual next version when it exists and is editable. |
-| The next version can be created and the target version is editable | Dry-run finalized metadata, apply approved changes, and verify read-back. | Attach the build and submit for review when the app release is ready. |
+| The next version can be created and the target version is editable | Dry-run approved metadata, apply the changes, and verify read-back. | Finalize metadata, attach the build, and submit for review when the app release is ready. |
 
 Apple requires the current version to be **Ready for Distribution** before
 creating the next version; follow its
@@ -98,9 +98,27 @@ No cache-directory setup is needed for the command plugin. Library consumers
 can still inject their own transport.
 
 Replace `--dry-run` with `--apply` only for the operation being approved. They
-are mutually exclusive. After an approved metadata apply, inspect the target in
-App Store Connect and run a fresh metadata dry run to confirm no differences
-remain. `release-status` has no apply mode and does not display metadata text.
+are mutually exclusive. After an approved metadata apply, verify every selected
+locale and field against the intended input, then run a fresh metadata dry run
+to confirm no differences remain. For an independent check, inspect App Store
+Connect or read the target through a separate App Store Connect API client.
+Record which method was used; an API comparison does not establish UI behavior.
+`release-status` has no apply mode and does not display metadata text.
+
+### Verify writes before final release text is ready
+
+With explicit approval of the target version, fields, locales, and full text,
+temporary metadata can be used on the actual editable next version. Keep a
+private record of the original values and review the entire dry-run plan before
+applying. Verify read-back and a fresh zero-diff dry run using the same input;
+also compare unrelated fields with their original values when checking that
+the update was scoped correctly.
+
+Record that the text is temporary, whether it remains on the version, and when
+it will be replaced or restored. An apply does not restore the original values
+automatically. Replace temporary text with approved final metadata and verify
+it before submitting the app for review. This validates the metadata workflow
+without requiring the final release text to be ready or authorizing submission.
 
 ## Coordinate review and publication
 
