@@ -29,3 +29,10 @@ func readRemoteMetadata(automation: ReleaseAutomation) async throws -> MetadataS
         appLookup: .bundleID("com.example.app"), version: "1.2.3"
     )
 }
+
+// Compiles the version-creation API without creating a remote resource.
+func planNewVersion(automation: ReleaseAutomation) async throws -> ReleasePlan {
+    try await automation.createVersion(
+        appLookup: .bundleID("com.example.app"), version: "2.0", options: .init(mode: .dryRun)
+    )
+}

@@ -40,7 +40,11 @@ consuming unbounded maintainer or CI resources.
 The trim step keeps only the operations called by the production adapter and
 their transitive referenced schemas. Unsupported screenshot uploads and unused
 resource endpoints are not generated speculatively; add an operation when its
-adapter implementation and verification require it. The trim step removes OpenAPI
+adapter implementation and verification require it.
+`appStoreVersions_createInstance` is retained for explicit manual-release version
+creation; the adapter does not use its optional metadata or build relationships.
+
+The trim step removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently
 turns those markers into Swift deprecation annotations that are then referenced
 inside generated initializers, producing noisy build warnings for package users.

@@ -29,6 +29,7 @@ Supported in the first implementation:
 
 - Read-only release status, including publication timing and review state
 - Read-only localized metadata inspection and JSON snapshot export
+- Explicit App Store version creation configured for manual release
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
 - Description, keywords, and promotional text updates
@@ -201,6 +202,8 @@ apogee validate-metadata --release-notes-only
 
 apogee release-status --version 1.2.3
 
+apogee create-version --version 2.0 --dry-run
+
 apogee read-metadata --version 1.2.3 --save-to /private/path/metadata-snapshot.json
 
 apogee update-release-notes \
@@ -235,6 +238,10 @@ App Store Connect app id. If both `--app-id` and `--bundle-id` are provided,
 `--app-id` wins.
 
 ## Dry Run and Apply
+
+`create-version` creates only the version resource and configures it for manual
+release. It refuses existing versions and verifies the new version after apply.
+See [version creation](docs/version-creation.md) for permissions and recovery.
 
 Dry-run mode is the default. A dry run still authenticates to App Store Connect,
 reads the current remote state, compares it with repository files or command

@@ -14,6 +14,13 @@ func trimmerDropsUnusedOperationsAndTheirExclusiveComponents() throws {
             "responses": {"200": {"$ref": "#/components/schemas/AppPage"}}
           }
         },
+        "/v1/appStoreVersions": {
+          "post": {
+            "operationId": "appStoreVersions_createInstance",
+            "requestBody": {"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VersionCreate"}}}},
+            "responses": {"201": {"description": "Created"}}
+          }
+        },
         "/v1/appScreenshots": {
           "post": {
             "operationId": "appScreenshots_createInstance",
@@ -25,7 +32,8 @@ func trimmerDropsUnusedOperationsAndTheirExclusiveComponents() throws {
         "schemas": {
           "AppPage": {"properties": {"app": {"$ref": "#/components/schemas/App"}}},
           "App": {"type": "object"},
-          "UploadReservation": {"type": "object"}
+          "UploadReservation": {"type": "object"},
+          "VersionCreate": {"type": "object"}
         }
       }
     }
@@ -40,8 +48,8 @@ func trimmerDropsUnusedOperationsAndTheirExclusiveComponents() throws {
     let components = try #require(document["components"] as? [String: Any])
     let schemas = try #require(components["schemas"] as? [String: Any])
 
-    #expect(result.pathCount == 1)
-    #expect(result.componentReferenceCount == 2)
-    #expect(Set(paths.keys) == ["/v1/apps"])
-    #expect(Set(schemas.keys) == ["AppPage", "App"])
+    #expect(result.pathCount == 2)
+    #expect(result.componentReferenceCount == 3)
+    #expect(Set(paths.keys) == ["/v1/apps", "/v1/appStoreVersions"])
+    #expect(Set(schemas.keys) == ["AppPage", "App", "VersionCreate"])
 }

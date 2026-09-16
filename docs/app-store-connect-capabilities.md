@@ -18,6 +18,7 @@ generated Swift client sources needed by the first CLI surface.
 
 | Capability | Status | OpenAPI evidence | Apogee behavior |
 | --- | --- | --- | --- |
+| App Store version creation | Supported with safeguards | `POST /v1/appStoreVersions`, `AppStoreVersionCreateRequest` | Explicit `create-version` command, dry-run by default. Creates for manual release only, refuses existing versions, and verifies the new resource's identity and preparation state. |
 | Release status and publication timing | Read-only | `AppStoreVersion.attributes.appVersionState`, `releaseType`, `earliestReleaseDate`, build and review submission resources | Reports version state separately from review state. It does not change release timing or publish an approved version. |
 | Local metadata validation | Offline | No API request | Reads selected UTF-8 metadata files and rejects empty input or unsafe paths. Account permissions, locale availability, and Apple field limits require remote checks. |
 | Multiple-locale What's New updates | Supported | `GET /v1/appStoreVersions/{id}/appStoreVersionLocalizations`, `PATCH /v1/appStoreVersionLocalizations/{id}`, `AppStoreVersionLocalizationUpdateRequest.attributes.whatsNew` | Reads local `release_notes.txt`, compares with existing ASC localizations, updates existing locales only, and verifies by reading back after `--apply`. |
@@ -38,8 +39,9 @@ generated Swift client sources needed by the first CLI surface.
 - Secrets are read from environment variables and local key files only.
 - Plans and command output must not include private key material, JWT bearer
   tokens, or webhook secret values.
-- Unsupported or unsafe operations fail with an explicit `UnsupportedCapability`
-  value instead of falling back to untyped HTTP behavior.
+- Unsupported or unsafe operations fail with a typed error instead of falling
+  back to untyped HTTP behavior. Existing adapters that do not implement version
+  creation throw `VersionCreationError.unsupportedAdapter`.
 
 Collection reads follow same-origin, same-resource `links.next` URLs while keeping
 their filters, and reject loops or more than 100 pages. Build attachment requires

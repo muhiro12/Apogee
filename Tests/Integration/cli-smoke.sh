@@ -10,6 +10,8 @@ trap 'rm -rf "$temporary_directory"' EXIT
 "$binary" --help > "$temporary_directory/help.txt"
 "$binary" release-status --help > "$temporary_directory/status-help.txt"
 "$binary" read-metadata --help > "$temporary_directory/metadata-help.txt"
+"$binary" create-version --help > "$temporary_directory/create-help.txt"
+grep -q 'manual release' "$temporary_directory/create-help.txt"
 "$binary" validate-metadata \
   --apogee-config "$repository_root/Examples/ReleaseTools/apogee.json" \
   --release-notes-only > "$temporary_directory/validation.txt"
@@ -21,6 +23,18 @@ if "$binary" update-metadata --version 1.2.3 --apply --dry-run > "$temporary_dir
     exit 1
 fi
 grep -q 'Use either --dry-run or --apply' "$temporary_directory/conflict.txt"
+
+if "$binary" create-version --version 2.0 --apply --dry-run > "$temporary_directory/create-conflict.txt" 2>&1; then
+    echo 'Version creation unexpectedly accepted conflicting execution flags.' >&2
+    exit 1
+fi
+grep -q 'Use either --dry-run or --apply' "$temporary_directory/create-conflict.txt"
+
+if "$binary" create-version --version 2.0 --release-type AFTER_APPROVAL > "$temporary_directory/create-release-type.txt" 2>&1; then
+    echo 'Version creation unexpectedly accepted an automatic release option.' >&2
+    exit 1
+fi
+grep -q 'Unknown option' "$temporary_directory/create-release-type.txt"
 
 if "$binary" release-status --version 1.2.3 --apply > "$temporary_directory/status-apply.txt" 2>&1; then
     echo 'The read-only status command unexpectedly accepted --apply.' >&2

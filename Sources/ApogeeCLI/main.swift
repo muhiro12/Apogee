@@ -10,6 +10,7 @@ struct ApogeeCommand: AsyncParsableCommand {
         subcommands: [
             ReleaseStatusCommand.self,
             ReadMetadata.self,
+            CreateVersion.self,
             ValidateMetadata.self,
             UpdateReleaseNotes.self,
             UpdateMetadata.self,

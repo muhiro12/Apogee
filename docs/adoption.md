@@ -64,6 +64,10 @@ swift package plugin --allow-network-connections all apogee release-status \
   --version "$CURRENT_VERSION"
 ```
 
+When the actual next version does not exist, use the explicit
+[`create-version` operation](version-creation.md): plan first, then apply to
+create it for manual release. This is separate from metadata and submission.
+
 Once the actual next version exists and its metadata is editable:
 
 ```sh
@@ -179,9 +183,11 @@ unpublished adopter evidence in private storage.
 
 ## Capability boundaries
 
-The initial supported path assumes the app, target version, locales, and uploaded
-build already exist. Apogee does not archive or upload binaries, create versions
-or locales, configure pricing or subscriptions, or edit review/privacy declarations.
+Metadata and submission operations require an existing target version. The explicit
+`create-version` command can create it for manual release; it does not create an
+app record. Apogee does not archive or upload binaries, create locales, configure
+pricing or subscriptions, or edit review/privacy declarations. Required locales
+and uploaded builds must be available for the subsequent operations.
 Screenshot replacement and Xcode Cloud workflow sync remain unsupported. These
 are explicit boundaries, not prerequisites for release-note and metadata adoption.
 

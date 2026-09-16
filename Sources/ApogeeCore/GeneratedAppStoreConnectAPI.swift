@@ -105,6 +105,18 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         }
     }
 
+    public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
+        try await perform(operation: "createAppStoreVersion") {
+            let request = Components.Schemas.AppStoreVersionCreateRequest(data: .init(
+                attributes: .init(platform: platform.generated, releaseType: .MANUAL, versionString: version),
+                relationships: .init(app: .init(data: .init(id: appID, _type: .apps))),
+                _type: .appStoreVersions
+            ))
+            let output = try await client().appStoreVersions_createInstance(.init(body: .json(request)))
+            return try mapVersion(output.created.body.json.data)
+        }
+    }
+
     public func appStoreVersionLocalizations(versionID: String) async throws -> [AppStoreConnectLocalization] {
         try await perform(operation: "appStoreVersionLocalizations") {
             try await allPages { pageClient in

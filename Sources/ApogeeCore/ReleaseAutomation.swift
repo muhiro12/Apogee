@@ -66,6 +66,58 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
+    /// Plans or creates an absent app version for manual release, then verifies it.
+    ///
+    /// Existing or ambiguous versions are refused. A dry-run checks target absence,
+    /// not server permission to create. The server validates version and app state.
+    /// Creation is not retried automatically: a failed request or read-back may have
+    /// left a remote version. Inspect release status before deciding the next step.
+    public func createVersion(
+        appLookup: AppLookup,
+        version: String,
+        platform: Platform = .iOS,
+        options: ReleaseExecutionOptions
+    ) async throws -> ReleasePlan {
+        guard !version.isEmpty, version == version.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            throw VersionCreationError.invalidVersion(version)
+        }
+        let app = try await resolveApp(appLookup)
+        let existing = try await api.appStoreVersions(appID: app.id, version: version, platform: platform)
+        if existing.count > 1 {
+            throw ApogeeError.appStoreVersionAmbiguous(appID: app.id, version: version, matches: existing.count)
+        }
+        guard existing.isEmpty else {
+            throw VersionCreationError.versionAlreadyExists(appID: app.id, version: version)
+        }
+        var plan = ReleasePlan(
+            title: "Create App Store version \(version) for \(app.id) (\(platform.rawValue))",
+            actions: [
+                .init(kind: .create, resource: "app/\(app.id)/appStoreVersions",
+                      desiredValue: "\(version) (\(platform.rawValue)), release type MANUAL"),
+            ]
+        )
+        guard options.mode == .apply else {
+            return plan
+        }
+        try Task.checkCancellation()
+        let created = try await api.createAppStoreVersion(appID: app.id, version: version, platform: platform)
+        guard !created.id.isEmpty else {
+            throw ApogeeError.unexpectedAPIResponse("Version creation returned no resource ID. Inspect release status before retrying.")
+        }
+        let versions = try await api.appStoreVersions(appID: app.id, version: version, platform: platform)
+        guard versions.count == 1, let readBack = versions.first,
+              readBack.id == created.id, readBack.versionString == version,
+              readBack.platform == platform, readBack.releaseType == "MANUAL",
+              readBack.state == "PREPARE_FOR_SUBMISSION" else {
+            throw ApogeeError.unexpectedAPIResponse("Created version read-back did not match its identity, manual release setting, or preparation state. Inspect release status before retrying.")
+        }
+        plan.actions.append(.init(
+            kind: .verify, resource: "appStoreVersion/\(readBack.id)",
+            desiredValue: "version identity, MANUAL release, and PREPARE_FOR_SUBMISSION state matched"
+        ))
+        return plan
+    }
+
     /// Reads a uniquely resolved app version, attached build, and matching review submissions.
     ///
     /// Never mutates remote resources. Unknown attributes remain unavailable in the snapshot.

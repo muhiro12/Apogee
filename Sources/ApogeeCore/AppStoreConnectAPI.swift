@@ -14,6 +14,10 @@ public protocol AppStoreConnectAPI: Sendable {
     func apps(bundleID: String) async throws -> [AppStoreConnectApp]
     /// Returns all matching marketing versions for the selected app and platform.
     func appStoreVersions(appID: String, version: String, platform: Platform) async throws -> [AppStoreConnectVersion]
+    /// Immediately creates a version configured for manual release, without other release operations.
+    ///
+    /// The default implementation throws unsupported so existing adapters remain source-compatible.
+    func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion
     /// Returns all existing localizations of an App Store version.
     func appStoreVersionLocalizations(versionID: String) async throws -> [AppStoreConnectLocalization]
     /// Immediately patches one localization; nil fields are omitted.
@@ -42,6 +46,12 @@ public protocol AppStoreConnectAPI: Sendable {
     func updateWebhook(id: String, webhook: DesiredWebhook, secret: String?) async throws -> AppStoreConnectWebhook
     /// Immediately deletes a webhook without plan confirmation.
     func deleteWebhook(id: String) async throws
+}
+
+extension AppStoreConnectAPI {
+    public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
+        throw VersionCreationError.unsupportedAdapter
+    }
 }
 
 /// An app resource returned by App Store Connect; omitted attributes remain nil.

@@ -49,6 +49,7 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `DesiredWebhook` | Supported | Webhook settings and explicit secret rotation |
 | `WebhookConfigurationLoader` | Supported | JSON and event type validation |
 | `ApogeeError` | Supported | Domain errors and safe request failure categories |
+| `VersionCreationError` | Supported | Version creation validation and unsupported adapters |
 | `UnsupportedCapability` | Supported | Explicit unsupported-operation failures |
 | `ScreenshotSet` | Provisional | Inventory only |
 | `ScreenshotFile` | Provisional | File information only |
@@ -93,6 +94,11 @@ apply the CLI's dry-run or confirmation gates. Custom adapters must return every
 page, preserve unknown optional state and complete-or-nil review item linkage,
 and preserve cancellation. Use `ReleaseAutomation` for guarded operations.
 
+`AppStoreConnectAPI.createAppStoreVersion` has a default implementation that throws
+`VersionCreationError.unsupportedAdapter`. Existing adapters remain source-compatible;
+adapters opting into creation must configure manual release. The production adapter
+implements this operation through the generated client.
+
 ## CLI and configuration
 
 All commands support `--apogee-config` and `--help`/`-h`. An absent implicit
@@ -105,6 +111,7 @@ consumer package, including invocation through `--package-path`.
 | `validate-metadata` | `--metadata-path`, `--release-notes-only` | Local-only validation |
 | `release-status` | Lookup, `--version`, `--platform` | Remote read only |
 | `read-metadata` | Lookup, `--version`, `--platform`, `--save-to` | Remote read only; JSON snapshot with optional new-file export |
+| `create-version` | Lookup, `--version`, `--platform`, mode | Create an absent version for manual release; verify identity, release type, and preparation state |
 | `update-release-notes` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | What's New only |
 | `update-metadata` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | Four supported fields |
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |
