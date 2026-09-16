@@ -56,4 +56,40 @@ if "$binary" validate-metadata --metadata-path "$temporary_directory/empty-metad
     exit 1
 fi
 grep -q 'No metadata files matched' "$temporary_directory/empty.txt"
+
+"$binary" validate-metadata \
+  --apogee-config "$repository_root/Examples/ReleaseTools/apogee.json" \
+  --output json > "$temporary_directory/validation.json" 2> "$temporary_directory/json-stderr.txt"
+test ! -s "$temporary_directory/json-stderr.txt"
+python3 - "$temporary_directory/validation.json" <<'PY'
+import json
+import sys
+with open(sys.argv[1]) as stream:
+    result = json.load(stream)
+assert result['schemaVersion'] == 1
+assert result['kind'] == 'release-plan'
+assert result['command'] == 'validate-metadata'
+assert result['mode'] == 'local'
+assert result['target'] is None
+assert result['requestedTarget'] is None
+assert result['plan']['plannedMutationCount'] == 0
+assert not result['plan']['hasChanges']
+assert result['verification']['status'] == 'performed'
+assert {item['locale'] for item in result['verification']['checks']} == {'en-US', 'ja'}
+assert all(item['scope'] == 'local-validation' for item in result['verification']['checks'])
+PY
+
+assert_json_failure() {
+    if "$binary" "$@" > "$temporary_directory/failure.json" 2> "$temporary_directory/failure-stderr.txt"; then
+        echo 'A failing JSON invocation unexpectedly succeeded.' >&2
+        exit 1
+    fi
+    test ! -s "$temporary_directory/failure.json"
+    test -s "$temporary_directory/failure-stderr.txt"
+}
+assert_json_failure validate-metadata --metadata-path "$temporary_directory/empty-metadata" --output json
+assert_json_failure validate-metadata --output invalid
+assert_json_failure create-version --version 2.0 --apply --dry-run --output json
+assert_json_failure release-status --version 2.0 --app-id EXAMPLE_APP_ID \
+  --apogee-config "$temporary_directory/missing.json" --output json
 echo 'CLI smoke checks passed without App Store Connect requests.'

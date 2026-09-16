@@ -95,7 +95,7 @@ public struct ReleaseAutomation: Sendable {
                 .init(kind: .create, resource: "app/\(app.id)/appStoreVersions",
                       desiredValue: "\(version) (\(platform.rawValue)), release type MANUAL"),
             ]
-        )
+        ).targeting(app: app)
         guard options.mode == .apply else {
             return plan
         }
@@ -111,6 +111,7 @@ public struct ReleaseAutomation: Sendable {
               readBack.state == "PREPARE_FOR_SUBMISSION" else {
             throw ApogeeError.unexpectedAPIResponse("Created version read-back did not match its identity, manual release setting, or preparation state. Inspect release status before retrying.")
         }
+        plan.target = .init(app: app, version: readBack)
         plan.actions.append(.init(
             kind: .verify, resource: "appStoreVersion/\(readBack.id)",
             desiredValue: "version identity, MANUAL release, and PREPARE_FOR_SUBMISSION state matched"
@@ -205,7 +206,7 @@ public struct ReleaseAutomation: Sendable {
             }
         }
 
-        var plan = ReleasePlan(title: "Update metadata for \(context.app.id) \(version)", actions: actions)
+        var plan = ReleasePlan(title: "Update metadata for \(context.app.id) \(version)", actions: actions).targeting(app: context.app, version: context.version)
         guard options.mode == .apply else {
             return plan
         }
@@ -251,7 +252,7 @@ public struct ReleaseAutomation: Sendable {
                     desiredValue: build.version ?? build.id
                 ),
             ]
-        )
+        ).targeting(app: context.app, version: context.version)
 
         guard options.mode == .apply, currentBuild?.id != build.id else {
             return plan
@@ -297,7 +298,7 @@ public struct ReleaseAutomation: Sendable {
                     desiredValue: "\(screenshotSet.files.count) file(s)"
                 )
             }
-        )
+        ).targeting(app: context.app, version: context.version)
 
         if options.mode == .apply {
             throw ApogeeError.unsupported(.screenshotUpload)
@@ -342,7 +343,7 @@ public struct ReleaseAutomation: Sendable {
                             desiredValue: existingSubmission.state
                         ),
                     ]
-                )
+                ).targeting(app: context.app, version: context.version)
 
                 if options.mode == .apply {
                     let readBack = try await api.reviewSubmission(id: existingSubmission.id)
@@ -379,7 +380,7 @@ public struct ReleaseAutomation: Sendable {
                         desiredValue: "true"
                     ),
                 ]
-            )
+            ).targeting(app: context.app, version: context.version)
 
             guard options.mode == .apply else {
                 return plan
@@ -422,7 +423,7 @@ public struct ReleaseAutomation: Sendable {
                 .init(kind: .create, resource: "reviewSubmissionItem", desiredValue: "appStoreVersion/\(context.version.id)"),
                 .init(kind: .update, resource: "reviewSubmission.submitted", desiredValue: "true"),
             ]
-        )
+        ).targeting(app: context.app, version: context.version)
 
         guard options.mode == .apply else {
             return plan
@@ -494,7 +495,7 @@ public struct ReleaseAutomation: Sendable {
             ))
         }
 
-        let plan = ReleasePlan(title: "Sync webhooks for \(app.id)", actions: actions)
+        let plan = ReleasePlan(title: "Sync webhooks for \(app.id)", actions: actions).targeting(app: app)
         try validateDestructiveGate(plan: plan, options: options)
 
         guard options.mode == .apply else {
@@ -694,14 +695,14 @@ public struct ReleaseAutomation: Sendable {
                 return nil
             }
 
-            return .init(
+            return PlannedAction(
                 kind: .update,
                 resource: "appStoreVersionLocalization/\(remoteID)",
                 locale: locale,
                 field: field.displayName,
                 currentValue: current,
                 desiredValue: desired
-            )
+            ).identifyingField(field.rawValue)
         }
     }
 

@@ -8,10 +8,27 @@ import Foundation
 public struct ReleasePlan: Sendable, Hashable {
     public var title: String
     public var actions: [PlannedAction]
+    // Reporting context is excluded from the existing value and token contracts.
+    package var target: PlanTarget?
 
     public init(title: String, actions: [PlannedAction]) {
         self.title = title
         self.actions = actions
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.title == rhs.title && lhs.actions == rhs.actions
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(actions)
+    }
+
+    func targeting(app: AppStoreConnectApp, version: AppStoreConnectVersion? = nil) -> Self {
+        var plan = self
+        plan.target = .init(app: app, version: version)
+        return plan
     }
 
     /// Whether any action creates, updates, deletes, or attaches a resource.
@@ -82,6 +99,8 @@ public struct PlannedAction: Sendable, Hashable {
     public var currentValue: String?
     public var desiredValue: String?
     public var isDestructive: Bool
+    // Stable machine identifier; field remains the original display label.
+    package var fieldIdentifier: String?
 
     public init(
         kind: PlannedActionKind,
@@ -100,6 +119,34 @@ public struct PlannedAction: Sendable, Hashable {
         self.desiredValue = desiredValue
         self.isDestructive = isDestructive
     }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.kind == rhs.kind && lhs.resource == rhs.resource && lhs.locale == rhs.locale
+            && lhs.field == rhs.field && lhs.currentValue == rhs.currentValue
+            && lhs.desiredValue == rhs.desiredValue && lhs.isDestructive == rhs.isDestructive
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(kind)
+        hasher.combine(resource)
+        hasher.combine(locale)
+        hasher.combine(field)
+        hasher.combine(currentValue)
+        hasher.combine(desiredValue)
+        hasher.combine(isDestructive)
+    }
+
+    func identifyingField(_ identifier: String) -> Self {
+        var action = self
+        action.fieldIdentifier = identifier
+        return action
+    }
+}
+
+/// Observed target attributes for CLI reporting, never inferred from rendered text.
+package struct PlanTarget: Sendable {
+    package var app: AppStoreConnectApp
+    package var version: AppStoreConnectVersion?
 }
 
 /// The operation or observation represented by a planned action.

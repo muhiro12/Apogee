@@ -28,6 +28,7 @@ struct ReleaseStatusCommand: AsyncParsableCommand {
         abstract: "Read version state, release timing, the attached build, and review status."
     )
 
+    @OptionGroup var outputOptions: OutputOptions
     @OptionGroup var lookup: AppLookupOptions
     @OptionGroup var configurationOptions: ConfigurationOptions
     @Option(help: "Target App Store version string.")
@@ -37,11 +38,19 @@ struct ReleaseStatusCommand: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try configurationOptions.configuration()
-        let status = try await makeAutomation(configuration: configuration).releaseStatus(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let status = try await automation.releaseStatus(
             appLookup: try lookup.appLookup(configuration: configuration), version: version,
             platform: platform?.platform ?? configuration.defaultPlatform ?? .iOS
         )
-        print(PlanRenderer().render(status))
+        return try outputOptions.render(status, requestedTarget: .init(
+            lookup: lookup.appLookup(configuration: configuration), version: version,
+            platform: platform?.platform ?? configuration.defaultPlatform ?? .iOS
+        ))
     }
 }
 
@@ -51,6 +60,7 @@ struct ValidateMetadata: ParsableCommand {
         abstract: "Validate local metadata files without credentials or network access."
     )
 
+    @OptionGroup var outputOptions: OutputOptions
     @OptionGroup var configurationOptions: ConfigurationOptions
     @Option(name: .customLong("metadata-path"), help: "Path to AppStore/Metadata.")
     var metadataPath: String?
@@ -58,6 +68,10 @@ struct ValidateMetadata: ParsableCommand {
     var releaseNotesOnly = false
 
     func run() throws {
+        print(try renderedOutput())
+    }
+
+    func renderedOutput() throws -> String {
         let configuration = try configurationOptions.configuration()
         let metadata = try MetadataLoader().load(
             from: metadataPath ?? configuration.resolvedMetadataPath,
@@ -66,7 +80,7 @@ struct ValidateMetadata: ParsableCommand {
         let plan = ReleasePlan(title: "Local metadata validation", actions: metadata.map { metadata in
             .init(kind: .verify, resource: "metadata", locale: metadata.locale, desiredValue: "UTF-8 files are readable")
         })
-        print(PlanRenderer().render(plan))
+        return try outputOptions.render(plan, command: "validate-metadata", mode: .local)
     }
 }
 
@@ -83,14 +97,19 @@ struct UpdateReleaseNotes: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try release.configuration()
-        let plan = try await makeAutomation(configuration: configuration).updateReleaseNotes(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.updateReleaseNotes(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             metadataPath: release.metadataPath(metadataPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "update-release-notes", configuration: configuration)
     }
 }
 
@@ -107,14 +126,19 @@ struct UpdateMetadata: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try release.configuration()
-        let plan = try await makeAutomation(configuration: configuration).updateMetadata(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.updateMetadata(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             metadataPath: release.metadataPath(metadataPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "update-metadata", configuration: configuration)
     }
 }
 
@@ -131,14 +155,19 @@ struct AttachBuild: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try release.configuration()
-        let plan = try await makeAutomation(configuration: configuration).attachBuild(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.attachBuild(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             buildVersion: buildVersion,
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "attach-build", configuration: configuration)
     }
 }
 
@@ -155,14 +184,19 @@ struct UpdateScreenshots: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try release.configuration()
-        let plan = try await makeAutomation(configuration: configuration).updateScreenshots(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.updateScreenshots(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             screenshotsPath: release.screenshotsPath(screenshotsPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "update-screenshots", configuration: configuration)
     }
 }
 
@@ -176,13 +210,18 @@ struct SubmitForReview: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try release.configuration()
-        let plan = try await makeAutomation(configuration: configuration).submitForReview(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.submitForReview(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
             platform: release.platform(configuration: configuration),
             options: try release.executionOptions()
         )
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "submit-for-review", configuration: configuration)
     }
 }
 
@@ -192,6 +231,7 @@ struct SyncWebhooks: AsyncParsableCommand {
         abstract: "Sync App Store Connect webhooks for an app."
     )
 
+    @OptionGroup var outputOptions: OutputOptions
     @OptionGroup var lookup: AppLookupOptions
     @OptionGroup var mode: ExecutionModeOptions
     @OptionGroup var configurationOptions: ConfigurationOptions
@@ -207,7 +247,12 @@ struct SyncWebhooks: AsyncParsableCommand {
 
     func run() async throws {
         let configuration = try configurationOptions.configuration()
-        let plan = try await makeAutomation(configuration: configuration).syncWebhooks(
+        let text = try await renderedOutput(automation: makeAutomation(configuration: configuration), configuration: configuration)
+        print(text)
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+        let plan = try await automation.syncWebhooks(
             appLookup: try lookup.appLookup(configuration: configuration),
             configPath: config.nonEmpty ?? configuration.resolvedWebhooksPath,
             options: try mode.executionOptions(
@@ -215,11 +260,15 @@ struct SyncWebhooks: AsyncParsableCommand {
                 planToken: planToken
             )
         )
-        print(PlanRenderer().render(plan))
+        return try outputOptions.render(
+            plan, command: "sync-webhooks", mode: .init(mode.executionOptions().mode),
+            requestedTarget: .init(lookup: lookup.appLookup(configuration: configuration))
+        )
     }
 }
 
 struct ReleaseOptions: ParsableArguments {
+    @OptionGroup var outputOptions: OutputOptions
     @OptionGroup var lookup: AppLookupOptions
     @OptionGroup var mode: ExecutionModeOptions
     @OptionGroup var configurationOptions: ConfigurationOptions
@@ -244,6 +293,16 @@ struct ReleaseOptions: ParsableArguments {
 
     func executionOptions() throws -> ReleaseExecutionOptions {
         try mode.executionOptions()
+    }
+
+    func render(_ plan: ReleasePlan, command: String, configuration: ApogeeConfiguration) throws -> String {
+        try outputOptions.render(
+            plan, command: command, mode: .init(executionOptions().mode),
+            requestedTarget: .init(
+                lookup: appLookup(configuration: configuration), version: version,
+                platform: platform(configuration: configuration)
+            )
+        )
     }
 
     func metadataPath(_ path: String?, configuration: ApogeeConfiguration) -> String {

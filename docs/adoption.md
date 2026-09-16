@@ -108,6 +108,9 @@ to confirm no differences remain. For an independent check, inspect App Store
 Connect or read the target through a separate App Store Connect API client.
 Record which method was used; an API comparison does not establish UI behavior.
 `release-status` has no apply mode and does not display metadata text.
+Use [`--output json`](json-output.md) for status and plan results in scripts.
+Always check the exit status; failed or partially applied operations emit no
+successful JSON document.
 Use `read-metadata` for complete stored values, without preparing local inputs.
 See [metadata snapshots](metadata-snapshots.md) for the JSON format and safe export.
 

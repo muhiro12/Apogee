@@ -106,6 +106,12 @@ All commands support `--apogee-config` and `--help`/`-h`. An absent implicit
 SwiftPM plugin forwards the same command/option surface and runs relative to the
 consumer package, including invocation through `--package-path`.
 
+Status and plan commands also accept `--output text|json`, defaulting to text.
+The versioned [JSON output contract](json-output.md) is supported CLI surface.
+`read-metadata` retains its separate JSON snapshot format. Internal reporting
+context and machine field identifiers do not change existing plan/action equality,
+hashing, human rendering, or confirmation tokens.
+
 | Command | Additional options | Behavior |
 | --- | --- | --- |
 | `validate-metadata` | `--metadata-path`, `--release-notes-only` | Local-only validation |

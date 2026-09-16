@@ -239,6 +239,10 @@ App Store Connect app id. If both `--app-id` and `--bundle-id` are provided,
 
 ## Dry Run and Apply
 
+Status and plan commands accept `--output json` for versioned, machine-readable
+successful results. Text remains the default. See [JSON output](docs/json-output.md)
+for target identity, verification scope, and failure handling.
+
 `create-version` creates only the version resource and configures it for manual
 release. It refuses existing versions and verifies the new version after apply.
 See [version creation](docs/version-creation.md) for permissions and recovery.

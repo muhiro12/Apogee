@@ -109,6 +109,28 @@ func existingAdaptersFailClosedForVersionCreation() async throws {
     #expect(await api.createdReviewSubmissionIDs.isEmpty)
 }
 
+@Test(arguments: [false, true])
+func creationJSONSeparatesRequestedAndObservedVersion(apply: Bool) async throws {
+    let command = try CreateVersion.parse([
+        "--app-id", "app-1", "--version", "2.0", "--platform", "MAC_OS", "--output", "json",
+    ] + (apply ? ["--apply"] : []))
+    let text = try await command.renderedOutput(
+        automation: ReleaseAutomation(api: testAPI(transport: versionCreationTransport())), configuration: .init()
+    )
+    let object = try #require(JSONSerialization.jsonObject(with: Data(text.utf8)) as? [String: Any])
+    let target = try #require(object["target"] as? [String: Any])
+    if apply {
+        let version = try #require(target["version"] as? [String: Any])
+        #expect(version["id"] as? String == "version-new")
+        #expect(version["versionString"] as? String == "2.0")
+        #expect(version["platform"] as? String == "MAC_OS")
+    } else {
+        #expect(target["version"] is NSNull)
+    }
+    let requested = try #require(object["requestedTarget"] as? [String: Any])
+    #expect(requested["version"] as? String == "2.0")
+}
+
 private func versionCreationTransport(scenario: String = "success", platform: Platform = .macOS) -> StubTransport {
     StubTransport { request, body, index in
         let path = request.path ?? ""

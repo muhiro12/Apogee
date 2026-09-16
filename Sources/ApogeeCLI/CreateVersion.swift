@@ -14,8 +14,12 @@ struct CreateVersion: AsyncParsableCommand {
         let configuration = try release.configuration()
         let credentials = try AppStoreConnectCredentials.load(credentialEnvironment: configuration.credentials)
         let automation = ReleaseAutomation(api: GeneratedAppStoreConnectAPI(credentials: credentials))
+        print(try await renderedOutput(automation: automation, configuration: configuration))
+    }
+
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
         let plan = try await createVersion(automation: automation, configuration: configuration)
-        print(PlanRenderer().render(plan))
+        return try release.render(plan, command: "create-version", configuration: configuration)
     }
 
     func createVersion(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> ReleasePlan {
