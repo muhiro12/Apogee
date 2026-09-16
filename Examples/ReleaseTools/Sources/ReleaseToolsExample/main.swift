@@ -22,3 +22,10 @@ func planReleaseNotes() async throws -> ReleasePlan {
         options: .init(mode: .dryRun)
     )
 }
+
+// A read-only companion compiled for consumers without performing account reads.
+func readRemoteMetadata(automation: ReleaseAutomation) async throws -> MetadataSnapshot {
+    try await automation.readMetadata(
+        appLookup: .bundleID("com.example.app"), version: "1.2.3"
+    )
+}

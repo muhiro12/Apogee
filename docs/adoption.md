@@ -104,6 +104,8 @@ to confirm no differences remain. For an independent check, inspect App Store
 Connect or read the target through a separate App Store Connect API client.
 Record which method was used; an API comparison does not establish UI behavior.
 `release-status` has no apply mode and does not display metadata text.
+Use `read-metadata` for complete stored values, without preparing local inputs.
+See [metadata snapshots](metadata-snapshots.md) for the JSON format and safe export.
 
 ### Verify writes before final release text is ready
 

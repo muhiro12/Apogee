@@ -17,6 +17,7 @@ download package dependencies. The plugin executes in the consumer package
 directory, including when invoked with `--package-path` from another directory.
 The executable also compiles the DocC release-notes example against the public
 library without executing its account-dependent function.
+It also compiles the read-only metadata snapshot API without making remote reads.
 `CustomTransport.swift` verifies the optional `ClientTransport` initializer from
 outside the Apogee package; its direct OpenAPI runtime dependency can be removed
 when that example is omitted. The default adapter and command plugin do not need

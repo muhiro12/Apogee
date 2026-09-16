@@ -28,6 +28,7 @@ The initial capability review is recorded in
 Supported in the first implementation:
 
 - Read-only release status, including publication timing and review state
+- Read-only localized metadata inspection and JSON snapshot export
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
 - Description, keywords, and promotional text updates
@@ -199,6 +200,8 @@ command plugin, replace the leading `apogee` with
 apogee validate-metadata --release-notes-only
 
 apogee release-status --version 1.2.3
+
+apogee read-metadata --version 1.2.3 --save-to /private/path/metadata-snapshot.json
 
 apogee update-release-notes \
   --version 1.2.3 \

@@ -9,6 +9,7 @@ struct ApogeeCommand: AsyncParsableCommand {
         abstract: "Automate App Store Connect release operations with dry-run plans by default.",
         subcommands: [
             ReleaseStatusCommand.self,
+            ReadMetadata.self,
             ValidateMetadata.self,
             UpdateReleaseNotes.self,
             UpdateMetadata.self,

@@ -23,6 +23,7 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `Platform` | Supported | API platform values |
 | `AppLookup` | Supported | Unique app selection |
 | `ReleaseStatus` | Supported | Observed release snapshot |
+| `MetadataSnapshot` | Supported | Read-only localized metadata snapshot |
 | `ReleasePlan` | Supported | Structured differences and opaque confirmation token |
 | `PlannedAction` | Supported | One difference or observation |
 | `PlannedActionKind` | Supported | Change/verification classifications |
@@ -103,6 +104,7 @@ consumer package, including invocation through `--package-path`.
 | --- | --- | --- |
 | `validate-metadata` | `--metadata-path`, `--release-notes-only` | Local-only validation |
 | `release-status` | Lookup, `--version`, `--platform` | Remote read only |
+| `read-metadata` | Lookup, `--version`, `--platform`, `--save-to` | Remote read only; JSON snapshot with optional new-file export |
 | `update-release-notes` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | What's New only |
 | `update-metadata` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | Four supported fields |
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |

@@ -85,6 +85,29 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
+    /// Reads all localizations for a uniquely resolved app version without local inputs.
+    ///
+    /// Returns locales in sorted order, preserves nil and empty fields, and rejects
+    /// ambiguous locale identities. No remote resources are created or changed.
+    public func readMetadata(
+        appLookup: AppLookup,
+        version: String,
+        platform: Platform = .iOS
+    ) async throws -> MetadataSnapshot {
+        let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+        let localizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
+        guard localizations.allSatisfy({ !$0.id.isEmpty && !$0.locale.isEmpty }) else {
+            throw ApogeeError.unexpectedAPIResponse("Metadata snapshot requires localization IDs and locales.")
+        }
+        _ = try uniqueLocalizations(localizations, key: \.locale)
+        _ = try uniqueLocalizations(localizations, key: \.id)
+        return .init(
+            app: context.app,
+            version: context.version,
+            localizations: localizations.sorted { $0.locale < $1.locale }
+        )
+    }
+
     /// Plans selected fields or sequentially applies patches and reads back their values.
     ///
     /// All selected local locales must already exist remotely. Nil fields are untouched;

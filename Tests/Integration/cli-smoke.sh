@@ -9,6 +9,7 @@ trap 'rm -rf "$temporary_directory"' EXIT
 
 "$binary" --help > "$temporary_directory/help.txt"
 "$binary" release-status --help > "$temporary_directory/status-help.txt"
+"$binary" read-metadata --help > "$temporary_directory/metadata-help.txt"
 "$binary" validate-metadata \
   --apogee-config "$repository_root/Examples/ReleaseTools/apogee.json" \
   --release-notes-only > "$temporary_directory/validation.txt"
@@ -26,6 +27,14 @@ if "$binary" release-status --version 1.2.3 --apply > "$temporary_directory/stat
     exit 1
 fi
 grep -q 'Unknown option' "$temporary_directory/status-apply.txt"
+
+for mode in --apply --dry-run; do
+    if "$binary" read-metadata --version 1.2.3 "$mode" > "$temporary_directory/metadata-mode.txt" 2>&1; then
+        echo 'The read-only metadata command unexpectedly accepted an execution mode.' >&2
+        exit 1
+    fi
+    grep -q 'Unknown option' "$temporary_directory/metadata-mode.txt"
+done
 
 mkdir "$temporary_directory/empty-metadata"
 if "$binary" validate-metadata --metadata-path "$temporary_directory/empty-metadata" > "$temporary_directory/empty.txt" 2>&1; then
