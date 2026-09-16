@@ -35,7 +35,7 @@ swift package plugin --allow-network-connections all apogee create-version \
   current state. Apple validates version format, platform, and lifecycle rules
   on creation; Apogee does not reproduce Apple's state machine locally.
 - Empty version strings and surrounding whitespace are rejected locally. The
-  version is otherwise passed unchanged rather than normalized as a package tag.
+  version is otherwise passed unchanged to App Store Connect.
 - Successful apply requires exactly one read-back match under the selected app,
   with the returned resource ID, requested version and platform, `MANUAL`
   release type, and `PREPARE_FOR_SUBMISSION` state. Missing or mismatched values

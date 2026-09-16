@@ -264,10 +264,8 @@ command invocation.
 
 ## Versioning and Stability
 
-Release tags and titles from `1.0.0` onward use `major.minor.patch`, including a zero patch,
-such as `1.1.0`, `1.1.1`, or `2.0.0`, without a `v` prefix. Historical `0.x` tags retain their original names and revisions. Before `1.0.0`, public
-interfaces may change between minor versions; review the release notes and pin
-an exact version. Starting with `1.0.0`, Apogee follows semantic versioning for
+Apogee follows semantic versioning, with release tags and titles in
+`major.minor.patch` format without a `v` prefix. The compatibility contract covers
 its documented package products, CLI commands and options, configuration keys,
 default repository layout, and release-safety behavior. New commands, options,
 configuration keys, and supported App Store Connect operations can be added in
@@ -276,27 +274,20 @@ backward-compatible bug fixes. Renaming or removing existing
 public surfaces, changing documented defaults, or weakening the dry-run/apply
 safety model requires a new major version.
 
-SwiftPM requirements use the same three-component version as release tags:
-use `exact: "1.0.0"` to consume tag `1.0.0`.
-
 The Git tag and GitHub Release are the package version source of truth. Avoid
 adding a separate checked-in source version string or README "current version"
 value that release automation must keep in sync with tags.
 
 The [Release workflow](.github/workflows/release.yml) verifies `main` with the
-same checks as pull requests before publishing. The first release requires an
-explicit version, which can be supplied through
-**Actions → Release → Run workflow** on `main`.
-After that, a push to `main` automatically increments the minor version and
-retains the zero patch, such as `1.0.0` or `1.0.1` to `1.1.0`. To select a major or patch
+same checks as pull requests before publishing. A normal push to `main` increments
+the minor version and resets the patch to zero, such as `1.0.1` to `1.1.0`.
+To select a major or patch
 version for a push, add a `Release-Version: 2.0.0` or `Release-Version: 1.1.1`
 trailer to that push's final commit message. Select the major version before
-merging a breaking change to `main`. A manually dispatched version takes
+merging a breaking change to `main`. An explicit version supplied through
+**Actions → Release → Run workflow** on `main` takes
 precedence over the trailer. Major and patch releases require one of these explicit
 version selections; ordinary pushes never select them automatically.
-Short explicit inputs such as `2.0` are accepted and expanded to `2.0.0` for new
-releases. Historical short tags are still recognized when ordering versions; conflicting
-short and zero-patch aliases fail rather than changing a published revision.
 Rerunning a completed release reuses its tag. Releases contain source archives;
 the workflow does not upload compiled binaries or contact App Store Connect.
 

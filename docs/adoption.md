@@ -207,10 +207,9 @@ establish real-account permissions, successful App Store Connect mutations,
 App Review acceptance, storefront publication, or the adopting app's quality.
 Those checks belong to the actual adopter and its intended release.
 
-### Moving from 0.x to 1.0.0
+### Verify a published release
 
-Use the 0.x series to verify package distribution and the first adopter workflow.
-Before declaring the documented interfaces stable:
+Before adopting a published package version:
 
 - Confirm that the Release workflow publishes the intended commit, automatically
   increments a subsequent version, and reuses the same tag when rerun.

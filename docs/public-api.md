@@ -1,7 +1,6 @@
 # Public API contract
 
-`ApogeeCore` is the supported library product for macOS release tooling. During
-0.x, exact version pins and migration review are required. At 1.0.0, its supported
+`ApogeeCore` is the supported library product for macOS release tooling. Its supported
 surface, CLI/configuration contract below, and documented safety behavior form
 the semantic-versioning boundary. This is a source-package contract, not a binary
 ABI or persistent Swift hash-value guarantee. A build does not prove account permissions,

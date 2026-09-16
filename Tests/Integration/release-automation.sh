@@ -155,7 +155,7 @@ test ! -s "$MOCK_RELEASE_LOG"
 MOCK_RELEASE_EXISTS=false
 REQUESTED_VERSION=
 
-# The published short 1.0 remains unchanged; the next release uses three components.
+# Historical short tags can be read without changing their source identity.
 git tag -d 1.0.0 >/dev/null
 run_release
 expect_creation 1.0 --verify-tag --generate-notes
