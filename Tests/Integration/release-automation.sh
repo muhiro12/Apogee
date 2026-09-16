@@ -55,10 +55,10 @@ run_release
 test ! -s "$MOCK_RELEASE_LOG"
 REQUESTED_VERSION=0.1
 run_release
-expect_creation 0.1 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.1.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=0.1.0
 run_release
-expect_creation 0.1 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.1.0 --target "$GITHUB_SHA" --generate-notes
 
 # Recover a missing release, then make retries idempotent.
 git tag 0.1
@@ -74,13 +74,13 @@ git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Next fixture'
 GITHUB_SHA=$(git rev-parse HEAD)
 next_commit=$GITHUB_SHA
 run_release
-expect_creation 0.2 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.2.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=1.0
 run_release
-expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 1.0.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=1.0.0
 run_release
-expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 1.0.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=0.1.1
 run_release
 expect_creation 0.1.1 --target "$GITHUB_SHA" --generate-notes
@@ -91,7 +91,7 @@ git -c commit.gpgsign=false commit --quiet --allow-empty \
 GITHUB_SHA=$(git rev-parse HEAD)
 REQUESTED_VERSION=
 run_release
-expect_creation 2.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 2.0.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=2.1.1
 run_release
 expect_creation 2.1.1 --target "$GITHUB_SHA" --generate-notes
@@ -119,11 +119,11 @@ run_release
 expect_creation 0.1.11 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=
 run_release
-expect_creation 0.2 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.2.0 --target "$GITHUB_SHA" --generate-notes
 git tag 0.2 "$next_commit"
 git tag 0.10 "$next_commit"
 run_release
-expect_creation 0.11 --target "$GITHUB_SHA" --generate-notes
+expect_creation 0.11.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=0.9
 expect_failure
 
@@ -142,18 +142,43 @@ git checkout --quiet --detach "$next_commit"
 GITHUB_SHA=$next_commit
 REQUESTED_VERSION=
 run_release
-expect_creation 1.0 --target "$GITHUB_SHA" --generate-notes
+expect_creation 1.0.0 --verify-tag --generate-notes
 git tag 1.0
 git tag v99.0
 git tag 99.00
 run_release
-expect_creation 1.0 --verify-tag --generate-notes
+expect_creation 1.0.0 --verify-tag --generate-notes
 MOCK_RELEASE_EXISTS=true
 REQUESTED_VERSION=1.0.0
 run_release
 test ! -s "$MOCK_RELEASE_LOG"
 MOCK_RELEASE_EXISTS=false
 REQUESTED_VERSION=
+
+# The published short 1.0 remains unchanged; the next release uses three components.
+git tag -d 1.0.0 >/dev/null
+run_release
+expect_creation 1.0 --verify-tag --generate-notes
+git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Add compatible functionality'
+GITHUB_SHA=$(git rev-parse HEAD)
+run_release
+expect_creation 1.1.0 --target "$GITHUB_SHA" --generate-notes
+git tag 1.1.0
+run_release
+expect_creation 1.1.0 --verify-tag --generate-notes
+MOCK_RELEASE_EXISTS=true
+run_release
+test ! -s "$MOCK_RELEASE_LOG"
+MOCK_RELEASE_EXISTS=false
+git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Fix the fixture' -m 'Release-Version: 1.1.1'
+GITHUB_SHA=$(git rev-parse HEAD)
+run_release
+expect_creation 1.1.1 --target "$GITHUB_SHA" --generate-notes
+git tag 1.1.1
+git -c commit.gpgsign=false commit --quiet --allow-empty -m 'Resume ordinary updates'
+GITHUB_SHA=$(git rev-parse HEAD)
+run_release
+expect_creation 1.2.0 --target "$GITHUB_SHA" --generate-notes
 
 # Maintenance still requires the verified main commit but performs no publishing.
 git -c commit.gpgsign=false commit --quiet --allow-empty \
@@ -167,9 +192,9 @@ GITHUB_REF=refs/heads/main
 GITHUB_SHA=$initial_commit
 expect_failure
 GITHUB_SHA=$(git rev-parse HEAD)
-REQUESTED_VERSION=1.1
+REQUESTED_VERSION=1.2.0
 run_release
-expect_creation 1.1 --target "$GITHUB_SHA" --generate-notes
+expect_creation 1.2.0 --target "$GITHUB_SHA" --generate-notes
 REQUESTED_VERSION=
 
 # An older queued run must not publish after a newer release.

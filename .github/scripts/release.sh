@@ -13,11 +13,22 @@ version_tags() {
 normalize_version() {
     local major minor patch
     IFS='.' read -r major minor patch <<< "$1"
-    if [[ "${patch:-0}" == 0 ]]; then
-        printf '%s.%s\n' "$major" "$minor"
-    else
-        printf '%s.%s.%s\n' "$major" "$minor" "$patch"
+    printf '%s.%s.%s\n' "$major" "$minor" "${patch:-0}"
+}
+# Reuse published spellings, and reject aliases that disagree about source identity.
+existing_version_tag() {
+    local canonical short
+    canonical=$(normalize_version "$1")
+    short=${canonical%.0}
+    if [[ "$short" != "$canonical" ]] && git rev-parse --verify --quiet "refs/tags/$short" >/dev/null; then
+        if git rev-parse --verify --quiet "refs/tags/$canonical" >/dev/null; then
+            [[ "$(git rev-list -n 1 "$short")" == "$(git rev-list -n 1 "$canonical")" ]] || fail 'Version aliases identify different commits.'
+        else
+            printf '%s\n' "$short"
+            return
+        fi
     fi
+    printf '%s\n' "$canonical"
 }
 latest=$(version_tags | tail -n 1)
 requested=${REQUESTED_VERSION:-}
@@ -32,9 +43,7 @@ fi
 if [[ -n "$latest" ]]; then
     git merge-base --is-ancestor "$latest" HEAD || fail 'Latest release is not an ancestor of this commit.'
     latest_version=$(normalize_version "$latest")
-    if [[ "$latest_version" != *.*.* ]] && git rev-parse --verify --quiet "refs/tags/$latest_version" >/dev/null; then
-        [[ "$(git rev-list -n 1 "$latest_version")" == "$(git rev-list -n 1 "$latest")" ]] || fail 'Latest version aliases identify different commits.'
-    fi
+    existing_version_tag "$latest" >/dev/null
 fi
 
 if [[ -n "$requested" ]]; then
@@ -49,14 +58,12 @@ else
         exit 0
     else
         IFS='.' read -r major minor patch <<< "$latest"
-        next="${major}.$((minor + 1))"
+        next="${major}.$((minor + 1)).0"
     fi
 fi
 
-# A legacy zero-patch alias must never identify a different source revision.
-if [[ "$next" != *.*.* ]] && git rev-parse --verify --quiet "refs/tags/$next.0" >/dev/null; then
-    [[ "$(git rev-list -n 1 "$next.0")" == "$GITHUB_SHA" ]] || fail 'Legacy version tag already belongs to a different commit.'
-fi
+next_version=$next
+next=$(existing_version_tag "$next")
 
 if git rev-parse --verify --quiet "refs/tags/$next" >/dev/null; then
     [[ "$(git rev-list -n 1 "$next")" == "$GITHUB_SHA" ]] || fail 'Requested tag already belongs to a different commit.'
@@ -67,11 +74,11 @@ if git rev-parse --verify --quiet "refs/tags/$next" >/dev/null; then
     gh release create "$next" --verify-tag --generate-notes
 else
     if [[ -n "$latest" ]]; then
-        if [[ "$next" == "$latest_version" ]]; then
+        if [[ "$next_version" == "$latest_version" ]]; then
             [[ "$(git rev-list -n 1 "$latest")" == "$GITHUB_SHA" ]] || fail 'Requested version already belongs to a different commit.'
         else
-            greatest=$(printf '%s\n' "$latest_version" "$next" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1)
-            [[ "$greatest" == "$next" ]] || fail 'Requested version must be newer than the latest release.'
+            greatest=$(printf '%s\n' "$latest_version" "$next_version" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1)
+            [[ "$greatest" == "$next_version" ]] || fail 'Requested version must be newer than the latest release.'
         fi
     fi
     gh release create "$next" --target "$GITHUB_SHA" --generate-notes

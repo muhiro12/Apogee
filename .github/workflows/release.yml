@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Explicit version (for example, 1.0 or 1.0.1), or none to verify without publishing'
+        description: 'Explicit version (for example, 1.1.0 or 1.1.1), or none to verify without publishing'
         required: true
         type: string
 
