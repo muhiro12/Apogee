@@ -119,6 +119,67 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Reads or updates explicit version settings independently of creation and submission.
+    /// With an empty patch, the plan is a read-only snapshot. Apply rechecks state before
+    /// writing and verifies the full effective settings through a fresh read.
+    public func updateVersionSettings(
+        appLookup: AppLookup, version: String, platform: Platform = .iOS,
+        patch: VersionSettingsPatch = .init(), options: ReleaseExecutionOptions
+    ) async throws -> ReleasePlan {
+        try patch.validate()
+        let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+        let current = context.version
+        try current.validateSettingsIdentity(version: version, platform: platform)
+        let desiredCopyright = patch.copyright ?? current.copyright
+        let desiredType = patch.releasePolicy?.releaseType ?? current.releaseType
+        let desiredDate = patch.releasePolicy.map { $0.earliestReleaseDate } ?? current.effectiveReleaseDate
+        let values: [(String, String?, String?)] = [
+            ("copyright", current.copyright, desiredCopyright),
+            ("release_type", current.releaseType, desiredType),
+            ("earliest_release_date", current.effectiveReleaseDate?.ISO8601Format(), desiredDate?.ISO8601Format()),
+        ]
+        var plan = ReleasePlan(title: "Update version settings for \(context.app.id) \(version)", actions: values.map { field, old, desired in
+            PlannedAction(kind: old == desired ? .unchanged : .update,
+                          resource: "appStoreVersion/\(current.id)", field: field,
+                          currentValue: old, desiredValue: desired).identifyingField(field)
+        }).targeting(app: context.app, version: current)
+        guard plan.hasChanges else {
+            return plan
+        }
+        try current.validateEditableSettings()
+        guard options.mode == .apply else {
+            return plan
+        }
+        try Task.checkCancellation()
+        let fresh = try await api.appStoreVersions(appID: context.app.id, version: version, platform: platform)
+        guard fresh == [current] else {
+            throw VersionSettingsError.remoteChanged
+        }
+        try patch.validate()
+        try Task.checkCancellation()
+        // An unchanged requested field is omitted, not rewritten.
+        let changes = VersionSettingsPatch(
+            copyright: desiredCopyright != current.copyright ? patch.copyright : nil,
+            releasePolicy: desiredType != current.releaseType || desiredDate != current.effectiveReleaseDate ? patch.releasePolicy : nil
+        )
+        let updated = try await api.updateVersionSettings(id: current.id, patch: changes)
+        guard updated.id == current.id else {
+            throw VersionSettingsError.readBackMismatch
+        }
+        try Task.checkCancellation()
+        let readBack = try await api.appStoreVersions(appID: context.app.id, version: version, platform: platform)
+        guard readBack.count == 1, let observed = readBack.first,
+              observed.id == current.id, observed.versionString == current.versionString,
+              observed.platform == current.platform, observed.state == current.state,
+              observed.copyright == desiredCopyright, observed.releaseType == desiredType,
+              observed.effectiveReleaseDate == desiredDate else {
+            throw VersionSettingsError.readBackMismatch
+        }
+        plan.actions.append(.init(kind: .verify, resource: "appStoreVersion/\(current.id)",
+                                  desiredValue: "Version identity and effective settings matched read-back"))
+        return plan
+    }
+
     /// Reads a uniquely resolved app version, attached build, and matching review submissions.
     ///
     /// Never mutates remote resources. Unknown attributes remain unavailable in the snapshot.

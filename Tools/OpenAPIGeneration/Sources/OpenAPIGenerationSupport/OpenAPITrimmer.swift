@@ -21,6 +21,7 @@ package struct OpenAPITrimmer {
         "appStoreVersions_appStoreVersionLocalizations_getToManyRelated",
         "appStoreVersions_build_updateToOneRelationship",
         "appStoreVersions_createInstance",
+        "appStoreVersions_updateInstance",
         "appStoreVersions_getInstance",
         "apps_appStoreVersions_getToManyRelated",
         "apps_betaFeedbackCrashSubmissions_getToManyRelated",

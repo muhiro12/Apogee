@@ -35,6 +35,7 @@ Supported in the first implementation:
 - Multiple-locale What's New updates
 - Description, keywords, promotional text, support URL, and marketing URL updates
 - Verified screenshot registration and replacement with private recovery originals
+- Explicit copyright and version release-policy updates
 - Build attachment
 - Review submission with dry-run and read-back verification
 - Webhook create/update sync with read-back verification, with destructive
@@ -180,6 +181,9 @@ AppStore/Metadata/
 Locales must already exist in App Store Connect. Apogee reports a missing
 locale as an error instead of creating one automatically.
 See [localized URL fields](docs/metadata-urls.md) for validation and empty-file behavior.
+
+See [version settings](docs/version-settings.md) for copyright and manual, automatic,
+or scheduled publication policy, independently of localized metadata.
 
 ## Screenshot Layout
 

@@ -184,6 +184,12 @@ does not lock remote resources, and these operations have no shared transaction.
 Metadata plans contain full current and desired values. Keep real plan output and
 unpublished adopter evidence in private storage.
 
+## Version-level settings
+
+Use [version settings](version-settings.md) to inspect and explicitly change
+copyright or publication policy before submission. Creation retains its manual
+release default; changing settings does not create or submit a version.
+
 ## Capability boundaries
 
 Metadata and submission operations require an existing target version. The explicit

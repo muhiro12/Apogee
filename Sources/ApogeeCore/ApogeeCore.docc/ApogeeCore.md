@@ -23,6 +23,9 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 - ``AppLookup``
 - ``Platform``
 - ``ReleaseStatus``
+- ``VersionReleasePolicy``
+- ``VersionSettingsPatch``
+- ``VersionSettingsError``
 
 ### Plans
 

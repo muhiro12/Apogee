@@ -12,6 +12,7 @@ struct ApogeeCommand: AsyncParsableCommand {
             BuildFeedbackCommand.self,
             ReadMetadata.self,
             CreateVersion.self,
+            UpdateVersionSettings.self,
             ValidateMetadata.self,
             UpdateReleaseNotes.self,
             UpdateMetadata.self,

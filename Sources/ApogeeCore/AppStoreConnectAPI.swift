@@ -22,6 +22,8 @@ public protocol AppStoreConnectAPI: Sendable {
     ///
     /// The default implementation throws unsupported so existing adapters remain source-compatible.
     func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion
+    /// Immediately updates explicit version settings; existing adapters default to unsupported.
+    func updateVersionSettings(id: String, patch: VersionSettingsPatch) async throws -> AppStoreConnectVersion
     /// Returns all existing localizations of an App Store version.
     func appStoreVersionLocalizations(versionID: String) async throws -> [AppStoreConnectLocalization]
     /// Immediately patches one localization; nil fields are omitted.
@@ -53,6 +55,10 @@ public protocol AppStoreConnectAPI: Sendable {
 }
 
 extension AppStoreConnectAPI {
+    public func updateVersionSettings(id: String, patch: VersionSettingsPatch) async throws -> AppStoreConnectVersion {
+        throw VersionSettingsError.unsupportedAdapter
+    }
+
     public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         throw BuildFeedbackError.unsupportedAdapter
     }
@@ -90,14 +96,16 @@ public struct AppStoreConnectVersion: Sendable, Hashable {
     public var platform: Platform?
     public var releaseType: String?
     public var earliestReleaseDate: Date?
+    public var copyright: String?
 
-    public init(id: String, versionString: String? = nil, state: String? = nil, platform: Platform? = nil, releaseType: String? = nil, earliestReleaseDate: Date? = nil) {
+    public init(id: String, versionString: String? = nil, state: String? = nil, platform: Platform? = nil, releaseType: String? = nil, earliestReleaseDate: Date? = nil, copyright: String? = nil) {
         self.id = id
         self.versionString = versionString
         self.state = state
         self.platform = platform
         self.releaseType = releaseType
         self.earliestReleaseDate = earliestReleaseDate
+        self.copyright = copyright
     }
 }
 

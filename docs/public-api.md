@@ -52,6 +52,9 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `BuildFeedback` | Supported | Read-only candidate-build feedback snapshot |
 | `BuildFeedbackSummary` | Supported | Privacy-reduced feedback resource |
 | `BuildFeedbackError` | Supported | Unsupported or incomplete feedback inspection |
+| `VersionReleasePolicy` | Supported | Explicit manual, automatic, or scheduled publication policy |
+| `VersionSettingsPatch` | Supported | Requested copyright and release policy; nil preserves values |
+| `VersionSettingsError` | Supported | Version-settings validation, state, and verification failures |
 | `VersionCreationError` | Supported | Version creation validation and unsupported adapters |
 | `UnsupportedCapability` | Supported | Explicit unsupported-operation failures |
 | `ScreenshotAPI` | Supported | Opt-in low-level screenshot adapter; mutations write immediately |
@@ -117,6 +120,11 @@ and preserve cancellation. Use `ReleaseAutomation` for guarded operations.
 adapters opting into creation must configure manual release. The production adapter
 implements this operation through the generated client.
 
+`AppStoreConnectAPI.updateVersionSettings` defaults to throwing
+`VersionSettingsError.unsupportedAdapter`. The automation layer verifies version
+identity and editability, then reads back the complete effective settings. See
+[version settings](version-settings.md) for state and inactive-date semantics.
+
 ## CLI and configuration
 
 All commands support `--apogee-config` and `--help`/`-h`. An absent implicit
@@ -139,6 +147,7 @@ hashing, human rendering, or confirmation tokens.
 | `create-version` | Lookup, `--version`, `--platform`, mode | Create an absent version for manual release; verify identity, release type, and preparation state |
 | `update-release-notes` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | What's New only |
 | `update-metadata` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | Four supported fields |
+| `update-version-settings` | Lookup, `--version`, `--platform`, mode, `--copyright`, `--release-type`, `--earliest-release-date` | Explicit version settings; no options reads the current effective values |
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |
 | `submit-for-review` | Lookup, `--version`, `--platform`, mode | Submit an existing version |
 | `sync-webhooks` | Lookup, mode, `--config`, `--allow-destructive`, `--plan-token` | Complete desired webhook list |

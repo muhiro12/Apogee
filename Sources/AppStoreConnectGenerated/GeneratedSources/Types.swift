@@ -62,6 +62,9 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /v1/appStoreVersions/{id}`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/get(appStoreVersions_getInstance)`.
     func appStoreVersions_getInstance(_ input: Operations.appStoreVersions_getInstance.Input) async throws -> Operations.appStoreVersions_getInstance.Output
+    /// - Remark: HTTP `PATCH /v1/appStoreVersions/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)`.
+    func appStoreVersions_updateInstance(_ input: Operations.appStoreVersions_updateInstance.Input) async throws -> Operations.appStoreVersions_updateInstance.Output
     /// - Remark: HTTP `GET /v1/appStoreVersions/{id}/appStoreVersionLocalizations`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/appStoreVersionLocalizations/get(appStoreVersions_appStoreVersionLocalizations_getToManyRelated)`.
     func appStoreVersions_appStoreVersionLocalizations_getToManyRelated(_ input: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input) async throws -> Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Output
@@ -311,6 +314,19 @@ extension APIProtocol {
             path: path,
             query: query,
             headers: headers
+        ))
+    }
+    /// - Remark: HTTP `PATCH /v1/appStoreVersions/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)`.
+    package func appStoreVersions_updateInstance(
+        path: Operations.appStoreVersions_updateInstance.Input.Path,
+        headers: Operations.appStoreVersions_updateInstance.Input.Headers = .init(),
+        body: Operations.appStoreVersions_updateInstance.Input.Body
+    ) async throws -> Operations.appStoreVersions_updateInstance.Output {
+        try await appStoreVersions_updateInstance(Operations.appStoreVersions_updateInstance.Input(
+            path: path,
+            headers: headers,
+            body: body
         ))
     }
     /// - Remark: HTTP `GET /v1/appStoreVersions/{id}/appStoreVersionLocalizations`.
@@ -10567,6 +10583,231 @@ package enum Components {
                 case links
                 case relationships
                 case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest`.
+        package struct AppStoreVersionUpdateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/copyright`.
+                    package var copyright: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/downloadable`.
+                    package var downloadable: Swift.Bool?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/earliestReleaseDate`.
+                    package var earliestReleaseDate: Foundation.Date?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/releaseType`.
+                    @frozen package enum releaseTypePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case MANUAL = "MANUAL"
+                        case AFTER_APPROVAL = "AFTER_APPROVAL"
+                        case SCHEDULED = "SCHEDULED"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/releaseType`.
+                    package var releaseType: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload.releaseTypePayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/reviewType`.
+                    @frozen package enum reviewTypePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case APP_STORE = "APP_STORE"
+                        case NOTARIZATION = "NOTARIZATION"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/reviewType`.
+                    package var reviewType: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload.reviewTypePayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/usesIdfa`.
+                    package var usesIdfa: Swift.Bool?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes/versionString`.
+                    package var versionString: Swift.String?
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - copyright:
+                    ///   - downloadable:
+                    ///   - earliestReleaseDate:
+                    ///   - releaseType:
+                    ///   - reviewType:
+                    ///   - usesIdfa:
+                    ///   - versionString:
+                    package init(
+                        copyright: Swift.String? = nil,
+                        downloadable: Swift.Bool? = nil,
+                        earliestReleaseDate: Foundation.Date? = nil,
+                        releaseType: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload.releaseTypePayload? = nil,
+                        reviewType: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload.reviewTypePayload? = nil,
+                        usesIdfa: Swift.Bool? = nil,
+                        versionString: Swift.String? = nil
+                    ) {
+                        self.copyright = copyright
+                        self.downloadable = downloadable
+                        self.earliestReleaseDate = earliestReleaseDate
+                        self.releaseType = releaseType
+                        self.reviewType = reviewType
+                        self.usesIdfa = usesIdfa
+                        self.versionString = versionString
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case copyright
+                        case downloadable
+                        case earliestReleaseDate
+                        case releaseType
+                        case reviewType
+                        case usesIdfa
+                        case versionString
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/id`.
+                package var id: Swift.String
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships`.
+                package struct relationshipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience`.
+                    package struct appClipDefaultExperiencePayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appClipDefaultExperiences = "appClipDefaultExperiences"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience/data/type`.
+                            package var _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience/data`.
+                        package var data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload.dataPayload?
+                        /// Creates a new `appClipDefaultExperiencePayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/appClipDefaultExperience`.
+                    package var appClipDefaultExperience: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build`.
+                    package struct buildPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case builds = "builds"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build/data/type`.
+                            package var _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build/data`.
+                        package var data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload.dataPayload?
+                        /// Creates a new `buildPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships/build`.
+                    package var build: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload?
+                    /// Creates a new `relationshipsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - appClipDefaultExperience:
+                    ///   - build:
+                    package init(
+                        appClipDefaultExperience: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.appClipDefaultExperiencePayload? = nil,
+                        build: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload.buildPayload? = nil
+                    ) {
+                        self.appClipDefaultExperience = appClipDefaultExperience
+                        self.build = build
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case appClipDefaultExperience
+                        case build
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/relationships`.
+                package var relationships: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appStoreVersions = "appStoreVersions"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data/type`.
+                package var _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - id:
+                ///   - relationships:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload? = nil,
+                    id: Swift.String,
+                    relationships: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.relationshipsPayload? = nil,
+                    _type: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.id = id
+                    self.relationships = relationships
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case id
+                    case relationships
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionUpdateRequest/data`.
+            package var data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload
+            /// Creates a new `AppStoreVersionUpdateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppStoreVersionUpdateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
             }
         }
         /// - Remark: Generated from `#/components/schemas/AppVersionState`.
@@ -34624,6 +34865,500 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.appStoreVersions_getInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `PATCH /v1/appStoreVersions/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)`.
+    package enum appStoreVersions_updateInstance {
+        package static let id: Swift.String = "appStoreVersions_updateInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appStoreVersions_updateInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersions_updateInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersions_updateInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appStoreVersions_updateInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppStoreVersionUpdateRequest)
+            }
+            package var body: Operations.appStoreVersions_updateInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            package init(
+                path: Operations.appStoreVersions_updateInstance.Input.Path,
+                headers: Operations.appStoreVersions_updateInstance.Input.Headers = .init(),
+                body: Operations.appStoreVersions_updateInstance.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppStoreVersionResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppStoreVersionResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppStoreVersion
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appStoreVersions_updateInstance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appStoreVersions_updateInstance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appStoreVersions_updateInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appStoreVersions_updateInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appStoreVersions_updateInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appStoreVersions_updateInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appStoreVersions_updateInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appStoreVersions_updateInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appStoreVersions_updateInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appStoreVersions_updateInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appStoreVersions_updateInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appStoreVersions_updateInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appStoreVersions_updateInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appStoreVersions_updateInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/PATCH/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersions_updateInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersions_updateInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/patch(appStoreVersions_updateInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appStoreVersions_updateInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appStoreVersions_updateInstance.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):

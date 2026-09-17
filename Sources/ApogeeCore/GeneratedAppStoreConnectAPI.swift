@@ -332,6 +332,23 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         }
     }
 
+    public func updateVersionSettings(id: String, patch: VersionSettingsPatch) async throws -> AppStoreConnectVersion {
+        try patch.validate()
+        return try await perform(operation: "updateVersionSettings") {
+            let releaseType = patch.releasePolicy.flatMap {
+                Components.Schemas.AppStoreVersionUpdateRequest.dataPayload.attributesPayload.releaseTypePayload(rawValue: $0.releaseType)
+            }
+            let request = Components.Schemas.AppStoreVersionUpdateRequest(data: .init(
+                attributes: .init(copyright: patch.copyright,
+                                  earliestReleaseDate: patch.releasePolicy?.earliestReleaseDate,
+                                  releaseType: releaseType),
+                id: id, _type: .appStoreVersions
+            ))
+            let output = try await client().appStoreVersions_updateInstance(.init(path: .init(id: id), body: .json(request)))
+            return try mapVersion(output.ok.body.json.data)
+        }
+    }
+
     public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
         try await perform(operation: "createAppStoreVersion") {
             let request = Components.Schemas.AppStoreVersionCreateRequest(data: .init(
@@ -618,7 +635,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
             state: version.attributes?.appVersionState?.rawValue,
             platform: version.attributes?.platform.flatMap(Platform.init(generated:)),
             releaseType: version.attributes?.releaseType?.rawValue,
-            earliestReleaseDate: version.attributes?.earliestReleaseDate
+            earliestReleaseDate: version.attributes?.earliestReleaseDate,
+            copyright: version.attributes?.copyright
         )
     }
 

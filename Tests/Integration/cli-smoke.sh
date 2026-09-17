@@ -14,6 +14,16 @@ trap 'rm -rf "$temporary_directory"' EXIT
 for option in recovery-path originals-path allow-destructive plan-token; do
     grep -q -- "--$option" "$temporary_directory/screenshots-help.txt"
 done
+"$binary" update-version-settings --help > "$temporary_directory/settings-help.txt"
+for option in copyright release-type earliest-release-date; do
+    grep -q -- "--$option" "$temporary_directory/settings-help.txt"
+done
+if "$binary" update-version-settings --version 2.0 --release-type MANUAL --earliest-release-date 2100-01-01T00:00:00Z --output json > "$temporary_directory/settings-out.txt" 2> "$temporary_directory/settings-error.txt"; then
+    echo 'Invalid release settings unexpectedly succeeded.' >&2
+    exit 1
+fi
+test ! -s "$temporary_directory/settings-out.txt"
+grep -q 'Only SCHEDULED requires' "$temporary_directory/settings-error.txt"
 "$binary" create-version --help > "$temporary_directory/create-help.txt"
 grep -q 'manual release' "$temporary_directory/create-help.txt"
 "$binary" validate-metadata \

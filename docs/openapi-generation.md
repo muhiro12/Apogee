@@ -43,6 +43,9 @@ speculatively; add an operation when its
 adapter implementation and verification require it.
 `appStoreVersions_createInstance` is retained for explicit manual-release version
 creation; the adapter does not use its optional metadata or build relationships.
+`appStoreVersions_updateInstance` supports explicit version settings; only copyright,
+release type, and a scheduled date are sent, never build relationships or other
+attributes.
 
 The two app-scoped beta feedback collection operations support read-only
 candidate-build inspection; feedback deletion and artifact downloads are not generated.
