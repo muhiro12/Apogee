@@ -38,14 +38,18 @@ specification while preventing an alternate or compromised archive from
 consuming unbounded maintainer or CI resources.
 
 The trim step keeps only the operations called by the production adapter and
-their transitive referenced schemas. Unsupported screenshot uploads and unused
-resource endpoints are not generated speculatively; add an operation when its
+their transitive referenced schemas. Unused resource endpoints are not generated
+speculatively; add an operation when its
 adapter implementation and verification require it.
 `appStoreVersions_createInstance` is retained for explicit manual-release version
 creation; the adapter does not use its optional metadata or build relationships.
 
 The two app-scoped beta feedback collection operations support read-only
 candidate-build inspection; feedback deletion and artifact downloads are not generated.
+
+Screenshot operations cover only standard version localizations, individual assets,
+and ordering. Binary upload requests use the returned operations through a separate
+credential-free transport; they are not App Store Connect API calls.
 
 The trim step removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently

@@ -295,17 +295,37 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
-    /// Produces a provisional screenshot inventory plan; screenshot writes are unsupported.
+    /// Plans or applies verified screenshot registration, replacement, and ordering.
     ///
-    /// After preflight succeeds, apply throws unsupported. No assets are reserved,
-    /// uploaded, committed, or remotely verified.
+    /// Production screenshot adapters validate uploads and preserve verified originals
+    /// before deletion. Recovery is required for apply; older adapters remain unsupported.
     public func updateScreenshots(
         appLookup: AppLookup,
         version: String,
         screenshotsPath: String,
         platform: Platform = .iOS,
-        options: ReleaseExecutionOptions
+        options: ReleaseExecutionOptions,
+        recovery: ScreenshotRecovery? = nil
     ) async throws -> ReleasePlan {
+        if let screenshotAPI = api as? any ScreenshotAPI {
+            // Validate files before remote access. The workflow retains its own byte snapshot.
+            _ = try ScreenshotFiles.load(screenshotsPath, platform: platform)
+            let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+            let localizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
+            let validateVersion: @Sendable () async throws -> Void = {
+                let current = try await api.appStoreVersions(appID: context.app.id, version: version, platform: platform)
+                guard current.count == 1, let observed = current.first,
+                      observed.id == context.version.id, observed.versionString == version, observed.platform == platform,
+                      ["PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED"].contains(observed.state ?? "") else {
+                    throw ScreenshotError.remoteChanged
+                }
+            }
+            try await validateVersion()
+            return try await ScreenshotWorkflow(api: screenshotAPI, validateVersion: validateVersion).run(
+                app: context.app, version: context.version, platform: platform,
+                localizations: localizations, path: screenshotsPath, options: options, recovery: recovery
+            )
+        }
         let screenshotSets = try screenshotLoader.load(from: screenshotsPath)
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
         let localizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)

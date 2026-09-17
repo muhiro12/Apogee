@@ -29,9 +29,33 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /v1/apps/{id}/webhooks`.
     /// - Remark: Generated from `#/paths//v1/apps/{id}/webhooks/get(apps_webhooks_getToManyRelated)`.
     func apps_webhooks_getToManyRelated(_ input: Operations.apps_webhooks_getToManyRelated.Input) async throws -> Operations.apps_webhooks_getToManyRelated.Output
+    /// - Remark: HTTP `POST /v1/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)`.
+    func appScreenshots_createInstance(_ input: Operations.appScreenshots_createInstance.Input) async throws -> Operations.appScreenshots_createInstance.Output
+    /// - Remark: HTTP `GET /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)`.
+    func appScreenshots_getInstance(_ input: Operations.appScreenshots_getInstance.Input) async throws -> Operations.appScreenshots_getInstance.Output
+    /// - Remark: HTTP `PATCH /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)`.
+    func appScreenshots_updateInstance(_ input: Operations.appScreenshots_updateInstance.Input) async throws -> Operations.appScreenshots_updateInstance.Output
+    /// - Remark: HTTP `DELETE /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)`.
+    func appScreenshots_deleteInstance(_ input: Operations.appScreenshots_deleteInstance.Input) async throws -> Operations.appScreenshots_deleteInstance.Output
+    /// - Remark: HTTP `POST /v1/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)`.
+    func appScreenshotSets_createInstance(_ input: Operations.appScreenshotSets_createInstance.Input) async throws -> Operations.appScreenshotSets_createInstance.Output
+    /// - Remark: HTTP `GET /v1/appScreenshotSets/{id}/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)`.
+    func appScreenshotSets_appScreenshots_getToManyRelated(_ input: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input) async throws -> Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output
+    /// - Remark: HTTP `PATCH /v1/appScreenshotSets/{id}/relationships/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)`.
+    func appScreenshotSets_appScreenshots_replaceToManyRelationship(_ input: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input) async throws -> Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output
     /// - Remark: HTTP `PATCH /v1/appStoreVersionLocalizations/{id}`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/patch(appStoreVersionLocalizations_updateInstance)`.
     func appStoreVersionLocalizations_updateInstance(_ input: Operations.appStoreVersionLocalizations_updateInstance.Input) async throws -> Operations.appStoreVersionLocalizations_updateInstance.Output
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)`.
+    func appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(_ input: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input) async throws -> Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output
     /// - Remark: HTTP `POST /v1/appStoreVersions`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersions/post(appStoreVersions_createInstance)`.
     func appStoreVersions_createInstance(_ input: Operations.appStoreVersions_createInstance.Input) async throws -> Operations.appStoreVersions_createInstance.Output
@@ -154,6 +178,91 @@ extension APIProtocol {
             headers: headers
         ))
     }
+    /// - Remark: HTTP `POST /v1/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)`.
+    package func appScreenshots_createInstance(
+        headers: Operations.appScreenshots_createInstance.Input.Headers = .init(),
+        body: Operations.appScreenshots_createInstance.Input.Body
+    ) async throws -> Operations.appScreenshots_createInstance.Output {
+        try await appScreenshots_createInstance(Operations.appScreenshots_createInstance.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)`.
+    package func appScreenshots_getInstance(
+        path: Operations.appScreenshots_getInstance.Input.Path,
+        query: Operations.appScreenshots_getInstance.Input.Query = .init(),
+        headers: Operations.appScreenshots_getInstance.Input.Headers = .init()
+    ) async throws -> Operations.appScreenshots_getInstance.Output {
+        try await appScreenshots_getInstance(Operations.appScreenshots_getInstance.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `PATCH /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)`.
+    package func appScreenshots_updateInstance(
+        path: Operations.appScreenshots_updateInstance.Input.Path,
+        headers: Operations.appScreenshots_updateInstance.Input.Headers = .init(),
+        body: Operations.appScreenshots_updateInstance.Input.Body
+    ) async throws -> Operations.appScreenshots_updateInstance.Output {
+        try await appScreenshots_updateInstance(Operations.appScreenshots_updateInstance.Input(
+            path: path,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `DELETE /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)`.
+    package func appScreenshots_deleteInstance(
+        path: Operations.appScreenshots_deleteInstance.Input.Path,
+        headers: Operations.appScreenshots_deleteInstance.Input.Headers = .init()
+    ) async throws -> Operations.appScreenshots_deleteInstance.Output {
+        try await appScreenshots_deleteInstance(Operations.appScreenshots_deleteInstance.Input(
+            path: path,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `POST /v1/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)`.
+    package func appScreenshotSets_createInstance(
+        headers: Operations.appScreenshotSets_createInstance.Input.Headers = .init(),
+        body: Operations.appScreenshotSets_createInstance.Input.Body
+    ) async throws -> Operations.appScreenshotSets_createInstance.Output {
+        try await appScreenshotSets_createInstance(Operations.appScreenshotSets_createInstance.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appScreenshotSets/{id}/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)`.
+    package func appScreenshotSets_appScreenshots_getToManyRelated(
+        path: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Path,
+        query: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query = .init(),
+        headers: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Headers = .init()
+    ) async throws -> Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output {
+        try await appScreenshotSets_appScreenshots_getToManyRelated(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `PATCH /v1/appScreenshotSets/{id}/relationships/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)`.
+    package func appScreenshotSets_appScreenshots_replaceToManyRelationship(
+        path: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Path,
+        headers: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Headers = .init(),
+        body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Body
+    ) async throws -> Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output {
+        try await appScreenshotSets_appScreenshots_replaceToManyRelationship(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input(
+            path: path,
+            headers: headers,
+            body: body
+        ))
+    }
     /// - Remark: HTTP `PATCH /v1/appStoreVersionLocalizations/{id}`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/patch(appStoreVersionLocalizations_updateInstance)`.
     package func appStoreVersionLocalizations_updateInstance(
@@ -165,6 +274,19 @@ extension APIProtocol {
             path: path,
             headers: headers,
             body: body
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)`.
+    package func appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(
+        path: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Path,
+        query: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query = .init(),
+        headers: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Headers = .init()
+    ) async throws -> Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output {
+        try await appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
         ))
     }
     /// - Remark: HTTP `POST /v1/appStoreVersions`.
@@ -3402,6 +3524,325 @@ package enum Components {
                 case _type = "type"
             }
         }
+        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization`.
+        package struct AppCustomProductPageLocalization: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/attributes/locale`.
+                package var locale: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/attributes/promotionalText`.
+                package var promotionalText: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - locale:
+                ///   - promotionalText:
+                package init(
+                    locale: Swift.String? = nil,
+                    promotionalText: Swift.String? = nil
+                ) {
+                    self.locale = locale
+                    self.promotionalText = promotionalText
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case locale
+                    case promotionalText
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/attributes`.
+            package var attributes: Components.Schemas.AppCustomProductPageLocalization.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion`.
+                package struct appCustomProductPageVersionPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appCustomProductPageVersions = "appCustomProductPageVersions"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion/data/type`.
+                        package var _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion/data`.
+                    package var data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload.dataPayload?
+                    /// Creates a new `appCustomProductPageVersionPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appCustomProductPageVersion`.
+                package var appCustomProductPageVersion: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload?
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets`.
+                package struct appPreviewSetsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appPreviewSets = "appPreviewSets"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/dataPayload/type`.
+                        package var _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/data`.
+                    package typealias dataPayload = [Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/data`.
+                    package var data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appPreviewSetsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appPreviewSets`.
+                package var appPreviewSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets`.
+                package struct appScreenshotSetsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appScreenshotSets = "appScreenshotSets"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/dataPayload/type`.
+                        package var _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/data`.
+                    package typealias dataPayload = [Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/data`.
+                    package var data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appScreenshotSetsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets`.
+                package var appScreenshotSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords`.
+                package struct searchKeywordsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appKeywords = "appKeywords"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/dataPayload/type`.
+                        package var _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/data`.
+                    package typealias dataPayload = [Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/data`.
+                    package var data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `searchKeywordsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords`.
+                package var searchKeywords: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - appCustomProductPageVersion:
+                ///   - appPreviewSets:
+                ///   - appScreenshotSets:
+                ///   - searchKeywords:
+                package init(
+                    appCustomProductPageVersion: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload? = nil,
+                    appPreviewSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload? = nil,
+                    appScreenshotSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload? = nil,
+                    searchKeywords: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload? = nil
+                ) {
+                    self.appCustomProductPageVersion = appCustomProductPageVersion
+                    self.appPreviewSets = appPreviewSets
+                    self.appScreenshotSets = appScreenshotSets
+                    self.searchKeywords = searchKeywords
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appCustomProductPageVersion
+                    case appPreviewSets
+                    case appScreenshotSets
+                    case searchKeywords
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships`.
+            package var relationships: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/type`.
+            package var _type: Components.Schemas.AppCustomProductPageLocalization._typePayload
+            /// Creates a new `AppCustomProductPageLocalization`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppCustomProductPageLocalization.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppCustomProductPageLocalization._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/AppCustomProductPageVersion`.
         package struct AppCustomProductPageVersion: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/AppCustomProductPageVersion/attributes`.
@@ -5506,6 +5947,324 @@ package enum Components {
                 case links
             }
         }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshot`.
+        package struct AppScreenshot: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/assetDeliveryState`.
+                package var assetDeliveryState: Components.Schemas.AppMediaAssetState?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/assetToken`.
+                package var assetToken: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/assetType`.
+                package var assetType: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/fileName`.
+                package var fileName: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/fileSize`.
+                package var fileSize: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/imageAsset`.
+                package var imageAsset: Components.Schemas.ImageAsset?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/sourceFileChecksum`.
+                package var sourceFileChecksum: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - assetDeliveryState:
+                ///   - assetToken:
+                ///   - assetType:
+                ///   - fileName:
+                ///   - fileSize:
+                ///   - imageAsset:
+                ///   - sourceFileChecksum:
+                ///   - uploadOperations:
+                package init(
+                    assetDeliveryState: Components.Schemas.AppMediaAssetState? = nil,
+                    assetToken: Swift.String? = nil,
+                    assetType: Swift.String? = nil,
+                    fileName: Swift.String? = nil,
+                    fileSize: Swift.Int? = nil,
+                    imageAsset: Components.Schemas.ImageAsset? = nil,
+                    sourceFileChecksum: Swift.String? = nil,
+                    uploadOperations: [Components.Schemas.UploadOperation]? = nil
+                ) {
+                    self.assetDeliveryState = assetDeliveryState
+                    self.assetToken = assetToken
+                    self.assetType = assetType
+                    self.fileName = fileName
+                    self.fileSize = fileSize
+                    self.imageAsset = imageAsset
+                    self.sourceFileChecksum = sourceFileChecksum
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case assetDeliveryState
+                    case assetToken
+                    case assetType
+                    case fileName
+                    case fileSize
+                    case imageAsset
+                    case sourceFileChecksum
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/attributes`.
+            package var attributes: Components.Schemas.AppScreenshot.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet`.
+                package struct appScreenshotSetPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appScreenshotSets = "appScreenshotSets"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet/data/type`.
+                        package var _type: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet/data`.
+                    package var data: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload.dataPayload?
+                    /// Creates a new `appScreenshotSetPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships/appScreenshotSet`.
+                package var appScreenshotSet: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - appScreenshotSet:
+                package init(appScreenshotSet: Components.Schemas.AppScreenshot.relationshipsPayload.appScreenshotSetPayload? = nil) {
+                    self.appScreenshotSet = appScreenshotSet
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appScreenshotSet
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/relationships`.
+            package var relationships: Components.Schemas.AppScreenshot.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appScreenshots = "appScreenshots"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshot/type`.
+            package var _type: Components.Schemas.AppScreenshot._typePayload
+            /// Creates a new `AppScreenshot`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppScreenshot.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppScreenshot.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppScreenshot._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest`.
+        package struct AppScreenshotCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/attributes/fileName`.
+                    package var fileName: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/attributes/fileSize`.
+                    package var fileSize: Swift.Int
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - fileName:
+                    ///   - fileSize:
+                    package init(
+                        fileName: Swift.String,
+                        fileSize: Swift.Int
+                    ) {
+                        self.fileName = fileName
+                        self.fileSize = fileSize
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case fileName
+                        case fileSize
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppScreenshotCreateRequest.dataPayload.attributesPayload
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships`.
+                package struct relationshipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet`.
+                    package struct appScreenshotSetPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appScreenshotSets = "appScreenshotSets"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet/data/type`.
+                            package var _type: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet/data`.
+                        package var data: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload.dataPayload
+                        /// Creates a new `appScreenshotSetPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload.dataPayload) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships/appScreenshotSet`.
+                    package var appScreenshotSet: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload
+                    /// Creates a new `relationshipsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - appScreenshotSet:
+                    package init(appScreenshotSet: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload.appScreenshotSetPayload) {
+                        self.appScreenshotSet = appScreenshotSet
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case appScreenshotSet
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/relationships`.
+                package var relationships: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data/type`.
+                package var _type: Components.Schemas.AppScreenshotCreateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - relationships:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppScreenshotCreateRequest.dataPayload.attributesPayload,
+                    relationships: Components.Schemas.AppScreenshotCreateRequest.dataPayload.relationshipsPayload,
+                    _type: Components.Schemas.AppScreenshotCreateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.relationships = relationships
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case relationships
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotCreateRequest/data`.
+            package var data: Components.Schemas.AppScreenshotCreateRequest.dataPayload
+            /// Creates a new `AppScreenshotCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppScreenshotCreateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotResponse`.
+        package struct AppScreenshotResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotResponse/data`.
+            package var data: Components.Schemas.AppScreenshot
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotResponse/included`.
+            package var included: [Components.Schemas.AppScreenshotSet]?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppScreenshotResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppScreenshot,
+                included: [Components.Schemas.AppScreenshotSet]? = nil,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/AppScreenshotSet`.
         package struct AppScreenshotSet: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/AppScreenshotSet/attributes`.
@@ -5783,6 +6542,540 @@ package enum Components {
                 case links
                 case relationships
                 case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest`.
+        package struct AppScreenshotSetAppScreenshotsLinkagesRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/dataPayload`.
+            package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/dataPayload/id`.
+                package var id: Swift.String
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/dataPayload/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/dataPayload/type`.
+                package var _type: Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest.dataPayloadPayload._typePayload
+                /// Creates a new `dataPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - id:
+                ///   - _type:
+                package init(
+                    id: Swift.String,
+                    _type: Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest.dataPayloadPayload._typePayload
+                ) {
+                    self.id = id
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case id
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/data`.
+            package typealias dataPayload = [Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest.dataPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetAppScreenshotsLinkagesRequest/data`.
+            package var data: Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest.dataPayload
+            /// Creates a new `AppScreenshotSetAppScreenshotsLinkagesRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest`.
+        package struct AppScreenshotSetCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/attributes/screenshotDisplayType`.
+                    package var screenshotDisplayType: Components.Schemas.ScreenshotDisplayType
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - screenshotDisplayType:
+                    package init(screenshotDisplayType: Components.Schemas.ScreenshotDisplayType) {
+                        self.screenshotDisplayType = screenshotDisplayType
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case screenshotDisplayType
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.attributesPayload
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships`.
+                package struct relationshipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization`.
+                    package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization/data/type`.
+                            package var _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization/data`.
+                        package var data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                        /// Creates a new `appCustomProductPageLocalizationPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appCustomProductPageLocalization`.
+                    package var appCustomProductPageLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                    package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                            package var _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                        package var data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                        /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                    package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization`.
+                    package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization/data/type`.
+                            package var _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization/data`.
+                        package var data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                        /// Creates a new `appStoreVersionLocalizationPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships/appStoreVersionLocalization`.
+                    package var appStoreVersionLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                    /// Creates a new `relationshipsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - appCustomProductPageLocalization:
+                    ///   - appStoreVersionExperimentTreatmentLocalization:
+                    ///   - appStoreVersionLocalization:
+                    package init(
+                        appCustomProductPageLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                        appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                        appStoreVersionLocalization: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil
+                    ) {
+                        self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                        self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                        self.appStoreVersionLocalization = appStoreVersionLocalization
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case appCustomProductPageLocalization
+                        case appStoreVersionExperimentTreatmentLocalization
+                        case appStoreVersionLocalization
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/relationships`.
+                package var relationships: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshotSets = "appScreenshotSets"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data/type`.
+                package var _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - relationships:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.attributesPayload,
+                    relationships: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload.relationshipsPayload? = nil,
+                    _type: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.relationships = relationships
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case relationships
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetCreateRequest/data`.
+            package var data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload
+            /// Creates a new `AppScreenshotSetCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppScreenshotSetCreateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse`.
+        package struct AppScreenshotSetResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/data`.
+            package var data: Components.Schemas.AppScreenshotSet
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/includedPayload/AppCustomProductPageLocalization`.
+                case appCustomProductPageLocalizations(Components.Schemas.AppCustomProductPageLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/includedPayload/AppScreenshot`.
+                case appScreenshots(Components.Schemas.AppScreenshot)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/includedPayload/AppStoreVersionExperimentTreatmentLocalization`.
+                case appStoreVersionExperimentTreatmentLocalizations(Components.Schemas.AppStoreVersionExperimentTreatmentLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/includedPayload/AppStoreVersionLocalization`.
+                case appStoreVersionLocalizations(Components.Schemas.AppStoreVersionLocalization)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "appCustomProductPageLocalizations":
+                        self = .appCustomProductPageLocalizations(try .init(from: decoder))
+                    case "appScreenshots":
+                        self = .appScreenshots(try .init(from: decoder))
+                    case "appStoreVersionExperimentTreatmentLocalizations":
+                        self = .appStoreVersionExperimentTreatmentLocalizations(try .init(from: decoder))
+                    case "appStoreVersionLocalizations":
+                        self = .appStoreVersionLocalizations(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .appCustomProductPageLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appScreenshots(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionExperimentTreatmentLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionLocalizations(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/included`.
+            package typealias includedPayload = [Components.Schemas.AppScreenshotSetResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/included`.
+            package var included: Components.Schemas.AppScreenshotSetResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppScreenshotSetResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppScreenshotSet,
+                included: Components.Schemas.AppScreenshotSetResponse.includedPayload? = nil,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse`.
+        package struct AppScreenshotSetsResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/data`.
+            package var data: [Components.Schemas.AppScreenshotSet]
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/includedPayload/AppCustomProductPageLocalization`.
+                case appCustomProductPageLocalizations(Components.Schemas.AppCustomProductPageLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/includedPayload/AppScreenshot`.
+                case appScreenshots(Components.Schemas.AppScreenshot)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/includedPayload/AppStoreVersionExperimentTreatmentLocalization`.
+                case appStoreVersionExperimentTreatmentLocalizations(Components.Schemas.AppStoreVersionExperimentTreatmentLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/includedPayload/AppStoreVersionLocalization`.
+                case appStoreVersionLocalizations(Components.Schemas.AppStoreVersionLocalization)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "appCustomProductPageLocalizations":
+                        self = .appCustomProductPageLocalizations(try .init(from: decoder))
+                    case "appScreenshots":
+                        self = .appScreenshots(try .init(from: decoder))
+                    case "appStoreVersionExperimentTreatmentLocalizations":
+                        self = .appStoreVersionExperimentTreatmentLocalizations(try .init(from: decoder))
+                    case "appStoreVersionLocalizations":
+                        self = .appStoreVersionLocalizations(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .appCustomProductPageLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appScreenshots(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionExperimentTreatmentLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionLocalizations(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/included`.
+            package typealias includedPayload = [Components.Schemas.AppScreenshotSetsResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/included`.
+            package var included: Components.Schemas.AppScreenshotSetsResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotSetsResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `AppScreenshotSetsResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.AppScreenshotSet],
+                included: Components.Schemas.AppScreenshotSetsResponse.includedPayload? = nil,
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotsResponse`.
+        package struct AppScreenshotsResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotsResponse/data`.
+            package var data: [Components.Schemas.AppScreenshot]
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotsResponse/included`.
+            package var included: [Components.Schemas.AppScreenshotSet]?
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotsResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotsResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `AppScreenshotsResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.AppScreenshot],
+                included: [Components.Schemas.AppScreenshotSet]? = nil,
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest`.
+        package struct AppScreenshotUpdateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/attributes/sourceFileChecksum`.
+                    package var sourceFileChecksum: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/attributes/uploaded`.
+                    package var uploaded: Swift.Bool?
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - sourceFileChecksum:
+                    ///   - uploaded:
+                    package init(
+                        sourceFileChecksum: Swift.String? = nil,
+                        uploaded: Swift.Bool? = nil
+                    ) {
+                        self.sourceFileChecksum = sourceFileChecksum
+                        self.uploaded = uploaded
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case sourceFileChecksum
+                        case uploaded
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppScreenshotUpdateRequest.dataPayload.attributesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/id`.
+                package var id: Swift.String
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data/type`.
+                package var _type: Components.Schemas.AppScreenshotUpdateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - id:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppScreenshotUpdateRequest.dataPayload.attributesPayload? = nil,
+                    id: Swift.String,
+                    _type: Components.Schemas.AppScreenshotUpdateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.id = id
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case id
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppScreenshotUpdateRequest/data`.
+            package var data: Components.Schemas.AppScreenshotUpdateRequest.dataPayload
+            /// Creates a new `AppScreenshotUpdateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppScreenshotUpdateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
             }
         }
         /// - Remark: Generated from `#/components/schemas/AppsResponse`.
@@ -7622,6 +8915,253 @@ package enum Components {
                 links: Components.Schemas.ResourceLinks? = nil,
                 relationships: Components.Schemas.AppStoreVersionExperiment.relationshipsPayload? = nil,
                 _type: Components.Schemas.AppStoreVersionExperiment._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization`.
+        package struct AppStoreVersionExperimentTreatmentLocalization: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/attributes/locale`.
+                package var locale: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - locale:
+                package init(locale: Swift.String? = nil) {
+                    self.locale = locale
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case locale
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/attributes`.
+            package var attributes: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets`.
+                package struct appPreviewSetsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appPreviewSets = "appPreviewSets"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/dataPayload/type`.
+                        package var _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/data`.
+                    package typealias dataPayload = [Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/data`.
+                    package var data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appPreviewSetsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appPreviewSets`.
+                package var appPreviewSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets`.
+                package struct appScreenshotSetsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appScreenshotSets = "appScreenshotSets"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/dataPayload/type`.
+                        package var _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/data`.
+                    package typealias dataPayload = [Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/data`.
+                    package var data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appScreenshotSetsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appScreenshotSets`.
+                package var appScreenshotSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment`.
+                package struct appStoreVersionExperimentTreatmentPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appStoreVersionExperimentTreatments = "appStoreVersionExperimentTreatments"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment/data/type`.
+                        package var _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment/data`.
+                    package var data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload.dataPayload?
+                    /// Creates a new `appStoreVersionExperimentTreatmentPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment`.
+                package var appStoreVersionExperimentTreatment: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - appPreviewSets:
+                ///   - appScreenshotSets:
+                ///   - appStoreVersionExperimentTreatment:
+                package init(
+                    appPreviewSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload? = nil,
+                    appScreenshotSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload? = nil,
+                    appStoreVersionExperimentTreatment: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload? = nil
+                ) {
+                    self.appPreviewSets = appPreviewSets
+                    self.appScreenshotSets = appScreenshotSets
+                    self.appStoreVersionExperimentTreatment = appStoreVersionExperimentTreatment
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appPreviewSets
+                    case appScreenshotSets
+                    case appStoreVersionExperimentTreatment
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships`.
+            package var relationships: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/type`.
+            package var _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization._typePayload
+            /// Creates a new `AppStoreVersionExperimentTreatmentLocalization`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization._typePayload
             ) {
                 self.attributes = attributes
                 self.id = id
@@ -27794,6 +29334,3096 @@ package enum Operations {
             }
         }
     }
+    /// - Remark: HTTP `POST /v1/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)`.
+    package enum appScreenshots_createInstance {
+        package static let id: Swift.String = "appScreenshots_createInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_createInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_createInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshots_createInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppScreenshotCreateRequest)
+            }
+            package var body: Operations.appScreenshots_createInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            package init(
+                headers: Operations.appScreenshots_createInstance.Input.Headers = .init(),
+                body: Operations.appScreenshots_createInstance.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/201/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppScreenshot
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.appScreenshots_createInstance.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            package var created: Operations.appScreenshots_createInstance.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshots_createInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshots_createInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshots_createInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshots_createInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshots_createInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshots_createInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appScreenshots_createInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appScreenshots_createInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appScreenshots_createInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appScreenshots_createInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/POST/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_createInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_createInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/post(appScreenshots_createInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshots_createInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshots_createInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)`.
+    package enum appScreenshots_getInstance {
+        package static let id: Swift.String = "appScreenshots_getInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appScreenshots_getInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields_lbrack_appScreenshots_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshots_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case fileSize = "fileSize"
+                    case fileName = "fileName"
+                    case sourceFileChecksum = "sourceFileChecksum"
+                    case imageAsset = "imageAsset"
+                    case assetToken = "assetToken"
+                    case assetType = "assetType"
+                    case uploadOperations = "uploadOperations"
+                    case assetDeliveryState = "assetDeliveryState"
+                    case appScreenshotSet = "appScreenshotSet"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields[appScreenshots]`.
+                package typealias fields_lbrack_appScreenshots_rbrack_Payload = [Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshots_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshots
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields[appScreenshots]`.
+                package var fields_lbrack_appScreenshots_rbrack_: Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields_lbrack_appScreenshotSets_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshotSets_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case screenshotDisplayType = "screenshotDisplayType"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields[appScreenshotSets]`.
+                package typealias fields_lbrack_appScreenshotSets_rbrack_Payload = [Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshotSets_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshotSets
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/fields[appScreenshotSets]`.
+                package var fields_lbrack_appScreenshotSets_rbrack_: Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshotSet = "appScreenshotSet"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/include`.
+                package typealias includePayload = [Operations.appScreenshots_getInstance.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/query/include`.
+                package var include: Operations.appScreenshots_getInstance.Input.Query.includePayload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_appScreenshots_rbrack_: the fields to include for returned resources of type appScreenshots
+                ///   - fields_lbrack_appScreenshotSets_rbrack_: the fields to include for returned resources of type appScreenshotSets
+                ///   - include: comma-separated list of relationships to include
+                package init(
+                    fields_lbrack_appScreenshots_rbrack_: Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload? = nil,
+                    fields_lbrack_appScreenshotSets_rbrack_: Operations.appScreenshots_getInstance.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload? = nil,
+                    include: Operations.appScreenshots_getInstance.Input.Query.includePayload? = nil
+                ) {
+                    self.fields_lbrack_appScreenshots_rbrack_ = fields_lbrack_appScreenshots_rbrack_
+                    self.fields_lbrack_appScreenshotSets_rbrack_ = fields_lbrack_appScreenshotSets_rbrack_
+                    self.include = include
+                }
+            }
+            package var query: Operations.appScreenshots_getInstance.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_getInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_getInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshots_getInstance.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.appScreenshots_getInstance.Input.Path,
+                query: Operations.appScreenshots_getInstance.Input.Query = .init(),
+                headers: Operations.appScreenshots_getInstance.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppScreenshot
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appScreenshots_getInstance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appScreenshots_getInstance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshots_getInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshots_getInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshots_getInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshots_getInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshots_getInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshots_getInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appScreenshots_getInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appScreenshots_getInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_getInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_getInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/get(appScreenshots_getInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshots_getInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshots_getInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `PATCH /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)`.
+    package enum appScreenshots_updateInstance {
+        package static let id: Swift.String = "appScreenshots_updateInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appScreenshots_updateInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_updateInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_updateInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshots_updateInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppScreenshotUpdateRequest)
+            }
+            package var body: Operations.appScreenshots_updateInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            package init(
+                path: Operations.appScreenshots_updateInstance.Input.Path,
+                headers: Operations.appScreenshots_updateInstance.Input.Headers = .init(),
+                body: Operations.appScreenshots_updateInstance.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppScreenshot
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appScreenshots_updateInstance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appScreenshots_updateInstance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshots_updateInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshots_updateInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshots_updateInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshots_updateInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshots_updateInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshots_updateInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appScreenshots_updateInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appScreenshots_updateInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appScreenshots_updateInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appScreenshots_updateInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appScreenshots_updateInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appScreenshots_updateInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/PATCH/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_updateInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_updateInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/patch(appScreenshots_updateInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshots_updateInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshots_updateInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `DELETE /v1/appScreenshots/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)`.
+    package enum appScreenshots_deleteInstance {
+        package static let id: Swift.String = "appScreenshots_deleteInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appScreenshots_deleteInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_deleteInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshots_deleteInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshots_deleteInstance.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            package init(
+                path: Operations.appScreenshots_deleteInstance.Input.Path,
+                headers: Operations.appScreenshots_deleteInstance.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct NoContent: Sendable, Hashable {
+                /// Creates a new `NoContent`.
+                package init() {}
+            }
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            case noContent(Operations.appScreenshots_deleteInstance.Output.NoContent)
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            package static var noContent: Self {
+                .noContent(.init())
+            }
+            /// The associated value of the enum case if `self` is `.noContent`.
+            ///
+            /// - Throws: An error if `self` is not `.noContent`.
+            /// - SeeAlso: `.noContent`.
+            package var noContent: Operations.appScreenshots_deleteInstance.Output.NoContent {
+                get throws {
+                    switch self {
+                    case let .noContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "noContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_deleteInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_deleteInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshots_deleteInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshots_deleteInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_deleteInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_deleteInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshots_deleteInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshots_deleteInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_deleteInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_deleteInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshots_deleteInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshots_deleteInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_deleteInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_deleteInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appScreenshots_deleteInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appScreenshots_deleteInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshots/{id}/DELETE/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshots_deleteInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshots_deleteInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshots/{id}/delete(appScreenshots_deleteInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshots_deleteInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshots_deleteInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /v1/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)`.
+    package enum appScreenshotSets_createInstance {
+        package static let id: Swift.String = "appScreenshotSets_createInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_createInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_createInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshotSets_createInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppScreenshotSetCreateRequest)
+            }
+            package var body: Operations.appScreenshotSets_createInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            package init(
+                headers: Operations.appScreenshotSets_createInstance.Input.Headers = .init(),
+                body: Operations.appScreenshotSets_createInstance.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/201/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotSetResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotSetResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppScreenshotSet
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.appScreenshotSets_createInstance.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            package var created: Operations.appScreenshotSets_createInstance.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshotSets_createInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshotSets_createInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshotSets_createInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshotSets_createInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshotSets_createInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshotSets_createInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appScreenshotSets_createInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appScreenshotSets_createInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appScreenshotSets_createInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appScreenshotSets_createInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/POST/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_createInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_createInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/post(appScreenshotSets_createInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshotSets_createInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshotSets_createInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appScreenshotSets/{id}/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)`.
+    package enum appScreenshotSets_appScreenshots_getToManyRelated {
+        package static let id: Swift.String = "appScreenshotSets_appScreenshots_getToManyRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields_lbrack_appScreenshots_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshots_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case fileSize = "fileSize"
+                    case fileName = "fileName"
+                    case sourceFileChecksum = "sourceFileChecksum"
+                    case imageAsset = "imageAsset"
+                    case assetToken = "assetToken"
+                    case assetType = "assetType"
+                    case uploadOperations = "uploadOperations"
+                    case assetDeliveryState = "assetDeliveryState"
+                    case appScreenshotSet = "appScreenshotSet"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields[appScreenshots]`.
+                package typealias fields_lbrack_appScreenshots_rbrack_Payload = [Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshots
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields[appScreenshots]`.
+                package var fields_lbrack_appScreenshots_rbrack_: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields_lbrack_appScreenshotSets_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshotSets_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case screenshotDisplayType = "screenshotDisplayType"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields[appScreenshotSets]`.
+                package typealias fields_lbrack_appScreenshotSets_rbrack_Payload = [Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshotSets
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/fields[appScreenshotSets]`.
+                package var fields_lbrack_appScreenshotSets_rbrack_: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload?
+                /// maximum resources per page
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/limit`.
+                package var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appScreenshotSet = "appScreenshotSet"
+                }
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/include`.
+                package typealias includePayload = [Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/query/include`.
+                package var include: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.includePayload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_appScreenshots_rbrack_: the fields to include for returned resources of type appScreenshots
+                ///   - fields_lbrack_appScreenshotSets_rbrack_: the fields to include for returned resources of type appScreenshotSets
+                ///   - limit: maximum resources per page
+                ///   - include: comma-separated list of relationships to include
+                package init(
+                    fields_lbrack_appScreenshots_rbrack_: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload? = nil,
+                    fields_lbrack_appScreenshotSets_rbrack_: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload? = nil,
+                    limit: Swift.Int? = nil,
+                    include: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query.includePayload? = nil
+                ) {
+                    self.fields_lbrack_appScreenshots_rbrack_ = fields_lbrack_appScreenshots_rbrack_
+                    self.fields_lbrack_appScreenshotSets_rbrack_ = fields_lbrack_appScreenshotSets_rbrack_
+                    self.limit = limit
+                    self.include = include
+                }
+            }
+            package var query: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_appScreenshots_getToManyRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_appScreenshots_getToManyRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Path,
+                query: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Query = .init(),
+                headers: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotsResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotsResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of AppScreenshots
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/appScreenshots/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/appScreenshots/get(appScreenshotSets_appScreenshots_getToManyRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshotSets_appScreenshots_getToManyRelated.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `PATCH /v1/appScreenshotSets/{id}/relationships/appScreenshots`.
+    /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)`.
+    package enum appScreenshotSets_appScreenshots_replaceToManyRelationship {
+        package static let id: Swift.String = "appScreenshotSets_appScreenshots_replaceToManyRelationship"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest)
+            }
+            package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            package init(
+                path: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Path,
+                headers: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Headers = .init(),
+                body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct NoContent: Sendable, Hashable {
+                /// Creates a new `NoContent`.
+                package init() {}
+            }
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            case noContent(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NoContent)
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            package static var noContent: Self {
+                .noContent(.init())
+            }
+            /// The associated value of the enum case if `self` is `.noContent`.
+            ///
+            /// - Throws: An error if `self` is not `.noContent`.
+            /// - SeeAlso: `.noContent`.
+            package var noContent: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NoContent {
+                get throws {
+                    switch self {
+                    case let .noContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "noContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appScreenshotSets/{id}/relationships/appScreenshots/PATCH/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appScreenshotSets/{id}/relationships/appScreenshots/patch(appScreenshotSets_appScreenshots_replaceToManyRelationship)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appScreenshotSets_appScreenshots_replaceToManyRelationship.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
     /// - Remark: HTTP `PATCH /v1/appStoreVersionLocalizations/{id}`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/patch(appStoreVersionLocalizations_updateInstance)`.
     package enum appStoreVersionLocalizations_updateInstance {
@@ -28245,6 +32875,586 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.appStoreVersionLocalizations_updateInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/appScreenshotSets`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)`.
+    package enum appStoreVersionLocalizations_appScreenshotSets_getToManyRelated {
+        package static let id: Swift.String = "appStoreVersionLocalizations_appScreenshotSets_getToManyRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/filter_lbrack_screenshotDisplayType_rbrack_Payload`.
+                @frozen package enum filter_lbrack_screenshotDisplayType_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case APP_IPHONE_67 = "APP_IPHONE_67"
+                    case APP_IPHONE_61 = "APP_IPHONE_61"
+                    case APP_IPHONE_65 = "APP_IPHONE_65"
+                    case APP_IPHONE_58 = "APP_IPHONE_58"
+                    case APP_IPHONE_55 = "APP_IPHONE_55"
+                    case APP_IPHONE_47 = "APP_IPHONE_47"
+                    case APP_IPHONE_40 = "APP_IPHONE_40"
+                    case APP_IPHONE_35 = "APP_IPHONE_35"
+                    case APP_IPAD_PRO_3GEN_129 = "APP_IPAD_PRO_3GEN_129"
+                    case APP_IPAD_PRO_3GEN_11 = "APP_IPAD_PRO_3GEN_11"
+                    case APP_IPAD_PRO_129 = "APP_IPAD_PRO_129"
+                    case APP_IPAD_105 = "APP_IPAD_105"
+                    case APP_IPAD_97 = "APP_IPAD_97"
+                    case APP_DESKTOP = "APP_DESKTOP"
+                    case APP_WATCH_ULTRA = "APP_WATCH_ULTRA"
+                    case APP_WATCH_SERIES_10 = "APP_WATCH_SERIES_10"
+                    case APP_WATCH_SERIES_7 = "APP_WATCH_SERIES_7"
+                    case APP_WATCH_SERIES_4 = "APP_WATCH_SERIES_4"
+                    case APP_WATCH_SERIES_3 = "APP_WATCH_SERIES_3"
+                    case APP_APPLE_TV = "APP_APPLE_TV"
+                    case APP_APPLE_VISION_PRO = "APP_APPLE_VISION_PRO"
+                    case IMESSAGE_APP_IPHONE_67 = "IMESSAGE_APP_IPHONE_67"
+                    case IMESSAGE_APP_IPHONE_61 = "IMESSAGE_APP_IPHONE_61"
+                    case IMESSAGE_APP_IPHONE_65 = "IMESSAGE_APP_IPHONE_65"
+                    case IMESSAGE_APP_IPHONE_58 = "IMESSAGE_APP_IPHONE_58"
+                    case IMESSAGE_APP_IPHONE_55 = "IMESSAGE_APP_IPHONE_55"
+                    case IMESSAGE_APP_IPHONE_47 = "IMESSAGE_APP_IPHONE_47"
+                    case IMESSAGE_APP_IPHONE_40 = "IMESSAGE_APP_IPHONE_40"
+                    case IMESSAGE_APP_IPAD_PRO_3GEN_129 = "IMESSAGE_APP_IPAD_PRO_3GEN_129"
+                    case IMESSAGE_APP_IPAD_PRO_3GEN_11 = "IMESSAGE_APP_IPAD_PRO_3GEN_11"
+                    case IMESSAGE_APP_IPAD_PRO_129 = "IMESSAGE_APP_IPAD_PRO_129"
+                    case IMESSAGE_APP_IPAD_105 = "IMESSAGE_APP_IPAD_105"
+                    case IMESSAGE_APP_IPAD_97 = "IMESSAGE_APP_IPAD_97"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/filter[screenshotDisplayType]`.
+                package typealias filter_lbrack_screenshotDisplayType_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.filter_lbrack_screenshotDisplayType_rbrack_PayloadPayload]
+                /// filter by attribute 'screenshotDisplayType'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/filter[screenshotDisplayType]`.
+                package var filter_lbrack_screenshotDisplayType_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.filter_lbrack_screenshotDisplayType_rbrack_Payload?
+                /// filter by id(s) of related 'appCustomProductPageLocalization'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/filter[appCustomProductPageLocalization]`.
+                package var filter_lbrack_appCustomProductPageLocalization_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/filter[appStoreVersionExperimentTreatmentLocalization]`.
+                package var filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields_lbrack_appScreenshotSets_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshotSets_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case screenshotDisplayType = "screenshotDisplayType"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appScreenshotSets]`.
+                package typealias fields_lbrack_appScreenshotSets_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshotSets
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appScreenshotSets]`.
+                package var fields_lbrack_appScreenshotSets_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields_lbrack_appStoreVersionLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case description = "description"
+                    case locale = "locale"
+                    case keywords = "keywords"
+                    case marketingUrl = "marketingUrl"
+                    case promotionalText = "promotionalText"
+                    case supportUrl = "supportUrl"
+                    case whatsNew = "whatsNew"
+                    case appStoreVersion = "appStoreVersion"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                    case searchKeywords = "searchKeywords"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionLocalizations]`.
+                package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appStoreVersionLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionLocalizations]`.
+                package var fields_lbrack_appStoreVersionLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appCustomProductPageLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case locale = "locale"
+                    case promotionalText = "promotionalText"
+                    case appCustomProductPageVersion = "appCustomProductPageVersion"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                    case searchKeywords = "searchKeywords"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appCustomProductPageLocalizations]`.
+                package typealias fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appCustomProductPageLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appCustomProductPageLocalizations]`.
+                package var fields_lbrack_appCustomProductPageLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case locale = "locale"
+                    case appStoreVersionExperimentTreatment = "appStoreVersionExperimentTreatment"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionExperimentTreatmentLocalizations]`.
+                package typealias fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appStoreVersionExperimentTreatmentLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionExperimentTreatmentLocalizations]`.
+                package var fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields_lbrack_appScreenshots_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appScreenshots_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case fileSize = "fileSize"
+                    case fileName = "fileName"
+                    case sourceFileChecksum = "sourceFileChecksum"
+                    case imageAsset = "imageAsset"
+                    case assetToken = "assetToken"
+                    case assetType = "assetType"
+                    case uploadOperations = "uploadOperations"
+                    case assetDeliveryState = "assetDeliveryState"
+                    case appScreenshotSet = "appScreenshotSet"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appScreenshots]`.
+                package typealias fields_lbrack_appScreenshots_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appScreenshots
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appScreenshots]`.
+                package var fields_lbrack_appScreenshots_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload?
+                /// maximum resources per page
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/limit`.
+                package var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                    case appScreenshots = "appScreenshots"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/include`.
+                package typealias includePayload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/include`.
+                package var include: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.includePayload?
+                /// maximum number of related appScreenshots returned (when they are included)
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/limit[appScreenshots]`.
+                package var limit_lbrack_appScreenshots_rbrack_: Swift.Int?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - filter_lbrack_screenshotDisplayType_rbrack_: filter by attribute 'screenshotDisplayType'
+                ///   - filter_lbrack_appCustomProductPageLocalization_rbrack_: filter by id(s) of related 'appCustomProductPageLocalization'
+                ///   - filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: filter by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+                ///   - fields_lbrack_appScreenshotSets_rbrack_: the fields to include for returned resources of type appScreenshotSets
+                ///   - fields_lbrack_appStoreVersionLocalizations_rbrack_: the fields to include for returned resources of type appStoreVersionLocalizations
+                ///   - fields_lbrack_appCustomProductPageLocalizations_rbrack_: the fields to include for returned resources of type appCustomProductPageLocalizations
+                ///   - fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: the fields to include for returned resources of type appStoreVersionExperimentTreatmentLocalizations
+                ///   - fields_lbrack_appScreenshots_rbrack_: the fields to include for returned resources of type appScreenshots
+                ///   - limit: maximum resources per page
+                ///   - include: comma-separated list of relationships to include
+                ///   - limit_lbrack_appScreenshots_rbrack_: maximum number of related appScreenshots returned (when they are included)
+                package init(
+                    filter_lbrack_screenshotDisplayType_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.filter_lbrack_screenshotDisplayType_rbrack_Payload? = nil,
+                    filter_lbrack_appCustomProductPageLocalization_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: [Swift.String]? = nil,
+                    fields_lbrack_appScreenshotSets_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload? = nil,
+                    fields_lbrack_appStoreVersionLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appCustomProductPageLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appScreenshots_rbrack_: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appScreenshots_rbrack_Payload? = nil,
+                    limit: Swift.Int? = nil,
+                    include: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.includePayload? = nil,
+                    limit_lbrack_appScreenshots_rbrack_: Swift.Int? = nil
+                ) {
+                    self.filter_lbrack_screenshotDisplayType_rbrack_ = filter_lbrack_screenshotDisplayType_rbrack_
+                    self.filter_lbrack_appCustomProductPageLocalization_rbrack_ = filter_lbrack_appCustomProductPageLocalization_rbrack_
+                    self.filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_ = filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_
+                    self.fields_lbrack_appScreenshotSets_rbrack_ = fields_lbrack_appScreenshotSets_rbrack_
+                    self.fields_lbrack_appStoreVersionLocalizations_rbrack_ = fields_lbrack_appStoreVersionLocalizations_rbrack_
+                    self.fields_lbrack_appCustomProductPageLocalizations_rbrack_ = fields_lbrack_appCustomProductPageLocalizations_rbrack_
+                    self.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_ = fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_
+                    self.fields_lbrack_appScreenshots_rbrack_ = fields_lbrack_appScreenshots_rbrack_
+                    self.limit = limit
+                    self.include = include
+                    self.limit_lbrack_appScreenshots_rbrack_ = limit_lbrack_appScreenshots_rbrack_
+                }
+            }
+            package var query: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Path,
+                query: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query = .init(),
+                headers: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppScreenshotSetsResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppScreenshotSetsResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of AppScreenshotSets
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):

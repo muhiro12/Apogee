@@ -34,6 +34,7 @@ Supported in the first implementation:
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
 - Description, keywords, and promotional text updates
+- Verified screenshot registration and replacement with private recovery originals
 - Build attachment
 - Review submission with dry-run and read-back verification
 - Webhook create/update sync with read-back verification, with destructive
@@ -41,9 +42,6 @@ Supported in the first implementation:
 
 Partial or unsupported:
 
-- Screenshot upload is planned from disk but apply is disabled until the upload
-  adapter safely handles reservation, binary upload, checksum commit, and
-  processing verification.
 - Xcode Cloud workflow sync is visible in OpenAPI but intentionally unsupported
   until Apogee has a dedicated workflow config model.
 
@@ -188,9 +186,10 @@ AppStore/Screenshots/
   en-US/APP_IPHONE_67/02.png
 ```
 
-`update-screenshots` currently produces a dry-run plan only. Applying screenshot
-changes is explicitly unsupported until the upload adapter is implemented and
-verified.
+`update-screenshots` defaults to dry-run. Apply supports new registration and
+replacement, with verified recovery originals required before deleting existing
+images. See [screenshot updates](docs/screenshots.md) for confirmation, private
+recovery storage, and interrupted-upload handling.
 
 ## CLI Examples
 

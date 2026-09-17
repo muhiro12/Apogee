@@ -9,7 +9,7 @@ import OpenAPIURLSession
 /// Prefer ``ReleaseAutomation`` for guarded operations. Direct mutation methods
 /// write immediately. The default transport is an ephemeral URLSession without a
 /// URL cache. Cancellation is preserved; other request failures use ``ApogeeError``.
-public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
+public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
     private let serverURL: URL
     private let transport: any ClientTransport
     private let tokenProvider: AppStoreConnectTokenProvider
@@ -63,6 +63,177 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
                 AppStoreConnectAuthorizationMiddleware(tokenProvider: tokenProvider),
             ]
         )
+    }
+
+    public func screenshotSets(localizationID: String) async throws -> [RemoteScreenshotSet] {
+        try await perform(operation: "screenshotSets") {
+            var expectedTotal: Int?
+            let result = try await allPages { pageClient in
+                let output = try await pageClient.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(.init(
+                    path: .init(id: localizationID),
+                    query: .init(fields_lbrack_appScreenshotSets_rbrack_: [.screenshotDisplayType, .appStoreVersionLocalization],
+                                 limit: 200, include: [.appStoreVersionLocalization])
+                ))
+                let response = try output.ok.body.json
+                if let total = response.meta?.paging.total {
+                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
+                        throw ApogeeError.unexpectedAPIResponse("Screenshot pagination totals changed.")
+                    }
+                    expectedTotal = total
+                }
+                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
+                    throw ApogeeError.unexpectedAPIResponse("Screenshot pagination is incomplete.")
+                }
+                let sets = try response.data.map { item -> RemoteScreenshotSet in
+                    guard item.relationships?.appStoreVersionLocalization?.data?.id == localizationID else {
+                        throw ApogeeError.unexpectedAPIResponse("Screenshot set parent is missing or mismatched.")
+                    }
+                    return try mapScreenshotSet(item)
+                }
+                return (sets, response.links.next)
+            }
+            guard expectedTotal == nil || expectedTotal == result.count else {
+                throw ApogeeError.unexpectedAPIResponse("Screenshot inventory does not match its reported total.")
+            }
+            return result
+        }
+    }
+
+    public func screenshots(setID: String) async throws -> [RemoteScreenshot] {
+        try await perform(operation: "screenshots") {
+            var expectedTotal: Int?
+            let result = try await allPages { pageClient in
+                let output = try await pageClient.appScreenshotSets_appScreenshots_getToManyRelated(.init(
+                    path: .init(id: setID),
+                    query: .init(fields_lbrack_appScreenshots_rbrack_: [.fileSize, .fileName, .sourceFileChecksum, .assetDeliveryState, .appScreenshotSet],
+                                 limit: 200, include: [.appScreenshotSet])
+                ))
+                let response = try output.ok.body.json
+                if let total = response.meta?.paging.total {
+                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
+                        throw ApogeeError.unexpectedAPIResponse("Screenshot pagination totals changed.")
+                    }
+                    expectedTotal = total
+                }
+                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
+                    throw ApogeeError.unexpectedAPIResponse("Screenshot pagination is incomplete.")
+                }
+                let items = try response.data.map { item -> RemoteScreenshot in
+                    guard item.relationships?.appScreenshotSet?.data?.id == setID else {
+                        throw ApogeeError.unexpectedAPIResponse("Screenshot parent is missing or mismatched.")
+                    }
+                    return try mapScreenshot(item)
+                }
+                return (items, response.links.next)
+            }
+            guard expectedTotal == nil || expectedTotal == result.count else {
+                throw ApogeeError.unexpectedAPIResponse("Screenshot inventory does not match its reported total.")
+            }
+            return result
+        }
+    }
+
+    public func createScreenshotSet(localizationID: String, displayType: String) async throws -> RemoteScreenshotSet {
+        try await perform(operation: "createScreenshotSet") {
+            guard let display = Components.Schemas.ScreenshotDisplayType(rawValue: displayType) else {
+                throw ApogeeError.unexpectedAPIResponse("Unsupported screenshot display type.")
+            }
+            let request = Components.Schemas.AppScreenshotSetCreateRequest(data: .init(
+                attributes: .init(screenshotDisplayType: display),
+                relationships: .init(appStoreVersionLocalization: .init(data: .init(id: localizationID, _type: .appStoreVersionLocalizations))),
+                _type: .appScreenshotSets
+            ))
+            let output = try await client().appScreenshotSets_createInstance(.init(body: .json(request)))
+            return try mapScreenshotSet(output.created.body.json.data)
+        }
+    }
+
+    public func reserveScreenshot(setID: String, fileName: String, byteCount: Int) async throws -> (RemoteScreenshot, [ScreenshotUploadOperation]) {
+        try await perform(operation: "reserveScreenshot") {
+            let request = Components.Schemas.AppScreenshotCreateRequest(data: .init(
+                attributes: .init(fileName: fileName, fileSize: byteCount),
+                relationships: .init(appScreenshotSet: .init(data: .init(id: setID, _type: .appScreenshotSets))),
+                _type: .appScreenshots
+            ))
+            let output = try await client().appScreenshots_createInstance(.init(body: .json(request)))
+            let item = try output.created.body.json.data
+            guard let instructions = item.attributes?.uploadOperations else {
+                throw ApogeeError.unexpectedAPIResponse("Screenshot reservation has no upload instructions.")
+            }
+            let operations = try instructions.map { instruction -> ScreenshotUploadOperation in
+                guard let method = instruction.method, let url = instruction.url,
+                      let offset = instruction.offset, let length = instruction.length,
+                      let fields = instruction.requestHeaders else {
+                    throw ApogeeError.unexpectedAPIResponse("Screenshot upload instructions are incomplete.")
+                }
+                var headers: [String: String] = [:]
+                for field in fields {
+                    guard let name = field.name, let value = field.value,
+                          !headers.keys.contains(where: { $0.lowercased() == name.lowercased() }) else {
+                        throw ApogeeError.unexpectedAPIResponse("Screenshot upload headers are incomplete or duplicated.")
+                    }
+                    headers[name] = value
+                }
+                return .init(method: method, url: url, offset: offset, length: length, headers: headers)
+            }
+            return (try mapScreenshot(item), operations)
+        }
+    }
+
+    public func uploadScreenshotPart(_ data: Data, operation: ScreenshotUploadOperation) async throws {
+        try await ScreenshotUploadValidation.send(data, operation: operation)
+    }
+
+    public func commitScreenshot(id: String, checksum: String) async throws {
+        try await perform(operation: "commitScreenshot") {
+            let request = Components.Schemas.AppScreenshotUpdateRequest(data: .init(
+                attributes: .init(sourceFileChecksum: checksum, uploaded: true), id: id, _type: .appScreenshots
+            ))
+            let output = try await client().appScreenshots_updateInstance(.init(path: .init(id: id), body: .json(request)))
+            _ = try output.ok.body.json
+        }
+    }
+
+    public func screenshot(id: String) async throws -> RemoteScreenshot {
+        try await perform(operation: "screenshot") {
+            let output = try await client().appScreenshots_getInstance(.init(path: .init(id: id)))
+            return try mapScreenshot(output.ok.body.json.data)
+        }
+    }
+
+    public func deleteScreenshot(id: String) async throws {
+        try await perform(operation: "deleteScreenshot") {
+            let output = try await client().appScreenshots_deleteInstance(.init(path: .init(id: id)))
+            _ = try output.noContent
+        }
+    }
+
+    public func orderScreenshots(setID: String, ids: [String]) async throws {
+        try await perform(operation: "orderScreenshots") {
+            let request = Components.Schemas.AppScreenshotSetAppScreenshotsLinkagesRequest(data: ids.map {
+                .init(id: $0, _type: .appScreenshots)
+            })
+            let output = try await client().appScreenshotSets_appScreenshots_replaceToManyRelationship(.init(path: .init(id: setID), body: .json(request)))
+            _ = try output.noContent
+        }
+    }
+
+    private func mapScreenshotSet(_ item: Components.Schemas.AppScreenshotSet) throws -> RemoteScreenshotSet {
+        guard !item.id.isEmpty, let display = item.attributes?.screenshotDisplayType else {
+            throw ApogeeError.unexpectedAPIResponse("Screenshot set identity is incomplete.")
+        }
+        return .init(id: item.id, displayType: display.rawValue)
+    }
+
+    private func mapScreenshot(_ item: Components.Schemas.AppScreenshot) throws -> RemoteScreenshot {
+        guard !item.id.isEmpty, let attributes = item.attributes,
+              let fileName = attributes.fileName, !fileName.isEmpty,
+              let byteCount = attributes.fileSize, byteCount > 0,
+              let state = attributes.assetDeliveryState?.state else {
+            throw ApogeeError.unexpectedAPIResponse("Screenshot identity or processing state is incomplete.")
+        }
+        return .init(id: item.id, fileName: fileName, byteCount: byteCount,
+                     checksum: attributes.sourceFileChecksum?.lowercased(), state: state.rawValue)
     }
 
     public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {

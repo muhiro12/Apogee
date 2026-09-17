@@ -73,3 +73,12 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 - ``BuildFeedback``
 - ``BuildFeedbackSummary``
 - ``BuildFeedbackError``
+
+### Screenshot execution and recovery
+
+- ``ScreenshotAPI``
+- ``RemoteScreenshotSet``
+- ``RemoteScreenshot``
+- ``ScreenshotUploadOperation``
+- ``ScreenshotRecovery``
+- ``ScreenshotError``

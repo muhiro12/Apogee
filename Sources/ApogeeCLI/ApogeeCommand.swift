@@ -175,13 +175,21 @@ struct AttachBuild: AsyncParsableCommand {
 struct UpdateScreenshots: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "update-screenshots",
-        abstract: "Plan localized screenshot updates. Apply is currently unsupported."
+        abstract: "Plan or apply verified localized screenshots with private recovery originals."
     )
 
     @OptionGroup var release: ReleaseOptions
 
     @Option(name: .customLong("screenshots-path"), help: "Path to AppStore/Screenshots.")
     var screenshotsPath: String?
+    @Option(help: "Private recovery directory; required for apply and reused when resuming.")
+    var recoveryPath: String?
+    @Option(help: "Directory containing original old images with matching remote checksums.")
+    var originalsPath: String?
+    @Flag(help: "Allow planned deletion or reordering after verified recovery backup.")
+    var allowDestructive = false
+    @Option(help: "Confirmation token from a fresh matching dry-run.")
+    var planToken: String?
 
     func run() async throws {
         let configuration = try release.configuration()
@@ -195,7 +203,8 @@ struct UpdateScreenshots: AsyncParsableCommand {
             version: release.version,
             screenshotsPath: release.screenshotsPath(screenshotsPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
-            options: try release.executionOptions()
+            options: try release.mode.executionOptions(allowDestructive: allowDestructive, planToken: planToken),
+            recovery: recoveryPath.map { .init(directory: $0, originalsPath: originalsPath) }
         )
         return try release.render(plan, command: "update-screenshots", configuration: configuration)
     }

@@ -9,6 +9,14 @@ package struct OpenAPITrimmer {
     // Keep only operations called by the adapter. Unsupported capabilities do
     // not reserve generated endpoints; add them with their verified implementation.
     private let selectedOperationIDs: Set<String> = [
+        "appScreenshotSets_createInstance",
+        "appScreenshotSets_appScreenshots_getToManyRelated",
+        "appScreenshotSets_appScreenshots_replaceToManyRelationship",
+        "appScreenshots_createInstance",
+        "appScreenshots_getInstance",
+        "appScreenshots_updateInstance",
+        "appScreenshots_deleteInstance",
+        "appStoreVersionLocalizations_appScreenshotSets_getToManyRelated",
         "appStoreVersionLocalizations_updateInstance",
         "appStoreVersions_appStoreVersionLocalizations_getToManyRelated",
         "appStoreVersions_build_updateToOneRelationship",

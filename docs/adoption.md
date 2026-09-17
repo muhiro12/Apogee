@@ -191,8 +191,9 @@ Metadata and submission operations require an existing target version. The expli
 app record. Apogee does not archive or upload binaries, create locales, configure
 pricing or subscriptions, or edit review/privacy declarations. Required locales
 and uploaded builds must be available for the subsequent operations.
-Screenshot replacement and Xcode Cloud workflow sync remain unsupported. These
-are explicit boundaries, not prerequisites for release-note and metadata adoption.
+Screenshot registration and replacement use a separate [verified recovery workflow](screenshots.md).
+Xcode Cloud workflow sync remains unsupported. Neither is a prerequisite for
+release-note and metadata adoption.
 
 ## Verification before a package release
 

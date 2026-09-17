@@ -53,15 +53,21 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `BuildFeedbackError` | Supported | Unsupported or incomplete feedback inspection |
 | `VersionCreationError` | Supported | Version creation validation and unsupported adapters |
 | `UnsupportedCapability` | Supported | Explicit unsupported-operation failures |
+| `ScreenshotAPI` | Supported | Opt-in low-level screenshot adapter; mutations write immediately |
+| `RemoteScreenshotSet` | Supported | Observed localization/display set |
+| `RemoteScreenshot` | Supported | Observed identity, source checksum, and processing state |
+| `ScreenshotUploadOperation` | Supported | Sensitive time-limited asset upload instructions |
+| `ScreenshotRecovery` | Supported | Explicit private recovery directory and original file source |
+| `ScreenshotError` | Supported | Screenshot validation, recovery, and execution failures |
 | `ScreenshotSet` | Provisional | Inventory only |
 | `ScreenshotFile` | Provisional | File information only |
 | `ScreenshotLoader` | Provisional | Inventory without image or upload validation |
 
-`ReleaseAutomation.updateScreenshots(...)` and its `screenshotLoader` initializer
-parameter are provisional. After preflight, apply fails with
-`unsupported(.screenshotUpload)`; no screenshot writes are performed.
-The matching CLI command is also provisional. This exclusion does not permit
-weakening dry-run or unsupported-operation safety in any release.
+`ReleaseAutomation.updateScreenshots(...)` supports verified apply when its adapter
+also conforms to `ScreenshotAPI`. Older custom adapters retain their provisional
+inventory-only behavior and fail apply with `unsupported(.screenshotUpload)`.
+The legacy `screenshotLoader` initializer parameter remains provisional; production
+screenshot execution uses strict image validation and private recovery storage.
 
 ### Internal implementation and migration from 0.4
 
@@ -126,7 +132,7 @@ hashing, human rendering, or confirmation tokens.
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |
 | `submit-for-review` | Lookup, `--version`, `--platform`, mode | Submit an existing version |
 | `sync-webhooks` | Lookup, mode, `--config`, `--allow-destructive`, `--plan-token` | Complete desired webhook list |
-| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path` | Provisional plan only |
+| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path`, `--recovery-path`, `--originals-path`, `--allow-destructive`, `--plan-token` | Verified screenshot updates with recovery before deletion |
 
 Lookup precedence is `--app-id`, `--bundle-id`, configuration `appID`, then
 configuration `bundleID`. Version/build numbers are explicit command inputs.

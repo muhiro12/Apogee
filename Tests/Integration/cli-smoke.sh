@@ -10,6 +10,10 @@ trap 'rm -rf "$temporary_directory"' EXIT
 "$binary" --help > "$temporary_directory/help.txt"
 "$binary" release-status --help > "$temporary_directory/status-help.txt"
 "$binary" read-metadata --help > "$temporary_directory/metadata-help.txt"
+"$binary" update-screenshots --help > "$temporary_directory/screenshots-help.txt"
+for option in recovery-path originals-path allow-destructive plan-token; do
+    grep -q -- "--$option" "$temporary_directory/screenshots-help.txt"
+done
 "$binary" create-version --help > "$temporary_directory/create-help.txt"
 grep -q 'manual release' "$temporary_directory/create-help.txt"
 "$binary" validate-metadata \

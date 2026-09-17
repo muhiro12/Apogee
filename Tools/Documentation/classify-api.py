@@ -30,9 +30,7 @@ for symbol in graph["symbols"]:
     seen.add(owner)
     status = classifications[owner]
     if owner == "ReleaseAutomation" and len(components) > 1:
-        if components[1].startswith("updateScreenshots("):
-            status = "Provisional"
-        elif "screenshotLoader:" in components[1]:
+        if "screenshotLoader:" in components[1]:
             status = "Supported; screenshotLoader parameter provisional"
     declaration = "".join(fragment["spelling"] for fragment in symbol["declarationFragments"])
     rows.append({"symbol": ".".join(components), "declaration": declaration, "status": status})
