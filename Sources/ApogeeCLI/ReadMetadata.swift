@@ -67,6 +67,8 @@ enum MetadataSnapshotOutput {
                     "description": nullable(localization.metadata.description),
                     "keywords": nullable(localization.metadata.keywords),
                     "promotionalText": nullable(localization.metadata.promotionalText),
+                    "supportURL": nullable(localization.metadata.supportURL),
+                    "marketingURL": nullable(localization.metadata.marketingURL),
                 ]
             },
         ]

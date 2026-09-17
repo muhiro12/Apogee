@@ -33,7 +33,7 @@ Supported in the first implementation:
 - Explicit App Store version creation configured for manual release
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
-- Description, keywords, and promotional text updates
+- Description, keywords, promotional text, support URL, and marketing URL updates
 - Verified screenshot registration and replacement with private recovery originals
 - Build attachment
 - Review submission with dry-run and read-back verification
@@ -167,14 +167,19 @@ AppStore/Metadata/
   ja/description.txt
   ja/keywords.txt
   ja/promotional_text.txt
+  ja/support_url.txt
+  ja/marketing_url.txt
   en-US/release_notes.txt
   en-US/description.txt
   en-US/keywords.txt
   en-US/promotional_text.txt
+  en-US/support_url.txt
+  en-US/marketing_url.txt
 ```
 
 Locales must already exist in App Store Connect. Apogee reports a missing
 locale as an error instead of creating one automatically.
+See [localized URL fields](docs/metadata-urls.md) for validation and empty-file behavior.
 
 ## Screenshot Layout
 

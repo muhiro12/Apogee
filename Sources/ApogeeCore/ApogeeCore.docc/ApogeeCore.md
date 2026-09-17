@@ -42,6 +42,7 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 
 - ``MetadataLoader``
 - ``MetadataField``
+- ``MetadataValidationError``
 - ``LocalizedMetadata``
 - ``MetadataPatch``
 - ``WebhookConfigurationLoader``

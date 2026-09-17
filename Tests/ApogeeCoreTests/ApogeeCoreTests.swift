@@ -613,6 +613,8 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
             updated.metadata.description = patch.description ?? updated.metadata.description
             updated.metadata.keywords = patch.keywords ?? updated.metadata.keywords
             updated.metadata.promotionalText = patch.promotionalText ?? updated.metadata.promotionalText
+            updated.metadata.supportURL = patch.supportURL ?? updated.metadata.supportURL
+            updated.metadata.marketingURL = patch.marketingURL ?? updated.metadata.marketingURL
             localizationsByVersionID[versionID]?[index] = updated
             updatedLocalizationIDs.append(id)
             return updated

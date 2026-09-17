@@ -117,27 +117,35 @@ public struct AppStoreConnectLocalization: Sendable, Hashable {
 /// Fields to update on one existing localization.
 ///
 /// Nil omits a field from the request. An empty string explicitly clears its value;
-/// acceptance still depends on App Store Connect validation and the version state.
+/// the required support URL cannot be cleared. Acceptance still depends on App Store
+/// Connect validation and the version state.
 public struct MetadataPatch: Sendable, Hashable {
     public var releaseNotes: String?
     public var description: String?
     public var keywords: String?
     public var promotionalText: String?
+    public var supportURL: String?
+    public var marketingURL: String?
 
     public init(
         releaseNotes: String? = nil,
         description: String? = nil,
         keywords: String? = nil,
-        promotionalText: String? = nil
+        promotionalText: String? = nil,
+        supportURL: String? = nil,
+        marketingURL: String? = nil
     ) {
         self.releaseNotes = releaseNotes
         self.description = description
         self.keywords = keywords
         self.promotionalText = promotionalText
+        self.supportURL = supportURL
+        self.marketingURL = marketingURL
     }
 
     public var isEmpty: Bool {
         releaseNotes == nil && description == nil && keywords == nil && promotionalText == nil
+            && supportURL == nil && marketingURL == nil
     }
 }
 

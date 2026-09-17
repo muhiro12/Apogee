@@ -358,12 +358,15 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
     }
 
     public func updateLocalization(id: String, patch: MetadataPatch) async throws -> AppStoreConnectLocalization {
-        try await perform(operation: "updateLocalization") {
+        try MetadataURLValidation.validate(supportURL: patch.supportURL, marketingURL: patch.marketingURL)
+        return try await perform(operation: "updateLocalization") {
             let request = Components.Schemas.AppStoreVersionLocalizationUpdateRequest(data: .init(
                 attributes: .init(
                     description: patch.description,
                     keywords: patch.keywords,
+                    marketingUrl: patch.marketingURL,
                     promotionalText: patch.promotionalText,
+                    supportUrl: patch.supportURL,
                     whatsNew: patch.releaseNotes
                 ),
                 id: id,
@@ -630,7 +633,9 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 releaseNotes: attributes?.whatsNew,
                 description: attributes?.description,
                 keywords: attributes?.keywords,
-                promotionalText: attributes?.promotionalText
+                promotionalText: attributes?.promotionalText,
+                supportURL: attributes?.supportUrl,
+                marketingURL: attributes?.marketingUrl
             )
         )
     }

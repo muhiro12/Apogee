@@ -164,8 +164,9 @@ public struct ReleaseAutomation: Sendable {
     /// Plans selected fields or sequentially applies patches and reads back their values.
     ///
     /// All selected local locales must already exist remotely. Nil fields are untouched;
-    /// empty strings request clearing. Remote editability and content rules may reject a
-    /// write, and successful earlier patches are not rolled back on failure.
+    /// empty strings request clearing except for the required support URL. Remote
+    /// editability and content rules may reject a write, and successful earlier patches
+    /// are not rolled back on failure.
     public func updateMetadata(
         appLookup: AppLookup,
         version: String,
@@ -712,7 +713,9 @@ public struct ReleaseAutomation: Sendable {
             releaseNotes: changed(local.releaseNotes, remote.releaseNotes, field: .releaseNotes, fields: fields),
             description: changed(local.description, remote.description, field: .description, fields: fields),
             keywords: changed(local.keywords, remote.keywords, field: .keywords, fields: fields),
-            promotionalText: changed(local.promotionalText, remote.promotionalText, field: .promotionalText, fields: fields)
+            promotionalText: changed(local.promotionalText, remote.promotionalText, field: .promotionalText, fields: fields),
+            supportURL: changed(local.supportURL, remote.supportURL, field: .supportURL, fields: fields),
+            marketingURL: changed(local.marketingURL, remote.marketingURL, field: .marketingURL, fields: fields)
         )
     }
 
@@ -763,6 +766,10 @@ public struct ReleaseAutomation: Sendable {
             metadata.keywords
         case .promotionalText:
             metadata.promotionalText
+        case .supportURL:
+            metadata.supportURL
+        case .marketingURL:
+            metadata.marketingURL
         }
     }
 
@@ -787,6 +794,14 @@ public struct ReleaseAutomation: Sendable {
 
             if let keywords = item.patch.keywords, readBackLocalization.metadata.keywords != keywords {
                 throw ApogeeError.unexpectedAPIResponse("Keywords read-back mismatch for \(item.remote.locale).")
+            }
+
+            if let supportURL = item.patch.supportURL, readBackLocalization.metadata.supportURL != supportURL {
+                throw ApogeeError.unexpectedAPIResponse("Support URL read-back mismatch for \(item.remote.locale).")
+            }
+
+            if let marketingURL = item.patch.marketingURL, readBackLocalization.metadata.marketingURL != marketingURL {
+                throw ApogeeError.unexpectedAPIResponse("Marketing URL read-back mismatch for \(item.remote.locale).")
             }
 
             if let promotionalText = item.patch.promotionalText, readBackLocalization.metadata.promotionalText != promotionalText {

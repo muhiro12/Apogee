@@ -105,9 +105,10 @@ The `plan` object contains:
 Action kinds are `create`, `update`, `delete`, `attach`, `unchanged`, `verify`, and
 `unsupported`. `resource` is an opaque resource identifier and can name a prospective
 resource without an ID. `locale` and `field` are nullable machine identifiers.
-Metadata fields use `release_notes`, `description`, `keywords`, and
-`promotional_text`. `fieldLabel` is nullable display text. Other action types without
-a specific metadata field have null field identifiers.
+Metadata fields use `release_notes`, `description`, `keywords`,
+`promotional_text`, `support_url`, and `marketing_url`. `fieldLabel` is nullable
+display text. Other action types without a specific metadata field have null field
+identifiers.
 
 Current and desired values are nullable strings; null is distinct from an empty
 string. Metadata field values are complete text. For other operations, values can

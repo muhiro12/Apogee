@@ -10,7 +10,7 @@ App Review acceptance, or live write/read-back success; see [adoption](adoption.
 
 Each row classifies the named type and **all** its public initializers,
 properties, methods, enum cases, raw values, and declared protocol conformances.
-The two member exceptions below override their enclosing type. Straightforward
+The member exception below overrides its enclosing type. Straightforward
 value initializers preserve supplied values; they do not independently validate
 server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 
@@ -40,9 +40,10 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `AppStoreConnectReviewSubmission` | Supported | Review state and complete-or-nil item linkage |
 | `AppStoreConnectReviewSubmissionItem` | Supported | Review item identity |
 | `AppStoreConnectWebhook` | Supported | Observable webhook settings |
-| `MetadataPatch` | Supported | Nil means omit; empty string means clear |
+| `MetadataPatch` | Supported | Nil means omit; empty string requests clear except for support URL |
 | `LocalizedMetadata` | Supported | Selected local or remote fields |
 | `MetadataField` | Supported | Supported file basenames |
+| `MetadataValidationError` | Supported | Invalid URL fields without echoing their values |
 | `MetadataLoader` | Supported | Local UTF-8 validation |
 | `WebhookSyncConfiguration` | Supported | Complete desired webhook list |
 | `DesiredWebhook` | Supported | Webhook settings and explicit secret rotation |
@@ -68,6 +69,15 @@ also conforms to `ScreenshotAPI`. Older custom adapters retain their provisional
 inventory-only behavior and fail apply with `unsupported(.screenshotUpload)`.
 The legacy `screenshotLoader` initializer parameter remains provisional; production
 screenshot execution uses strict image validation and private recovery storage.
+
+### Metadata URL migration
+
+`MetadataField` now includes `supportURL` and `marketingURL`; its `allCases`
+therefore includes six fields. This addition is shipped as an explicit minor-release
+exception to source compatibility. Consumers with exhaustive switches must handle
+the two new cases before updating. Existing four-field behavior can be selected
+explicitly. Missing URL files leave those fields untouched, and
+`update-release-notes` still selects only release notes.
 
 ### Internal implementation and migration from 0.4
 
@@ -160,8 +170,10 @@ A nonempty base64 key takes precedence over a file path. Credentials never belon
 in configuration JSON.
 
 Metadata lives in `<metadataPath>/<locale>/`: `release_notes.txt`,
-`description.txt`, `keywords.txt`, and `promotional_text.txt`. Missing files leave
-fields unchanged, empty files request clearing, and boundary newlines are trimmed.
+`description.txt`, `keywords.txt`, `promotional_text.txt`, `support_url.txt`, and
+`marketing_url.txt`. Missing files leave fields unchanged and boundary newlines
+are trimmed. Empty files request clearing, except `support_url.txt`, which must
+be nonempty. See [URL validation](metadata-urls.md).
 Webhooks JSON contains `webhooks`, each with `name`, `url`, `eventTypes`,
 `secretEnvironmentVariable`, optional `enabled` (true), and optional `rotateSecret`
 (false). Omitting a remote webhook from this complete list plans its deletion.

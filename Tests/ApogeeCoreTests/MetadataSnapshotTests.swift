@@ -19,6 +19,8 @@ func metadataSnapshotReadsEveryPageAndPreservesValues() async throws {
     #expect(metadata.description == nil)
     #expect(metadata.keywords == "")
     #expect(metadata.promotionalText == "紹介文 ✨")
+    #expect(metadata.supportURL == nil)
+    #expect(metadata.marketingURL == "")
     #expect(await transport.requests.count == 4)
     #expect(await transport.requests.allSatisfy { $0.method == .get })
 }
@@ -51,6 +53,9 @@ func readMetadataCommandSavesLosslessJSONAndRefusesExistingFiles() async throws 
     #expect(japanese["description"] is NSNull)
     #expect(japanese["keywords"] as? String == "")
     #expect(japanese["promotionalText"] as? String == "紹介文 ✨")
+    #expect(japanese["supportURL"] is NSNull)
+    #expect(japanese["marketingURL"] as? String == "")
+    #expect(localizations.first?["supportURL"] as? String == "https://example.com/ヘルプ")
     let text = String(decoding: data, as: UTF8.self)
     #expect(!text.contains("TEST_KEY"))
     #expect(!text.contains("Bearer"))
@@ -153,6 +158,7 @@ private func metadataSnapshotTransport(versionCount: Int = 1, localeMode: String
                     "attributes": [
                         "locale": locale, "whatsNew": "\n更新内容\nSecond line\n",
                         "description": NSNull(), "keywords": "", "promotionalText": "紹介文 ✨",
+                        "supportUrl": locale == "ja" ? NSNull() : "https://example.com/ヘルプ", "marketingUrl": "",
                     ],
                 ]],
                 "links": secondPage || localeMode == "empty" ? ["self": "unused"] : ["self": "unused", "next": next],

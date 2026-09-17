@@ -46,7 +46,9 @@ stdout must contain only JSON, or use `--save-to` to consume the snapshot file.
       "releaseNotes": "更新内容\n次の行",
       "description": null,
       "keywords": "",
-      "promotionalText": "紹介文"
+      "promotionalText": "紹介文",
+      "supportURL": "https://example.com/support",
+      "marketingURL": null
     }
   ]
 }
@@ -63,7 +65,7 @@ substituted for missing remote attributes. Localizations include their remote
 IDs, are sorted by locale, and may be an empty array. Missing locale identity or
 duplicate IDs/locales fail instead of producing an ambiguous snapshot.
 
-All four supported metadata fields are always present. JSON `null` means unset
+All six supported metadata fields are always present. JSON `null` means unset
 or unavailable in the API response, while `""` is an observed empty string.
 Leading/trailing whitespace, embedded newlines, and Unicode survive JSON decoding
 unchanged. No truncation or metadata-loader newline trimming is applied.
