@@ -123,6 +123,47 @@ struct OutputOptions: ParsableArguments {
     }
 }
 
+extension OutputOptions {
+    func render(_ feedback: BuildFeedback, requestedTarget: RequestedTarget) throws -> String {
+        try Task.checkCancellation()
+        if output == .text {
+            var lines = [
+                "Build feedback for \(String(reflecting: feedback.app.id)) \(String(reflecting: feedback.version)) (\(feedback.platform.rawValue))",
+                "Build: \(String(reflecting: feedback.build.id)) / \(String(reflecting: feedback.build.version ?? "unknown"))",
+                "Crash feedback: \(feedback.crashes.count)",
+                "Screenshot feedback: \(feedback.screenshots.count)",
+            ]
+            for (kind, entries) in [("CRASH", feedback.crashes), ("SCREENSHOT", feedback.screenshots)] {
+                for entry in entries {
+                    let date = entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true)) ?? "unknown"
+                    let comment = entry.hasComment.map { $0 ? "yes" : "no" } ?? "unknown"
+                    lines.append("- \(kind) \(String(reflecting: entry.id)): \(date), device \(String(reflecting: entry.deviceModel ?? "unknown")), OS \(String(reflecting: entry.osVersion ?? "unknown")), comment \(comment)")
+                }
+            }
+            lines.append("Observed feedback is not a release approval or an automatic release block.")
+            return lines.joined(separator: "\n")
+        }
+        func summary(_ entry: BuildFeedbackSummary) -> [String: Any] {
+            ["id": entry.id, "buildID": entry.buildID,
+             "createdDate": nullable(entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true))),
+             "deviceModel": nullable(entry.deviceModel), "osVersion": nullable(entry.osVersion),
+             "hasComment": nullable(entry.hasComment)]
+        }
+        var request = requestedTarget.object
+        request["buildVersion"] = nullable(feedback.build.version)
+        return try json([
+            "schemaVersion": 1, "kind": "build-feedback", "command": "build-feedback", "mode": "read-only",
+            "requestedTarget": request,
+            "target": ["app": appObject(feedback.app), "build": [
+                "id": feedback.build.id, "version": nullable(feedback.build.version),
+                "processingState": nullable(feedback.build.processingState),
+            ]],
+            "feedback": ["crashCount": feedback.crashes.count, "screenshotCount": feedback.screenshots.count,
+                         "crashes": feedback.crashes.map(summary), "screenshots": feedback.screenshots.map(summary)],
+        ])
+    }
+}
+
 private func appObject(_ app: AppStoreConnectApp) -> [String: Any] {
     ["id": app.id, "bundleID": nullable(app.bundleID), "name": nullable(app.name)]
 }

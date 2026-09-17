@@ -20,6 +20,12 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /v1/apps/{id}/appStoreVersions`.
     /// - Remark: Generated from `#/paths//v1/apps/{id}/appStoreVersions/get(apps_appStoreVersions_getToManyRelated)`.
     func apps_appStoreVersions_getToManyRelated(_ input: Operations.apps_appStoreVersions_getToManyRelated.Input) async throws -> Operations.apps_appStoreVersions_getToManyRelated.Output
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackCrashSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)`.
+    func apps_betaFeedbackCrashSubmissions_getToManyRelated(_ input: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input) async throws -> Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackScreenshotSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)`.
+    func apps_betaFeedbackScreenshotSubmissions_getToManyRelated(_ input: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input) async throws -> Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output
     /// - Remark: HTTP `GET /v1/apps/{id}/webhooks`.
     /// - Remark: Generated from `#/paths//v1/apps/{id}/webhooks/get(apps_webhooks_getToManyRelated)`.
     func apps_webhooks_getToManyRelated(_ input: Operations.apps_webhooks_getToManyRelated.Input) async throws -> Operations.apps_webhooks_getToManyRelated.Output
@@ -104,6 +110,32 @@ extension APIProtocol {
         headers: Operations.apps_appStoreVersions_getToManyRelated.Input.Headers = .init()
     ) async throws -> Operations.apps_appStoreVersions_getToManyRelated.Output {
         try await apps_appStoreVersions_getToManyRelated(Operations.apps_appStoreVersions_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackCrashSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)`.
+    package func apps_betaFeedbackCrashSubmissions_getToManyRelated(
+        path: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Path,
+        query: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query = .init(),
+        headers: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Headers = .init()
+    ) async throws -> Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output {
+        try await apps_betaFeedbackCrashSubmissions_getToManyRelated(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackScreenshotSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)`.
+    package func apps_betaFeedbackScreenshotSubmissions_getToManyRelated(
+        path: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Path,
+        query: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query = .init(),
+        headers: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Headers = .init()
+    ) async throws -> Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output {
+        try await apps_betaFeedbackScreenshotSubmissions_getToManyRelated(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input(
             path: path,
             query: query,
             headers: headers
@@ -10055,6 +10087,782 @@ package enum Components {
                 case _type = "type"
             }
         }
+        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission`.
+        package struct BetaFeedbackCrashSubmission: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/appPlatform`.
+                package var appPlatform: Components.Schemas.Platform?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/appUptimeInMilliseconds`.
+                package var appUptimeInMilliseconds: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/architecture`.
+                package var architecture: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/batteryPercentage`.
+                package var batteryPercentage: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/buildBundleId`.
+                package var buildBundleId: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/comment`.
+                package var comment: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/connectionType`.
+                package var connectionType: Components.Schemas.DeviceConnectionType?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/createdDate`.
+                package var createdDate: Foundation.Date?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/deviceFamily`.
+                package var deviceFamily: Components.Schemas.DeviceFamily?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/deviceModel`.
+                package var deviceModel: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/devicePlatform`.
+                package var devicePlatform: Components.Schemas.Platform?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/diskBytesAvailable`.
+                package var diskBytesAvailable: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/diskBytesTotal`.
+                package var diskBytesTotal: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/email`.
+                package var email: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/locale`.
+                package var locale: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/osVersion`.
+                package var osVersion: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/pairedAppleWatch`.
+                package var pairedAppleWatch: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/screenHeightInPoints`.
+                package var screenHeightInPoints: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/screenWidthInPoints`.
+                package var screenWidthInPoints: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes/timeZone`.
+                package var timeZone: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - appPlatform:
+                ///   - appUptimeInMilliseconds:
+                ///   - architecture:
+                ///   - batteryPercentage:
+                ///   - buildBundleId:
+                ///   - comment:
+                ///   - connectionType:
+                ///   - createdDate:
+                ///   - deviceFamily:
+                ///   - deviceModel:
+                ///   - devicePlatform:
+                ///   - diskBytesAvailable:
+                ///   - diskBytesTotal:
+                ///   - email:
+                ///   - locale:
+                ///   - osVersion:
+                ///   - pairedAppleWatch:
+                ///   - screenHeightInPoints:
+                ///   - screenWidthInPoints:
+                ///   - timeZone:
+                package init(
+                    appPlatform: Components.Schemas.Platform? = nil,
+                    appUptimeInMilliseconds: Swift.Int64? = nil,
+                    architecture: Swift.String? = nil,
+                    batteryPercentage: Swift.Int? = nil,
+                    buildBundleId: Swift.String? = nil,
+                    comment: Swift.String? = nil,
+                    connectionType: Components.Schemas.DeviceConnectionType? = nil,
+                    createdDate: Foundation.Date? = nil,
+                    deviceFamily: Components.Schemas.DeviceFamily? = nil,
+                    deviceModel: Swift.String? = nil,
+                    devicePlatform: Components.Schemas.Platform? = nil,
+                    diskBytesAvailable: Swift.Int64? = nil,
+                    diskBytesTotal: Swift.Int64? = nil,
+                    email: Swift.String? = nil,
+                    locale: Swift.String? = nil,
+                    osVersion: Swift.String? = nil,
+                    pairedAppleWatch: Swift.String? = nil,
+                    screenHeightInPoints: Swift.Int? = nil,
+                    screenWidthInPoints: Swift.Int? = nil,
+                    timeZone: Swift.String? = nil
+                ) {
+                    self.appPlatform = appPlatform
+                    self.appUptimeInMilliseconds = appUptimeInMilliseconds
+                    self.architecture = architecture
+                    self.batteryPercentage = batteryPercentage
+                    self.buildBundleId = buildBundleId
+                    self.comment = comment
+                    self.connectionType = connectionType
+                    self.createdDate = createdDate
+                    self.deviceFamily = deviceFamily
+                    self.deviceModel = deviceModel
+                    self.devicePlatform = devicePlatform
+                    self.diskBytesAvailable = diskBytesAvailable
+                    self.diskBytesTotal = diskBytesTotal
+                    self.email = email
+                    self.locale = locale
+                    self.osVersion = osVersion
+                    self.pairedAppleWatch = pairedAppleWatch
+                    self.screenHeightInPoints = screenHeightInPoints
+                    self.screenWidthInPoints = screenWidthInPoints
+                    self.timeZone = timeZone
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appPlatform
+                    case appUptimeInMilliseconds
+                    case architecture
+                    case batteryPercentage
+                    case buildBundleId
+                    case comment
+                    case connectionType
+                    case createdDate
+                    case deviceFamily
+                    case deviceModel
+                    case devicePlatform
+                    case diskBytesAvailable
+                    case diskBytesTotal
+                    case email
+                    case locale
+                    case osVersion
+                    case pairedAppleWatch
+                    case screenHeightInPoints
+                    case screenWidthInPoints
+                    case timeZone
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/attributes`.
+            package var attributes: Components.Schemas.BetaFeedbackCrashSubmission.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build`.
+                package struct buildPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case builds = "builds"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build/data/type`.
+                        package var _type: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build/data`.
+                    package var data: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload.dataPayload?
+                    /// Creates a new `buildPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/build`.
+                package var build: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/crashLog`.
+                package struct crashLogPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/crashLog/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `crashLogPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/crashLog`.
+                package var crashLog: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.crashLogPayload?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester`.
+                package struct testerPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case betaTesters = "betaTesters"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester/data/type`.
+                        package var _type: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester/data`.
+                    package var data: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload.dataPayload?
+                    /// Creates a new `testerPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships/tester`.
+                package var tester: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - build:
+                ///   - crashLog:
+                ///   - tester:
+                package init(
+                    build: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.buildPayload? = nil,
+                    crashLog: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.crashLogPayload? = nil,
+                    tester: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload.testerPayload? = nil
+                ) {
+                    self.build = build
+                    self.crashLog = crashLog
+                    self.tester = tester
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case build
+                    case crashLog
+                    case tester
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/relationships`.
+            package var relationships: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission/type`.
+            package var _type: Components.Schemas.BetaFeedbackCrashSubmission._typePayload
+            /// Creates a new `BetaFeedbackCrashSubmission`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.BetaFeedbackCrashSubmission.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.BetaFeedbackCrashSubmission.relationshipsPayload? = nil,
+                _type: Components.Schemas.BetaFeedbackCrashSubmission._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse`.
+        package struct BetaFeedbackCrashSubmissionsResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/data`.
+            package var data: [Components.Schemas.BetaFeedbackCrashSubmission]
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/includedPayload/BetaTester`.
+                case betaTesters(Components.Schemas.BetaTester)
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/includedPayload/Build`.
+                case builds(Components.Schemas.Build)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "betaTesters":
+                        self = .betaTesters(try .init(from: decoder))
+                    case "builds":
+                        self = .builds(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .betaTesters(value):
+                        try value.encode(to: encoder)
+                    case let .builds(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/included`.
+            package typealias includedPayload = [Components.Schemas.BetaFeedbackCrashSubmissionsResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/included`.
+            package var included: Components.Schemas.BetaFeedbackCrashSubmissionsResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmissionsResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `BetaFeedbackCrashSubmissionsResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.BetaFeedbackCrashSubmission],
+                included: Components.Schemas.BetaFeedbackCrashSubmissionsResponse.includedPayload? = nil,
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotImage`.
+        package struct BetaFeedbackScreenshotImage: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotImage/expirationDate`.
+            package var expirationDate: Foundation.Date?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotImage/height`.
+            package var height: Swift.Int?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotImage/url`.
+            package var url: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotImage/width`.
+            package var width: Swift.Int?
+            /// Creates a new `BetaFeedbackScreenshotImage`.
+            ///
+            /// - Parameters:
+            ///   - expirationDate:
+            ///   - height:
+            ///   - url:
+            ///   - width:
+            package init(
+                expirationDate: Foundation.Date? = nil,
+                height: Swift.Int? = nil,
+                url: Swift.String? = nil,
+                width: Swift.Int? = nil
+            ) {
+                self.expirationDate = expirationDate
+                self.height = height
+                self.url = url
+                self.width = width
+            }
+            package enum CodingKeys: String, CodingKey {
+                case expirationDate
+                case height
+                case url
+                case width
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission`.
+        package struct BetaFeedbackScreenshotSubmission: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/appPlatform`.
+                package var appPlatform: Components.Schemas.Platform?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/appUptimeInMilliseconds`.
+                package var appUptimeInMilliseconds: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/architecture`.
+                package var architecture: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/batteryPercentage`.
+                package var batteryPercentage: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/buildBundleId`.
+                package var buildBundleId: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/comment`.
+                package var comment: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/connectionType`.
+                package var connectionType: Components.Schemas.DeviceConnectionType?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/createdDate`.
+                package var createdDate: Foundation.Date?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/deviceFamily`.
+                package var deviceFamily: Components.Schemas.DeviceFamily?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/deviceModel`.
+                package var deviceModel: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/devicePlatform`.
+                package var devicePlatform: Components.Schemas.Platform?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/diskBytesAvailable`.
+                package var diskBytesAvailable: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/diskBytesTotal`.
+                package var diskBytesTotal: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/email`.
+                package var email: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/locale`.
+                package var locale: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/osVersion`.
+                package var osVersion: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/pairedAppleWatch`.
+                package var pairedAppleWatch: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/screenHeightInPoints`.
+                package var screenHeightInPoints: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/screenshots`.
+                package var screenshots: [Components.Schemas.BetaFeedbackScreenshotImage]?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/screenWidthInPoints`.
+                package var screenWidthInPoints: Swift.Int?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes/timeZone`.
+                package var timeZone: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - appPlatform:
+                ///   - appUptimeInMilliseconds:
+                ///   - architecture:
+                ///   - batteryPercentage:
+                ///   - buildBundleId:
+                ///   - comment:
+                ///   - connectionType:
+                ///   - createdDate:
+                ///   - deviceFamily:
+                ///   - deviceModel:
+                ///   - devicePlatform:
+                ///   - diskBytesAvailable:
+                ///   - diskBytesTotal:
+                ///   - email:
+                ///   - locale:
+                ///   - osVersion:
+                ///   - pairedAppleWatch:
+                ///   - screenHeightInPoints:
+                ///   - screenshots:
+                ///   - screenWidthInPoints:
+                ///   - timeZone:
+                package init(
+                    appPlatform: Components.Schemas.Platform? = nil,
+                    appUptimeInMilliseconds: Swift.Int64? = nil,
+                    architecture: Swift.String? = nil,
+                    batteryPercentage: Swift.Int? = nil,
+                    buildBundleId: Swift.String? = nil,
+                    comment: Swift.String? = nil,
+                    connectionType: Components.Schemas.DeviceConnectionType? = nil,
+                    createdDate: Foundation.Date? = nil,
+                    deviceFamily: Components.Schemas.DeviceFamily? = nil,
+                    deviceModel: Swift.String? = nil,
+                    devicePlatform: Components.Schemas.Platform? = nil,
+                    diskBytesAvailable: Swift.Int64? = nil,
+                    diskBytesTotal: Swift.Int64? = nil,
+                    email: Swift.String? = nil,
+                    locale: Swift.String? = nil,
+                    osVersion: Swift.String? = nil,
+                    pairedAppleWatch: Swift.String? = nil,
+                    screenHeightInPoints: Swift.Int? = nil,
+                    screenshots: [Components.Schemas.BetaFeedbackScreenshotImage]? = nil,
+                    screenWidthInPoints: Swift.Int? = nil,
+                    timeZone: Swift.String? = nil
+                ) {
+                    self.appPlatform = appPlatform
+                    self.appUptimeInMilliseconds = appUptimeInMilliseconds
+                    self.architecture = architecture
+                    self.batteryPercentage = batteryPercentage
+                    self.buildBundleId = buildBundleId
+                    self.comment = comment
+                    self.connectionType = connectionType
+                    self.createdDate = createdDate
+                    self.deviceFamily = deviceFamily
+                    self.deviceModel = deviceModel
+                    self.devicePlatform = devicePlatform
+                    self.diskBytesAvailable = diskBytesAvailable
+                    self.diskBytesTotal = diskBytesTotal
+                    self.email = email
+                    self.locale = locale
+                    self.osVersion = osVersion
+                    self.pairedAppleWatch = pairedAppleWatch
+                    self.screenHeightInPoints = screenHeightInPoints
+                    self.screenshots = screenshots
+                    self.screenWidthInPoints = screenWidthInPoints
+                    self.timeZone = timeZone
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appPlatform
+                    case appUptimeInMilliseconds
+                    case architecture
+                    case batteryPercentage
+                    case buildBundleId
+                    case comment
+                    case connectionType
+                    case createdDate
+                    case deviceFamily
+                    case deviceModel
+                    case devicePlatform
+                    case diskBytesAvailable
+                    case diskBytesTotal
+                    case email
+                    case locale
+                    case osVersion
+                    case pairedAppleWatch
+                    case screenHeightInPoints
+                    case screenshots
+                    case screenWidthInPoints
+                    case timeZone
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/attributes`.
+            package var attributes: Components.Schemas.BetaFeedbackScreenshotSubmission.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build`.
+                package struct buildPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case builds = "builds"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build/data/type`.
+                        package var _type: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build/data`.
+                    package var data: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload.dataPayload?
+                    /// Creates a new `buildPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/build`.
+                package var build: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload?
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester`.
+                package struct testerPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case betaTesters = "betaTesters"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester/data/type`.
+                        package var _type: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester/data`.
+                    package var data: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload.dataPayload?
+                    /// Creates a new `testerPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships/tester`.
+                package var tester: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - build:
+                ///   - tester:
+                package init(
+                    build: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.buildPayload? = nil,
+                    tester: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload.testerPayload? = nil
+                ) {
+                    self.build = build
+                    self.tester = tester
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case build
+                    case tester
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/relationships`.
+            package var relationships: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmission/type`.
+            package var _type: Components.Schemas.BetaFeedbackScreenshotSubmission._typePayload
+            /// Creates a new `BetaFeedbackScreenshotSubmission`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.BetaFeedbackScreenshotSubmission.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.BetaFeedbackScreenshotSubmission.relationshipsPayload? = nil,
+                _type: Components.Schemas.BetaFeedbackScreenshotSubmission._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse`.
+        package struct BetaFeedbackScreenshotSubmissionsResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/data`.
+            package var data: [Components.Schemas.BetaFeedbackScreenshotSubmission]
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/includedPayload/BetaTester`.
+                case betaTesters(Components.Schemas.BetaTester)
+                /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/includedPayload/Build`.
+                case builds(Components.Schemas.Build)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "betaTesters":
+                        self = .betaTesters(try .init(from: decoder))
+                    case "builds":
+                        self = .builds(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .betaTesters(value):
+                        try value.encode(to: encoder)
+                    case let .builds(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/included`.
+            package typealias includedPayload = [Components.Schemas.BetaFeedbackScreenshotSubmissionsResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/included`.
+            package var included: Components.Schemas.BetaFeedbackScreenshotSubmissionsResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/BetaFeedbackScreenshotSubmissionsResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `BetaFeedbackScreenshotSubmissionsResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.BetaFeedbackScreenshotSubmission],
+                included: Components.Schemas.BetaFeedbackScreenshotSubmissionsResponse.includedPayload? = nil,
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+                case meta
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/BetaGroup`.
         package struct BetaGroup: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaGroup/attributes`.
@@ -13540,6 +14348,23 @@ package enum Components {
                 case relationships
                 case _type = "type"
             }
+        }
+        /// - Remark: Generated from `#/components/schemas/DeviceConnectionType`.
+        @frozen package enum DeviceConnectionType: String, Codable, Hashable, Sendable, CaseIterable {
+            case WIFI = "WIFI"
+            case MOBILE_DATA = "MOBILE_DATA"
+            case WIRE = "WIRE"
+            case UNKNOWN = "UNKNOWN"
+            case NONE = "NONE"
+        }
+        /// - Remark: Generated from `#/components/schemas/DeviceFamily`.
+        @frozen package enum DeviceFamily: String, Codable, Hashable, Sendable, CaseIterable {
+            case IPHONE = "IPHONE"
+            case IPAD = "IPAD"
+            case APPLE_TV = "APPLE_TV"
+            case APPLE_WATCH = "APPLE_WATCH"
+            case MAC = "MAC"
+            case VISION = "VISION"
         }
         /// - Remark: Generated from `#/components/schemas/DocumentLinks`.
         package struct DocumentLinks: Codable, Hashable, Sendable {
@@ -25241,6 +26066,1190 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.apps_appStoreVersions_getToManyRelated.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackCrashSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)`.
+    package enum apps_betaFeedbackCrashSubmissions_getToManyRelated {
+        package static let id: Swift.String = "apps_betaFeedbackCrashSubmissions_getToManyRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// filter by attribute 'deviceModel'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[deviceModel]`.
+                package var filter_lbrack_deviceModel_rbrack_: [Swift.String]?
+                /// filter by attribute 'osVersion'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[osVersion]`.
+                package var filter_lbrack_osVersion_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter_lbrack_appPlatform_rbrack_Payload`.
+                @frozen package enum filter_lbrack_appPlatform_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case IOS = "IOS"
+                    case MAC_OS = "MAC_OS"
+                    case TV_OS = "TV_OS"
+                    case VISION_OS = "VISION_OS"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[appPlatform]`.
+                package typealias filter_lbrack_appPlatform_rbrack_Payload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_PayloadPayload]
+                /// filter by attribute 'appPlatform'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[appPlatform]`.
+                package var filter_lbrack_appPlatform_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter_lbrack_devicePlatform_rbrack_Payload`.
+                @frozen package enum filter_lbrack_devicePlatform_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case IOS = "IOS"
+                    case MAC_OS = "MAC_OS"
+                    case TV_OS = "TV_OS"
+                    case VISION_OS = "VISION_OS"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[devicePlatform]`.
+                package typealias filter_lbrack_devicePlatform_rbrack_Payload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_PayloadPayload]
+                /// filter by attribute 'devicePlatform'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[devicePlatform]`.
+                package var filter_lbrack_devicePlatform_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_Payload?
+                /// filter by id(s) of related 'build'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[build]`.
+                package var filter_lbrack_build_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'build.preReleaseVersion'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[build.preReleaseVersion]`.
+                package var filter_lbrack_build_period_preReleaseVersion_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'tester'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/filter[tester]`.
+                package var filter_lbrack_tester_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/sortPayload`.
+                @frozen package enum sortPayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case createdDate = "createdDate"
+                    case _hyphen_createdDate = "-createdDate"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/sort`.
+                package typealias sortPayload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.sortPayloadPayload]
+                /// comma-separated list of sort expressions; resources will be sorted as specified
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/sort`.
+                package var sort: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.sortPayload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields_lbrack_betaFeedbackCrashSubmissions_rbrack_Payload`.
+                @frozen package enum fields_lbrack_betaFeedbackCrashSubmissions_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case createdDate = "createdDate"
+                    case comment = "comment"
+                    case email = "email"
+                    case deviceModel = "deviceModel"
+                    case osVersion = "osVersion"
+                    case locale = "locale"
+                    case timeZone = "timeZone"
+                    case architecture = "architecture"
+                    case connectionType = "connectionType"
+                    case pairedAppleWatch = "pairedAppleWatch"
+                    case appUptimeInMilliseconds = "appUptimeInMilliseconds"
+                    case diskBytesAvailable = "diskBytesAvailable"
+                    case diskBytesTotal = "diskBytesTotal"
+                    case batteryPercentage = "batteryPercentage"
+                    case screenWidthInPoints = "screenWidthInPoints"
+                    case screenHeightInPoints = "screenHeightInPoints"
+                    case appPlatform = "appPlatform"
+                    case devicePlatform = "devicePlatform"
+                    case deviceFamily = "deviceFamily"
+                    case buildBundleId = "buildBundleId"
+                    case crashLog = "crashLog"
+                    case build = "build"
+                    case tester = "tester"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[betaFeedbackCrashSubmissions]`.
+                package typealias fields_lbrack_betaFeedbackCrashSubmissions_rbrack_Payload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackCrashSubmissions_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type betaFeedbackCrashSubmissions
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[betaFeedbackCrashSubmissions]`.
+                package var fields_lbrack_betaFeedbackCrashSubmissions_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackCrashSubmissions_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields_lbrack_builds_rbrack_Payload`.
+                @frozen package enum fields_lbrack_builds_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case version = "version"
+                    case uploadedDate = "uploadedDate"
+                    case expirationDate = "expirationDate"
+                    case expired = "expired"
+                    case minOsVersion = "minOsVersion"
+                    case lsMinimumSystemVersion = "lsMinimumSystemVersion"
+                    case computedMinMacOsVersion = "computedMinMacOsVersion"
+                    case computedMinVisionOsVersion = "computedMinVisionOsVersion"
+                    case iconAssetToken = "iconAssetToken"
+                    case processingState = "processingState"
+                    case buildAudienceType = "buildAudienceType"
+                    case usesNonExemptEncryption = "usesNonExemptEncryption"
+                    case preReleaseVersion = "preReleaseVersion"
+                    case individualTesters = "individualTesters"
+                    case betaGroups = "betaGroups"
+                    case betaBuildLocalizations = "betaBuildLocalizations"
+                    case appEncryptionDeclaration = "appEncryptionDeclaration"
+                    case betaAppReviewSubmission = "betaAppReviewSubmission"
+                    case app = "app"
+                    case buildBetaDetail = "buildBetaDetail"
+                    case appStoreVersion = "appStoreVersion"
+                    case icons = "icons"
+                    case buildBundles = "buildBundles"
+                    case buildUpload = "buildUpload"
+                    case perfPowerMetrics = "perfPowerMetrics"
+                    case diagnosticSignatures = "diagnosticSignatures"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[builds]`.
+                package typealias fields_lbrack_builds_rbrack_Payload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type builds
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[builds]`.
+                package var fields_lbrack_builds_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields_lbrack_betaTesters_rbrack_Payload`.
+                @frozen package enum fields_lbrack_betaTesters_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case firstName = "firstName"
+                    case lastName = "lastName"
+                    case email = "email"
+                    case inviteType = "inviteType"
+                    case state = "state"
+                    case appDevices = "appDevices"
+                    case apps = "apps"
+                    case betaGroups = "betaGroups"
+                    case builds = "builds"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[betaTesters]`.
+                package typealias fields_lbrack_betaTesters_rbrack_Payload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type betaTesters
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/fields[betaTesters]`.
+                package var fields_lbrack_betaTesters_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_Payload?
+                /// maximum resources per page
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/limit`.
+                package var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case build = "build"
+                    case tester = "tester"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/include`.
+                package typealias includePayload = [Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/query/include`.
+                package var include: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.includePayload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - filter_lbrack_deviceModel_rbrack_: filter by attribute 'deviceModel'
+                ///   - filter_lbrack_osVersion_rbrack_: filter by attribute 'osVersion'
+                ///   - filter_lbrack_appPlatform_rbrack_: filter by attribute 'appPlatform'
+                ///   - filter_lbrack_devicePlatform_rbrack_: filter by attribute 'devicePlatform'
+                ///   - filter_lbrack_build_rbrack_: filter by id(s) of related 'build'
+                ///   - filter_lbrack_build_period_preReleaseVersion_rbrack_: filter by id(s) of related 'build.preReleaseVersion'
+                ///   - filter_lbrack_tester_rbrack_: filter by id(s) of related 'tester'
+                ///   - sort: comma-separated list of sort expressions; resources will be sorted as specified
+                ///   - fields_lbrack_betaFeedbackCrashSubmissions_rbrack_: the fields to include for returned resources of type betaFeedbackCrashSubmissions
+                ///   - fields_lbrack_builds_rbrack_: the fields to include for returned resources of type builds
+                ///   - fields_lbrack_betaTesters_rbrack_: the fields to include for returned resources of type betaTesters
+                ///   - limit: maximum resources per page
+                ///   - include: comma-separated list of relationships to include
+                package init(
+                    filter_lbrack_deviceModel_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_osVersion_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appPlatform_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_Payload? = nil,
+                    filter_lbrack_devicePlatform_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_Payload? = nil,
+                    filter_lbrack_build_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_build_period_preReleaseVersion_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_tester_rbrack_: [Swift.String]? = nil,
+                    sort: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.sortPayload? = nil,
+                    fields_lbrack_betaFeedbackCrashSubmissions_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackCrashSubmissions_rbrack_Payload? = nil,
+                    fields_lbrack_builds_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_Payload? = nil,
+                    fields_lbrack_betaTesters_rbrack_: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_Payload? = nil,
+                    limit: Swift.Int? = nil,
+                    include: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query.includePayload? = nil
+                ) {
+                    self.filter_lbrack_deviceModel_rbrack_ = filter_lbrack_deviceModel_rbrack_
+                    self.filter_lbrack_osVersion_rbrack_ = filter_lbrack_osVersion_rbrack_
+                    self.filter_lbrack_appPlatform_rbrack_ = filter_lbrack_appPlatform_rbrack_
+                    self.filter_lbrack_devicePlatform_rbrack_ = filter_lbrack_devicePlatform_rbrack_
+                    self.filter_lbrack_build_rbrack_ = filter_lbrack_build_rbrack_
+                    self.filter_lbrack_build_period_preReleaseVersion_rbrack_ = filter_lbrack_build_period_preReleaseVersion_rbrack_
+                    self.filter_lbrack_tester_rbrack_ = filter_lbrack_tester_rbrack_
+                    self.sort = sort
+                    self.fields_lbrack_betaFeedbackCrashSubmissions_rbrack_ = fields_lbrack_betaFeedbackCrashSubmissions_rbrack_
+                    self.fields_lbrack_builds_rbrack_ = fields_lbrack_builds_rbrack_
+                    self.fields_lbrack_betaTesters_rbrack_ = fields_lbrack_betaTesters_rbrack_
+                    self.limit = limit
+                    self.include = include
+                }
+            }
+            package var query: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Path,
+                query: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Query = .init(),
+                headers: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.BetaFeedbackCrashSubmissionsResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.BetaFeedbackCrashSubmissionsResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of BetaFeedbackCrashSubmissions
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackCrashSubmissions/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackScreenshotSubmissions`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)`.
+    package enum apps_betaFeedbackScreenshotSubmissions_getToManyRelated {
+        package static let id: Swift.String = "apps_betaFeedbackScreenshotSubmissions_getToManyRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// filter by attribute 'deviceModel'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[deviceModel]`.
+                package var filter_lbrack_deviceModel_rbrack_: [Swift.String]?
+                /// filter by attribute 'osVersion'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[osVersion]`.
+                package var filter_lbrack_osVersion_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter_lbrack_appPlatform_rbrack_Payload`.
+                @frozen package enum filter_lbrack_appPlatform_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case IOS = "IOS"
+                    case MAC_OS = "MAC_OS"
+                    case TV_OS = "TV_OS"
+                    case VISION_OS = "VISION_OS"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[appPlatform]`.
+                package typealias filter_lbrack_appPlatform_rbrack_Payload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_PayloadPayload]
+                /// filter by attribute 'appPlatform'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[appPlatform]`.
+                package var filter_lbrack_appPlatform_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter_lbrack_devicePlatform_rbrack_Payload`.
+                @frozen package enum filter_lbrack_devicePlatform_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case IOS = "IOS"
+                    case MAC_OS = "MAC_OS"
+                    case TV_OS = "TV_OS"
+                    case VISION_OS = "VISION_OS"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[devicePlatform]`.
+                package typealias filter_lbrack_devicePlatform_rbrack_Payload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_PayloadPayload]
+                /// filter by attribute 'devicePlatform'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[devicePlatform]`.
+                package var filter_lbrack_devicePlatform_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_Payload?
+                /// filter by id(s) of related 'build'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[build]`.
+                package var filter_lbrack_build_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'build.preReleaseVersion'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[build.preReleaseVersion]`.
+                package var filter_lbrack_build_period_preReleaseVersion_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'tester'
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/filter[tester]`.
+                package var filter_lbrack_tester_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/sortPayload`.
+                @frozen package enum sortPayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case createdDate = "createdDate"
+                    case _hyphen_createdDate = "-createdDate"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/sort`.
+                package typealias sortPayload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.sortPayloadPayload]
+                /// comma-separated list of sort expressions; resources will be sorted as specified
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/sort`.
+                package var sort: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.sortPayload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_Payload`.
+                @frozen package enum fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case createdDate = "createdDate"
+                    case comment = "comment"
+                    case email = "email"
+                    case deviceModel = "deviceModel"
+                    case osVersion = "osVersion"
+                    case locale = "locale"
+                    case timeZone = "timeZone"
+                    case architecture = "architecture"
+                    case connectionType = "connectionType"
+                    case pairedAppleWatch = "pairedAppleWatch"
+                    case appUptimeInMilliseconds = "appUptimeInMilliseconds"
+                    case diskBytesAvailable = "diskBytesAvailable"
+                    case diskBytesTotal = "diskBytesTotal"
+                    case batteryPercentage = "batteryPercentage"
+                    case screenWidthInPoints = "screenWidthInPoints"
+                    case screenHeightInPoints = "screenHeightInPoints"
+                    case appPlatform = "appPlatform"
+                    case devicePlatform = "devicePlatform"
+                    case deviceFamily = "deviceFamily"
+                    case buildBundleId = "buildBundleId"
+                    case screenshots = "screenshots"
+                    case build = "build"
+                    case tester = "tester"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[betaFeedbackScreenshotSubmissions]`.
+                package typealias fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_Payload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type betaFeedbackScreenshotSubmissions
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[betaFeedbackScreenshotSubmissions]`.
+                package var fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields_lbrack_builds_rbrack_Payload`.
+                @frozen package enum fields_lbrack_builds_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case version = "version"
+                    case uploadedDate = "uploadedDate"
+                    case expirationDate = "expirationDate"
+                    case expired = "expired"
+                    case minOsVersion = "minOsVersion"
+                    case lsMinimumSystemVersion = "lsMinimumSystemVersion"
+                    case computedMinMacOsVersion = "computedMinMacOsVersion"
+                    case computedMinVisionOsVersion = "computedMinVisionOsVersion"
+                    case iconAssetToken = "iconAssetToken"
+                    case processingState = "processingState"
+                    case buildAudienceType = "buildAudienceType"
+                    case usesNonExemptEncryption = "usesNonExemptEncryption"
+                    case preReleaseVersion = "preReleaseVersion"
+                    case individualTesters = "individualTesters"
+                    case betaGroups = "betaGroups"
+                    case betaBuildLocalizations = "betaBuildLocalizations"
+                    case appEncryptionDeclaration = "appEncryptionDeclaration"
+                    case betaAppReviewSubmission = "betaAppReviewSubmission"
+                    case app = "app"
+                    case buildBetaDetail = "buildBetaDetail"
+                    case appStoreVersion = "appStoreVersion"
+                    case icons = "icons"
+                    case buildBundles = "buildBundles"
+                    case buildUpload = "buildUpload"
+                    case perfPowerMetrics = "perfPowerMetrics"
+                    case diagnosticSignatures = "diagnosticSignatures"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[builds]`.
+                package typealias fields_lbrack_builds_rbrack_Payload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type builds
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[builds]`.
+                package var fields_lbrack_builds_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields_lbrack_betaTesters_rbrack_Payload`.
+                @frozen package enum fields_lbrack_betaTesters_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case firstName = "firstName"
+                    case lastName = "lastName"
+                    case email = "email"
+                    case inviteType = "inviteType"
+                    case state = "state"
+                    case appDevices = "appDevices"
+                    case apps = "apps"
+                    case betaGroups = "betaGroups"
+                    case builds = "builds"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[betaTesters]`.
+                package typealias fields_lbrack_betaTesters_rbrack_Payload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type betaTesters
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/fields[betaTesters]`.
+                package var fields_lbrack_betaTesters_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_Payload?
+                /// maximum resources per page
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/limit`.
+                package var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case build = "build"
+                    case tester = "tester"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/include`.
+                package typealias includePayload = [Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/query/include`.
+                package var include: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.includePayload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - filter_lbrack_deviceModel_rbrack_: filter by attribute 'deviceModel'
+                ///   - filter_lbrack_osVersion_rbrack_: filter by attribute 'osVersion'
+                ///   - filter_lbrack_appPlatform_rbrack_: filter by attribute 'appPlatform'
+                ///   - filter_lbrack_devicePlatform_rbrack_: filter by attribute 'devicePlatform'
+                ///   - filter_lbrack_build_rbrack_: filter by id(s) of related 'build'
+                ///   - filter_lbrack_build_period_preReleaseVersion_rbrack_: filter by id(s) of related 'build.preReleaseVersion'
+                ///   - filter_lbrack_tester_rbrack_: filter by id(s) of related 'tester'
+                ///   - sort: comma-separated list of sort expressions; resources will be sorted as specified
+                ///   - fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: the fields to include for returned resources of type betaFeedbackScreenshotSubmissions
+                ///   - fields_lbrack_builds_rbrack_: the fields to include for returned resources of type builds
+                ///   - fields_lbrack_betaTesters_rbrack_: the fields to include for returned resources of type betaTesters
+                ///   - limit: maximum resources per page
+                ///   - include: comma-separated list of relationships to include
+                package init(
+                    filter_lbrack_deviceModel_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_osVersion_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appPlatform_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_appPlatform_rbrack_Payload? = nil,
+                    filter_lbrack_devicePlatform_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.filter_lbrack_devicePlatform_rbrack_Payload? = nil,
+                    filter_lbrack_build_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_build_period_preReleaseVersion_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_tester_rbrack_: [Swift.String]? = nil,
+                    sort: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.sortPayload? = nil,
+                    fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_Payload? = nil,
+                    fields_lbrack_builds_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_builds_rbrack_Payload? = nil,
+                    fields_lbrack_betaTesters_rbrack_: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.fields_lbrack_betaTesters_rbrack_Payload? = nil,
+                    limit: Swift.Int? = nil,
+                    include: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query.includePayload? = nil
+                ) {
+                    self.filter_lbrack_deviceModel_rbrack_ = filter_lbrack_deviceModel_rbrack_
+                    self.filter_lbrack_osVersion_rbrack_ = filter_lbrack_osVersion_rbrack_
+                    self.filter_lbrack_appPlatform_rbrack_ = filter_lbrack_appPlatform_rbrack_
+                    self.filter_lbrack_devicePlatform_rbrack_ = filter_lbrack_devicePlatform_rbrack_
+                    self.filter_lbrack_build_rbrack_ = filter_lbrack_build_rbrack_
+                    self.filter_lbrack_build_period_preReleaseVersion_rbrack_ = filter_lbrack_build_period_preReleaseVersion_rbrack_
+                    self.filter_lbrack_tester_rbrack_ = filter_lbrack_tester_rbrack_
+                    self.sort = sort
+                    self.fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_ = fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_
+                    self.fields_lbrack_builds_rbrack_ = fields_lbrack_builds_rbrack_
+                    self.fields_lbrack_betaTesters_rbrack_ = fields_lbrack_betaTesters_rbrack_
+                    self.limit = limit
+                    self.include = include
+                }
+            }
+            package var query: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Path,
+                query: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Query = .init(),
+                headers: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.BetaFeedbackScreenshotSubmissionsResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.BetaFeedbackScreenshotSubmissionsResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of BetaFeedbackScreenshotSubmissions
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/betaFeedbackScreenshotSubmissions/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackScreenshotSubmissions/get(apps_betaFeedbackScreenshotSubmissions_getToManyRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.apps_betaFeedbackScreenshotSubmissions_getToManyRelated.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):

@@ -227,3 +227,8 @@ Before adopting a published package version:
 Keep real account results, unpublished metadata, and adoption decisions in the
 adopting repository or private evidence storage. A successful package release
 does not authorize an app submission or publication.
+
+Before attaching a candidate build or submitting for review, use
+[`build-feedback`](build-feedback.md) to inspect TestFlight crash and screenshot
+feedback for that exact build. Counts do not decide release readiness; investigate
+relevant reports in App Store Connect.

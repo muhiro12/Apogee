@@ -44,6 +44,9 @@ adapter implementation and verification require it.
 `appStoreVersions_createInstance` is retained for explicit manual-release version
 creation; the adapter does not use its optional metadata or build relationships.
 
+The two app-scoped beta feedback collection operations support read-only
+candidate-build inspection; feedback deletion and artifact downloads are not generated.
+
 The trim step removes OpenAPI
 `deprecated` markers from the generator input. Swift OpenAPI Generator currently
 turns those markers into Swift deprecation annotations that are then referenced

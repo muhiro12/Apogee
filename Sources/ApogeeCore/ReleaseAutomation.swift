@@ -221,6 +221,33 @@ public struct ReleaseAutomation: Sendable {
         return plan
     }
 
+    /// Reads privacy-reduced feedback for a uniquely matched valid candidate build.
+    /// No App Store version resource is required. This never attaches or submits a build.
+    public func buildFeedback(
+        appLookup: AppLookup, version: String, buildVersion: String, platform: Platform = .iOS
+    ) async throws -> BuildFeedback {
+        let app = try await resolveApp(appLookup)
+        let builds = try await api.builds(
+            appID: app.id, buildVersion: buildVersion, appStoreVersion: version, platform: platform
+        )
+        let build = try exactlyOneBuild(builds, appID: app.id, buildVersion: buildVersion)
+        try validateBuild(build)
+        guard !build.id.isEmpty, build.version == buildVersion else {
+            throw BuildFeedbackError.incompleteInventory
+        }
+        let crashes = try await api.crashFeedback(appID: app.id, buildID: build.id)
+        let screenshots = try await api.screenshotFeedback(appID: app.id, buildID: build.id)
+        for entries in [crashes, screenshots] {
+            guard entries.allSatisfy({ !$0.id.isEmpty && $0.buildID == build.id }),
+                  Set(entries.map(\.id)).count == entries.count else {
+                throw BuildFeedbackError.incompleteInventory
+            }
+        }
+        try Task.checkCancellation()
+        return .init(app: app, version: version, platform: platform, build: build,
+                     crashes: crashes.sorted { $0.id < $1.id }, screenshots: screenshots.sorted { $0.id < $1.id })
+    }
+
     /// Plans or attaches a uniquely matched `VALID` build, then verifies its identity.
     ///
     /// Build lookup is scoped to the app, marketing version, and platform. Reusing the

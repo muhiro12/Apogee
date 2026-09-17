@@ -92,4 +92,7 @@ assert_json_failure validate-metadata --output invalid
 assert_json_failure create-version --version 2.0 --apply --dry-run --output json
 assert_json_failure release-status --version 2.0 --app-id EXAMPLE_APP_ID \
   --apogee-config "$temporary_directory/missing.json" --output json
+assert_json_failure build-feedback --version 2.0 --build-version 42 --output json \
+  --apogee-config "$temporary_directory/missing.json"
+assert_json_failure build-feedback --version 2.0 --build-version 42 --apply
 echo 'CLI smoke checks passed without App Store Connect requests.'

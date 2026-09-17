@@ -48,6 +48,9 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `DesiredWebhook` | Supported | Webhook settings and explicit secret rotation |
 | `WebhookConfigurationLoader` | Supported | JSON and event type validation |
 | `ApogeeError` | Supported | Domain errors and safe request failure categories |
+| `BuildFeedback` | Supported | Read-only candidate-build feedback snapshot |
+| `BuildFeedbackSummary` | Supported | Privacy-reduced feedback resource |
+| `BuildFeedbackError` | Supported | Unsupported or incomplete feedback inspection |
 | `VersionCreationError` | Supported | Version creation validation and unsupported adapters |
 | `UnsupportedCapability` | Supported | Explicit unsupported-operation failures |
 | `ScreenshotSet` | Provisional | Inventory only |
@@ -114,6 +117,7 @@ hashing, human rendering, or confirmation tokens.
 | Command | Additional options | Behavior |
 | --- | --- | --- |
 | `validate-metadata` | `--metadata-path`, `--release-notes-only` | Local-only validation |
+| `build-feedback` | Lookup, `--version`, `--build-version`, `--platform`, `--output` | Remote feedback reads only; no artifact downloads |
 | `release-status` | Lookup, `--version`, `--platform` | Remote read only |
 | `read-metadata` | Lookup, `--version`, `--platform`, `--save-to` | Remote read only; JSON snapshot with optional new-file export |
 | `create-version` | Lookup, `--version`, `--platform`, mode | Create an absent version for manual release; verify identity, release type, and preparation state |

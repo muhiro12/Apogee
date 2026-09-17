@@ -125,6 +125,12 @@ These checks have the scope of the underlying operation. They do not certify all
 remote fields, App Review acceptance, or webhook secret contents; webhook read-back
 only covers observable settings. A failure returns no successful result document.
 
+## Candidate build feedback
+
+`build-feedback --output json` uses the additional `build-feedback` result kind.
+Its target and feedback fields are described in [candidate build feedback](build-feedback.md#json).
+The same success-only output and schema evolution rules apply.
+
 ## SwiftPM plugin
 
 The plugin forwards `--output json` unchanged. SwiftPM may emit its own build and

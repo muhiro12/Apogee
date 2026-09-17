@@ -65,6 +65,62 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI {
         )
     }
 
+    public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
+        try await perform(operation: "crashFeedback") {
+            let entries = try await allPages { pageClient in
+                let output = try await pageClient.apps_betaFeedbackCrashSubmissions_getToManyRelated(.init(
+                    path: .init(id: appID),
+                    query: .init(filter_lbrack_build_rbrack_: [buildID],
+                                 fields_lbrack_betaFeedbackCrashSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion, .build],
+                                 limit: 200)
+                ))
+                let response = try output.ok.body.json
+                let summaries = try response.data.map { entry -> BuildFeedbackSummary in
+                    guard !entry.id.isEmpty, let attributes = entry.attributes,
+                          entry.relationships?.build?.data?.id == buildID else {
+                        throw ApogeeError.unexpectedAPIResponse("Feedback is missing attributes or does not identify the selected build.")
+                    }
+                    return .init(id: entry.id, buildID: buildID, createdDate: attributes.createdDate,
+                                 deviceModel: attributes.deviceModel, osVersion: attributes.osVersion,
+                                 hasComment: attributes.comment.map { !$0.isEmpty })
+                }
+                return (summaries, response.links.next)
+            }
+            guard Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback contains duplicate resource IDs.")
+            }
+            return entries.sorted { $0.id < $1.id }
+        }
+    }
+
+    public func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
+        try await perform(operation: "screenshotFeedback") {
+            let entries = try await allPages { pageClient in
+                let output = try await pageClient.apps_betaFeedbackScreenshotSubmissions_getToManyRelated(.init(
+                    path: .init(id: appID),
+                    query: .init(filter_lbrack_build_rbrack_: [buildID],
+                                 fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion, .build],
+                                 limit: 200)
+                ))
+                let response = try output.ok.body.json
+                let summaries = try response.data.map { entry -> BuildFeedbackSummary in
+                    guard !entry.id.isEmpty, let attributes = entry.attributes,
+                          entry.relationships?.build?.data?.id == buildID else {
+                        throw ApogeeError.unexpectedAPIResponse("Feedback is missing attributes or does not identify the selected build.")
+                    }
+                    return .init(id: entry.id, buildID: buildID, createdDate: attributes.createdDate,
+                                 deviceModel: attributes.deviceModel, osVersion: attributes.osVersion,
+                                 hasComment: attributes.comment.map { !$0.isEmpty })
+                }
+                return (summaries, response.links.next)
+            }
+            guard Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback contains duplicate resource IDs.")
+            }
+            return entries.sorted { $0.id < $1.id }
+        }
+    }
+
     public func app(id: String) async throws -> AppStoreConnectApp {
         try await perform(operation: "app") {
             let output = try await client().apps_getInstance(.init(

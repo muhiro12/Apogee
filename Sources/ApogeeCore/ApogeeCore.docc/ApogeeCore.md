@@ -67,3 +67,9 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 - ``ScreenshotLoader``
 - ``ScreenshotSet``
 - ``ScreenshotFile``
+
+### Candidate build feedback
+
+- ``BuildFeedback``
+- ``BuildFeedbackSummary``
+- ``BuildFeedbackError``

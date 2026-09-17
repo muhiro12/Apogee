@@ -29,6 +29,7 @@ Supported in the first implementation:
 
 - Read-only release status, including publication timing and review state
 - Read-only localized metadata inspection and JSON snapshot export
+- Read-only TestFlight crash and screenshot feedback summaries for candidate builds
 - Explicit App Store version creation configured for manual release
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
@@ -202,6 +203,8 @@ apogee validate-metadata --release-notes-only
 
 apogee release-status --version 1.2.3
 
+apogee build-feedback --version 1.2.3 --build-version 123 --output json
+
 apogee create-version --version 2.0 --dry-run
 
 apogee read-metadata --version 1.2.3 --save-to /private/path/metadata-snapshot.json
@@ -261,6 +264,9 @@ dry-run and `--allow-destructive`. The token is derived from the exact plan
 title and action values, including current and desired values, so a changed plan
 requires a fresh dry-run token. This prevents accidental deletion from a single
 command invocation.
+
+See [candidate build feedback](docs/build-feedback.md) for privacy and interpretation
+boundaries when inspecting TestFlight evidence before attachment or submission.
 
 ## Versioning and Stability
 

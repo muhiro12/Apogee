@@ -8,6 +8,10 @@ import Foundation
 /// optional state, propagate cancellation, and avoid exposing request secrets in errors.
 /// A nil build means a known absent attachment; omitted build linkage must throw.
 public protocol AppStoreConnectAPI: Sendable {
+    /// Reads all crash feedback for the exact app and build; defaults to unsupported.
+    func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary]
+    /// Reads all screenshot feedback for the exact app and build; defaults to unsupported.
+    func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary]
     /// Fetches one app by its App Store Connect resource ID.
     func app(id: String) async throws -> AppStoreConnectApp
     /// Returns all apps matching a bundle ID, including every page.
@@ -49,6 +53,14 @@ public protocol AppStoreConnectAPI: Sendable {
 }
 
 extension AppStoreConnectAPI {
+    public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
+        throw BuildFeedbackError.unsupportedAdapter
+    }
+
+    public func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
+        throw BuildFeedbackError.unsupportedAdapter
+    }
+
     public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
         throw VersionCreationError.unsupportedAdapter
     }

@@ -15,6 +15,8 @@ package struct OpenAPITrimmer {
         "appStoreVersions_createInstance",
         "appStoreVersions_getInstance",
         "apps_appStoreVersions_getToManyRelated",
+        "apps_betaFeedbackCrashSubmissions_getToManyRelated",
+        "apps_betaFeedbackScreenshotSubmissions_getToManyRelated",
         "apps_getCollection",
         "apps_getInstance",
         "apps_webhooks_getToManyRelated",
