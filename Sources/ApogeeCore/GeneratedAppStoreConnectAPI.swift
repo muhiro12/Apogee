@@ -238,14 +238,24 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         try await perform(operation: "crashFeedback") {
+            var expectedTotal: Int?
             let entries = try await allPages { pageClient in
                 let output = try await pageClient.apps_betaFeedbackCrashSubmissions_getToManyRelated(.init(
                     path: .init(id: appID),
                     query: .init(filter_lbrack_build_rbrack_: [buildID],
                                  fields_lbrack_betaFeedbackCrashSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion, .build],
-                                 limit: 200)
+                                 limit: 200, include: [.build])
                 ))
                 let response = try output.ok.body.json
+                if let total = response.meta?.paging.total {
+                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
+                        throw ApogeeError.unexpectedAPIResponse("Feedback pagination totals changed.")
+                    }
+                    expectedTotal = total
+                }
+                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
+                    throw ApogeeError.unexpectedAPIResponse("Feedback pagination is incomplete.")
+                }
                 let summaries = try response.data.map { entry -> BuildFeedbackSummary in
                     guard !entry.id.isEmpty, let attributes = entry.attributes,
                           entry.relationships?.build?.data?.id == buildID else {
@@ -257,8 +267,9 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 }
                 return (summaries, response.links.next)
             }
-            guard Set(entries.map(\.id)).count == entries.count else {
-                throw ApogeeError.unexpectedAPIResponse("Feedback contains duplicate resource IDs.")
+            guard expectedTotal == nil || expectedTotal == entries.count,
+                  Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback inventory is duplicated or does not match its reported total.")
             }
             return entries.sorted { $0.id < $1.id }
         }
@@ -266,14 +277,24 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         try await perform(operation: "screenshotFeedback") {
+            var expectedTotal: Int?
             let entries = try await allPages { pageClient in
                 let output = try await pageClient.apps_betaFeedbackScreenshotSubmissions_getToManyRelated(.init(
                     path: .init(id: appID),
                     query: .init(filter_lbrack_build_rbrack_: [buildID],
                                  fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion, .build],
-                                 limit: 200)
+                                 limit: 200, include: [.build])
                 ))
                 let response = try output.ok.body.json
+                if let total = response.meta?.paging.total {
+                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
+                        throw ApogeeError.unexpectedAPIResponse("Feedback pagination totals changed.")
+                    }
+                    expectedTotal = total
+                }
+                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
+                    throw ApogeeError.unexpectedAPIResponse("Feedback pagination is incomplete.")
+                }
                 let summaries = try response.data.map { entry -> BuildFeedbackSummary in
                     guard !entry.id.isEmpty, let attributes = entry.attributes,
                           entry.relationships?.build?.data?.id == buildID else {
@@ -285,8 +306,9 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 }
                 return (summaries, response.links.next)
             }
-            guard Set(entries.map(\.id)).count == entries.count else {
-                throw ApogeeError.unexpectedAPIResponse("Feedback contains duplicate resource IDs.")
+            guard expectedTotal == nil || expectedTotal == entries.count,
+                  Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback inventory is duplicated or does not match its reported total.")
             }
             return entries.sorted { $0.id < $1.id }
         }

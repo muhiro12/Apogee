@@ -36,6 +36,9 @@ not assess downloadable artifact availability or export crash logs/screenshots.
 Such files may contain personal data and require a separately designed explicit
 private destination and overwrite protection.
 
+Reported pagination totals must be consistent and match the collected entries.
+A next-page cursor without a next-page link is rejected as incomplete inventory.
+
 ## JSON
 
 The command follows the success-only [JSON output contract](json-output.md), with

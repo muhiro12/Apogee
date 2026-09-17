@@ -75,6 +75,52 @@ func confirmedEmptyFeedbackAndUnsupportedAdaptersRemainDistinct() async throws {
     }
 }
 
+@Test(arguments: ["crashes", "screenshots"], ["success", "empty", "total", "changing-total", "negative-total", "cursor"])
+func feedbackInventoryValidatesPaginationEvidence(kind: String, scenario: String) async throws {
+    let transport = StubTransport { request, _, index in
+        let path = (request.path ?? "").removingPercentEncoding ?? ""
+        #expect(path.contains("include=build"))
+        let resource = kind == "crashes" ? "betaFeedbackCrashSubmissions" : "betaFeedbackScreenshotSubmissions"
+        var paging: [String: Any] = ["limit": 200, "total": scenario == "empty" ? 0 : 2]
+        if scenario == "total" {
+            paging["total"] = 3
+        }
+        if scenario == "changing-total", index == 1 {
+            paging["total"] = 1
+        }
+        if scenario == "negative-total" {
+            paging["total"] = -1
+        }
+        if scenario == "cursor" {
+            paging["nextCursor"] = "omitted"
+        }
+        var links = ["self": "unused"]
+        if index == 0, scenario != "empty", scenario != "cursor" {
+            links["next"] = "https://api.appstoreconnect.apple.com/v1/apps/app/\(resource)?filter%5Bbuild%5D=build&include=build&cursor=second"
+        }
+        return try jsonResponse([
+            "data": scenario == "empty" ? [] : [[
+                "type": resource, "id": "feedback-\(index)", "attributes": [:],
+                "relationships": ["build": ["data": ["type": "builds", "id": "build"]]],
+            ]], "links": links, "meta": ["paging": paging],
+        ])
+    }
+    let api = testAPI(transport: transport)
+    func read() async throws -> [BuildFeedbackSummary] {
+        if kind == "crashes" {
+            return try await api.crashFeedback(appID: "app", buildID: "build")
+        }
+        return try await api.screenshotFeedback(appID: "app", buildID: "build")
+    }
+    if ["success", "empty"].contains(scenario) {
+        #expect(try await read().count == (scenario == "empty" ? 0 : 2))
+    } else {
+        await #expect(throws: ApogeeError.self) {
+            _ = try await read()
+        }
+    }
+}
+
 private func feedbackTransport(scenario: String = "success") -> StubTransport {
     StubTransport { request, _, _ in
         try feedbackResponse(request: request, scenario: scenario)
@@ -124,7 +170,7 @@ private func feedbackResponse(request: HTTPRequest, scenario: String) throws -> 
         ]
         if scenario == "missing-attributes" { entry.removeValue(forKey: "attributes") }
         if scenario == "missing-linkage" { entry.removeValue(forKey: "relationships") }
-        let next = "https://api.appstoreconnect.apple.com/v1/apps/app-1/\(resource)?filter%5Bbuild%5D=build-42&cursor=second"
+        let next = "https://api.appstoreconnect.apple.com/v1/apps/app-1/\(resource)?filter%5Bbuild%5D=build-42&include=build&cursor=second"
         return try jsonResponse([
             "data": scenario == "empty" ? [] : [entry],
             "links": (second && scenario != "cycle") || scenario == "empty" ? ["self": "unused"] : ["self": "unused", "next": next],
