@@ -36,3 +36,14 @@ func planNewVersion(automation: ReleaseAutomation) async throws -> ReleasePlan {
         appLookup: .bundleID("com.example.app"), version: "2.0", options: .init(mode: .dryRun)
     )
 }
+
+// Default arguments do not preserve function-reference types. Compile the original
+// API signatures as values so additive minor releases retain source compatibility.
+func compileOriginalFeedbackAPI(automation: ReleaseAutomation) {
+    let _: (AppLookup, String, String, Platform) async throws -> BuildFeedback =
+        automation.buildFeedback(appLookup:version:buildVersion:platform:)
+    let _: (OperationMode, Bool, String?) -> ReleaseExecutionOptions =
+        ReleaseExecutionOptions.init(mode:allowDestructive:planToken:)
+    let _: (String, String, Date?, String?, String?, Bool?) -> BuildFeedbackSummary =
+        BuildFeedbackSummary.init(id:buildID:createdDate:deviceModel:osVersion:hasComment:)
+}

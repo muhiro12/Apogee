@@ -215,3 +215,42 @@ private func exportFeedbackTransport(crashLog: String? = nil, crashLogStatus: In
         ])
     }
 }
+
+@Test(arguments: ["shared-root", "shared-child", "symlink-child"])
+func feedbackExportRejectsUnsafeExistingDirectoriesBeforeCreatingChildren(scenario: String) async throws {
+    let root = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+    defer { try? FileManager.default.removeItem(at: root) }
+    let child = root.appendingPathComponent("screenshot")
+    let outside = root.appendingPathComponent("outside")
+    if scenario == "shared-root" {
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: root.path)
+    } else if scenario == "shared-child" {
+        try FileManager.default.createDirectory(at: child, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o755])
+    } else {
+        try FileManager.default.createDirectory(at: outside, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+        try FileManager.default.createSymbolicLink(at: child, withDestinationURL: outside)
+    }
+    let entry = BuildFeedbackSummary(id: "feedback-1", buildID: "build-42", hasArtifact: true,
+                                     artifacts: [.init(url: "https://is1-ssl.mzstatic.com/one")])
+    await #expect(throws: BuildFeedbackError.invalidExportDestination) {
+        _ = try await BuildFeedbackExporter(export: .init(directory: root.path))
+            .export([entry], kind: "screenshot") { _ in Data([0xFF, 0xD8, 0xFF]) }
+    }
+    #expect(!FileManager.default.fileExists(atPath: child.appendingPathComponent("feedback-1").path))
+    #expect(!FileManager.default.fileExists(atPath: outside.appendingPathComponent("feedback-1").path))
+}
+
+@Test(arguments: [0, 4, 5])
+func feedbackArtifactStreamEnforcesLimitWhileReading(count: Int) async throws {
+    let bytes = AsyncStream<UInt8>(unfolding: {
+        UInt8(1)
+    }).prefix(count)
+    if count == 4 {
+        #expect(try await BuildFeedbackArtifactTransport.collect(bytes, limit: 4) == Data(repeating: 1, count: 4))
+    } else {
+        await #expect(throws: BuildFeedbackError.unsafeArtifact) {
+            _ = try await BuildFeedbackArtifactTransport.collect(bytes, limit: 4)
+        }
+    }
+}

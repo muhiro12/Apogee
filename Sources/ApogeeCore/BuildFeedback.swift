@@ -54,8 +54,14 @@ public struct BuildFeedbackSummary: Sendable, Hashable {
     public var exportedFiles: [String]
 
     public init(id: String, buildID: String, createdDate: Date? = nil,
+                deviceModel: String? = nil, osVersion: String? = nil, hasComment: Bool? = nil) {
+        self.init(id: id, buildID: buildID, createdDate: createdDate, deviceModel: deviceModel,
+                  osVersion: osVersion, hasComment: hasComment, hasArtifact: nil)
+    }
+
+    public init(id: String, buildID: String, createdDate: Date? = nil,
                 deviceModel: String? = nil, osVersion: String? = nil, hasComment: Bool? = nil,
-                hasArtifact: Bool? = nil, artifactCount: Int = 0, artifacts: [BuildFeedbackArtifact] = [],
+                hasArtifact: Bool?, artifactCount: Int = 0, artifacts: [BuildFeedbackArtifact] = [],
                 exportedFiles: [String] = []) {
         self.id = id
         self.buildID = buildID
@@ -105,7 +111,7 @@ public enum BuildFeedbackError: Error, Sendable, Equatable, LocalizedError {
         case .incompleteInventory:
             "Feedback inventory is incomplete, duplicated, or does not match the selected build."
         case .invalidExportDestination:
-            "Artifact export requires an explicit private directory whose parent exists and which is not a symbolic link."
+            "Artifact export requires an explicit private directory whose parent exists, with owner-only permissions and no symbolic links."
         case .exportConflict:
             "An artifact file already exists at the export destination. Choose an unused destination; existing files are never overwritten."
         case .unsafeArtifact:

@@ -41,6 +41,23 @@ enum BuildFeedbackArtifactTransport {
         throw BuildFeedbackError.unsafeArtifact
     }
 
+    /// Stops reading at the limit even if the response omits its content length.
+    static func collect<Bytes: AsyncSequence>(_ bytes: Bytes, limit: Int = byteLimit) async throws -> Data
+    where Bytes.Element == UInt8 {
+        var data = Data()
+        for try await byte in bytes {
+            try Task.checkCancellation()
+            guard data.count < limit else {
+                throw BuildFeedbackError.unsafeArtifact
+            }
+            data.append(byte)
+        }
+        guard !data.isEmpty else {
+            throw BuildFeedbackError.unsafeArtifact
+        }
+        return data
+    }
+
     static func download(_ artifact: BuildFeedbackArtifact) async throws -> Data {
         try Task.checkCancellation()
         try validate(artifact)
@@ -58,12 +75,12 @@ enum BuildFeedbackArtifactTransport {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         do {
-            let (data, response) = try await session.data(for: request)
+            let (bytes, response) = try await session.bytes(for: request)
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode),
-                  !data.isEmpty, data.count <= byteLimit else {
+                  response.expectedContentLength <= byteLimit else {
                 throw BuildFeedbackError.unsafeArtifact
             }
-            return data
+            return try await collect(bytes)
         } catch is CancellationError {
             throw CancellationError()
         } catch let error as URLError where error.code == .cancelled {
@@ -89,7 +106,7 @@ struct BuildFeedbackExporter {
         root = URL(fileURLWithPath: export.directory).standardizedFileURL
         do {
             if FileManager.default.fileExists(atPath: root.path) {
-                try ScreenshotFiles.requireRegular(root, directory: true)
+                try Self.requirePrivateDirectory(root)
             } else {
                 try ScreenshotFiles.requireRegular(root.deletingLastPathComponent(), directory: true)
                 try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false,
@@ -176,12 +193,28 @@ struct BuildFeedbackExporter {
         return "\(kind)/\(submissionID)"
     }
 
+    private static func requirePrivateDirectory(_ directory: URL) throws {
+        try ScreenshotFiles.requireRegular(directory, directory: true)
+        let attributes = try FileManager.default.attributesOfItem(atPath: directory.path)
+        guard let permissions = attributes[.posixPermissions] as? NSNumber,
+              permissions.intValue & 0o077 == 0 else {
+            throw BuildFeedbackError.invalidExportDestination
+        }
+    }
+
     private func makeDirectory(_ relative: String) throws -> URL {
-        let directory = relative.split(separator: "/").reduce(root) { $0.appendingPathComponent(String($1)) }
+        var directory = root
         do {
-            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true,
-                                                    attributes: [.posixPermissions: 0o700])
-            try ScreenshotFiles.requireRegular(directory, directory: true)
+            try Self.requirePrivateDirectory(root)
+            for component in relative.split(separator: "/") {
+                directory.appendPathComponent(String(component))
+                if !FileManager.default.fileExists(atPath: directory.path) {
+                    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false,
+                                                            attributes: [.posixPermissions: 0o700])
+                }
+                // Validate each parent before creating anything below it.
+                try Self.requirePrivateDirectory(directory)
+            }
         } catch {
             throw BuildFeedbackError.invalidExportDestination
         }

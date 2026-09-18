@@ -15,8 +15,13 @@ public struct ReleaseExecutionOptions: Sendable, Hashable {
     /// never weakens destructive confirmation, plan tokens, or verified read-back.
     public var allowUnrecoverableReplacement: Bool
 
+    public init(mode: OperationMode, allowDestructive: Bool = false, planToken: String? = nil) {
+        self.init(mode: mode, allowDestructive: allowDestructive, planToken: planToken,
+                  allowUnrecoverableReplacement: false)
+    }
+
     public init(mode: OperationMode, allowDestructive: Bool = false, planToken: String? = nil,
-                allowUnrecoverableReplacement: Bool = false) {
+                allowUnrecoverableReplacement: Bool) {
         self.mode = mode
         self.allowDestructive = allowDestructive
         self.planToken = planToken
@@ -293,13 +298,22 @@ public struct ReleaseAutomation: Sendable {
 
     /// Reads privacy-reduced feedback for a uniquely matched valid candidate build.
     /// No App Store version resource is required. This never attaches or submits a build.
+    /// No artifact is contacted or written.
+    public func buildFeedback(
+        appLookup: AppLookup, version: String, buildVersion: String, platform: Platform = .iOS
+    ) async throws -> BuildFeedback {
+        try await buildFeedback(appLookup: appLookup, version: version, buildVersion: buildVersion,
+                                platform: platform, export: nil)
+    }
+
+    /// Reads feedback and optionally exports its artifacts to explicit private storage.
     ///
-    /// An explicit ``BuildFeedbackExport`` additionally downloads the artifacts Apple
-    /// reports for that build into private storage, without overwriting existing files.
-    /// Without one, no artifact is contacted or written.
+    /// An explicit ``BuildFeedbackExport`` downloads the artifacts Apple reports for
+    /// that build without overwriting existing files. Without one, no artifact is
+    /// contacted or written.
     public func buildFeedback(
         appLookup: AppLookup, version: String, buildVersion: String, platform: Platform = .iOS,
-        export: BuildFeedbackExport? = nil
+        export: BuildFeedbackExport?
     ) async throws -> BuildFeedback {
         let app = try await resolveApp(appLookup)
         let builds = try await api.builds(

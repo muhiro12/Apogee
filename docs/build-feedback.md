@@ -66,6 +66,8 @@ none. Screenshots are fetched from Apple's asset hosts instead, as described bel
 
 The destination is explicit and never inferred: its parent must already exist, it
 must not be a symbolic link, and Apogee creates it with owner-only permissions.
+Existing destination directories must also have owner-only permissions; Apogee
+refuses shared directories without changing their permissions.
 Files are written as `crash/<submission id>/01.crash` and
 `screenshot/<submission id>/<index>.<png|jpg>` with owner-only permissions and
 never overwrite an existing file. Reusing a destination that
@@ -77,7 +79,7 @@ Artifact locations are time-limited Apple URLs and are treated as capabilities.
 Downloads are `GET` requests over a separate uncached session with no API bearer
 token, cookies, stored credentials, or redirect following, and only to `.apple.com`
 or `.mzstatic.com` hosts over HTTPS. An expired location, a foreign host, an empty
-or oversized response, and a payload that is not a PNG or JPEG all fail without
+or oversized response (limited to 32 MiB while streaming), and a payload that is not a PNG or JPEG all fail without
 writing a file. A failed artifact leaves no directory behind, and a download failure
 after earlier files were written keeps those files; rerun into a fresh destination.
 

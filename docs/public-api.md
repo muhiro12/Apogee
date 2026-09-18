@@ -125,7 +125,7 @@ implements this operation through the generated client.
 ### Unrecoverable replacement migration
 
 `ReleaseExecutionOptions` gains `allowUnrecoverableReplacement`, defaulting to false;
-its initializer defaults keep existing call sites source compatible, and its
+its original initializer remains available, including as a function value, and its
 synthesized equality and hashing now include that value. `ScreenshotError` gains
 `unrecoverableReplacementRequiresConfirmation` and `setCapacityExceeded`, so
 consumers with exhaustive switches over it must handle the two new cases.
@@ -140,9 +140,10 @@ the dry-run and the apply. See [verified screenshot updates](screenshots.md).
 `BuildFeedbackError` gains `invalidExportDestination`, `exportConflict`, and
 `unsafeArtifact`. Consumers with exhaustive switches over it must handle the three
 new cases before updating. `BuildFeedbackSummary` gains `hasArtifact`,
-`artifactCount`, `artifacts`, and `exportedFiles`; its initializer defaults keep
-existing call sites source compatible, and its synthesized equality now includes
-those values.
+`artifactCount`, `artifacts`, and `exportedFiles`. The original summary initializer
+and four-argument `buildFeedback` method remain available, including as function
+values. The extended summary initializer requires an explicit `hasArtifact` value.
+Synthesized equality now includes the additional stored values.
 
 `AppStoreConnectAPI.downloadFeedbackArtifact` has a default implementation that
 performs a credential-free Apple asset request, and `crashLogText` defaults to
