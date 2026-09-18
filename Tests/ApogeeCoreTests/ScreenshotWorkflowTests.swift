@@ -90,6 +90,31 @@ func screenshotsKeepExistingImagesWhenUploadFirstReplacementFails() async throws
     #expect(try await fixture.run(api: api, mode: .dryRun, includeOriginals: false).hasChanges == false)
 }
 
+/// Once deletion finishes, retrying the order must not require the lost originals.
+@Test
+func screenshotsResumeUnrecoverableReplacementAfterOrderingFailure() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 2, desiredCount: 2)
+    defer { fixture.remove() }
+    let old = try ScreenshotJournal.originals(fixture.originals.path)
+    try old[0].data.write(to: fixture.input.appendingPathComponent("en-US/APP_DESKTOP/02.png"))
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    await api.setFailure("order")
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    await #expect(throws: ScreenshotError.remoteChanged) {
+        _ = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                  includeOriginals: false, allowUnrecoverable: true)
+    }
+    #expect(await api.writes.contains("delete"))
+    let writesBeforeRetry = await api.writes.count
+    await api.setFailure("")
+    let fresh = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    _ = try await fixture.run(api: api, mode: .apply, token: fresh.token,
+                              includeOriginals: false, allowUnrecoverable: true)
+    #expect(await Array(api.writes.dropFirst(writesBeforeRetry)) == ["order"])
+    #expect(try await fixture.run(api: api, mode: .dryRun, includeOriginals: false).hasChanges == false)
+    #expect(!FileManager.default.fileExists(atPath: fixture.recovery.appendingPathComponent("restore").path))
+}
+
 /// Capacity that forces deletion before upload keeps the verified-originals requirement.
 @Test
 func screenshotsRequireOriginalsWhenCapacityForcesDeletionFirst() async throws {
@@ -405,6 +430,9 @@ private actor ScreenshotTestAPI: ScreenshotAPI {
         writes.append("delete")
     }
     func orderScreenshots(setID: String, ids: [String]) async throws {
+        if failure == "order" {
+            throw ScreenshotError.remoteChanged
+        }
         let previous = items
         items = try ids.map { id in try #require(previous.first { $0.id == id }) }
         writes.append("order")

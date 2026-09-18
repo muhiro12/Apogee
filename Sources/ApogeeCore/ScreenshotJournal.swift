@@ -156,6 +156,11 @@ final class ScreenshotJournal {
     }
 
     func writeRestoreLayout(setID: String, locale: String, displayType: String) throws {
+        // A resumed upload-first replacement can need only ordering after all obsolete
+        // images are gone. Its original composition still has no complete backup.
+        guard state.unrecoverableSets?.contains(setID) != true else {
+            return
+        }
         let key = "\(locale)/\(displayType)"
         if let previous = state.sets[setID], previous != key {
             throw ScreenshotError.recoveryMismatch
