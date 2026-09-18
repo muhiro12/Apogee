@@ -12,6 +12,8 @@ public protocol AppStoreConnectAPI: Sendable {
     func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary]
     /// Reads all screenshot feedback for the exact app and build; defaults to unsupported.
     func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary]
+    /// Downloads one feedback artifact; defaults to a credential-free Apple asset request.
+    func downloadFeedbackArtifact(_ artifact: BuildFeedbackArtifact) async throws -> Data
     /// Fetches one app by its App Store Connect resource ID.
     func app(id: String) async throws -> AppStoreConnectApp
     /// Returns all apps matching a bundle ID, including every page.
@@ -65,6 +67,10 @@ extension AppStoreConnectAPI {
 
     public func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         throw BuildFeedbackError.unsupportedAdapter
+    }
+
+    public func downloadFeedbackArtifact(_ artifact: BuildFeedbackArtifact) async throws -> Data {
+        try await BuildFeedbackArtifactTransport.download(artifact)
     }
 
     public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {

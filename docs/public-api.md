@@ -51,7 +51,9 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `ApogeeError` | Supported | Domain errors and safe request failure categories |
 | `BuildFeedback` | Supported | Read-only candidate-build feedback snapshot |
 | `BuildFeedbackSummary` | Supported | Privacy-reduced feedback resource |
-| `BuildFeedbackError` | Supported | Unsupported or incomplete feedback inspection |
+| `BuildFeedbackArtifact` | Supported | Sensitive time-limited artifact location |
+| `BuildFeedbackExport` | Supported | Explicit private artifact destination |
+| `BuildFeedbackError` | Supported | Unsupported, incomplete, or unsafe feedback inspection |
 | `VersionReleasePolicy` | Supported | Explicit manual, automatic, or scheduled publication policy |
 | `VersionSettingsPatch` | Supported | Requested copyright and release policy; nil preserves values |
 | `VersionSettingsError` | Supported | Version-settings validation, state, and verification failures |
@@ -120,6 +122,20 @@ and preserve cancellation. Use `ReleaseAutomation` for guarded operations.
 adapters opting into creation must configure manual release. The production adapter
 implements this operation through the generated client.
 
+### Feedback artifact migration
+
+`BuildFeedbackError` gains `invalidExportDestination`, `exportConflict`, and
+`unsafeArtifact`. Consumers with exhaustive switches over it must handle the three
+new cases before updating. `BuildFeedbackSummary` gains `hasArtifact`, `artifacts`,
+and `exportedFiles`; its initializer defaults keep existing call sites source
+compatible, and its synthesized equality now includes those values.
+
+`AppStoreConnectAPI.downloadFeedbackArtifact` has a default implementation that
+performs a credential-free Apple asset request, so existing adapters remain source
+compatible. `ReleaseAutomation.buildFeedback` downloads nothing unless it is given
+a `BuildFeedbackExport`. Artifact locations are capabilities: keep them out of logs
+and persisted files. See [candidate build feedback](build-feedback.md).
+
 `AppStoreConnectAPI.updateVersionSettings` defaults to throwing
 `VersionSettingsError.unsupportedAdapter`. The automation layer verifies version
 identity and editability, then reads back the complete effective settings. See
@@ -141,7 +157,7 @@ hashing, human rendering, or confirmation tokens.
 | Command | Additional options | Behavior |
 | --- | --- | --- |
 | `validate-metadata` | `--metadata-path`, `--release-notes-only` | Local-only validation |
-| `build-feedback` | Lookup, `--version`, `--build-version`, `--platform`, `--output` | Remote feedback reads only; no artifact downloads |
+| `build-feedback` | Lookup, `--version`, `--build-version`, `--platform`, `--output`, `--export-path` | Remote feedback reads; artifacts download only into an explicit private destination |
 | `release-status` | Lookup, `--version`, `--platform` | Remote read only |
 | `read-metadata` | Lookup, `--version`, `--platform`, `--save-to` | Remote read only; JSON snapshot with optional new-file export |
 | `create-version` | Lookup, `--version`, `--platform`, mode | Create an absent version for manual release; verify identity, release type, and preparation state |

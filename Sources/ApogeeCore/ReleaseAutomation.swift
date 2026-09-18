@@ -285,8 +285,13 @@ public struct ReleaseAutomation: Sendable {
 
     /// Reads privacy-reduced feedback for a uniquely matched valid candidate build.
     /// No App Store version resource is required. This never attaches or submits a build.
+    ///
+    /// An explicit ``BuildFeedbackExport`` additionally downloads the artifacts Apple
+    /// reports for that build into private storage, without overwriting existing files.
+    /// Without one, no artifact is contacted or written.
     public func buildFeedback(
-        appLookup: AppLookup, version: String, buildVersion: String, platform: Platform = .iOS
+        appLookup: AppLookup, version: String, buildVersion: String, platform: Platform = .iOS,
+        export: BuildFeedbackExport? = nil
     ) async throws -> BuildFeedback {
         let app = try await resolveApp(appLookup)
         let builds = try await api.builds(
@@ -306,8 +311,19 @@ public struct ReleaseAutomation: Sendable {
             }
         }
         try Task.checkCancellation()
-        return .init(app: app, version: version, platform: platform, build: build,
-                     crashes: crashes.sorted { $0.id < $1.id }, screenshots: screenshots.sorted { $0.id < $1.id })
+        var feedback = BuildFeedback(app: app, version: version, platform: platform, build: build,
+                                     crashes: crashes.sorted { $0.id < $1.id },
+                                     screenshots: screenshots.sorted { $0.id < $1.id })
+        if let export {
+            let exporter = try BuildFeedbackExporter(export: export)
+            feedback.crashes = try await exporter.export(feedback.crashes, kind: "crash") {
+                try await api.downloadFeedbackArtifact($0)
+            }
+            feedback.screenshots = try await exporter.export(feedback.screenshots, kind: "screenshot") {
+                try await api.downloadFeedbackArtifact($0)
+            }
+        }
+        return feedback
     }
 
     /// Plans or attaches a uniquely matched `VALID` build, then verifies its identity.

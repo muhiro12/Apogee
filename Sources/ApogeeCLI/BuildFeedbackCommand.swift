@@ -14,6 +14,8 @@ struct BuildFeedbackCommand: AsyncParsableCommand {
     @Option(help: "Target marketing version string.") var version: String
     @Option(help: "Candidate build number.") var buildVersion: String
     @Option(help: "App Store platform.") var platform: PlatformArgument?
+    @Option(help: "Download feedback artifacts into this private directory; existing files are never overwritten.")
+    var exportPath: String?
 
     func run() async throws {
         let configuration = try configurationOptions.configuration()
@@ -26,7 +28,8 @@ struct BuildFeedbackCommand: AsyncParsableCommand {
         let appLookup = try lookup.appLookup(configuration: configuration)
         let platform = platform?.platform ?? configuration.defaultPlatform ?? .iOS
         let feedback = try await automation.buildFeedback(
-            appLookup: appLookup, version: version, buildVersion: buildVersion, platform: platform
+            appLookup: appLookup, version: version, buildVersion: buildVersion, platform: platform,
+            export: exportPath.map { .init(directory: $0) }
         )
         return try outputOptions.render(feedback, requestedTarget: .init(lookup: appLookup, version: version, platform: platform))
     }

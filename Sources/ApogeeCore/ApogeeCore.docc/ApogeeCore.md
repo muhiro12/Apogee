@@ -76,6 +76,8 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 
 - ``BuildFeedback``
 - ``BuildFeedbackSummary``
+- ``BuildFeedbackArtifact``
+- ``BuildFeedbackExport``
 - ``BuildFeedbackError``
 
 ### Screenshot execution and recovery

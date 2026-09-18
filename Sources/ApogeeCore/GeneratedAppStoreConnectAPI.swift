@@ -282,7 +282,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 let output = try await pageClient.apps_betaFeedbackScreenshotSubmissions_getToManyRelated(.init(
                     path: .init(id: appID),
                     query: .init(filter_lbrack_build_rbrack_: [buildID],
-                                 fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion, .build],
+                                 fields_lbrack_betaFeedbackScreenshotSubmissions_rbrack_: [.createdDate, .comment, .deviceModel, .osVersion,
+                                                                                           .screenshots, .build],
                                  limit: 200, include: [.build])
                 ))
                 let response = try output.ok.body.json
@@ -300,9 +301,17 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                           entry.relationships?.build?.data?.id == buildID else {
                         throw ApogeeError.unexpectedAPIResponse("Feedback is missing attributes or does not identify the selected build.")
                     }
+                    // An omitted screenshot list stays unknown; a listed image must carry its location.
+                    let artifacts = try attributes.screenshots?.map { image -> BuildFeedbackArtifact in
+                        guard let url = image.url, !url.isEmpty else {
+                            throw ApogeeError.unexpectedAPIResponse("Feedback screenshot is missing its download location.")
+                        }
+                        return .init(url: url, expirationDate: image.expirationDate, width: image.width, height: image.height)
+                    }
                     return .init(id: entry.id, buildID: buildID, createdDate: attributes.createdDate,
                                  deviceModel: attributes.deviceModel, osVersion: attributes.osVersion,
-                                 hasComment: attributes.comment.map { !$0.isEmpty })
+                                 hasComment: attributes.comment.map { !$0.isEmpty },
+                                 hasArtifact: artifacts.map { !$0.isEmpty }, artifacts: artifacts ?? [])
                 }
                 return (summaries, response.links.next)
             }

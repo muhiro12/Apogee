@@ -137,7 +137,11 @@ extension OutputOptions {
                 for entry in entries {
                     let date = entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true)) ?? "unknown"
                     let comment = entry.hasComment.map { $0 ? "yes" : "no" } ?? "unknown"
-                    lines.append("- \(kind) \(String(reflecting: entry.id)): \(date), device \(String(reflecting: entry.deviceModel ?? "unknown")), OS \(String(reflecting: entry.osVersion ?? "unknown")), comment \(comment)")
+                    let artifact = entry.hasArtifact.map { $0 ? "\(entry.artifacts.count)" : "no" } ?? "unknown"
+                    lines.append("- \(kind) \(String(reflecting: entry.id)): \(date), device \(String(reflecting: entry.deviceModel ?? "unknown")), OS \(String(reflecting: entry.osVersion ?? "unknown")), comment \(comment), artifacts \(artifact)")
+                    for file in entry.exportedFiles {
+                        lines.append("  exported \(String(reflecting: file))")
+                    }
                 }
             }
             lines.append("Observed feedback is not a release approval or an automatic release block.")
@@ -147,7 +151,8 @@ extension OutputOptions {
             ["id": entry.id, "buildID": entry.buildID,
              "createdDate": nullable(entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true))),
              "deviceModel": nullable(entry.deviceModel), "osVersion": nullable(entry.osVersion),
-             "hasComment": nullable(entry.hasComment)]
+             "hasComment": nullable(entry.hasComment), "hasArtifact": nullable(entry.hasArtifact),
+             "artifactCount": entry.artifacts.count, "exportedFiles": entry.exportedFiles]
         }
         var request = requestedTarget.object
         request["buildVersion"] = nullable(feedback.build.version)
