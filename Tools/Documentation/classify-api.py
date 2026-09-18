@@ -7,11 +7,14 @@ import re
 import shutil
 import sys
 
-scratch = Path(sys.argv[1])
+symbol_graph_path = Path(sys.argv[1])
 output = Path(sys.argv[2])
-graphs = list(scratch.rglob("ApogeeCore.symbols.json"))
+graphs = list(symbol_graph_path.glob("ApogeeCore.symbols.json"))
 if len(graphs) != 1:
-    raise SystemExit("Expected one ApogeeCore symbol graph; use a single-toolchain scratch path")
+    raise SystemExit(
+        "Expected one ApogeeCore symbol graph directly in " + str(symbol_graph_path)
+        + "; pass the directory reported by dump-symbol-graph, not the scratch path"
+    )
 for generated_graph in graphs[0].parent.glob("AppStoreConnectGenerated*.symbols.json"):
     if json.loads(generated_graph.read_text())["symbols"]:
         raise SystemExit("The generated implementation target must not export public declarations")
