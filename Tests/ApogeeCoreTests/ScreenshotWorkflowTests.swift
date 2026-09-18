@@ -31,12 +31,77 @@ func screenshotsRequireOriginalsAndMatchingDestructiveTokenBeforeWrites() async 
     let fixture = try ScreenshotFixture(oldCount: 2, desiredCount: 2)
     defer { fixture.remove() }
     let api = ScreenshotTestAPI(items: fixture.remote)
-    let plan = try await fixture.run(api: api, mode: .dryRun)
     await #expect(throws: ApogeeError.applyRequiresPlanToken) {
         _ = try await fixture.run(api: api, mode: .apply, token: "stale")
     }
-    await #expect(throws: ScreenshotError.originalsMissing) {
+    // Without originals this set can only be replaced by uploading first, which needs its own opt-in.
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    await #expect(throws: ScreenshotError.unrecoverableReplacementRequiresConfirmation) {
         _ = try await fixture.run(api: api, mode: .apply, token: plan.token, includeOriginals: false)
+    }
+    #expect(await api.writes.isEmpty)
+}
+
+/// A legacy set whose originals are gone can still be replaced when both fit at once.
+@Test
+func screenshotsReplaceUnrecoverableSetsByUploadingBeforeDeleting() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 3, desiredCount: 3)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    let strategy = try #require(plan.actions.first { $0.field == "replacement" })
+    #expect(strategy.currentValue?.contains("3 existing screenshot(s) without verified originals") == true)
+    #expect(strategy.desiredValue?.contains("upload-first replacement") == true)
+    #expect(strategy.desiredValue?.contains("6 of 10 slots") == true)
+    #expect(await api.writes.isEmpty)
+    let applied = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                        includeOriginals: false, allowUnrecoverable: true)
+    #expect(applied.actions.last?.kind == .verify)
+    let writes = await api.writes
+    let lastCommit = try #require(writes.lastIndex(of: "commit"))
+    let firstDelete = try #require(writes.firstIndex(of: "delete"))
+    #expect(lastCommit < firstDelete)
+    #expect(await api.maximumCount == 6)
+    #expect(try await fixture.run(api: api, mode: .dryRun, includeOriginals: false).hasChanges == false)
+    // No restore tree is written, because the previous composition was never recoverable.
+    #expect(!FileManager.default.fileExists(atPath: fixture.recovery.appendingPathComponent("restore").path))
+    let journal = try String(contentsOf: fixture.recovery.appendingPathComponent("state.json"), encoding: .utf8)
+    #expect(journal.contains("unrecoverableSets"))
+}
+
+/// A failed upload-first replacement must keep every existing complete screenshot.
+@Test
+func screenshotsKeepExistingImagesWhenUploadFirstReplacementFails() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 3, desiredCount: 3)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    await api.setFailure("upload")
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    await #expect(throws: ScreenshotError.unsafeUpload) {
+        _ = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                  includeOriginals: false, allowUnrecoverable: true)
+    }
+    #expect(await !api.writes.contains("delete"))
+    #expect(await api.items.filter { $0.state == "COMPLETE" } == fixture.remote)
+    await api.setFailure("")
+    let fresh = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    _ = try await fixture.run(api: api, mode: .apply, token: fresh.token,
+                              includeOriginals: false, allowUnrecoverable: true)
+    #expect(try await fixture.run(api: api, mode: .dryRun, includeOriginals: false).hasChanges == false)
+}
+
+/// Capacity that forces deletion before upload keeps the verified-originals requirement.
+@Test
+func screenshotsRequireOriginalsWhenCapacityForcesDeletionFirst() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 10, desiredCount: 10)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    let strategy = try #require(plan.actions.first { $0.field == "replacement" })
+    #expect(strategy.desiredValue?.contains("no upload-first replacement") == true)
+    await #expect(throws: ScreenshotError.originalsMissing) {
+        _ = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                  includeOriginals: false, allowUnrecoverable: true)
     }
     #expect(await api.writes.isEmpty)
 }
@@ -59,9 +124,9 @@ func screenshotsResumeOnlyOwnedInterruptedUploads(scenario: String) async throws
     let original = try ScreenshotFiles.load(fixture.recovery.appendingPathComponent("restore").path, platform: .macOS)
     #expect(original[0].2.map(\.checksum) == fixture.remote.compactMap(\.checksum))
     await api.setFailure("")
-    // A checksum mismatch in COMPLETE is not safe to silently remove as an unfinished upload.
+    // A checksum mismatch in COMPLETE is not an unfinished upload, so removing it needs its own opt-in.
     if scenario == "checksum" {
-        await #expect(throws: ScreenshotError.originalsMissing) {
+        await #expect(throws: ScreenshotError.unrecoverableReplacementRequiresConfirmation) {
             let fresh = try await fixture.run(api: api, mode: .dryRun)
             _ = try await fixture.run(api: api, mode: .apply, token: fresh.token)
         }
@@ -115,11 +180,14 @@ func screenshotOrderingChangesTokenAndReusesExistingBytes() async throws {
     #expect(try await fixture.run(api: api, mode: .dryRun).hasChanges == false)
 }
 
-@Test(arguments: ["expired", "gap", "overlap", "host", "redirect-host", "credentials", "header", "method"])
+@Test(arguments: ["expired", "duplicate-expiry", "unreadable-expiry", "gap", "overlap", "host", "redirect-host",
+                 "credentials", "header", "method"])
 func screenshotUploadInstructionsFailClosed(scenario: String) throws {
     var operations = [ScreenshotTestAPI.operation(id: "one", byteCount: 10)]
     switch scenario {
     case "expired": operations[0].url = "https://store.blobstore.apple.com/one?Expires=1"
+    case "duplicate-expiry": operations[0].url = "https://store.blobstore.apple.com/one?Expires=9999999999&Expires=1"
+    case "unreadable-expiry": operations[0].url = "https://store.blobstore.apple.com/one?Expires="
     case "gap": operations[0].offset = 1
     case "overlap": operations.append(operations[0])
     case "host": operations[0].url = "https://example.invalid/one?Expires=9999999999"
@@ -131,6 +199,34 @@ func screenshotUploadInstructionsFailClosed(scenario: String) throws {
     #expect(throws: ScreenshotError.unsafeUpload) {
         try ScreenshotUploadValidation.validate(operations, byteCount: 10)
     }
+}
+
+/// Apple's current asset responses can omit `Expires`; the remaining safeguards still apply.
+@Test
+func screenshotUploadAcceptsAppleURLsWithoutAnExpiryParameter() throws {
+    var operation = ScreenshotTestAPI.operation(id: "one", byteCount: 10)
+    operation.url = "https://store.blobstore.apple.com/one"
+    try ScreenshotUploadValidation.validate([operation], byteCount: 10)
+    operation.url = "https://store.blobstore.apple.com/one?uploadId=abc&partNumber=1"
+    try ScreenshotUploadValidation.validate([operation], byteCount: 10)
+    operation.url = "https://store.blobstore.example.invalid/one"
+    #expect(throws: ScreenshotError.unsafeUpload) {
+        try ScreenshotUploadValidation.validate([operation], byteCount: 10)
+    }
+}
+
+/// `COMPLETE` can precede a readable source checksum; that first read is not a mismatch.
+@Test
+func screenshotsWaitForDelayedChecksumReadBack() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 0, desiredCount: 1)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: [])
+    await api.setFailure("delayed-checksum")
+    let plan = try await fixture.run(api: api, mode: .dryRun)
+    let applied = try await fixture.run(api: api, mode: .apply, token: plan.token)
+    #expect(applied.actions.last?.kind == .verify)
+    #expect(await api.checksumReadsBeforeMatch == 1)
+    #expect(try await fixture.run(api: api, mode: .dryRun).hasChanges == false)
 }
 
 @Test
@@ -190,11 +286,14 @@ private struct ScreenshotFixture {
         try? FileManager.default.removeItem(at: root)
     }
 
-    func run(api: ScreenshotTestAPI, mode: OperationMode, token: String? = nil, includeOriginals: Bool = true) async throws -> ReleasePlan {
+    func run(api: ScreenshotTestAPI, mode: OperationMode, token: String? = nil, includeOriginals: Bool = true,
+             allowUnrecoverable: Bool = false) async throws -> ReleasePlan {
         try await ScreenshotWorkflow(api: api, pollAttempts: 2, pollDelay: .zero).run(
             app: .init(id: "app"), version: .init(id: "version"), platform: .macOS,
             localizations: [.init(id: "localization", locale: "en-US", metadata: .init(locale: "en-US"))],
-            path: input.path, options: .init(mode: mode, allowDestructive: true, planToken: token),
+            path: input.path,
+            options: .init(mode: mode, allowDestructive: true, planToken: token,
+                           allowUnrecoverableReplacement: allowUnrecoverable),
             recovery: .init(directory: recovery.path, originalsPath: includeOriginals ? originals.path : nil)
         )
     }
@@ -223,6 +322,8 @@ private actor ScreenshotTestAPI: ScreenshotAPI {
     var reads = 0
     var mutateOnRead: Int?
     var uploaded: [String: Data] = [:]
+    var deferredChecksums: [String: String] = [:]
+    var checksumReadsBeforeMatch = 0
 
     init(items: [RemoteScreenshot]) {
         self.items = items
@@ -283,10 +384,21 @@ private actor ScreenshotTestAPI: ScreenshotAPI {
         #expect(uploaded[id].map(ScreenshotImage.md5) == checksum)
         items[index].state = failure == "processing" ? "FAILED" : (failure == "timeout" ? "UPLOAD_COMPLETE" : "COMPLETE")
         items[index].checksum = failure == "checksum" ? String(repeating: "0", count: 32) : checksum
+        if failure == "delayed-checksum" {
+            deferredChecksums[id] = checksum
+            items[index].checksum = nil
+        }
         writes.append("commit")
     }
     func screenshot(id: String) async throws -> RemoteScreenshot {
-        try #require(items.first { $0.id == id })
+        let item = try #require(items.first { $0.id == id })
+        // Apple can report COMPLETE once before the source checksum becomes readable.
+        if let deferred = deferredChecksums.removeValue(forKey: id) {
+            checksumReadsBeforeMatch += 1
+            let index = try #require(items.firstIndex { $0.id == id })
+            items[index].checksum = deferred
+        }
+        return item
     }
     func deleteScreenshot(id: String) async throws {
         items.removeAll { $0.id == id }

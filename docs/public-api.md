@@ -122,6 +122,19 @@ and preserve cancellation. Use `ReleaseAutomation` for guarded operations.
 adapters opting into creation must configure manual release. The production adapter
 implements this operation through the generated client.
 
+### Unrecoverable replacement migration
+
+`ReleaseExecutionOptions` gains `allowUnrecoverableReplacement`, defaulting to false;
+its initializer defaults keep existing call sites source compatible, and its
+synthesized equality and hashing now include that value. `ScreenshotError` gains
+`unrecoverableReplacementRequiresConfirmation` and `setCapacityExceeded`, so
+consumers with exhaustive switches over it must handle the two new cases.
+
+Screenshot plans now include a `replacementStrategy` action for any set whose
+obsolete images have no verified original in the supplied recovery inputs. Plans
+therefore depend on `--recovery-path` and `--originals-path`; use the same paths for
+the dry-run and the apply. See [verified screenshot updates](screenshots.md).
+
 ### Feedback artifact migration
 
 `BuildFeedbackError` gains `invalidExportDestination`, `exportConflict`, and
@@ -167,7 +180,7 @@ hashing, human rendering, or confirmation tokens.
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |
 | `submit-for-review` | Lookup, `--version`, `--platform`, mode | Submit an existing version |
 | `sync-webhooks` | Lookup, mode, `--config`, `--allow-destructive`, `--plan-token` | Complete desired webhook list |
-| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path`, `--recovery-path`, `--originals-path`, `--allow-destructive`, `--plan-token` | Verified screenshot updates with recovery before deletion |
+| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path`, `--recovery-path`, `--originals-path`, `--allow-destructive`, `--allow-unrecoverable-replacement`, `--plan-token` | Verified screenshot updates with recovery before deletion, or opt-in upload-first replacement |
 
 Lookup precedence is `--app-id`, `--bundle-id`, configuration `appID`, then
 configuration `bundleID`. Version/build numbers are explicit command inputs.

@@ -15,6 +15,9 @@ struct ScreenshotJournalState: Codable {
     var orders: [String: [String]] = [:]
     var sets: [String: String] = [:]
     var owned: [String: String] = [:]
+    /// Sets replaced without verified originals. Their recorded order is identity only;
+    /// no claim is made that the previous images' bytes were ever stored here.
+    var unrecoverableSets: [String]?
 }
 
 final class ScreenshotJournal {
@@ -102,12 +105,32 @@ final class ScreenshotJournal {
         return data
     }
 
-    func backup(_ screenshots: [RemoteScreenshot], setID: String, candidates: [ScreenshotImage]) throws {
+    /// Whether this screenshot's exact original bytes are already stored or available.
+    func hasOriginal(_ screenshot: RemoteScreenshot, candidates: [ScreenshotImage]) throws -> Bool {
+        if try originalData(screenshot) != nil {
+            return true
+        }
+        return candidates.contains { $0.checksum == screenshot.checksum && $0.data.count == screenshot.byteCount }
+    }
+
+    /// Stores the original bytes of every existing screenshot and records the set order.
+    ///
+    /// With `requireOriginals` disabled the set is recorded as unrecoverable: available
+    /// originals are still stored, missing ones are skipped, and no restore layout is
+    /// written, because a partial layout would misrepresent a restorable composition.
+    func backup(_ screenshots: [RemoteScreenshot], setID: String, candidates: [ScreenshotImage],
+                requireOriginals: Bool = true) throws {
+        if !requireOriginals, state.unrecoverableSets?.contains(setID) != true {
+            state.unrecoverableSets = (state.unrecoverableSets ?? []) + [setID]
+        }
         for screenshot in screenshots where screenshot.state == "COMPLETE" {
             if try originalData(screenshot) != nil {
                 continue
             }
             guard let image = candidates.first(where: { $0.checksum == screenshot.checksum && $0.data.count == screenshot.byteCount }) else {
+                guard requireOriginals else {
+                    continue
+                }
                 throw ScreenshotError.originalsMissing
             }
             let path = root.appendingPathComponent(image.digest)

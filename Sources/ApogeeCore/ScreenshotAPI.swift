@@ -77,6 +77,8 @@ public enum ScreenshotError: Error, Sendable, Equatable, LocalizedError {
     case recoveryRequired
     case recoveryMismatch
     case originalsMissing
+    case unrecoverableReplacementRequiresConfirmation
+    case setCapacityExceeded
     case unsafeUpload
     case processingFailed
     case processingTimedOut
@@ -94,6 +96,10 @@ public enum ScreenshotError: Error, Sendable, Equatable, LocalizedError {
             "The recovery directory does not match this target or contains invalid recovery files."
         case .originalsMissing:
             "Verified original files are required before deleting existing screenshots. Supply originals matching their size and checksum."
+        case .unrecoverableReplacementRequiresConfirmation:
+            "This set can be replaced by uploading before deleting, but its previous composition could not be restored afterwards. Confirm the unrecoverable replacement explicitly, or supply verified originals."
+        case .setCapacityExceeded:
+            "The existing and replacement screenshots together exceed Apple's ten-image limit for one set. Supply verified originals so obsolete images can be removed first."
         case .unsafeUpload:
             "Screenshot upload instructions are invalid, expired, or the asset transfer failed. Inspect the recovery directory before retrying."
         case .processingFailed:

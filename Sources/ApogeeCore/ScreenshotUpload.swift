@@ -27,17 +27,31 @@ enum ScreenshotUploadValidation {
         }
     }
 
+    /// Validates one upload instruction, including its expiry when Apple supplies one.
+    ///
+    /// Apple's asset upload URLs are time limited, but a current response may omit the
+    /// `Expires` query parameter. An absent parameter leaves the lifetime to the server and
+    /// requires an immediate upload; a present one must still be a single finite future
+    /// timestamp. Every other host, method, credential, port, header, and redirect check
+    /// applies either way.
     static func validateExpiry(_ operation: ScreenshotUploadOperation, now: Date = .now) throws {
         guard operation.method == "PUT", operation.url.utf8.count < 16_384,
               let url = URLComponents(string: operation.url), url.scheme == "https",
               let host = url.host?.lowercased(), host.hasSuffix(".apple.com"),
               url.user == nil, url.password == nil, url.fragment == nil,
               url.port == nil || url.port == 443,
-              let expirations = url.queryItems?.filter({ $0.name == "Expires" }), expirations.count == 1,
-              let text = expirations.first?.value, let expires = TimeInterval(text), expires.isFinite,
-              expires > now.timeIntervalSince1970,
               operation.headers.count <= 64 else {
             throw ScreenshotError.unsafeUpload
+        }
+        let expirations = url.queryItems?.filter { $0.name == "Expires" } ?? []
+        guard expirations.count <= 1 else {
+            throw ScreenshotError.unsafeUpload
+        }
+        if let expiration = expirations.first {
+            guard let text = expiration.value, let expires = TimeInterval(text), expires.isFinite,
+                  expires > now.timeIntervalSince1970 else {
+                throw ScreenshotError.unsafeUpload
+            }
         }
         let forbidden = ["authorization", "cookie", "host", "content-length", "transfer-encoding"]
         for (name, value) in operation.headers {

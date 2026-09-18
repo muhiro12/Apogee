@@ -36,6 +36,11 @@ fingerprints. Identical content is reused even if a local file was renamed.
 A different order changes the plan token. A fresh dry-run after successful apply
 has no changes. Dry-run performs no local recovery writes or remote mutations.
 
+The plan also states the replacement strategy a set needs, so give the dry-run and
+the apply the same `--recovery-path` and `--originals-path`. Available originals are
+part of what the plan describes, and a plan produced from different recovery inputs
+does not match the token the apply requires.
+
 For a plan containing deletion or reordering, use its exact token:
 
 ```sh
@@ -55,7 +60,9 @@ duplicate remote identities, and unrelated unfinished uploads fail closed.
 ## Replacement and recovery
 
 A set may already occupy Apple's ten screenshot slots. Replacement can therefore
-**delete old screenshots before new images finish uploading**. Apply first copies
+**delete old screenshots before new images finish uploading**. This is the default
+strategy; see [upload-first replacement](#upload-first-replacement) for sets that
+have spare capacity but no verified originals. Apply first copies
 and reads back verified original bytes for every affected existing set. Originals
 must match Apple's recorded source MD5 and file size. Supply the original files
 through `--originals-path`; a processed or resized App Store image is not a verified
@@ -90,17 +97,75 @@ original counterpart are not implicitly deleted. Use a new recovery directory fo
 a separate replacement operation; reuse an existing directory only to resume or
 recover its recorded operation.
 
+## Upload-first replacement
+
+Sometimes the exact original bytes no longer exist: the images were uploaded long
+ago, and App Store Connect exposes their name, size, and source checksum but not a
+verified export of the source files. Processed Store images are not originals.
+
+When such a set has room for its existing and replacement images at the same time,
+`--allow-unrecoverable-replacement` selects an upload-first strategy:
+
+```sh
+apogee update-screenshots --version 4.0 --platform IOS \
+  --screenshots-path AppStore/Screenshots \
+  --recovery-path /private/release-recovery/run-3 \
+  --apply --allow-destructive --allow-unrecoverable-replacement --plan-token TOKEN
+```
+
+Every replacement is reserved, uploaded, committed, and read back as `COMPLETE`
+with its expected checksum and byte count **while every existing image still
+exists**. Only then are the obsolete images deleted, the desired order applied, and
+the normal final read-back performed. If any upload, processing, or verification
+step fails, no existing `COMPLETE` screenshot is deleted, and reserved IDs stay
+recorded in the recovery directory for resume or cleanup.
+
+This strategy is used only when it is needed and allowed. It requires all of:
+
+- verified originals are unavailable for at least one obsolete existing screenshot,
+- the existing images plus the replacements fit within Apple's ten-image limit,
+- `--allow-destructive` and an exact current plan token,
+- the separate `--allow-unrecoverable-replacement` acknowledgement.
+
+Without that acknowledgement the apply stops before any mutation. When capacity
+would still force deletion before the replacements are complete, verified originals
+remain required and a missing original stops the operation as before.
+
+The dry-run names the strategy for each affected set: how many existing screenshots
+have no verified original, and whether upload-first replacement applies or the set
+exceeds the limit. In JSON this is an action with `field: "replacementStrategy"`,
+which distinguishes it from the recoverable replacement path.
+
+Recovery records the previous IDs and order and the reservations this operation
+owns, and marks the set unrecoverable. It stores only the original bytes it actually
+has; no `restore/<locale>/<display>` tree is written for an unrecoverable set,
+because a partial tree would misrepresent a restorable composition. **The previous
+composition cannot be restored from this directory.** Keep the old images available
+elsewhere if that matters, or re-upload replacements from local files.
+
+Deletion happens after the replacements are verified, so a failure during deletion
+can leave both the old and the new verified images in the set. That state is safe to
+inspect: obtain a fresh dry-run and apply it to remove the remaining obsolete images
+and fix the order.
+
 ## Upload verification
 
 Apogee follows Apple's [asset upload lifecycle](https://developer.apple.com/documentation/appstoreconnectapi/uploading-assets-to-app-store-connect):
 reservation, complete byte-range transfer, MD5 commit, asynchronous processing,
-and ordered read-back. Upload URLs must be unexpired HTTPS Apple asset URLs with
-complete non-overlapping byte ranges. Asset requests use a separate uncached
-session with no API bearer token, cookies, stored credentials, or redirect
-following. Signed URLs and upload headers are not persisted in recovery files.
+and ordered read-back. Upload URLs must be HTTPS Apple asset URLs with complete
+non-overlapping byte ranges. Apple's upload URLs are time limited, but a current
+response does not always carry an `Expires` query parameter: when it is present
+it must be one finite future timestamp, and when it is absent the server-side
+lifetime applies and the transfer is performed immediately. Asset requests use a
+separate uncached session with no API bearer token, cookies, stored credentials,
+or redirect following. Signed URLs and upload headers are not persisted in
+recovery files.
 
 The command waits up to 30 processing observations, spaced two seconds apart.
 `UPLOAD_COMPLETE` is not success; `COMPLETE` and the matching checksum are required.
+App Store Connect can report `COMPLETE` before the source checksum is readable,
+so an unreadable checksum keeps polling until the timeout, while a different
+checksum fails immediately as a permanent mismatch.
 A timeout or processing failure returns an error and retains recovery files.
 No failed transfer or mutation is automatically repeated within an invocation.
 Final verification checks IDs, order, source checksums, file sizes, and processing

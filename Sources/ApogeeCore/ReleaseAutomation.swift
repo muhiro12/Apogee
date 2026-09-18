@@ -8,11 +8,19 @@ public struct ReleaseExecutionOptions: Sendable, Hashable {
     public var mode: OperationMode
     public var allowDestructive: Bool
     public var planToken: String?
+    /// Acknowledges that a replacement cannot restore the previous composition.
+    ///
+    /// This only enables the upload-first screenshot strategy, and only for a set with
+    /// enough free capacity to hold its existing and replacement images at once. It
+    /// never weakens destructive confirmation, plan tokens, or verified read-back.
+    public var allowUnrecoverableReplacement: Bool
 
-    public init(mode: OperationMode, allowDestructive: Bool = false, planToken: String? = nil) {
+    public init(mode: OperationMode, allowDestructive: Bool = false, planToken: String? = nil,
+                allowUnrecoverableReplacement: Bool = false) {
         self.mode = mode
         self.allowDestructive = allowDestructive
         self.planToken = planToken
+        self.allowUnrecoverableReplacement = allowUnrecoverableReplacement
     }
 }
 

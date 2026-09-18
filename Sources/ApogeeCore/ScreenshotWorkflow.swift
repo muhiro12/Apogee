@@ -8,7 +8,11 @@ struct ScreenshotWorkflow {
         var set: RemoteScreenshotSet?
         var remote: [RemoteScreenshot]
         var images: [ScreenshotImage]
+        /// Upload every replacement and verify it before deleting any existing image.
+        var uploadFirst = false
     }
+
+    static let setLimit = 10
 
     let api: any ScreenshotAPI
     var validateVersion: @Sendable () async throws -> Void = {}
@@ -30,6 +34,8 @@ struct ScreenshotWorkflow {
         }
         let target = "\(app.id)/\(version.id)/\(platform.rawValue)"
         let journal = try recovery.map { try ScreenshotJournal(recovery: $0, target: target, applying: options.mode == .apply) }
+        // Originals decide the replacement strategy, so they are inspected while planning.
+        let suppliedOriginals = try ScreenshotJournal.originals(recovery?.originalsPath)
         let localeIDs = localizations.map(\.locale)
         guard Set(localeIDs).count == localeIDs.count, Set(localizations.map(\.id)).count == localizations.count else {
             throw ScreenshotError.incompleteInventory
@@ -52,13 +58,33 @@ struct ScreenshotWorkflow {
                 remote = []
             }
             try validate(remote, setID: set?.id, journal: journal)
-            let group = Group(locale: locale, localizationID: localization.id, displayType: displayType, set: set, remote: remote, images: images)
-            groups.append(group)
             let resource = "screenshots/\(localization.id)/\(displayType)"
             let desiredChecksums = Set(images.map(\.checksum))
             let retained = remote.filter { $0.state == "COMPLETE" && desiredChecksums.contains($0.checksum ?? "") }
             guard Set(retained.compactMap(\.checksum)).count == retained.count else {
                 throw ScreenshotError.incompleteInventory
+            }
+            var unrecoverable: [RemoteScreenshot] = []
+            for item in remote where item.state == "COMPLETE" && !retained.contains(item) {
+                if try journal?.hasOriginal(item, candidates: suppliedOriginals + images) != true {
+                    unrecoverable.append(item)
+                }
+            }
+            let uploads = images.filter { image in !retained.contains { $0.checksum == image.checksum } }
+            // Only finished images occupy a slot for the whole replacement; owned unfinished
+            // reservations are cleaned up before the first upload.
+            let existing = remote.filter { $0.state == "COMPLETE" }.count
+            let uploadFirst = !unrecoverable.isEmpty && existing + uploads.count <= Self.setLimit
+            let group = Group(locale: locale, localizationID: localization.id, displayType: displayType,
+                              set: set, remote: remote, images: images, uploadFirst: uploadFirst)
+            groups.append(group)
+            if !unrecoverable.isEmpty {
+                let desired = uploadFirst
+                    ? "upload-first replacement keeps them until \(uploads.count) replacement(s) are verified (\(existing + uploads.count) of \(Self.setLimit) slots); the previous composition cannot be restored"
+                    : "no upload-first replacement: \(existing) existing and \(uploads.count) replacement screenshot(s) exceed the \(Self.setLimit)-image limit; supply verified originals"
+                actions.append(.init(kind: .unchanged, resource: resource, locale: locale, field: "replacement",
+                                     currentValue: "\(unrecoverable.count) existing screenshot(s) without verified originals in the supplied recovery inputs",
+                                     desiredValue: desired).identifyingField("replacementStrategy"))
             }
             for item in remote where !retained.contains(item) {
                 actions.append(.init(kind: .delete, resource: "appScreenshot/\(item.id)", locale: locale,
@@ -90,11 +116,18 @@ struct ScreenshotWorkflow {
         guard let journal else {
             throw ScreenshotError.recoveryRequired
         }
-        let candidates = try ScreenshotJournal.originals(recovery?.originalsPath) + groups.flatMap(\.images)
+        if groups.contains(where: \.uploadFirst), !options.allowUnrecoverableReplacement {
+            throw ScreenshotError.unrecoverableReplacementRequiresConfirmation
+        }
+        let candidates = suppliedOriginals + groups.flatMap(\.images)
         // Finish and re-read every backup before the first remote mutation, across all groups.
         for group in groups {
-            if let set = group.set {
-                try journal.backup(group.remote, setID: set.id, candidates: candidates)
+            guard let set = group.set else {
+                continue
+            }
+            try journal.backup(group.remote, setID: set.id, candidates: candidates, requireOriginals: !group.uploadFirst)
+            // A partial restore tree would misrepresent an unrecoverable composition.
+            if !group.uploadFirst {
                 try journal.writeRestoreLayout(setID: set.id, locale: group.locale, displayType: group.displayType)
             }
         }
@@ -117,16 +150,31 @@ struct ScreenshotWorkflow {
             }
             var expected = group.remote
             let desiredChecksums = Set(group.images.map(\.checksum))
-            for item in group.remote where item.state != "COMPLETE" || !desiredChecksums.contains(item.checksum ?? "") {
-                try await assertCurrent(set.id, expected)
-                if item.state == "COMPLETE", try journal.originalData(item) == nil {
-                    throw ScreenshotError.originalsMissing
+            let obsolete = group.remote.filter { $0.state != "COMPLETE" || !desiredChecksums.contains($0.checksum ?? "") }
+            func deleteObsolete(_ items: [RemoteScreenshot]) async throws {
+                for item in items where expected.contains(item) {
+                    try await assertCurrent(set.id, expected)
+                    if item.state == "COMPLETE", !group.uploadFirst, try journal.originalData(item) == nil {
+                        throw ScreenshotError.originalsMissing
+                    }
+                    try Task.checkCancellation()
+                    try await validateVersion()
+                    try await api.deleteScreenshot(id: item.id)
+                    expected.removeAll { $0.id == item.id }
+                    try await assertCurrent(set.id, expected)
                 }
-                try Task.checkCancellation()
-                try await validateVersion()
-                try await api.deleteScreenshot(id: item.id)
-                expected.removeAll { $0.id == item.id }
-                try await assertCurrent(set.id, expected)
+            }
+            if !group.uploadFirst {
+                try await deleteObsolete(obsolete)
+            } else {
+                // Owned unfinished reservations hold no evidence, so they free their slots first.
+                try await deleteObsolete(obsolete.filter { $0.state != "COMPLETE" })
+                let uploads = group.images.filter { image in
+                    !expected.contains { $0.state == "COMPLETE" && $0.checksum == image.checksum }
+                }
+                guard expected.count + uploads.count <= Self.setLimit else {
+                    throw ScreenshotError.setCapacityExceeded
+                }
             }
             var desiredIDs: [String] = []
             for image in group.images {
@@ -162,6 +210,22 @@ struct ScreenshotWorkflow {
                 desiredIDs.append(complete.id)
             }
             try await assertCurrent(set.id, expected)
+            if group.uploadFirst {
+                // Every replacement must be verified before the first deletion.
+                let verified = try await api.screenshots(setID: set.id)
+                guard verified == expected, desiredIDs.count == group.images.count else {
+                    throw ScreenshotError.remoteChanged
+                }
+                guard zip(desiredIDs, group.images).allSatisfy({ id, image in
+                    guard let item = verified.first(where: { $0.id == id }) else {
+                        return false
+                    }
+                    return item.state == "COMPLETE" && item.checksum == image.checksum && item.byteCount == image.data.count
+                }) else {
+                    throw ScreenshotError.remoteChanged
+                }
+                try await deleteObsolete(obsolete.filter { $0.state == "COMPLETE" })
+            }
             if expected.map(\.id) != desiredIDs {
                 try Task.checkCancellation()
                 try await validateVersion()
@@ -180,7 +244,7 @@ struct ScreenshotWorkflow {
 
     private func validate(_ items: [RemoteScreenshot], setID: String?, journal: ScreenshotJournal?) throws {
         let complete = items.filter { $0.state == "COMPLETE" }
-        guard items.count <= 10, Set(items.map(\.id)).count == items.count,
+        guard items.count <= Self.setLimit, Set(items.map(\.id)).count == items.count,
               Set(complete.compactMap(\.checksum)).count == complete.count else {
             throw ScreenshotError.incompleteInventory
         }
@@ -219,13 +283,19 @@ struct ScreenshotWorkflow {
                 throw ScreenshotError.remoteChanged
             }
             if item.state == "COMPLETE" {
-                guard item.checksum == image.checksum else {
+                if item.checksum == image.checksum {
+                    return item
+                }
+                // App Store Connect can report COMPLETE before the source checksum is readable.
+                // An unreadable checksum stays pending; a different one is a permanent mismatch.
+                let pending = item.checksum?.isEmpty ?? true
+                guard pending else {
                     throw ScreenshotError.processingFailed
                 }
-                return item
-            }
-            guard item.state == "UPLOAD_COMPLETE" || item.state == "AWAITING_UPLOAD" else {
-                throw ScreenshotError.processingFailed
+            } else {
+                guard item.state == "UPLOAD_COMPLETE" || item.state == "AWAITING_UPLOAD" else {
+                    throw ScreenshotError.processingFailed
+                }
             }
             if attempt + 1 < pollAttempts {
                 try await Task.sleep(for: pollDelay)

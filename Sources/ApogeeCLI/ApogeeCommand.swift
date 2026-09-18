@@ -189,6 +189,8 @@ struct UpdateScreenshots: AsyncParsableCommand {
     var originalsPath: String?
     @Flag(help: "Allow planned deletion or reordering after verified recovery backup.")
     var allowDestructive = false
+    @Flag(help: "Allow replacing a set with spare capacity by uploading first, accepting that its previous composition cannot be restored.")
+    var allowUnrecoverableReplacement = false
     @Option(help: "Confirmation token from a fresh matching dry-run.")
     var planToken: String?
 
@@ -204,7 +206,8 @@ struct UpdateScreenshots: AsyncParsableCommand {
             version: release.version,
             screenshotsPath: release.screenshotsPath(screenshotsPath, configuration: configuration),
             platform: release.platform(configuration: configuration),
-            options: try release.mode.executionOptions(allowDestructive: allowDestructive, planToken: planToken),
+            options: try release.mode.executionOptions(allowDestructive: allowDestructive, planToken: planToken,
+                                                       allowUnrecoverableReplacement: allowUnrecoverableReplacement),
             recovery: recoveryPath.map { .init(directory: $0, originalsPath: originalsPath) }
         )
         return try release.render(plan, command: "update-screenshots", configuration: configuration)
@@ -375,7 +378,8 @@ struct ExecutionModeOptions: ParsableArguments {
         }
     }
 
-    func executionOptions(allowDestructive: Bool = false, planToken: String? = nil) throws -> ReleaseExecutionOptions {
+    func executionOptions(allowDestructive: Bool = false, planToken: String? = nil,
+                          allowUnrecoverableReplacement: Bool = false) throws -> ReleaseExecutionOptions {
         if dryRun && apply {
             throw ValidationError("Use either --dry-run or --apply, not both.")
         }
@@ -383,7 +387,8 @@ struct ExecutionModeOptions: ParsableArguments {
         return .init(
             mode: apply ? .apply : .dryRun,
             allowDestructive: allowDestructive,
-            planToken: planToken
+            planToken: planToken,
+            allowUnrecoverableReplacement: allowUnrecoverableReplacement
         )
     }
 }
