@@ -41,16 +41,21 @@ public struct BuildFeedbackSummary: Sendable, Hashable {
     public var deviceModel: String?
     public var osVersion: String?
     public var hasComment: Bool?
-    /// Whether Apple reported downloadable artifacts for this submission; nil is unknown.
+    /// Whether Apple reported a downloadable artifact for this submission; nil is unknown.
     public var hasArtifact: Bool?
+    /// How many artifacts Apple reported; zero when there are none or none were determined.
+    public var artifactCount: Int
     /// Sensitive artifact locations Apogee can export, in the order Apple reported them.
+    ///
+    /// Crash logs are read as text through the API instead, so they are absent here even
+    /// when ``artifactCount`` counts one.
     public var artifacts: [BuildFeedbackArtifact]
     /// Files written by an explicit export, relative to its destination directory.
     public var exportedFiles: [String]
 
     public init(id: String, buildID: String, createdDate: Date? = nil,
                 deviceModel: String? = nil, osVersion: String? = nil, hasComment: Bool? = nil,
-                hasArtifact: Bool? = nil, artifacts: [BuildFeedbackArtifact] = [],
+                hasArtifact: Bool? = nil, artifactCount: Int = 0, artifacts: [BuildFeedbackArtifact] = [],
                 exportedFiles: [String] = []) {
         self.id = id
         self.buildID = buildID
@@ -59,6 +64,7 @@ public struct BuildFeedbackSummary: Sendable, Hashable {
         self.osVersion = osVersion
         self.hasComment = hasComment
         self.hasArtifact = hasArtifact
+        self.artifactCount = artifactCount
         self.artifacts = artifacts
         self.exportedFiles = exportedFiles
     }

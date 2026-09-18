@@ -71,6 +71,9 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `PATCH /v1/appStoreVersions/{id}/relationships/build`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersions/{id}/relationships/build/patch(appStoreVersions_build_updateToOneRelationship)`.
     func appStoreVersions_build_updateToOneRelationship(_ input: Operations.appStoreVersions_build_updateToOneRelationship.Input) async throws -> Operations.appStoreVersions_build_updateToOneRelationship.Output
+    /// - Remark: HTTP `GET /v1/betaFeedbackCrashSubmissions/{id}/crashLog`.
+    /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)`.
+    func betaFeedbackCrashSubmissions_crashLog_getToOneRelated(_ input: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input) async throws -> Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output
     /// - Remark: HTTP `GET /v1/builds`.
     /// - Remark: Generated from `#/paths//v1/builds/get(builds_getCollection)`.
     func builds_getCollection(_ input: Operations.builds_getCollection.Input) async throws -> Operations.builds_getCollection.Output
@@ -353,6 +356,19 @@ extension APIProtocol {
             path: path,
             headers: headers,
             body: body
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/betaFeedbackCrashSubmissions/{id}/crashLog`.
+    /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)`.
+    package func betaFeedbackCrashSubmissions_crashLog_getToOneRelated(
+        path: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Path,
+        query: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query = .init(),
+        headers: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Headers = .init()
+    ) async throws -> Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output {
+        try await betaFeedbackCrashSubmissions_crashLog_getToOneRelated(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
         ))
     }
     /// - Remark: HTTP `GET /v1/builds`.
@@ -11866,6 +11882,83 @@ package enum Components {
                 case links
                 case relationships
                 case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaCrashLog`.
+        package struct BetaCrashLog: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/BetaCrashLog/attributes/logText`.
+                package var logText: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - logText:
+                package init(logText: Swift.String? = nil) {
+                    self.logText = logText
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case logText
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/attributes`.
+            package var attributes: Components.Schemas.BetaCrashLog.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case betaCrashLogs = "betaCrashLogs"
+            }
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLog/type`.
+            package var _type: Components.Schemas.BetaCrashLog._typePayload
+            /// Creates a new `BetaCrashLog`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.BetaCrashLog.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                _type: Components.Schemas.BetaCrashLog._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/BetaCrashLogResponse`.
+        package struct BetaCrashLogResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLogResponse/data`.
+            package var data: Components.Schemas.BetaCrashLog
+            /// - Remark: Generated from `#/components/schemas/BetaCrashLogResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `BetaCrashLogResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - links:
+            package init(
+                data: Components.Schemas.BetaCrashLog,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case links
             }
         }
         /// - Remark: Generated from `#/components/schemas/BetaFeedbackCrashSubmission`.
@@ -36384,6 +36477,413 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.appStoreVersions_build_updateToOneRelationship.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/betaFeedbackCrashSubmissions/{id}/crashLog`.
+    /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)`.
+    package enum betaFeedbackCrashSubmissions_crashLog_getToOneRelated {
+        package static let id: Swift.String = "betaFeedbackCrashSubmissions_crashLog_getToOneRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/query/fields_lbrack_betaCrashLogs_rbrack_Payload`.
+                @frozen package enum fields_lbrack_betaCrashLogs_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case logText = "logText"
+                }
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/query/fields[betaCrashLogs]`.
+                package typealias fields_lbrack_betaCrashLogs_rbrack_Payload = [Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query.fields_lbrack_betaCrashLogs_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type betaCrashLogs
+                ///
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/query/fields[betaCrashLogs]`.
+                package var fields_lbrack_betaCrashLogs_rbrack_: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query.fields_lbrack_betaCrashLogs_rbrack_Payload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_betaCrashLogs_rbrack_: the fields to include for returned resources of type betaCrashLogs
+                package init(fields_lbrack_betaCrashLogs_rbrack_: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query.fields_lbrack_betaCrashLogs_rbrack_Payload? = nil) {
+                    self.fields_lbrack_betaCrashLogs_rbrack_ = fields_lbrack_betaCrashLogs_rbrack_
+                }
+            }
+            package var query: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Path,
+                query: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Query = .init(),
+                headers: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.BetaCrashLogResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.BetaCrashLogResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single BetaCrashLog
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/betaFeedbackCrashSubmissions/{id}/crashLog/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/betaFeedbackCrashSubmissions/{id}/crashLog/get(betaFeedbackCrashSubmissions_crashLog_getToOneRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.betaFeedbackCrashSubmissions_crashLog_getToOneRelated.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):

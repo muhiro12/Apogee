@@ -139,13 +139,16 @@ the dry-run and the apply. See [verified screenshot updates](screenshots.md).
 
 `BuildFeedbackError` gains `invalidExportDestination`, `exportConflict`, and
 `unsafeArtifact`. Consumers with exhaustive switches over it must handle the three
-new cases before updating. `BuildFeedbackSummary` gains `hasArtifact`, `artifacts`,
-and `exportedFiles`; its initializer defaults keep existing call sites source
-compatible, and its synthesized equality now includes those values.
+new cases before updating. `BuildFeedbackSummary` gains `hasArtifact`,
+`artifactCount`, `artifacts`, and `exportedFiles`; its initializer defaults keep
+existing call sites source compatible, and its synthesized equality now includes
+those values.
 
 `AppStoreConnectAPI.downloadFeedbackArtifact` has a default implementation that
-performs a credential-free Apple asset request, so existing adapters remain source
-compatible. `ReleaseAutomation.buildFeedback` downloads nothing unless it is given
+performs a credential-free Apple asset request, and `crashLogText` defaults to
+throwing `BuildFeedbackError.unsupportedAdapter`, so existing adapters remain source
+compatible. Crash log text is written straight to the export destination and is
+never carried in a result value. `ReleaseAutomation.buildFeedback` downloads nothing unless it is given
 a `BuildFeedbackExport`. Artifact locations are capabilities: keep them out of logs
 and persisted files. See [candidate build feedback](build-feedback.md).
 

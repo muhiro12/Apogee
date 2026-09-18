@@ -88,6 +88,79 @@ func feedbackArtifactExportRefusesUnsafeDestinationsAndPayloads(scenario: String
     #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("outside").path))
 }
 
+/// Crash logs reach private storage, but their text never reaches the command's output.
+@Test
+func feedbackCommandExportsCrashLogsWithoutRevealingTheirText() async throws {
+    let root = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let destination = root.appendingPathComponent("export")
+    let transport = exportFeedbackTransport(crashLog: "Thread 0 crashed private-sentinel")
+    let command = try BuildFeedbackCommand.parse([
+        "--app-id", "app-1", "--version", "2.0", "--build-version", "42", "--platform", "MAC_OS",
+        "--output", "json", "--export-path", destination.path,
+    ])
+    let output = try await command.renderedOutput(automation: .init(api: testAPI(transport: transport)), configuration: .init())
+    #expect(!output.contains("private-sentinel"))
+    let exported = "crash/betaFeedbackCrashSubmissions-1/01.crash"
+    let file = destination.appendingPathComponent(exported)
+    #expect(try String(contentsOf: file, encoding: .utf8) == "Thread 0 crashed private-sentinel")
+    let permissions = try #require(FileManager.default.attributesOfItem(atPath: file.path)[.posixPermissions] as? NSNumber)
+    #expect(permissions.intValue & 0o077 == 0)
+    let root_ = try #require(JSONSerialization.jsonObject(with: Data(output.utf8)) as? [String: Any])
+    let feedback = try #require(root_["feedback"] as? [String: Any])
+    let crashes = try #require(feedback["crashes"] as? [[String: Any]])
+    #expect(crashes[0]["hasArtifact"] as? Bool == true)
+    #expect(crashes[0]["artifactCount"] as? Int == 1)
+    #expect(crashes[0]["exportedFiles"] as? [String] == [exported])
+    // Reusing the destination must fail instead of replacing exported evidence.
+    await #expect(throws: BuildFeedbackError.exportConflict) {
+        _ = try await command.renderedOutput(automation: .init(api: testAPI(transport: transport)), configuration: .init())
+    }
+}
+
+/// A confirmed absent crash log is reported as none, never as unknown or as an error.
+@Test
+func feedbackCommandReportsConfirmedAbsentCrashLogs() async throws {
+    let root = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let destination = root.appendingPathComponent("export")
+    let command = try BuildFeedbackCommand.parse([
+        "--app-id", "app-1", "--version", "2.0", "--build-version", "42", "--platform", "MAC_OS",
+        "--output", "json", "--export-path", destination.path,
+    ])
+    let output = try await command.renderedOutput(
+        automation: .init(api: testAPI(transport: exportFeedbackTransport())), configuration: .init()
+    )
+    let parsed = try #require(JSONSerialization.jsonObject(with: Data(output.utf8)) as? [String: Any])
+    let feedback = try #require(parsed["feedback"] as? [String: Any])
+    let crashes = try #require(feedback["crashes"] as? [[String: Any]])
+    #expect(crashes[0]["hasArtifact"] as? Bool == false)
+    #expect(crashes[0]["artifactCount"] as? Int == 0)
+    #expect(try FileManager.default.contentsOfDirectory(atPath: destination.path).isEmpty)
+}
+
+/// An unreadable crash log is a failure, never a report of no crash log.
+@Test(arguments: [401, 403, 429, 500])
+func feedbackCommandNeverReportsUnreadableCrashLogsAsAbsent(status: Int) async throws {
+    let root = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let destination = root.appendingPathComponent("export")
+    let command = try BuildFeedbackCommand.parse([
+        "--app-id", "app-1", "--version", "2.0", "--build-version", "42", "--platform", "MAC_OS",
+        "--output", "json", "--export-path", destination.path,
+    ])
+    let operation = "betaFeedbackCrashSubmissions_crashLog_getToOneRelated"
+    await #expect(throws: ApogeeError.appStoreConnectHTTPError(operation: operation, statusCode: status)) {
+        _ = try await command.renderedOutput(
+            automation: .init(api: testAPI(transport: exportFeedbackTransport(crashLogStatus: status))), configuration: .init()
+        )
+    }
+    #expect(try FileManager.default.contentsOfDirectory(atPath: destination.path).isEmpty)
+}
+
 /// The command must not contact a location outside Apple's asset hosts, even when asked to export.
 @Test
 func feedbackCommandExportRefusesNonAppleArtifactLocations() async throws {
@@ -100,13 +173,16 @@ func feedbackCommandExportRefusesNonAppleArtifactLocations() async throws {
         "--export-path", destination.path,
     ])
     await #expect(throws: BuildFeedbackError.unsafeArtifact) {
-        _ = try await command.renderedOutput(automation: .init(api: testAPI(transport: exportFeedbackTransport())),
-                                             configuration: .init())
+        _ = try await command.renderedOutput(
+            automation: .init(api: testAPI(transport: exportFeedbackTransport(screenshotURL: "https://download.example/private-sentinel"))),
+            configuration: .init()
+        )
     }
     #expect(try FileManager.default.contentsOfDirectory(atPath: destination.path).isEmpty)
 }
 
-private func exportFeedbackTransport() -> StubTransport {
+private func exportFeedbackTransport(crashLog: String? = nil, crashLogStatus: Int = 404,
+                                     screenshotURL: String? = nil) -> StubTransport {
     StubTransport { request, _, _ in
         let path = (request.path ?? "").removingPercentEncoding ?? ""
         if path == "/v1/apps/app-1" {
@@ -118,11 +194,19 @@ private func exportFeedbackTransport() -> StubTransport {
                                                "attributes": ["version": "42", "processingState": "VALID"]]],
                                      "links": ["self": "unused"]])
         }
+        if path.contains("/crashLog") {
+            #expect(path.contains("fields[betaCrashLogs]=logText"))
+            guard let crashLog else {
+                return try jsonResponse(["errors": [["status": "\(crashLogStatus)", "title": "private-sentinel"]]], status: crashLogStatus)
+            }
+            return try jsonResponse(["data": ["type": "betaCrashLogs", "id": "log-1", "attributes": ["logText": crashLog]],
+                                     "links": ["self": "unused"]])
+        }
         let screenshot = path.contains("Screenshot")
         let resource = screenshot ? "betaFeedbackScreenshotSubmissions" : "betaFeedbackCrashSubmissions"
         var attributes: [String: Any] = ["osVersion": "27.0"]
-        if screenshot {
-            attributes["screenshots"] = [["url": "https://download.example/private-sentinel"]]
+        if screenshot, let screenshotURL {
+            attributes["screenshots"] = [["url": screenshotURL]]
         }
         return try jsonResponse([
             "data": [["type": resource, "id": "\(resource)-1", "attributes": attributes,

@@ -100,7 +100,7 @@ struct BuildFeedbackExporter {
         }
     }
 
-    /// Downloads and stores every artifact of one feedback collection.
+    /// Downloads and stores every artifact location of one feedback collection.
     ///
     /// Summaries are returned with the written relative paths recorded. Artifact
     /// locations stay in the result for the caller; they are never written to disk.
@@ -122,21 +122,49 @@ struct BuildFeedbackExporter {
                 try Task.checkCancellation()
                 let data = try await download(artifact)
                 let name = String(format: "%02d", index + 1) + "." + (try BuildFeedbackArtifactTransport.imageExtension(data))
-                let created = try directory ?? makeDirectory(relative)
-                directory = created
-                let file = created.appendingPathComponent(name)
-                do {
-                    try data.write(to: file, options: [.withoutOverwriting])
-                } catch let error as CocoaError where error.code == .fileWriteFileExists {
-                    throw BuildFeedbackError.exportConflict
-                }
-                try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
-                files.append("\(relative)/\(name)")
+                files.append(try write(data, named: name, in: relative, directory: &directory))
             }
             entry.exportedFiles = files
             exported.append(entry)
         }
         return exported
+    }
+
+    /// Reads and stores one crash log per submission, recording what Apple reported.
+    ///
+    /// The log text is written straight to private storage and is never kept in the
+    /// returned summaries, which carry only its availability and file name.
+    func exportCrashLogs(_ entries: [BuildFeedbackSummary],
+                         read: (String) async throws -> String?) async throws -> [BuildFeedbackSummary] {
+        var exported: [BuildFeedbackSummary] = []
+        for var entry in entries {
+            try Task.checkCancellation()
+            let relative = try relativePath(kind: "crash", submissionID: entry.id)
+            guard let text = try await read(entry.id) else {
+                entry.hasArtifact = false
+                exported.append(entry)
+                continue
+            }
+            var directory: URL?
+            entry.hasArtifact = true
+            entry.artifactCount = 1
+            entry.exportedFiles = [try write(Data(text.utf8), named: "01.crash", in: relative, directory: &directory)]
+            exported.append(entry)
+        }
+        return exported
+    }
+
+    private func write(_ data: Data, named name: String, in relative: String, directory: inout URL?) throws -> String {
+        let created = try directory ?? makeDirectory(relative)
+        directory = created
+        let file = created.appendingPathComponent(name)
+        do {
+            try data.write(to: file, options: [.withoutOverwriting])
+        } catch let error as CocoaError where error.code == .fileWriteFileExists {
+            throw BuildFeedbackError.exportConflict
+        }
+        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
+        return "\(relative)/\(name)"
     }
 
     private func relativePath(kind: String, submissionID: String) throws -> String {

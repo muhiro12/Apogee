@@ -50,9 +50,10 @@ attributes.
 The two app-scoped beta feedback collection operations support read-only
 candidate-build inspection; feedback deletion is not generated. Screenshot feedback
 carries its image locations in those collection responses, so exporting screenshots
-needs no further operation. The crash-log relationship read is not generated, so
-crash-log availability and crash-log export stay unavailable until that operation
-and its verification are added deliberately.
+needs no further operation. `betaFeedbackCrashSubmissions_crashLog_getToOneRelated`
+reads one crash log's text for the explicit export destination; the linkage-only
+relationship read is not generated because that related read already reports a
+confirmed absence.
 
 Screenshot operations cover only standard version localizations, individual assets,
 and ordering. Binary upload requests use the returned operations through a separate

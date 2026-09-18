@@ -32,9 +32,9 @@ after deriving its presence. Do not enable transport logging of response bodies.
 
 Screenshot feedback reports the images Apple lists for the submission: a listed
 image without a location is incomplete inventory, and an omitted list stays
-unknown rather than zero. Crash-log availability is reported as unknown. Reading
-it requires the crash-log relationship operation, which is deliberately not part
-of the generated client; see [OpenAPI generation](openapi-generation.md).
+unknown rather than zero. Crash-log availability costs one extra read per crash
+submission, so it stays unknown unless `--export-path` asks for the logs
+themselves.
 
 Counts describe feedback observed during sequential reads; they are not an
 atomic snapshot, crash rate, release approval, or automatic release block.
@@ -52,14 +52,23 @@ apogee build-feedback --version 2.0 --build-version 42 \
   --export-path /private/release-evidence/build-42
 ```
 
-Exported screenshots are tester-supplied material and can contain personal data,
-account contents, and other people's information. Point the destination at private
-storage, keep it out of source control, and delete it when the review is finished.
+Exported crash logs and screenshots are tester-supplied material and can contain
+personal data, account contents, stack traces, and other people's information.
+Point the destination at private storage, keep it out of source control, and
+delete it when the review is finished.
+
+Crash logs are text that App Store Connect returns directly, so each crash
+submission costs one extra authenticated read. Apogee writes that text straight to
+the destination and never keeps it in its result, so it cannot reach the command's
+output. A confirmed absent crash log is reported as none; an unauthorized,
+rate-limited, or malformed read fails the command instead of being reported as
+none. Screenshots are fetched from Apple's asset hosts instead, as described below.
 
 The destination is explicit and never inferred: its parent must already exist, it
 must not be a symbolic link, and Apogee creates it with owner-only permissions.
-Files are written as `screenshot/<submission id>/<index>.<png|jpg>` with owner-only
-permissions and never overwrite an existing file. Reusing a destination that
+Files are written as `crash/<submission id>/01.crash` and
+`screenshot/<submission id>/<index>.<png|jpg>` with owner-only permissions and
+never overwrite an existing file. Reusing a destination that
 already holds an exported file fails with an export conflict instead of replacing
 earlier evidence; choose an unused destination, or keep the existing files and
 compare them yourself.
@@ -91,10 +100,10 @@ The command follows the success-only [JSON output contract](json-output.md), wit
 - Each entry has `id`, `buildID`, nullable `createdDate` (UTC ISO 8601 with
   fractional seconds), nullable `deviceModel`, nullable `osVersion`, nullable
   `hasComment`, nullable `hasArtifact`, integer `artifactCount`, and
-  `exportedFiles`. `hasArtifact` is `null` when availability is unknown, which is
-  currently always the case for crash feedback. `artifactCount` counts the
-  exportable locations Apple reported, and `exportedFiles` is empty unless
-  `--export-path` was used.
+  `exportedFiles`. `hasArtifact` is `null` when availability was not determined,
+  which is the case for crash feedback without `--export-path`. `artifactCount`
+  counts the artifacts Apple reported, and `exportedFiles` is empty unless
+  `--export-path` was used. Crash log text is never a JSON field.
 
 Store even these reduced summaries privately: app/build identifiers and device
 information can be sensitive. They are operational observations, not diagnostics.

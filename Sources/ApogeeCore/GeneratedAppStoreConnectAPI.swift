@@ -311,7 +311,8 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     return .init(id: entry.id, buildID: buildID, createdDate: attributes.createdDate,
                                  deviceModel: attributes.deviceModel, osVersion: attributes.osVersion,
                                  hasComment: attributes.comment.map { !$0.isEmpty },
-                                 hasArtifact: artifacts.map { !$0.isEmpty }, artifacts: artifacts ?? [])
+                                 hasArtifact: artifacts.map { !$0.isEmpty },
+                                 artifactCount: artifacts?.count ?? 0, artifacts: artifacts ?? [])
                 }
                 return (summaries, response.links.next)
             }
@@ -320,6 +321,31 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 throw ApogeeError.unexpectedAPIResponse("Feedback inventory is duplicated or does not match its reported total.")
             }
             return entries.sorted { $0.id < $1.id }
+        }
+    }
+
+    public func crashLogText(feedbackID: String) async throws -> String? {
+        do {
+            return try await perform(operation: "crashLogText") {
+                let output = try await client().betaFeedbackCrashSubmissions_crashLog_getToOneRelated(.init(
+                    path: .init(id: feedbackID),
+                    query: .init(fields_lbrack_betaCrashLogs_rbrack_: [.logText])
+                ))
+                let response = try output.ok.body.json
+                guard !response.data.id.isEmpty else {
+                    throw ApogeeError.unexpectedAPIResponse("Crash log identity is incomplete.")
+                }
+                guard let text = response.data.attributes?.logText, !text.isEmpty else {
+                    return nil
+                }
+                return text
+            }
+        } catch ApogeeError.appStoreConnectHTTPError(_, let statusCode) where statusCode == 404 {
+            // This to-one relationship reports an absent crash log as not found, and the
+            // authorization middleware fails every non-2xx status before the generated client
+            // can classify it. Only this status means a confirmed absence; an unauthorized,
+            // rate-limited, or malformed response still fails the read.
+            return nil
         }
     }
 

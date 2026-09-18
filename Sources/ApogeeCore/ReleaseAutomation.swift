@@ -324,8 +324,10 @@ public struct ReleaseAutomation: Sendable {
                                      screenshots: screenshots.sorted { $0.id < $1.id })
         if let export {
             let exporter = try BuildFeedbackExporter(export: export)
-            feedback.crashes = try await exporter.export(feedback.crashes, kind: "crash") {
-                try await api.downloadFeedbackArtifact($0)
+            // Crash log availability costs one read per submission, so it is determined
+            // only here, where the operator has asked for the logs themselves.
+            feedback.crashes = try await exporter.exportCrashLogs(feedback.crashes) {
+                try await api.crashLogText(feedbackID: $0)
             }
             feedback.screenshots = try await exporter.export(feedback.screenshots, kind: "screenshot") {
                 try await api.downloadFeedbackArtifact($0)

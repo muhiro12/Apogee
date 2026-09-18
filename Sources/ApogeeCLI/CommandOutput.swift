@@ -137,7 +137,7 @@ extension OutputOptions {
                 for entry in entries {
                     let date = entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true)) ?? "unknown"
                     let comment = entry.hasComment.map { $0 ? "yes" : "no" } ?? "unknown"
-                    let artifact = entry.hasArtifact.map { $0 ? "\(entry.artifacts.count)" : "no" } ?? "unknown"
+                    let artifact = entry.hasArtifact.map { $0 ? "\(entry.artifactCount)" : "no" } ?? "unknown"
                     lines.append("- \(kind) \(String(reflecting: entry.id)): \(date), device \(String(reflecting: entry.deviceModel ?? "unknown")), OS \(String(reflecting: entry.osVersion ?? "unknown")), comment \(comment), artifacts \(artifact)")
                     for file in entry.exportedFiles {
                         lines.append("  exported \(String(reflecting: file))")
@@ -152,7 +152,7 @@ extension OutputOptions {
              "createdDate": nullable(entry.createdDate?.ISO8601Format(.init(includingFractionalSeconds: true))),
              "deviceModel": nullable(entry.deviceModel), "osVersion": nullable(entry.osVersion),
              "hasComment": nullable(entry.hasComment), "hasArtifact": nullable(entry.hasArtifact),
-             "artifactCount": entry.artifacts.count, "exportedFiles": entry.exportedFiles]
+             "artifactCount": entry.artifactCount, "exportedFiles": entry.exportedFiles]
         }
         var request = requestedTarget.object
         request["buildVersion"] = nullable(feedback.build.version)
