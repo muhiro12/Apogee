@@ -49,7 +49,7 @@ distributing a pinned dependency to other repositories.
 ## Commands and paths
 
 Remote commands currently require a team API key, key ID, issuer ID, and private
-key. Configure credentials as described in the [README](../README.md#configuration).
+key. Configure credentials as described in the [README](../README.md#authentication).
 Keep the private key outside the repository. Team keys have account-wide app
 access; a configured app ID selects Apogee's target but does not restrict the
 key's permissions. Individual API keys are not supported by the current signer.
@@ -203,7 +203,8 @@ release-note and metadata adoption.
 
 ## Verification before a package release
 
-Run [the repository checks](../AGENTS.md) and the consumer example on the supported
+Run [the repository checks](../README.md#development-and-verification) and the
+consumer example on the supported
 shipping Xcode. CI covers the first supported Swift tools series and the selected
 Xcode 26 point release. Keep newer-Xcode results separate; a beta-only success
 does not clear the shipping baseline. Runner availability is defined by the

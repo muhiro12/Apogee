@@ -273,6 +273,11 @@ title and action values, including current and desired values, so a changed plan
 requires a fresh dry-run token. This prevents accidental deletion from a single
 command invocation.
 
+Preserve dry-run defaults, explicit apply, destructive plan confirmation, and
+fail-closed handling of unknown or incomplete remote state. Keep credentials,
+private keys, webhook secrets, real account payloads, and unpublished adopter
+metadata out of source control and test fixtures.
+
 See [candidate build feedback](docs/build-feedback.md) for privacy and interpretation
 boundaries when inspecting TestFlight evidence before attachment or submission.
 
@@ -341,17 +346,40 @@ swift run --package-path Tools/OpenAPIGeneration update-app-store-connect-client
 
 The maintainer tool writes temporary OpenAPI files under `.build/` and copies
 only the generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
+Do not hand-edit generated Swift or commit Apple's downloaded OpenAPI document.
 See [`docs/openapi-generation.md`](docs/openapi-generation.md) for the current
 generation baseline.
 
-Build or test with SwiftPM:
+## Development and Verification
+
+`ApogeeCore` owns planning, validation, and verified execution; `apogee` and
+`ApogeeCommandPlugin` adapt it to command-line use. Apogee is a macOS
+release-operations package, not an iOS runtime dependency. Keep app-specific
+behavior and private release plans in adopting repositories.
+
+Use the standalone SwiftPM verification path from the repository root:
 
 ```sh
-swift build
 swift test
+swift test --package-path Tools/OpenAPIGeneration
+swift build -c release --product apogee
+bash Tests/Integration/cli-smoke.sh .build/release/apogee
 ```
 
-The full local verification contract, including maintainer-tool tests, CLI smoke
-checks, and a separate consumer build, is documented in [AGENTS.md](AGENTS.md).
+For public library, CLI, or plugin changes, also run the two commands in the
+[separate consumer example](Examples/ReleaseTools/README.md). Preserve the
+supported Swift tools baseline in every package manifest. Tests and smoke
+checks must not require real App Store Connect credentials or make remote
+mutations. Use `git diff --check` before committing.
+
+Use the actual release Xcode for compatibility evidence, record Xcode and Swift
+versions, and keep newer-beta results separate. SwiftPM is the standalone
+package and CI path. If an active Xcode workspace is used, discover its available
+actions, record its original scheme and destination, and restore them after
+verification.
+
+Build/test success does not establish live API write permissions, App Review
+acceptance, or publication; keep these adopter checks separate in the
+[adoption guide](docs/adoption.md#verification-before-a-package-release).
 CI and dependency alert ownership are documented in
 [dependency maintenance](docs/dependency-maintenance.md).
