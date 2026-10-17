@@ -16,6 +16,7 @@ struct ScreenshotWorkflow {
 
     let api: any ScreenshotAPI
     var validateVersion: @Sendable () async throws -> Void = {}
+    var progress: (@Sendable (ScreenshotProgress) -> Void)?
     var pollAttempts = 30
     var pollDelay: Duration = .seconds(2)
 
@@ -24,7 +25,20 @@ struct ScreenshotWorkflow {
         localizations: [AppStoreConnectLocalization], path: String,
         options: ReleaseExecutionOptions, recovery: ScreenshotRecovery?
     ) async throws -> ReleasePlan {
+        let started = ContinuousClock.now
         let local = try ScreenshotFiles.load(path, platform: platform)
+        let totalImages = local.reduce(0) { $0 + $1.2.count }
+        var completedImages = 0
+        func report(_ stage: ScreenshotProgress.Stage, locale: String, displayType: String, attempt: Int? = nil) {
+            guard let progress else {
+                return
+            }
+            let elapsed = started.duration(to: .now).components
+            progress(.init(stage: stage, locale: locale, displayType: displayType,
+                           completedImages: completedImages, totalImages: totalImages,
+                           elapsedSeconds: Double(elapsed.seconds) + Double(elapsed.attoseconds) / 1e18,
+                           processingAttempt: attempt, processingLimit: attempt == nil ? nil : pollAttempts))
+        }
         if let recovery {
             let inputPath = URL(fileURLWithPath: path).standardizedFileURL.path
             let recoveryPath = URL(fileURLWithPath: recovery.directory).standardizedFileURL.path
@@ -43,6 +57,7 @@ struct ScreenshotWorkflow {
         var groups: [Group] = []
         var actions: [PlannedAction] = []
         for (locale, displayType, images) in local {
+            report(.planning, locale: locale, displayType: displayType)
             guard let localization = localizations.first(where: { $0.locale == locale }), !localization.id.isEmpty else {
                 throw ApogeeError.localizationMissing(locale: locale)
             }
@@ -125,6 +140,7 @@ struct ScreenshotWorkflow {
             guard let set = group.set else {
                 continue
             }
+            report(.preparingRecovery, locale: group.locale, displayType: group.displayType)
             try journal.backup(group.remote, setID: set.id, candidates: candidates, requireOriginals: !group.uploadFirst)
             // A partial restore tree would misrepresent an unrecoverable composition.
             if !group.uploadFirst {
@@ -132,6 +148,9 @@ struct ScreenshotWorkflow {
             }
         }
         for group in groups {
+            func reportGroup(_ stage: ScreenshotProgress.Stage, attempt: Int? = nil) {
+                report(stage, locale: group.locale, displayType: group.displayType, attempt: attempt)
+            }
             try Task.checkCancellation()
             try await validateVersion()
             var set: RemoteScreenshotSet
@@ -159,6 +178,7 @@ struct ScreenshotWorkflow {
                     }
                     try Task.checkCancellation()
                     try await validateVersion()
+                    reportGroup(.deletingObsolete)
                     try await api.deleteScreenshot(id: item.id)
                     expected.removeAll { $0.id == item.id }
                     try await assertCurrent(set.id, expected)
@@ -180,11 +200,13 @@ struct ScreenshotWorkflow {
             for image in group.images {
                 if let retained = expected.first(where: { $0.state == "COMPLETE" && $0.checksum == image.checksum }) {
                     desiredIDs.append(retained.id)
+                    completedImages += 1
                     continue
                 }
                 try await assertCurrent(set.id, expected)
                 try Task.checkCancellation()
                 try await validateVersion()
+                reportGroup(.uploading)
                 let (reserved, operations) = try await api.reserveScreenshot(setID: set.id, fileName: image.fileName, byteCount: image.data.count)
                 guard !reserved.id.isEmpty, !expected.contains(where: { $0.id == reserved.id }),
                       reserved.fileName == image.fileName, reserved.byteCount == image.data.count,
@@ -200,18 +222,24 @@ struct ScreenshotWorkflow {
                     try Task.checkCancellation()
                     try await validateVersion()
                     try ScreenshotUploadValidation.validateExpiry(operation)
+                    reportGroup(.uploading)
                     try await api.uploadScreenshotPart(image.data.subdata(in: operation.offset..<(operation.offset + operation.length)), operation: operation)
                 }
                 try Task.checkCancellation()
                 try await validateVersion()
+                reportGroup(.committing)
                 try await api.commitScreenshot(id: reserved.id, checksum: image.checksum)
-                let complete = try await waitForProcessing(id: reserved.id, image: image)
+                let complete = try await waitForProcessing(id: reserved.id, image: image) { stage, attempt in
+                    reportGroup(stage, attempt: attempt)
+                }
                 expected[expected.count - 1] = complete
                 desiredIDs.append(complete.id)
+                completedImages += 1
             }
             try await assertCurrent(set.id, expected)
             if group.uploadFirst {
                 // Every replacement must be verified before the first deletion.
+                reportGroup(.verifyingReplacements)
                 let verified = try await api.screenshots(setID: set.id)
                 guard verified == expected, desiredIDs.count == group.images.count else {
                     throw ScreenshotError.remoteChanged
@@ -229,8 +257,10 @@ struct ScreenshotWorkflow {
             if expected.map(\.id) != desiredIDs {
                 try Task.checkCancellation()
                 try await validateVersion()
+                reportGroup(.ordering)
                 try await api.orderScreenshots(setID: set.id, ids: desiredIDs)
             }
+            reportGroup(.verifying)
             let final = try await api.screenshots(setID: set.id)
             guard final.map(\.id) == desiredIDs, final.count == group.images.count,
                   zip(final, group.images).allSatisfy({ $0.state == "COMPLETE" && $0.checksum == $1.checksum && $0.byteCount == $1.data.count }) else {
@@ -238,6 +268,7 @@ struct ScreenshotWorkflow {
             }
             plan.actions.append(.init(kind: .verify, resource: "appScreenshotSet/\(set.id)", locale: group.locale,
                                       desiredValue: "Ordered screenshot checksums and COMPLETE processing states matched"))
+            reportGroup(.completed)
         }
         return plan
     }
@@ -274,10 +305,12 @@ struct ScreenshotWorkflow {
         }
     }
 
-    private func waitForProcessing(id: String, image: ScreenshotImage) async throws -> RemoteScreenshot {
+    private func waitForProcessing(id: String, image: ScreenshotImage,
+                                   observe: (ScreenshotProgress.Stage, Int) -> Void) async throws -> RemoteScreenshot {
         for attempt in 0..<pollAttempts {
             try Task.checkCancellation()
             try await validateVersion()
+            observe(.processing, attempt + 1)
             let item = try await api.screenshot(id: id)
             guard item.id == id, item.fileName == image.fileName, item.byteCount == image.data.count else {
                 throw ScreenshotError.remoteChanged
@@ -292,6 +325,7 @@ struct ScreenshotWorkflow {
                 guard pending else {
                     throw ScreenshotError.processingFailed
                 }
+                observe(.waitingForChecksum, attempt + 1)
             } else {
                 guard item.state == "UPLOAD_COMPLETE" || item.state == "AWAITING_UPLOAD" else {
                     throw ScreenshotError.processingFailed

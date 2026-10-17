@@ -193,6 +193,8 @@ struct UpdateScreenshots: AsyncParsableCommand {
     var allowUnrecoverableReplacement = false
     @Option(help: "Confirmation token from a fresh matching dry-run.")
     var planToken: String?
+    @Flag(help: "Report screenshot stages and bounded processing waits to stderr; stdout keeps only the final result.")
+    var progress = false
 
     func run() async throws {
         let configuration = try release.configuration()
@@ -200,7 +202,11 @@ struct UpdateScreenshots: AsyncParsableCommand {
         print(text)
     }
 
-    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration) async throws -> String {
+    func renderedOutput(automation: ReleaseAutomation, configuration: ApogeeConfiguration,
+                        progressOutput: @escaping @Sendable (String) -> Void = ScreenshotProgressOutput.write) async throws -> String {
+        let observer: (@Sendable (ScreenshotProgress) -> Void)? = progress ? { @Sendable event in
+            progressOutput(ScreenshotProgressOutput.render(event))
+        } : nil
         let plan = try await automation.updateScreenshots(
             appLookup: try release.appLookup(configuration: configuration),
             version: release.version,
@@ -208,7 +214,8 @@ struct UpdateScreenshots: AsyncParsableCommand {
             platform: release.platform(configuration: configuration),
             options: try release.mode.executionOptions(allowDestructive: allowDestructive, planToken: planToken,
                                                        allowUnrecoverableReplacement: allowUnrecoverableReplacement),
-            recovery: recoveryPath.map { .init(directory: $0, originalsPath: originalsPath) }
+            recovery: recoveryPath.map { .init(directory: $0, originalsPath: originalsPath) },
+            progress: observer
         )
         return try release.render(plan, command: "update-screenshots", configuration: configuration)
     }

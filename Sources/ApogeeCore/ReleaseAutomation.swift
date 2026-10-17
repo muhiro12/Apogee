@@ -409,6 +409,27 @@ public struct ReleaseAutomation: Sendable {
         options: ReleaseExecutionOptions,
         recovery: ScreenshotRecovery? = nil
     ) async throws -> ReleasePlan {
+        try await updateScreenshots(
+            appLookup: appLookup, version: version, screenshotsPath: screenshotsPath,
+            platform: platform, options: options, recovery: recovery, progress: nil
+        )
+    }
+
+    /// Plans or applies screenshots while synchronously reporting privacy-reduced progress.
+    ///
+    /// The observer runs inline and must return promptly. It cannot authorize writes,
+    /// replace final read-back verification, or change the returned plan or its token.
+    /// Events omit file paths, upload URLs, headers, and credentials. Without an
+    /// observer this behaves exactly like the original overload.
+    public func updateScreenshots(
+        appLookup: AppLookup,
+        version: String,
+        screenshotsPath: String,
+        platform: Platform = .iOS,
+        options: ReleaseExecutionOptions,
+        recovery: ScreenshotRecovery? = nil,
+        progress: (@Sendable (ScreenshotProgress) -> Void)?
+    ) async throws -> ReleasePlan {
         if let screenshotAPI = api as? any ScreenshotAPI {
             // Validate files before remote access. The workflow retains its own byte snapshot.
             _ = try ScreenshotFiles.load(screenshotsPath, platform: platform)
@@ -423,7 +444,7 @@ public struct ReleaseAutomation: Sendable {
                 }
             }
             try await validateVersion()
-            return try await ScreenshotWorkflow(api: screenshotAPI, validateVersion: validateVersion).run(
+            return try await ScreenshotWorkflow(api: screenshotAPI, validateVersion: validateVersion, progress: progress).run(
                 app: context.app, version: context.version, platform: platform,
                 localizations: localizations, path: screenshotsPath, options: options, recovery: recovery
             )

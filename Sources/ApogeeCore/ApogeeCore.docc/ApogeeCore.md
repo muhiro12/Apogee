@@ -87,4 +87,5 @@ See <doc:UsingReleaseAutomation> for execution, errors, and transport boundaries
 - ``RemoteScreenshot``
 - ``ScreenshotUploadOperation``
 - ``ScreenshotRecovery``
+- ``ScreenshotProgress``
 - ``ScreenshotError``

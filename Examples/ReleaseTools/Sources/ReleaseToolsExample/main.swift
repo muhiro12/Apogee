@@ -46,4 +46,16 @@ func compileOriginalFeedbackAPI(automation: ReleaseAutomation) {
         ReleaseExecutionOptions.init(mode:allowDestructive:planToken:)
     let _: (String, String, Date?, String?, String?, Bool?) -> BuildFeedbackSummary =
         BuildFeedbackSummary.init(id:buildID:createdDate:deviceModel:osVersion:hasComment:)
+    let _: (AppLookup, String, String, Platform, ReleaseExecutionOptions, ScreenshotRecovery?) async throws -> ReleasePlan =
+        automation.updateScreenshots(appLookup:version:screenshotsPath:platform:options:recovery:)
+}
+
+// Compiles the optional observer without starting a release operation.
+func planScreenshots(automation: ReleaseAutomation) async throws -> ReleasePlan {
+    try await automation.updateScreenshots(
+        appLookup: .bundleID("com.example.app"), version: "2.0", screenshotsPath: "AppStore/Screenshots",
+        options: .init(mode: .dryRun), progress: { progress in
+            print("\(progress.locale) \(progress.stage.rawValue) \(progress.completedImages)/\(progress.totalImages)")
+        }
+    )
 }

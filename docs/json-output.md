@@ -20,6 +20,11 @@ operation succeeds. Errors remain on stderr with the existing nonzero exit behav
 there is no JSON error document. Argument errors and cancellation do not become
 successful results. Help remains normal command help rather than a data result.
 
+`update-screenshots --progress` optionally writes stage observations to stderr
+while preserving this final JSON contract. Progress is quiet by default, is not
+part of the JSON schema, and does not establish operation success. Keep stderr
+separate from stdout. See [screenshot progress](screenshots.md#optional-progress).
+
 Always check the exit status before consuming a result. Empty stdout on failure
 does **not** imply that no remote write happened: an apply may have partially
 completed or failed verification. Inspect remote state before retrying. JSON output

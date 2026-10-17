@@ -2,6 +2,7 @@
 import CoreGraphics
 import Foundation
 import ImageIO
+import Synchronization
 import Testing
 import UniformTypeIdentifiers
 
@@ -100,10 +101,17 @@ func screenshotsResumeUnrecoverableReplacementAfterOrderingFailure() async throw
     let api = ScreenshotTestAPI(items: fixture.remote)
     await api.setFailure("order")
     let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    let events = Mutex<[ScreenshotProgress]>([])
     await #expect(throws: ScreenshotError.remoteChanged) {
         _ = try await fixture.run(api: api, mode: .apply, token: plan.token,
-                                  includeOriginals: false, allowUnrecoverable: true)
+                                  includeOriginals: false, allowUnrecoverable: true) { event in
+            events.withLock { $0.append(event) }
+        }
     }
+    let observed = events.withLock { $0 }
+    #expect(observed.last?.stage == .ordering)
+    #expect(observed.last?.completedImages == 2)
+    #expect(!observed.contains { $0.stage == .completed })
     #expect(await api.writes.contains("delete"))
     let writesBeforeRetry = await api.writes.count
     await api.setFailure("")
@@ -200,7 +208,14 @@ func screenshotOrderingChangesTokenAndReusesExistingBytes() async throws {
     let api = ScreenshotTestAPI(items: fixture.remote)
     let plan = try await fixture.run(api: api, mode: .dryRun)
     #expect(plan.actions.filter { $0.kind == .create || $0.kind == .delete }.isEmpty)
-    _ = try await fixture.run(api: api, mode: .apply, token: plan.token)
+    let events = Mutex<[ScreenshotProgress]>([])
+    _ = try await fixture.run(api: api, mode: .apply, token: plan.token) { event in
+        events.withLock { $0.append(event) }
+    }
+    let observed = events.withLock { $0 }
+    #expect(observed.map(\.stage) == [.planning, .preparingRecovery, .ordering, .verifying, .completed])
+    #expect(observed.last?.completedImages == 2)
+    #expect(observed.first { $0.stage == .ordering }?.completedImages == 2)
     #expect(await api.writes == ["order"])
     #expect(try await fixture.run(api: api, mode: .dryRun).hasChanges == false)
 }
@@ -252,6 +267,85 @@ func screenshotsWaitForDelayedChecksumReadBack() async throws {
     #expect(applied.actions.last?.kind == .verify)
     #expect(await api.checksumReadsBeforeMatch == 1)
     #expect(try await fixture.run(api: api, mode: .dryRun).hasChanges == false)
+}
+
+@Test
+func screenshotProgressVerifiesReplacementsBeforeReportingDeletionAndCompletion() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 2, desiredCount: 2)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    let events = Mutex<[ScreenshotProgress]>([])
+    let observer: @Sendable (ScreenshotProgress) -> Void = { event in
+        events.withLock { $0.append(event) }
+    }
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false, progress: observer)
+    #expect(events.withLock { $0.map(\.stage) } == [.planning])
+    events.withLock { $0.removeAll() }
+    let applied = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                        includeOriginals: false, allowUnrecoverable: true, progress: observer)
+    let observed = events.withLock { $0 }
+    let stages = observed.map(\.stage)
+    #expect(stages.contains(.uploading))
+    #expect(stages.contains(.committing))
+    #expect(stages.contains(.processing))
+    let verified = try #require(stages.firstIndex(of: .verifyingReplacements))
+    let deletion = try #require(stages.firstIndex(of: .deletingObsolete))
+    #expect(verified < deletion)
+    #expect(observed[deletion].completedImages == 2)
+    #expect(stages.suffix(2) == [.verifying, .completed])
+    #expect(observed.last?.completedImages == 2)
+    #expect(observed.allSatisfy { $0.totalImages == 2 && $0.locale == "en-US" && $0.displayType == "APP_DESKTOP" })
+    #expect(observed.map(\.completedImages) == observed.map(\.completedImages).sorted())
+    #expect(observed.allSatisfy { $0.elapsedSeconds >= 0 })
+    #expect(observed.map(\.elapsedSeconds) == observed.map(\.elapsedSeconds).sorted())
+    #expect(applied.actions.last?.kind == .verify)
+}
+
+@Test(arguments: ["processing", "checksum", "timeout", "delayed-checksum"])
+func screenshotProgressDistinguishesBoundedWaitsFromSuccess(scenario: String) async throws {
+    let fixture = try ScreenshotFixture(oldCount: 1, desiredCount: 1)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    await api.setFailure(scenario)
+    let plan = try await fixture.run(api: api, mode: .dryRun, includeOriginals: false)
+    let events = Mutex<[ScreenshotProgress]>([])
+    func apply() async throws {
+        _ = try await fixture.run(api: api, mode: .apply, token: plan.token,
+                                  includeOriginals: false, allowUnrecoverable: true) { event in
+            events.withLock { $0.append(event) }
+        }
+    }
+    if scenario == "delayed-checksum" {
+        try await apply()
+    } else {
+        await #expect(throws: scenario == "timeout" ? ScreenshotError.processingTimedOut : .processingFailed) {
+            try await apply()
+        }
+        #expect(await api.writes.contains("delete") == false)
+        #expect(await api.items.contains(fixture.remote[0]))
+    }
+    let observed = events.withLock { $0 }
+    let polls = observed.filter { $0.stage == .processing }
+    #expect(polls.map(\.processingAttempt) == (["timeout", "delayed-checksum"].contains(scenario) ? [1, 2] : [1]))
+    #expect(polls.allSatisfy { $0.processingLimit == 2 && $0.completedImages == 0 })
+    #expect(observed.contains { $0.stage == .waitingForChecksum } == (scenario == "delayed-checksum"))
+    #expect(observed.contains { $0.stage == .completed } == (scenario == "delayed-checksum"))
+    #expect(FileManager.default.fileExists(atPath: fixture.recovery.appendingPathComponent("state.json").path))
+}
+
+@Test
+func screenshotProgressCannotBypassPlanConfirmation() async throws {
+    let fixture = try ScreenshotFixture(oldCount: 1, desiredCount: 1)
+    defer { fixture.remove() }
+    let api = ScreenshotTestAPI(items: fixture.remote)
+    let events = Mutex<[ScreenshotProgress]>([])
+    await #expect(throws: ApogeeError.applyRequiresPlanToken) {
+        _ = try await fixture.run(api: api, mode: .apply, token: "stale") { event in
+            events.withLock { $0.append(event) }
+        }
+    }
+    #expect(events.withLock { $0.map(\.stage) } == [.planning])
+    #expect(await api.writes.isEmpty)
 }
 
 @Test
@@ -312,8 +406,9 @@ private struct ScreenshotFixture {
     }
 
     func run(api: ScreenshotTestAPI, mode: OperationMode, token: String? = nil, includeOriginals: Bool = true,
-             allowUnrecoverable: Bool = false) async throws -> ReleasePlan {
-        try await ScreenshotWorkflow(api: api, pollAttempts: 2, pollDelay: .zero).run(
+             allowUnrecoverable: Bool = false,
+             progress: (@Sendable (ScreenshotProgress) -> Void)? = nil) async throws -> ReleasePlan {
+        try await ScreenshotWorkflow(api: api, progress: progress, pollAttempts: 2, pollDelay: .zero).run(
             app: .init(id: "app"), version: .init(id: "version"), platform: .macOS,
             localizations: [.init(id: "localization", locale: "en-US", metadata: .init(locale: "en-US"))],
             path: input.path,
@@ -324,7 +419,7 @@ private struct ScreenshotFixture {
     }
 }
 
-private func screenshotPNG(seed: UInt8) throws -> Data {
+func screenshotPNG(seed: UInt8) throws -> Data {
     let pixels = Data(repeating: seed, count: 12)
     let provider = try #require(CGDataProvider(data: pixels as CFData))
     let image = try #require(CGImage(width: 2, height: 2, bitsPerComponent: 8, bitsPerPixel: 24, bytesPerRow: 6,

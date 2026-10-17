@@ -11,7 +11,7 @@ trap 'rm -rf "$temporary_directory"' EXIT
 "$binary" release-status --help > "$temporary_directory/status-help.txt"
 "$binary" read-metadata --help > "$temporary_directory/metadata-help.txt"
 "$binary" update-screenshots --help > "$temporary_directory/screenshots-help.txt"
-for option in recovery-path originals-path allow-destructive plan-token; do
+for option in recovery-path originals-path allow-destructive plan-token progress; do
     grep -q -- "--$option" "$temporary_directory/screenshots-help.txt"
 done
 "$binary" update-version-settings --help > "$temporary_directory/settings-help.txt"
@@ -109,4 +109,6 @@ assert_json_failure release-status --version 2.0 --app-id EXAMPLE_APP_ID \
 assert_json_failure build-feedback --version 2.0 --build-version 42 --output json \
   --apogee-config "$temporary_directory/missing.json"
 assert_json_failure build-feedback --version 2.0 --build-version 42 --apply
+assert_json_failure update-screenshots --version 2.0 --progress --output json \
+  --apogee-config "$temporary_directory/missing.json"
 echo 'CLI smoke checks passed without App Store Connect requests.'

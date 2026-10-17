@@ -64,6 +64,7 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `RemoteScreenshot` | Supported | Observed identity, source checksum, and processing state |
 | `ScreenshotUploadOperation` | Supported | Sensitive time-limited asset upload instructions |
 | `ScreenshotRecovery` | Supported | Explicit private recovery directory and original file source |
+| `ScreenshotProgress` | Supported | Privacy-reduced screenshot stages, verified-image counts, and bounded wait observations |
 | `ScreenshotError` | Supported | Screenshot validation, recovery, and execution failures |
 | `ScreenshotSet` | Provisional | Inventory only |
 | `ScreenshotFile` | Provisional | File information only |
@@ -184,7 +185,7 @@ hashing, human rendering, or confirmation tokens.
 | `attach-build` | Lookup, `--version`, `--platform`, mode, `--build-version` | Existing valid build |
 | `submit-for-review` | Lookup, `--version`, `--platform`, mode | Submit an existing version |
 | `sync-webhooks` | Lookup, mode, `--config`, `--allow-destructive`, `--plan-token` | Complete desired webhook list |
-| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path`, `--recovery-path`, `--originals-path`, `--allow-destructive`, `--allow-unrecoverable-replacement`, `--plan-token` | Verified screenshot updates with recovery before deletion, or opt-in upload-first replacement |
+| `update-screenshots` | Lookup, `--version`, `--platform`, mode, `--screenshots-path`, `--recovery-path`, `--originals-path`, `--allow-destructive`, `--allow-unrecoverable-replacement`, `--plan-token`, `--progress` | Verified screenshot updates with optional stderr progress and unchanged final JSON |
 
 Lookup precedence is `--app-id`, `--bundle-id`, configuration `appID`, then
 configuration `bundleID`. Version/build numbers are explicit command inputs.

@@ -170,3 +170,44 @@ A timeout or processing failure returns an error and retains recovery files.
 No failed transfer or mutation is automatically repeated within an invocation.
 Final verification checks IDs, order, source checksums, file sizes, and processing
 states. It does not certify visual quality, approval, or publication.
+
+## Optional progress
+
+Add `--progress` to report concise stage observations to stderr. The default is
+quiet, including in automation. Stdout still contains only the final text or one
+successful JSON result:
+
+```sh
+apogee update-screenshots --version 2.0 --platform IOS \
+  --recovery-path /private/release-recovery/run-2 \
+  --originals-path /private/release-originals \
+  --apply --allow-destructive --plan-token TOKEN \
+  --progress --output json > result.json
+```
+
+Each line identifies the locale, display type, stage, checksum-verified desired
+image count across all selected sets, total desired image count, and monotonic
+elapsed seconds since the screenshot workflow began. Counts include reused images
+and can reach the total while cleanup and verification are still pending.
+Progress omits local paths, file names, upload URLs, headers, and credentials.
+
+Stages distinguish planning, recovery preparation, upload, commit, Apple
+processing, checksum availability, replacement verification, obsolete-image
+deletion, ordering, final verification, and set completion. Processing and checksum
+observations show the current attempt and the 30-observation limit; the same
+bounded wait applies with or without progress. These are stage observations,
+not byte-transfer percentages, time estimates, retries, or a stall detector.
+An in-flight request can remain in its last reported stage until it returns.
+
+For upload-first replacement, `verifyingReplacements` precedes
+`deletingObsolete`. A set's `completed` event is emitted only after final ordered
+read-back succeeds. A failed operation has no successful final JSON; earlier
+progress, including a completed earlier set, does not establish overall success.
+Check the exit status and final result and retain recovery storage on failure.
+Dry-run reports planning only; an unchanged apply does not invent completion events.
+
+Library consumers can pass a `@Sendable (ScreenshotProgress) -> Void` observer
+to the progress overload of `ReleaseAutomation.updateScreenshots`. It runs
+synchronously and should return promptly. The original method signature remains
+available, including as a function value. Observers do not change plans, tokens,
+confirmation requirements, recovery behavior, or verification.

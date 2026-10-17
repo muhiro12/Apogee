@@ -63,6 +63,9 @@ dependencies when implementing a transport. A custom endpoint or transport
 receives credentials and must be trusted. Generated schemas and JWT helpers
 remain implementation details.
 
-Screenshot inventory and `updateScreenshots` are provisional. Apply is disabled
-until the complete upload and verification path exists. Review submission does
-not establish approval, release timing correctness, or publication.
+Screenshot execution supports verified apply through adapters that also conform
+to ``ScreenshotAPI``. Apply requires private recovery storage and explicit
+confirmation for destructive plans. The optional ``ScreenshotProgress`` observer
+reports stages separately from the final plan; only final read-back establishes
+set completion. Legacy inventory-only adapters still reject apply. Review
+submission does not establish approval, release timing correctness, or publication.

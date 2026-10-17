@@ -197,8 +197,10 @@ AppStore/Screenshots/
 ```
 
 `update-screenshots` defaults to dry-run. Apply supports new registration and
-replacement, with verified recovery originals required before deleting existing
-images. See [screenshot updates](docs/screenshots.md) for confirmation, private
+replacement, with verified recovery originals or an explicitly confirmed
+upload-first strategy before deleting existing images. Add `--progress` for stage
+observations on stderr while keeping final JSON on stdout. See
+[screenshot updates](docs/screenshots.md) for confirmation, private
 recovery storage, and interrupted-upload handling.
 
 ## CLI Examples
