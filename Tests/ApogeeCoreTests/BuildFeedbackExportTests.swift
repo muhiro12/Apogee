@@ -181,6 +181,35 @@ func feedbackCommandExportRefusesNonAppleArtifactLocations() async throws {
     #expect(try FileManager.default.contentsOfDirectory(atPath: destination.path).isEmpty)
 }
 
+@Test
+func feedbackCommandPreservesEarlierEvidenceWhenALaterArtifactFails() async throws {
+    let root = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let destination = root.appendingPathComponent("export")
+    let command = try BuildFeedbackCommand.parse([
+        "--app-id", "app-1", "--version", "2.0", "--build-version", "42", "--platform", "MAC_OS",
+        "--output", "json", "--export-path", destination.path,
+    ])
+    let transport = exportFeedbackTransport(
+        crashLog: "private-crash-evidence",
+        screenshotURL: "https://download.example/private-sentinel"
+    )
+    var output: String?
+    await #expect(throws: BuildFeedbackError.unsafeArtifact) {
+        output = try await command.renderedOutput(automation: .init(api: testAPI(transport: transport)), configuration: .init())
+    }
+    #expect(output == nil)
+    let crash = destination.appendingPathComponent("crash/betaFeedbackCrashSubmissions-1/01.crash")
+    #expect(try String(contentsOf: crash, encoding: .utf8) == "private-crash-evidence")
+    #expect(!FileManager.default.fileExists(atPath: destination.appendingPathComponent("screenshot").path))
+    #expect(await transport.requests.allSatisfy { $0.method == .get })
+    await #expect(throws: BuildFeedbackError.exportConflict) {
+        _ = try await command.renderedOutput(automation: .init(api: testAPI(transport: transport)), configuration: .init())
+    }
+    #expect(try String(contentsOf: crash, encoding: .utf8) == "private-crash-evidence")
+}
+
 private func exportFeedbackTransport(crashLog: String? = nil, crashLogStatus: Int = 404,
                                      screenshotURL: String? = nil) -> StubTransport {
     StubTransport { request, _, _ in

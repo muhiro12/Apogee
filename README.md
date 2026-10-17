@@ -30,6 +30,7 @@ Supported in the first implementation:
 - Read-only release status, including publication timing and review state
 - Read-only localized metadata inspection and JSON snapshot export
 - Read-only TestFlight crash and screenshot feedback summaries for candidate builds
+- Optional feedback artifact export to explicit private storage without overwriting files
 - Explicit App Store version creation configured for manual release
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
