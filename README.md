@@ -300,6 +300,11 @@ The Git tag and GitHub Release are the package version source of truth. Avoid
 adding a separate checked-in source version string or README "current version"
 value that release automation must keep in sync with tags.
 
+Version 1.5.0 includes an explicit compatibility exception for the
+[Asset Library migration](docs/public-api.md#asset-library-migration). Existing
+screenshot users must review its input, recovery, verification, and error-handling
+changes before updating.
+
 The [Release workflow](.github/workflows/release.yml) verifies `main` with the
 same checks as pull requests before publishing. A normal push to `main` increments
 the minor version and resets the patch to zero, such as `1.0.1` to `1.1.0`.

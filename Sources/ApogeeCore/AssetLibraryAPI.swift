@@ -85,10 +85,14 @@ struct LibraryReferenceData: Decodable, Sendable {
     func targets(displayClass: String, platform: Platform, images: [ScreenshotImage]) throws -> [(group: String, images: [ScreenshotImage], specs: [[String]])] {
         let platforms: [String]
         switch platform {
-        case .iOS: platforms = ["IPHONE_APP_STORE", "IPAD_APP_STORE", "WATCH_APP_STORE"]
-        case .macOS: platforms = ["MAC_APP_STORE"]
-        case .tvOS: platforms = ["TV_APP_STORE"]
-        case .visionOS: platforms = ["VISION_PRO_APP_STORE"]
+        case .iOS:
+            platforms = ["IPHONE_APP_STORE", "IPAD_APP_STORE", "WATCH_APP_STORE"]
+        case .macOS:
+            platforms = ["MAC_APP_STORE"]
+        case .tvOS:
+            platforms = ["TV_APP_STORE"]
+        case .visionOS:
+            platforms = ["VISION_PRO_APP_STORE"]
         }
         let profiles = placementProfileGroups.filter {
             $0.displayClassId == displayClass && platforms.contains($0.platform)

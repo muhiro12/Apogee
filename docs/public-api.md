@@ -91,6 +91,12 @@ case. See the
 
 ### Asset Library migration
 
+Version 1.5.0 intentionally delivers this migration as a minor release exception
+to the usual compatibility policy. Upgrading requires changing production input
+directories and recovery storage, accepting the revised verification contract,
+and updating exhaustive `ScreenshotError` switches for `unsupportedDisplayType`.
+Review the migration requirements before updating a pinned dependency.
+
 The production workflow accepts `AppAssetLibraryDisplayClass` directory names,
 including `IPHONE_DUO`, and uses Apple API 4.5.1 assets and placements exclusively.
 It verifies processed states, `specId`, byte counts, identities, and order. Apple

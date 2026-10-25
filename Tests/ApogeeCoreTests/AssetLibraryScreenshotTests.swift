@@ -280,7 +280,9 @@ private actor LibraryTestAPI: AssetLibraryAPI {
         if failure == "order" {
             throw ScreenshotError.remoteChanged
         }
-        let selected = try ids.map { id in try #require(placements.first { $0.id == id }) }
+        let selected = try ids.map { id in
+            try #require(placements.first { $0.id == id })
+        }
         let unrelated = placements.filter { $0.group != group || $0.localizationID != localizationID }
         placements = (failure == "wrong-order" ? Array(selected.reversed()) : selected) + unrelated
         writes.append("order")
