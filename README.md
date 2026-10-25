@@ -190,18 +190,18 @@ or scheduled publication policy, independently of localized metadata.
 
 ```text
 AppStore/Screenshots/
-  ja/APP_IPHONE_67/01.png
-  ja/APP_IPHONE_67/02.png
-  en-US/APP_IPHONE_67/01.png
-  en-US/APP_IPHONE_67/02.png
+  ja/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY/01.png
+  ja/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY/02.png
+  en-US/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY/01.png
+  en-US/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY/02.png
 ```
 
 `update-screenshots` defaults to dry-run. Apply supports new registration and
-replacement, with verified recovery originals or an explicitly confirmed
-upload-first strategy before deleting existing images. Add `--progress` for stage
+replacement through Apple's App Asset Library. It verifies replacement assets
+before removing obsolete placements and retains shared images for recovery. Add `--progress` for stage
 observations on stderr while keeping final JSON on stdout. See
-[screenshot updates](docs/screenshots.md) for confirmation, private
-recovery storage, and interrupted-upload handling.
+[screenshot updates](docs/screenshots.md) for display classes including iPhone Duo, migration from
+legacy directories, confirmation, recovery, and interrupted-upload handling.
 
 ## CLI Examples
 

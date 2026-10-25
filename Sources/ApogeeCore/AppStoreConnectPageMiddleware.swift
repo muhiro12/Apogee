@@ -28,7 +28,7 @@ struct AppStoreConnectPageMiddleware: ClientMiddleware {
             target.user == nil, target.password == nil, target.fragment == nil,
             target.percentEncodedPath == original.percentEncodedPath,
             (original.queryItems ?? []).filter({ item in
-                item.name.hasPrefix("filter[") || item.name == "include"
+                item.name.hasPrefix("filter[") || item.name == "include" || item.name == "sort"
             }).allSatisfy({ item in
                 target.queryItems?.contains(item) == true
             })

@@ -59,7 +59,10 @@ public protocol ScreenshotAPI: Sendable {
     func orderScreenshots(setID: String, ids: [String]) async throws
 }
 
-/// Explicit private storage for verified original files and interrupted-run recovery.
+/// Explicit private storage for interrupted-run recovery.
+///
+/// Asset Library operations retain placement identities and shared remote images.
+/// `originalsPath` is used only by legacy custom `ScreenshotAPI` adapters.
 public struct ScreenshotRecovery: Sendable {
     public var directory: String
     public var originalsPath: String?
@@ -73,6 +76,8 @@ public struct ScreenshotRecovery: Sendable {
 /// Screenshot-specific failures; remote writes may already have occurred.
 public enum ScreenshotError: Error, Sendable, Equatable, LocalizedError {
     case invalidInput
+    /// The display class is unknown or unavailable in Apple's current reference data.
+    case unsupportedDisplayType
     case incompleteInventory
     case recoveryRequired
     case recoveryMismatch
@@ -88,6 +93,8 @@ public enum ScreenshotError: Error, Sendable, Equatable, LocalizedError {
         switch self {
         case .invalidInput:
             "Invalid screenshot input: use regular PNG/JPEG images, valid display types, and 1–10 files per selected set."
+        case .unsupportedDisplayType:
+            "Unsupported screenshot display: use an App Asset Library display class such as IPHONE_DUO. Legacy APP_* screenshot directories must be migrated to display classes. The class must be available for this platform in Apple's current reference data. See docs/screenshots.md."
         case .incompleteInventory:
             "Screenshot inventory is incomplete, ambiguous, or contains unrelated unfinished assets."
         case .recoveryRequired:
@@ -99,11 +106,11 @@ public enum ScreenshotError: Error, Sendable, Equatable, LocalizedError {
         case .unrecoverableReplacementRequiresConfirmation:
             "This set can be replaced by uploading before deleting, but its previous composition could not be restored afterwards. Confirm the unrecoverable replacement explicitly, or supply verified originals."
         case .setCapacityExceeded:
-            "The existing and replacement screenshots together exceed Apple's ten-image limit for one set. Supply verified originals so obsolete images can be removed first."
+            "The screenshots exceed the target's current capacity. Reduce the selected image count. Legacy custom adapters may require verified originals when existing and replacement images cannot fit together."
         case .unsafeUpload:
             "Screenshot upload instructions are invalid, expired, or the asset transfer failed. Inspect the recovery directory before retrying."
         case .processingFailed:
-            "Apple rejected screenshot processing or its checksum did not match. Recovery files are retained; no rollback is claimed."
+            "Apple rejected screenshot processing or the asset did not match its verification contract. Recovery files are retained; no rollback is claimed."
         case .processingTimedOut:
             "Screenshot processing is still incomplete. Recovery files are retained; inspect remote state and obtain a fresh plan before retrying."
         case .remoteChanged:

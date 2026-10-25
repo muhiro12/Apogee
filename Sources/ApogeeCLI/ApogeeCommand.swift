@@ -176,7 +176,7 @@ struct AttachBuild: AsyncParsableCommand {
 struct UpdateScreenshots: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "update-screenshots",
-        abstract: "Plan or apply verified localized screenshots with private recovery originals."
+        abstract: "Plan or apply verified localized screenshots with private recovery records."
     )
 
     @OptionGroup var release: ReleaseOptions
@@ -185,11 +185,11 @@ struct UpdateScreenshots: AsyncParsableCommand {
     var screenshotsPath: String?
     @Option(help: "Private recovery directory; required for apply and reused when resuming.")
     var recoveryPath: String?
-    @Option(help: "Directory containing original old images with matching remote checksums.")
+    @Option(help: "Verified original images for legacy custom adapters; not used by the production Asset Library workflow.")
     var originalsPath: String?
-    @Flag(help: "Allow planned deletion or reordering after verified recovery backup.")
+    @Flag(help: "Allow planned destructive screenshot changes after recovery preparation.")
     var allowDestructive = false
-    @Flag(help: "Allow replacing a set with spare capacity by uploading first, accepting that its previous composition cannot be restored.")
+    @Flag(help: "Allow unrecoverable replacement for legacy custom adapters; not needed by the production Asset Library workflow.")
     var allowUnrecoverableReplacement = false
     @Option(help: "Confirmation token from a fresh matching dry-run.")
     var planToken: String?

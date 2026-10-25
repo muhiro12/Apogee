@@ -1,213 +1,177 @@
-# Verified screenshot updates
+# Asset Library screenshot updates
 
-`update-screenshots` updates only the locale/display directories present in the
-local input. Missing directories leave remote sets unchanged. Empty directories
-are rejected; they never mean "delete this locale". Number file names to define
-their lexicographic display order. Use Apple's exact screenshot display identifiers:
+`update-screenshots` uses Apple's App Asset Library for every production upload.
+It does not retry through the deprecated screenshot-set API. Only the selected
+locale/display directories are changed; omitted directories preserve their
+remote placements. Empty directories never request deletion.
+
+## Input and migration
+
+Use `AppAssetLibraryDisplayClass` names for directory names. Number files to
+choose their lexicographic order. Use one app platform per invocation:
 
 ```text
-AppStore/Screenshots/en-US/APP_IPHONE_67/01-overview.png
-AppStore/Screenshots/en-US/APP_IPHONE_67/02-details.png
-AppStore/Screenshots/ja/APP_DESKTOP/01-overview.png
+AppStore/Screenshots/en-US/IPHONE_DUO/01-overview.png
+AppStore/Screenshots/en-US/IPHONE_DUO/02-details.png
+AppStore/Screenshots/ja/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY/01-overview.png
 ```
 
-Use one platform per invocation. Existing App Store version localizations are
-required; missing screenshot sets are created during apply. Custom product pages,
-experiments, videos, and creation of localizations are not part of this command.
-PNG/JPEG input must contain a single decodable image without alpha. Limits are
-64 MiB per file, 10,000 pixels per dimension, 40 million pixels per image, and
-512 MiB across at most 100 selected directories. Each selected directory must
-have 1–10 distinct images.
-Symlinks and unexpected files are rejected. Apple performs final validation of
-its current [screenshot dimensions](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications)
-and processing requirements; local image checks alone do not establish acceptance.
+For macOS, tvOS, and visionOS, use `DEFAULT`; the platform selects its profile.
+For iPad and Watch, select the corresponding display class from Apple's current
+reference data. Apogee resolves placement groups, image specifications, and
+limits through `GET /v1/appAssetLibraryRefData`, rather than guessing group IDs.
+Unknown, ambiguous, or unavailable targets fail before remote writes.
+If a display class has multiple profiles, each image is assigned to its unique
+compatible group by the returned specifications. Order is preserved within each
+group; omitted groups remain unchanged.
 
-## Dry-run and explicit apply
+The previous `APP_*` directory names are no longer production input. Rename
+these directories when updating Apogee; do not combine both naming schemes:
+
+| Previous directory | Display class |
+| --- | --- |
+| `APP_IPHONE_67` | `IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY` |
+| `APP_IPHONE_61` | `IPHONE_DYNAMIC_ISLAND_MEDIUM_DISPLAY` |
+| `APP_IPHONE_65` | `IPHONE_FACE_ID_LARGE_DISPLAY` |
+| `APP_IPHONE_58` | `IPHONE_FACE_ID_MEDIUM_DISPLAY` |
+| `APP_IPHONE_55` | `IPHONE_HOME_BUTTON_LARGE_DISPLAY` |
+| `APP_IPHONE_47` | `IPHONE_HOME_BUTTON_MEDIUM_DISPLAY` |
+| `APP_IPHONE_40` | `IPHONE_HOME_BUTTON_40_DISPLAY` |
+| `APP_IPHONE_35` | `IPHONE_HOME_BUTTON_35_DISPLAY` |
+| `APP_IPAD_PRO_3GEN_129` | `IPAD_13_DISPLAY` |
+| `APP_IPAD_PRO_3GEN_11` | `IPAD_11_DISPLAY` |
+| `APP_IPAD_PRO_129` | `IPAD_129_DISPLAY` |
+| `APP_IPAD_105` | `IPAD_105_DISPLAY` |
+| `APP_IPAD_97` | `IPAD_97_DISPLAY` |
+| `APP_WATCH_ULTRA` | `WATCH_ULTRA` |
+| `APP_WATCH_SERIES_10` | `WATCH_SERIES_10` |
+| `APP_WATCH_SERIES_7` | `WATCH_SERIES_7` |
+| `APP_WATCH_SERIES_4` | `WATCH_SERIES_4` |
+| `APP_WATCH_SERIES_3` | `WATCH_SERIES_3` |
+| `APP_DESKTOP`, `APP_APPLE_TV`, `APP_APPLE_VISION_PRO` | `DEFAULT` |
+
+These examples identify target families; the server's current image specifications
+remain authoritative. Confirm the intended current display class and validate
+existing files against the reference data. Apogee does not
+silently retarget or resize images. iMessage placements are outside this command.
+
+Inputs must be regular, single-image, decodable PNG/JPEG files without alpha.
+Limits are 64 MiB per file, 10,000 pixels per dimension, 40 million pixels per
+image, 512 MiB across at most 100 directories, and at most ten distinct files per
+directory. The reference data can impose stricter limits, dimensions, MIME types,
+and extensions. Symlinks and unexpected files are rejected.
+
+## Planning and apply
+
+Existing version localizations are required. Both phases use the same input:
 
 ```sh
 apogee update-screenshots --version 2.0 --platform IOS \
   --screenshots-path AppStore/Screenshots \
-  --recovery-path /private/release-recovery/run-2 \
-  --originals-path /private/release-originals --dry-run --output json
+  --recovery-path /private/release-recovery/asset-library-run-1 \
+  --dry-run --output json
 ```
 
-The plan includes full remote identities, checksums and order, and local SHA-256
-fingerprints. Identical content is reused even if a local file was renamed.
-A different order changes the plan token. A fresh dry-run after successful apply
-has no changes. Dry-run performs no local recovery writes or remote mutations.
-
-The plan also states the replacement strategy a set needs, so give the dry-run and
-the apply the same `--recovery-path` and `--originals-path`. Available originals are
-part of what the plan describes, and a plan produced from different recovery inputs
-does not match the token the apply requires.
-
-For a plan containing deletion or reordering, use its exact token:
+Dry-run reads reference data, placements, and asset metadata. It creates no
+recovery files and performs no mutations. The token includes the current ordered
+placements and the desired local image identities and compatible specifications.
 
 ```sh
 apogee update-screenshots --version 2.0 --platform IOS \
   --screenshots-path AppStore/Screenshots \
-  --recovery-path /private/release-recovery/run-2 \
-  --originals-path /private/release-originals \
-  --apply --allow-destructive --plan-token TOKEN
+  --recovery-path /private/release-recovery/asset-library-run-1 \
+  --apply --allow-destructive --plan-token TOKEN --progress --output json
 ```
 
-Pure new registration needs explicit apply and a recovery directory, but no
-destructive confirmation. The version must be in `PREPARE_FOR_SUBMISSION`,
-`DEVELOPER_REJECTED`, `REJECTED`, or `METADATA_REJECTED`; apply rechecks this state
-before mutations. Unknown version editability, incomplete inventory,
-duplicate remote identities, and unrelated unfinished uploads fail closed.
+Removing or reordering existing placements requires `--allow-destructive` and a
+fresh matching token. A changed remote inventory stops apply. New registration
+requires explicit apply and recovery storage. The editable version is checked
+again before changes. An API error never triggers a legacy API fallback.
 
-## Replacement and recovery
+## Upload and verification
 
-A set may already occupy Apple's ten screenshot slots. Replacement can therefore
-**delete old screenshots before new images finish uploading**. This is the default
-strategy; see [upload-first replacement](#upload-first-replacement) for sets that
-have spare capacity but no verified originals. Apply first copies
-and reads back verified original bytes for every affected existing set. Originals
-must match Apple's recorded source MD5 and file size. Supply the original files
-through `--originals-path`; a processed or resized App Store image is not a verified
-original. Files identical to the desired local images can also serve as originals.
-Missing or mismatched originals stop the operation before any remote mutation.
+Apple's [migration guide](https://developer.apple.com/documentation/appstoreconnectapi/migrating-to-the-app-asset-library)
+replaces screenshot sets with library images and placements. Commits send
+`uploaded: true`; Apple no longer exposes `sourceFileChecksum` in this API.
+Apogee does not synthesize a remote checksum or claim checksum verification.
 
-The private recovery directory retains immutable image blobs, the original order,
-target identity, and IDs reserved by this operation. The `restore/<locale>/<display>`
-tree is also a ready-to-use screenshot input in the original order. Keep this directory until
-release verification is complete. It must not be shared publicly or checked into
-source control. A directory used for another app/version is rejected. A lock
-prevents concurrent writers using the same recovery directory; operators must
-also prevent other tools from editing the same remote sets.
+Each file gets a local SHA-256 identity in `referenceName`. Existing placements
+can reuse an asset when that identity, size, processed state, and compatible
+`specId` match. The reference name is writable metadata, not a server-verified
+content hash. Keep other writers from changing these identities during a run.
 
-There is no transaction or automatic rollback. An interrupted replacement may
-leave fewer images, an empty set, or a partially updated set. Recovery preserves
-the original bytes; re-uploading them remains subject to Apple permissions and
-availability. Do not interpret an error as proof that no remote write happened.
+New assets are reserved against the app's library, uploaded using Apple's
+credential-free asset instructions, committed, and polled for processing. Byte
+ranges must cover the complete source without gaps or overlap. Uploads use an
+uncached session without API authorization, cookies, stored credentials, or
+redirect following. Signed URLs and request headers are never persisted.
 
-To resume, retain the recovery directory, inspect remote state, and obtain a
-**fresh dry-run token** using the same directory and desired files. Completed
-matching uploads are reused. Unfinished assets are eligible for cleanup only if
-their IDs were recorded in this recovery directory. If a reservation response was
-lost before its ID could be recorded, stop and inspect App Store Connect; the
-command does not guess ownership from a filename or delete unknown assets.
+All desired assets across all selected groups must pass processing, byte-count,
+identity, and specification checks before any obsolete placement is removed.
+Then Apogee creates missing placements and orders them. Final read-back checks
+placement IDs, parent localization, group, asset IDs, order, placement readiness,
+and processed asset metadata. Polling is bounded to 30 observations at two-second
+intervals. A timeout or mismatch fails and retains recovery evidence.
 
-To restore backed-up sets, use `--screenshots-path /private/release-recovery/run-2/restore`
-and run the same dry-run/apply workflow with a fresh token. Supply the current
-replacement originals through `--originals-path` so those images can be backed up
-before deletion too. This restores only saved sets; newly created sets without an
-original counterpart are not implicitly deleted. Use a new recovery directory for
-a separate replacement operation; reuse an existing directory only to resume or
-recover its recorded operation.
+This proves the documented asset and placement observations. It does not prove
+a server-side source checksum, visual quality, App Review acceptance, or release.
+No live Duo upload or account-specific placement has been verified as part of
+the package's synthetic test suite.
 
-## Upload-first replacement
+## Recovery
 
-Sometimes the exact original bytes no longer exist: the images were uploaded long
-ago, and App Store Connect exposes their name, size, and source checksum but not a
-verified export of the source files. Processed Store images are not originals.
+Use a new private directory for a new operation. Its directory and files require
+owner-only permissions. Concurrent writers and symlinked paths are refused.
+`asset-library-state.json` records the target, owned reservation IDs, local source
+identities, transfer/commit progress, and the original ordered placement records.
+It contains no signed URLs or upload headers.
 
-When such a set has room for its existing and replacement images at the same time,
-`--allow-unrecoverable-replacement` selects an upload-first strategy:
+Apogee deletes obsolete placements only. It never deletes or archives library
+images, including images shared with other localizations, product pages, or
+experiments. Previous assets remain available to place again through App Store
+Connect or the public placement API, using the IDs and original order in the
+journal. The journal is a record of placements, not a local original-byte export;
+it cannot restore an image another writer deletes or archives later.
 
-```sh
-apogee update-screenshots --version 4.0 --platform IOS \
-  --screenshots-path AppStore/Screenshots \
-  --recovery-path /private/release-recovery/run-3 \
-  --apply --allow-destructive --allow-unrecoverable-replacement --plan-token TOKEN
-```
+After a failure, inspect remote state, keep the original source files and journal,
+and obtain a fresh dry-run. Reuse the same recovery directory to resume. A known
+fully transferred upload can be committed or observed again on a later explicit
+invocation. An incomplete byte transfer is not replayed from stale upload URLs;
+a later apply may reserve a new unplaced asset. An ambiguous response may also
+leave an unplaced asset in the library. Inspect such assets before manual cleanup.
+There is no automatic rollback or automatic retry within a failed invocation.
 
-Every replacement is reserved, uploaded, committed, and read back as `COMPLETE`
-with its expected checksum and byte count **while every existing image still
-exists**. Only then are the obsolete images deleted, the desired order applied, and
-the normal final read-back performed. If any upload, processing, or verification
-step fails, no existing `COMPLETE` screenshot is deleted, and reserved IDs stay
-recorded in the recovery directory for resume or cleanup.
+Old `state.json` directories belong to the former set-based workflow and are
+rejected for new Asset Library operations. `--originals-path` and
+`--allow-unrecoverable-replacement` remain accepted for existing custom adapters;
+the production Asset Library workflow does not need them because it retains the
+library images. See [legacy custom adapters](legacy-screenshot-adapters.md).
 
-This strategy is used only when it is needed and allowed. It requires all of:
+## Progress
 
-- verified originals are unavailable for at least one obsolete existing screenshot,
-- the existing images plus the replacements fit within Apple's ten-image limit,
-- `--allow-destructive` and an exact current plan token,
-- the separate `--allow-unrecoverable-replacement` acknowledgement.
+`--progress` is opt-in and writes privacy-reduced stage observations to stderr.
+Stdout keeps the final text or one successful JSON result. Observations distinguish
+planning, recovery, upload, commit, processing, replacement verification, obsolete
+placement removal, ordering, final read-back, and completion. Image counts can
+reach the total before placement work finishes. They are verified asset counts,
+not percentages, time estimates, or remote source-checksum counts.
 
-Without that acknowledgement the apply stops before any mutation. When capacity
-would still force deletion before the replacements are complete, verified originals
-remain required and a missing original stops the operation as before.
+`waitingForChecksum` remains part of the public progress enum for legacy custom
+adapters, but the production workflow does not emit it. A `completed` event is
+emitted only after final ordered read-back. A failed invocation produces no success
+JSON, even if an earlier group finished.
 
-The dry-run names the strategy for each affected set: how many existing screenshots
-have no verified original, and whether upload-first replacement applies or the set
-exceeds the limit. In JSON this is an action with `field: "replacementStrategy"`,
-which distinguishes it from the recoverable replacement path.
+## Apple evidence
 
-Recovery records the previous IDs and order and the reservations this operation
-owns, and marks the set unrecoverable. It stores only the original bytes it actually
-has; no `restore/<locale>/<display>` tree is written for an unrecoverable set,
-because a partial tree would misrepresent a restorable composition. **The previous
-composition cannot be restored from this directory.** Keep the old images available
-elsewhere if that matters, or re-upload replacements from local files.
+Checked on 2026-10-25 against Apple's
+[OpenAPI download](https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip),
+version 4.5.1, extracted specification SHA-256
+`7518d3a94a8bd701ac25c1c601b95b8f53aad92091affb15a2a9d331713dac1a`.
+The [4.5.1 release notes](https://developer.apple.com/documentation/appstoreconnectapi/app-store-connect-api-4-5-1-release-notes)
+identify `AppAssetLibraryDisplayClass.IPHONE_DUO` and deprecate the old sets.
+The generated-client baseline is documented in [OpenAPI generation](openapi-generation.md).
 
-Deletion happens after the replacements are verified, so a failure during deletion
-can leave both the old and the new verified images in the set. That state is safe to
-inspect: obtain a fresh dry-run and apply it to remove the remaining obsolete images
-and fix the order.
-
-## Upload verification
-
-Apogee follows Apple's [asset upload lifecycle](https://developer.apple.com/documentation/appstoreconnectapi/uploading-assets-to-app-store-connect):
-reservation, complete byte-range transfer, MD5 commit, asynchronous processing,
-and ordered read-back. Upload URLs must be HTTPS Apple asset URLs with complete
-non-overlapping byte ranges. Apple's upload URLs are time limited, but a current
-response does not always carry an `Expires` query parameter: when it is present
-it must be one finite future timestamp, and when it is absent the server-side
-lifetime applies and the transfer is performed immediately. Asset requests use a
-separate uncached session with no API bearer token, cookies, stored credentials,
-or redirect following. Signed URLs and upload headers are not persisted in
-recovery files.
-
-The command waits up to 30 processing observations, spaced two seconds apart.
-`UPLOAD_COMPLETE` is not success; `COMPLETE` and the matching checksum are required.
-App Store Connect can report `COMPLETE` before the source checksum is readable,
-so an unreadable checksum keeps polling until the timeout, while a different
-checksum fails immediately as a permanent mismatch.
-A timeout or processing failure returns an error and retains recovery files.
-No failed transfer or mutation is automatically repeated within an invocation.
-Final verification checks IDs, order, source checksums, file sizes, and processing
-states. It does not certify visual quality, approval, or publication.
-
-## Optional progress
-
-Add `--progress` to report concise stage observations to stderr. The default is
-quiet, including in automation. Stdout still contains only the final text or one
-successful JSON result:
-
-```sh
-apogee update-screenshots --version 2.0 --platform IOS \
-  --recovery-path /private/release-recovery/run-2 \
-  --originals-path /private/release-originals \
-  --apply --allow-destructive --plan-token TOKEN \
-  --progress --output json > result.json
-```
-
-Each line identifies the locale, display type, stage, checksum-verified desired
-image count across all selected sets, total desired image count, and monotonic
-elapsed seconds since the screenshot workflow began. Counts include reused images
-and can reach the total while cleanup and verification are still pending.
-Progress omits local paths, file names, upload URLs, headers, and credentials.
-
-Stages distinguish planning, recovery preparation, upload, commit, Apple
-processing, checksum availability, replacement verification, obsolete-image
-deletion, ordering, final verification, and set completion. Processing and checksum
-observations show the current attempt and the 30-observation limit; the same
-bounded wait applies with or without progress. These are stage observations,
-not byte-transfer percentages, time estimates, retries, or a stall detector.
-An in-flight request can remain in its last reported stage until it returns.
-
-For upload-first replacement, `verifyingReplacements` precedes
-`deletingObsolete`. A set's `completed` event is emitted only after final ordered
-read-back succeeds. A failed operation has no successful final JSON; earlier
-progress, including a completed earlier set, does not establish overall success.
-Check the exit status and final result and retain recovery storage on failure.
-Dry-run reports planning only; an unchanged apply does not invent completion events.
-
-Library consumers can pass a `@Sendable (ScreenshotProgress) -> Void` observer
-to the progress overload of `ReleaseAutomation.updateScreenshots`. It runs
-synchronously and should return promptly. The original method signature remains
-available, including as a function value. Observers do not change plans, tokens,
-confirmation requirements, recovery behavior, or verification.
+Apple's [screenshot specifications](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/)
+list 1398 × 2034 or 2034 × 1398 for Duo's outer display, and 2007 × 2853 or
+2853 × 2007 for its inner display. Apogee uses runtime specifications to validate
+these files, rather than treating an old iPhone/iPad display as a Duo target.

@@ -3,7 +3,9 @@ import Foundation
 /// A privacy-reduced observation of screenshot work, separate from its final plan.
 ///
 /// Counts describe desired images checked during apply across the selected sets,
-/// including checksum-verified reused images. Reaching the total does not mean
+/// including reused images verified against the active API's contract. The Asset
+/// Library reports processed metadata and spec IDs, not source checksums.
+/// Reaching the total does not mean
 /// deletion, ordering, or final verification has finished. Only the final set's
 /// `completed` event confirms that.
 public struct ScreenshotProgress: Sendable, Equatable {

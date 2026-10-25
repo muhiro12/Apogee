@@ -53,7 +53,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         tokenProvider = .init(signer: .init(credentials: credentials))
     }
 
-    private func client(nextPageURL: String? = nil) -> Client {
+    func client(nextPageURL: String? = nil) -> Client {
         .init(
             serverURL: serverURL,
             configuration: .init(dateTranscoder: AppStoreConnectDateTranscoder()),
@@ -134,10 +134,10 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
     }
 
     public func createScreenshotSet(localizationID: String, displayType: String) async throws -> RemoteScreenshotSet {
-        try await perform(operation: "createScreenshotSet") {
-            guard let display = Components.Schemas.ScreenshotDisplayType(rawValue: displayType) else {
-                throw ApogeeError.unexpectedAPIResponse("Unsupported screenshot display type.")
-            }
+        guard let display = Components.Schemas.ScreenshotDisplayType(rawValue: displayType) else {
+            throw ScreenshotError.unsupportedDisplayType
+        }
+        return try await perform(operation: "createScreenshotSet") {
             let request = Components.Schemas.AppScreenshotSetCreateRequest(data: .init(
                 attributes: .init(screenshotDisplayType: display),
                 relationships: .init(appStoreVersionLocalization: .init(data: .init(id: localizationID, _type: .appStoreVersionLocalizations))),
@@ -627,7 +627,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         }
     }
 
-    private func allPages<Value>(
+    func allPages<Value>(
         _ load: (Client) async throws -> ([Value], String?)
     ) async throws -> [Value] {
         var values: [Value] = []
@@ -650,10 +650,12 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         throw ApogeeError.unexpectedAPIResponse("A collection exceeded the 100-page safety limit.")
     }
 
-    private func perform<Value>(operation: String, _ body: () async throws -> Value) async throws -> Value {
+    func perform<Value>(operation: String, _ body: () async throws -> Value) async throws -> Value {
         do {
             return try await body()
         } catch let error as ApogeeError {
+            throw error
+        } catch let error as ScreenshotError {
             throw error
         } catch is CancellationError {
             throw CancellationError()

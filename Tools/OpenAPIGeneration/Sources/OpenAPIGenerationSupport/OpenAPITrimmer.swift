@@ -9,6 +9,15 @@ package struct OpenAPITrimmer {
     // Keep only operations called by the adapter. Unsupported capabilities do
     // not reserve generated endpoints; add them with their verified implementation.
     private let selectedOperationIDs: Set<String> = [
+        "apps_assetLibrary_getToOneRelated",
+        "appAssetLibraryRefData_getCollection",
+        "appAssetLibraryImages_createInstance",
+        "appAssetLibraryImages_getInstance",
+        "appAssetLibraryImages_updateInstance",
+        "appAssetLibraryPlacements_createInstance",
+        "appAssetLibraryPlacements_deleteInstance",
+        "appAssetLibraryPlacementOrderingRequests_createInstance",
+        "appStoreVersionLocalizations_placements_getToManyRelated",
         "appScreenshotSets_createInstance",
         "appScreenshotSets_appScreenshots_getToManyRelated",
         "appScreenshotSets_appScreenshots_replaceToManyRelationship",
@@ -129,7 +138,7 @@ package struct OpenAPITrimmer {
             }
 
             var outputGroup = trimmedComponents[componentReference.section] as? [String: Any] ?? [:]
-            let sanitizedComponentValue = try sanitized(componentValue)
+            let sanitizedComponentValue = try sanitized(normalizedComponent(componentValue, name: componentReference.name))
             outputGroup[componentReference.name] = sanitizedComponentValue
             trimmedComponents[componentReference.section] = outputGroup
             try enqueueReferences(in: sanitizedComponentValue)
@@ -178,6 +187,14 @@ package struct OpenAPITrimmer {
         }
 
         if var dictionary = value as? [String: Any] {
+            // Generator 1.12 ignores sibling properties on anyOf request schemas.
+            // Distribute the common schema so required-only branches keep their fields.
+            if dictionary["properties"] != nil,
+               let alternatives = dictionary["anyOf"] as? [[String: Any]] {
+                var common = dictionary
+                common.removeValue(forKey: "anyOf")
+                dictionary = ["anyOf": alternatives.map { merging(common, with: $0) }]
+            }
             if let enumValues = dictionary["enum"] as? [Any], enumValues.isEmpty {
                 dictionary.removeValue(forKey: "enum")
             }
@@ -198,6 +215,44 @@ package struct OpenAPITrimmer {
         }
 
         return value
+    }
+
+    private func normalizedComponent(_ value: Any, name: String) -> Any {
+        guard var schema = value as? [String: Any] else {
+            return value
+        }
+        if name == "AppAssetLibraryPlacement",
+           var properties = schema["properties"] as? [String: Any],
+           var relationships = properties["relationships"] as? [String: Any] {
+            // mediaType is an attribute, not a relationship field. Decode by the
+            // required image/video relationship instead of a nonexistent nested discriminator.
+            relationships.removeValue(forKey: "discriminator")
+            properties["relationships"] = relationships
+            schema["properties"] = properties
+        }
+        if ["AppAssetLibraryPlacementImageRelationships", "AppAssetLibraryPlacementVideoRelationships"].contains(name),
+           var parts = schema["allOf"] as? [[String: Any]] {
+            let field = name == "AppAssetLibraryPlacementImageRelationships" ? "image" : "video"
+            for index in parts.indices where (parts[index]["properties"] as? [String: Any])?[field] != nil {
+                parts[index]["required"] = Array(Set((parts[index]["required"] as? [String] ?? []) + [field])).sorted()
+            }
+            schema["allOf"] = parts
+        }
+        return schema
+    }
+
+    private func merging(_ common: [String: Any], with constraint: [String: Any]) -> [String: Any] {
+        var result = common
+        for (key, value) in constraint {
+            if key == "required", let existing = result[key] as? [String], let required = value as? [String] {
+                result[key] = Array(Set(existing + required)).sorted()
+            } else if let existing = result[key] as? [String: Any], let nested = value as? [String: Any] {
+                result[key] = merging(existing, with: nested)
+            } else {
+                result[key] = value
+            }
+        }
+        return result
     }
 }
 

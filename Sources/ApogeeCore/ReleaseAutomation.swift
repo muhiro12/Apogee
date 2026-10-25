@@ -399,8 +399,9 @@ public struct ReleaseAutomation: Sendable {
 
     /// Plans or applies verified screenshot registration, replacement, and ordering.
     ///
-    /// Production screenshot adapters validate uploads and preserve verified originals
-    /// before deletion. Recovery is required for apply; older adapters remain unsupported.
+    /// The production adapter uses Apple's Asset Library and retains shared images
+    /// while replacing placements. Recovery is required for apply. See the screenshot
+    /// guide for display-class migration and the active API's verification contract.
     public func updateScreenshots(
         appLookup: AppLookup,
         version: String,
@@ -430,6 +431,24 @@ public struct ReleaseAutomation: Sendable {
         recovery: ScreenshotRecovery? = nil,
         progress: (@Sendable (ScreenshotProgress) -> Void)?
     ) async throws -> ReleasePlan {
+        if let libraryAPI = api as? any AssetLibraryAPI {
+            _ = try ScreenshotFiles.load(screenshotsPath, platform: platform, assetLibrary: true)
+            let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
+            let localizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
+            let validateVersion: @Sendable () async throws -> Void = {
+                let current = try await api.appStoreVersions(appID: context.app.id, version: version, platform: platform)
+                guard current.count == 1, let observed = current.first,
+                      observed.id == context.version.id, observed.versionString == version, observed.platform == platform,
+                      ["PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED"].contains(observed.state ?? "") else {
+                    throw ScreenshotError.remoteChanged
+                }
+            }
+            try await validateVersion()
+            return try await AssetLibraryScreenshotWorkflow(api: libraryAPI, validateVersion: validateVersion, progress: progress).run(
+                app: context.app, version: context.version, platform: platform,
+                localizations: localizations, path: screenshotsPath, options: options, recovery: recovery
+            )
+        }
         if let screenshotAPI = api as? any ScreenshotAPI {
             // Validate files before remote access. The workflow retains its own byte snapshot.
             _ = try ScreenshotFiles.load(screenshotsPath, platform: platform)

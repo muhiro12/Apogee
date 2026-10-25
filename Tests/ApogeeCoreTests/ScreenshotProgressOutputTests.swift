@@ -9,7 +9,7 @@ func screenshotCommandKeepsProgressOptInAndSeparateFromFinalJSON() async throws 
     let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: directory) }
     for (locale, seeds) in [("en-US", [UInt8(1)]), ("ja", [UInt8(2), UInt8(3)])] {
-        let display = directory.appendingPathComponent("\(locale)/APP_IPHONE_67")
+        let display = directory.appendingPathComponent("\(locale)/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY")
         try FileManager.default.createDirectory(at: display, withIntermediateDirectories: true)
         for seed in seeds {
             try screenshotPNG(seed: seed).write(to: display.appendingPathComponent("\(seed).png"))
@@ -36,8 +36,8 @@ func screenshotCommandKeepsProgressOptInAndSeparateFromFinalJSON() async throws 
     #expect(result["command"] as? String == "update-screenshots")
     let observed = lines.withLock { $0 }
     #expect(observed.count == 2)
-    #expect(observed.contains { $0.contains("[en-US/APP_IPHONE_67] planning verified=0/3") })
-    #expect(observed.contains { $0.contains("[ja/APP_IPHONE_67] planning verified=0/3") })
+    #expect(observed.contains { $0.contains("[en-US/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY] planning verified=0/3") })
+    #expect(observed.contains { $0.contains("[ja/IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY] planning verified=0/3") })
     #expect(observed.allSatisfy { !$0.contains(path) && !$0.contains("private-sentinel") })
 }
 
@@ -71,7 +71,10 @@ private func progressPlanningTransport() -> StubTransport {
                 }, "links": ["self": "unused"],
             ])
         }
-        #expect(path.contains("/appScreenshotSets"))
+        if path == "/v1/appAssetLibraryRefData" {
+            return try jsonResponse(libraryReferenceFixture())
+        }
+        #expect(path.contains("/placements"))
         return try jsonResponse(["data": [], "links": ["self": "unused"]])
     }
 }

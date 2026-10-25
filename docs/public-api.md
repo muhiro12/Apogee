@@ -70,11 +70,39 @@ server acceptance. Synthesized Codable/Hashable behavior belongs to its type.
 | `ScreenshotFile` | Provisional | File information only |
 | `ScreenshotLoader` | Provisional | Inventory without image or upload validation |
 
-`ReleaseAutomation.updateScreenshots(...)` supports verified apply when its adapter
-also conforms to `ScreenshotAPI`. Older custom adapters retain their provisional
-inventory-only behavior and fail apply with `unsupported(.screenshotUpload)`.
+`ReleaseAutomation.updateScreenshots(...)` uses the App Asset Library with the
+production `GeneratedAppStoreConnectAPI`. Custom adapters conforming to
+`ScreenshotAPI` retain their set-based contract. Older custom adapters retain
+their provisional inventory-only behavior and fail apply with
+`unsupported(.screenshotUpload)`.
 The legacy `screenshotLoader` initializer parameter remains provisional; production
 screenshot execution uses strict image validation and private recovery storage.
+
+### Unsupported screenshot displays
+
+`ScreenshotError.unsupportedDisplayType` distinguishes unsupported displays from
+malformed image input. Unknown display directories fail before remote access;
+unavailable or ambiguous runtime profiles fail before writes. The retained
+`GeneratedAppStoreConnectAPI.createScreenshotSet` method rejects unknown legacy
+display types locally.
+Consumers with exhaustive `ScreenshotError` switches must handle this additional
+case. See the
+[screenshot input and migration guide](screenshots.md#input-and-migration).
+
+### Asset Library migration
+
+The production workflow accepts `AppAssetLibraryDisplayClass` directory names,
+including `IPHONE_DUO`, and uses Apple API 4.5.1 assets and placements exclusively.
+It verifies processed states, `specId`, byte counts, identities, and order. Apple
+removed source-checksum reporting from that API; local SHA-256 reference names
+are identities, not a remote checksum guarantee. Recovery retains placement
+records and undeleted shared images rather than verified original-byte exports.
+
+Use new recovery directories and migrate `APP_*` input directories as described
+in the [screenshot guide](screenshots.md). Public screenshot method signatures,
+legacy low-level methods, custom `ScreenshotAPI` adapters, and progress enum
+cases remain available for Apogee consumers. This compatibility surface does
+not cause the production adapter to fall back to Apple's deprecated endpoints.
 
 ### Metadata URL migration
 

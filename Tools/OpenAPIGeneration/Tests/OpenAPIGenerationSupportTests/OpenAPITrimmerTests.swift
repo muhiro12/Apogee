@@ -68,3 +68,40 @@ func trimmerDropsUnusedOperationsAndTheirExclusiveComponents() throws {
     #expect(Set(paths.keys) == ["/v1/apps", "/v1/appStoreVersions", "/v1/appStoreVersions/{id}", "/v1/appScreenshots"])
     #expect(Set(schemas.keys) == ["AppPage", "App", "VersionCreate", "VersionUpdate", "UploadReservation"])
 }
+
+@Test
+func trimmerPreservesCommonFieldsAndRequiredConstraintsInComposedRequests() throws {
+    let source = Data("""
+    {"paths":{"/placements":{"post":{
+      "operationId":"appAssetLibraryPlacements_createInstance",
+      "requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Request"}}}}
+    }}},"components":{"schemas":{"Request":{
+      "type":"object","required":["type"],
+      "properties":{"type":{"type":"string"},"relationships":{
+        "type":"object","properties":{"image":{"$ref":"#/components/schemas/Identity"},"localization":{"type":"string"}}
+      }},
+      "anyOf":[{"type":"object","required":["relationships"],"properties":{
+        "relationships":{"type":"object","required":["image","localization"]}
+      }}]
+    },"Identity":{"type":"string"}}}}
+    """.utf8)
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
+    let output = directory.appendingPathComponent("openapi.json")
+    _ = try OpenAPITrimmer().trim(sourceData: source, outputURL: output)
+    let document = try #require(JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any])
+    let components = try #require(document["components"] as? [String: Any])
+    let schemas = try #require(components["schemas"] as? [String: Any])
+    let request = try #require(schemas["Request"] as? [String: Any])
+    let alternatives = try #require(request["anyOf"] as? [[String: Any]])
+    let alternative = try #require(alternatives.first)
+    #expect(Set(alternative["required"] as? [String] ?? []) == ["type", "relationships"])
+    let properties = try #require(alternative["properties"] as? [String: Any])
+    let relationships = try #require(properties["relationships"] as? [String: Any])
+    #expect(Set(relationships["required"] as? [String] ?? []) == ["image", "localization"])
+    let fields = try #require(relationships["properties"] as? [String: Any])
+    #expect(Set(fields.keys) == ["image", "localization"])
+    #expect(schemas["Identity"] != nil)
+}

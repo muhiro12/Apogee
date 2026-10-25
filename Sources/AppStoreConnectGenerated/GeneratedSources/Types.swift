@@ -11,6 +11,27 @@ import struct Foundation.Date
 #endif
 /// A type that performs HTTP operations defined by the OpenAPI document.
 package protocol APIProtocol: Sendable {
+    /// - Remark: HTTP `POST /v1/appAssetLibraryImages`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)`.
+    func appAssetLibraryImages_createInstance(_ input: Operations.appAssetLibraryImages_createInstance.Input) async throws -> Operations.appAssetLibraryImages_createInstance.Output
+    /// - Remark: HTTP `GET /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)`.
+    func appAssetLibraryImages_getInstance(_ input: Operations.appAssetLibraryImages_getInstance.Input) async throws -> Operations.appAssetLibraryImages_getInstance.Output
+    /// - Remark: HTTP `PATCH /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)`.
+    func appAssetLibraryImages_updateInstance(_ input: Operations.appAssetLibraryImages_updateInstance.Input) async throws -> Operations.appAssetLibraryImages_updateInstance.Output
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacementOrderingRequests`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)`.
+    func appAssetLibraryPlacementOrderingRequests_createInstance(_ input: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input) async throws -> Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacements`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)`.
+    func appAssetLibraryPlacements_createInstance(_ input: Operations.appAssetLibraryPlacements_createInstance.Input) async throws -> Operations.appAssetLibraryPlacements_createInstance.Output
+    /// - Remark: HTTP `DELETE /v1/appAssetLibraryPlacements/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)`.
+    func appAssetLibraryPlacements_deleteInstance(_ input: Operations.appAssetLibraryPlacements_deleteInstance.Input) async throws -> Operations.appAssetLibraryPlacements_deleteInstance.Output
+    /// - Remark: HTTP `GET /v1/appAssetLibraryRefData`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)`.
+    func appAssetLibraryRefData_getCollection(_ input: Operations.appAssetLibraryRefData_getCollection.Input) async throws -> Operations.appAssetLibraryRefData_getCollection.Output
     /// - Remark: HTTP `GET /v1/apps`.
     /// - Remark: Generated from `#/paths//v1/apps/get(apps_getCollection)`.
     func apps_getCollection(_ input: Operations.apps_getCollection.Input) async throws -> Operations.apps_getCollection.Output
@@ -20,6 +41,9 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /v1/apps/{id}/appStoreVersions`.
     /// - Remark: Generated from `#/paths//v1/apps/{id}/appStoreVersions/get(apps_appStoreVersions_getToManyRelated)`.
     func apps_appStoreVersions_getToManyRelated(_ input: Operations.apps_appStoreVersions_getToManyRelated.Input) async throws -> Operations.apps_appStoreVersions_getToManyRelated.Output
+    /// - Remark: HTTP `GET /v1/apps/{id}/assetLibrary`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)`.
+    func apps_assetLibrary_getToOneRelated(_ input: Operations.apps_assetLibrary_getToOneRelated.Input) async throws -> Operations.apps_assetLibrary_getToOneRelated.Output
     /// - Remark: HTTP `GET /v1/apps/{id}/betaFeedbackCrashSubmissions`.
     /// - Remark: Generated from `#/paths//v1/apps/{id}/betaFeedbackCrashSubmissions/get(apps_betaFeedbackCrashSubmissions_getToManyRelated)`.
     func apps_betaFeedbackCrashSubmissions_getToManyRelated(_ input: Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Input) async throws -> Operations.apps_betaFeedbackCrashSubmissions_getToManyRelated.Output
@@ -56,6 +80,9 @@ package protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/appScreenshotSets`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/appScreenshotSets/get(appStoreVersionLocalizations_appScreenshotSets_getToManyRelated)`.
     func appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(_ input: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input) async throws -> Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/placements`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)`.
+    func appStoreVersionLocalizations_placements_getToManyRelated(_ input: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input) async throws -> Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output
     /// - Remark: HTTP `POST /v1/appStoreVersions`.
     /// - Remark: Generated from `#/paths//v1/appStoreVersions/post(appStoreVersions_createInstance)`.
     func appStoreVersions_createInstance(_ input: Operations.appStoreVersions_createInstance.Input) async throws -> Operations.appStoreVersions_createInstance.Output
@@ -108,6 +135,89 @@ package protocol APIProtocol: Sendable {
 
 /// Convenience overloads for operation inputs.
 extension APIProtocol {
+    /// - Remark: HTTP `POST /v1/appAssetLibraryImages`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)`.
+    package func appAssetLibraryImages_createInstance(
+        headers: Operations.appAssetLibraryImages_createInstance.Input.Headers = .init(),
+        body: Operations.appAssetLibraryImages_createInstance.Input.Body
+    ) async throws -> Operations.appAssetLibraryImages_createInstance.Output {
+        try await appAssetLibraryImages_createInstance(Operations.appAssetLibraryImages_createInstance.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)`.
+    package func appAssetLibraryImages_getInstance(
+        path: Operations.appAssetLibraryImages_getInstance.Input.Path,
+        query: Operations.appAssetLibraryImages_getInstance.Input.Query = .init(),
+        headers: Operations.appAssetLibraryImages_getInstance.Input.Headers = .init()
+    ) async throws -> Operations.appAssetLibraryImages_getInstance.Output {
+        try await appAssetLibraryImages_getInstance(Operations.appAssetLibraryImages_getInstance.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `PATCH /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)`.
+    package func appAssetLibraryImages_updateInstance(
+        path: Operations.appAssetLibraryImages_updateInstance.Input.Path,
+        headers: Operations.appAssetLibraryImages_updateInstance.Input.Headers = .init(),
+        body: Operations.appAssetLibraryImages_updateInstance.Input.Body
+    ) async throws -> Operations.appAssetLibraryImages_updateInstance.Output {
+        try await appAssetLibraryImages_updateInstance(Operations.appAssetLibraryImages_updateInstance.Input(
+            path: path,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacementOrderingRequests`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)`.
+    package func appAssetLibraryPlacementOrderingRequests_createInstance(
+        query: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query = .init(),
+        headers: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Headers = .init(),
+        body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Body
+    ) async throws -> Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output {
+        try await appAssetLibraryPlacementOrderingRequests_createInstance(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacements`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)`.
+    package func appAssetLibraryPlacements_createInstance(
+        headers: Operations.appAssetLibraryPlacements_createInstance.Input.Headers = .init(),
+        body: Operations.appAssetLibraryPlacements_createInstance.Input.Body
+    ) async throws -> Operations.appAssetLibraryPlacements_createInstance.Output {
+        try await appAssetLibraryPlacements_createInstance(Operations.appAssetLibraryPlacements_createInstance.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `DELETE /v1/appAssetLibraryPlacements/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)`.
+    package func appAssetLibraryPlacements_deleteInstance(
+        path: Operations.appAssetLibraryPlacements_deleteInstance.Input.Path,
+        headers: Operations.appAssetLibraryPlacements_deleteInstance.Input.Headers = .init()
+    ) async throws -> Operations.appAssetLibraryPlacements_deleteInstance.Output {
+        try await appAssetLibraryPlacements_deleteInstance(Operations.appAssetLibraryPlacements_deleteInstance.Input(
+            path: path,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appAssetLibraryRefData`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)`.
+    package func appAssetLibraryRefData_getCollection(
+        query: Operations.appAssetLibraryRefData_getCollection.Input.Query = .init(),
+        headers: Operations.appAssetLibraryRefData_getCollection.Input.Headers = .init()
+    ) async throws -> Operations.appAssetLibraryRefData_getCollection.Output {
+        try await appAssetLibraryRefData_getCollection(Operations.appAssetLibraryRefData_getCollection.Input(
+            query: query,
+            headers: headers
+        ))
+    }
     /// - Remark: HTTP `GET /v1/apps`.
     /// - Remark: Generated from `#/paths//v1/apps/get(apps_getCollection)`.
     package func apps_getCollection(
@@ -140,6 +250,19 @@ extension APIProtocol {
         headers: Operations.apps_appStoreVersions_getToManyRelated.Input.Headers = .init()
     ) async throws -> Operations.apps_appStoreVersions_getToManyRelated.Output {
         try await apps_appStoreVersions_getToManyRelated(Operations.apps_appStoreVersions_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/assetLibrary`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)`.
+    package func apps_assetLibrary_getToOneRelated(
+        path: Operations.apps_assetLibrary_getToOneRelated.Input.Path,
+        query: Operations.apps_assetLibrary_getToOneRelated.Input.Query = .init(),
+        headers: Operations.apps_assetLibrary_getToOneRelated.Input.Headers = .init()
+    ) async throws -> Operations.apps_assetLibrary_getToOneRelated.Output {
+        try await apps_assetLibrary_getToOneRelated(Operations.apps_assetLibrary_getToOneRelated.Input(
             path: path,
             query: query,
             headers: headers
@@ -290,6 +413,19 @@ extension APIProtocol {
         headers: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Headers = .init()
     ) async throws -> Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output {
         try await appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/placements`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)`.
+    package func appStoreVersionLocalizations_placements_getToManyRelated(
+        path: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Path,
+        query: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query = .init(),
+        headers: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Headers = .init()
+    ) async throws -> Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output {
+        try await appStoreVersionLocalizations_placements_getToManyRelated(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input(
             path: path,
             query: query,
             headers: headers
@@ -1537,6 +1673,23 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/App/relationships/appTags`.
                 package var appTags: Components.Schemas.App.relationshipsPayload.appTagsPayload?
+                /// - Remark: Generated from `#/components/schemas/App/relationships/assetLibrary`.
+                package struct assetLibraryPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/App/relationships/assetLibrary/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `assetLibraryPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/App/relationships/assetLibrary`.
+                package var assetLibrary: Components.Schemas.App.relationshipsPayload.assetLibraryPayload?
                 /// - Remark: Generated from `#/components/schemas/App/relationships/backgroundAssets`.
                 package struct backgroundAssetsPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/App/relationships/backgroundAssets/links`.
@@ -2293,6 +2446,23 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/App/relationships/marketplaceSearchDetail`.
                 package var marketplaceSearchDetail: Components.Schemas.App.relationshipsPayload.marketplaceSearchDetailPayload?
+                /// - Remark: Generated from `#/components/schemas/App/relationships/performanceOverviews`.
+                package struct performanceOverviewsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/App/relationships/performanceOverviews/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `performanceOverviewsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/App/relationships/performanceOverviews`.
+                package var performanceOverviews: Components.Schemas.App.relationshipsPayload.performanceOverviewsPayload?
                 /// - Remark: Generated from `#/components/schemas/App/relationships/perfPowerMetrics`.
                 package struct perfPowerMetricsPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/App/relationships/perfPowerMetrics/links`.
@@ -2655,6 +2825,7 @@ package enum Components {
                 ///   - appStoreVersionExperimentsV2:
                 ///   - appStoreVersions:
                 ///   - appTags:
+                ///   - assetLibrary:
                 ///   - backgroundAssets:
                 ///   - betaAppLocalizations:
                 ///   - betaAppReviewDetail:
@@ -2674,6 +2845,7 @@ package enum Components {
                 ///   - inAppPurchases:
                 ///   - inAppPurchasesV2:
                 ///   - marketplaceSearchDetail:
+                ///   - performanceOverviews:
                 ///   - perfPowerMetrics:
                 ///   - preReleaseVersions:
                 ///   - promotedPurchases:
@@ -2699,6 +2871,7 @@ package enum Components {
                     appStoreVersionExperimentsV2: Components.Schemas.App.relationshipsPayload.appStoreVersionExperimentsV2Payload? = nil,
                     appStoreVersions: Components.Schemas.App.relationshipsPayload.appStoreVersionsPayload? = nil,
                     appTags: Components.Schemas.App.relationshipsPayload.appTagsPayload? = nil,
+                    assetLibrary: Components.Schemas.App.relationshipsPayload.assetLibraryPayload? = nil,
                     backgroundAssets: Components.Schemas.App.relationshipsPayload.backgroundAssetsPayload? = nil,
                     betaAppLocalizations: Components.Schemas.App.relationshipsPayload.betaAppLocalizationsPayload? = nil,
                     betaAppReviewDetail: Components.Schemas.App.relationshipsPayload.betaAppReviewDetailPayload? = nil,
@@ -2718,6 +2891,7 @@ package enum Components {
                     inAppPurchases: Components.Schemas.App.relationshipsPayload.inAppPurchasesPayload? = nil,
                     inAppPurchasesV2: Components.Schemas.App.relationshipsPayload.inAppPurchasesV2Payload? = nil,
                     marketplaceSearchDetail: Components.Schemas.App.relationshipsPayload.marketplaceSearchDetailPayload? = nil,
+                    performanceOverviews: Components.Schemas.App.relationshipsPayload.performanceOverviewsPayload? = nil,
                     perfPowerMetrics: Components.Schemas.App.relationshipsPayload.perfPowerMetricsPayload? = nil,
                     preReleaseVersions: Components.Schemas.App.relationshipsPayload.preReleaseVersionsPayload? = nil,
                     promotedPurchases: Components.Schemas.App.relationshipsPayload.promotedPurchasesPayload? = nil,
@@ -2743,6 +2917,7 @@ package enum Components {
                     self.appStoreVersionExperimentsV2 = appStoreVersionExperimentsV2
                     self.appStoreVersions = appStoreVersions
                     self.appTags = appTags
+                    self.assetLibrary = assetLibrary
                     self.backgroundAssets = backgroundAssets
                     self.betaAppLocalizations = betaAppLocalizations
                     self.betaAppReviewDetail = betaAppReviewDetail
@@ -2762,6 +2937,7 @@ package enum Components {
                     self.inAppPurchases = inAppPurchases
                     self.inAppPurchasesV2 = inAppPurchasesV2
                     self.marketplaceSearchDetail = marketplaceSearchDetail
+                    self.performanceOverviews = performanceOverviews
                     self.perfPowerMetrics = perfPowerMetrics
                     self.preReleaseVersions = preReleaseVersions
                     self.promotedPurchases = promotedPurchases
@@ -2788,6 +2964,7 @@ package enum Components {
                     case appStoreVersionExperimentsV2
                     case appStoreVersions
                     case appTags
+                    case assetLibrary
                     case backgroundAssets
                     case betaAppLocalizations
                     case betaAppReviewDetail
@@ -2807,6 +2984,7 @@ package enum Components {
                     case inAppPurchases
                     case inAppPurchasesV2
                     case marketplaceSearchDetail
+                    case performanceOverviews
                     case perfPowerMetrics
                     case preReleaseVersions
                     case promotedPurchases
@@ -2852,6 +3030,6944 @@ package enum Components {
                 case links
                 case relationships
                 case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibrary`.
+        package struct AppAssetLibrary: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/images`.
+                package struct imagesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/images/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `imagesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/images`.
+                package var images: Components.Schemas.AppAssetLibrary.relationshipsPayload.imagesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/videos`.
+                package struct videosPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/videos/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `videosPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships/videos`.
+                package var videos: Components.Schemas.AppAssetLibrary.relationshipsPayload.videosPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - images:
+                ///   - videos:
+                package init(
+                    images: Components.Schemas.AppAssetLibrary.relationshipsPayload.imagesPayload? = nil,
+                    videos: Components.Schemas.AppAssetLibrary.relationshipsPayload.videosPayload? = nil
+                ) {
+                    self.images = images
+                    self.videos = videos
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case images
+                    case videos
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/relationships`.
+            package var relationships: Components.Schemas.AppAssetLibrary.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraries = "appAssetLibraries"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibrary/type`.
+            package var _type: Components.Schemas.AppAssetLibrary._typePayload
+            /// Creates a new `AppAssetLibrary`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppAssetLibrary.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppAssetLibrary._typePayload
+            ) {
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryAssetCategory`.
+        @frozen package enum AppAssetLibraryAssetCategory: String, Codable, Hashable, Sendable, CaseIterable {
+            case CREATIVE_ASSETS = "CREATIVE_ASSETS"
+            case APP_SCREENSHOTS_AND_PREVIEWS = "APP_SCREENSHOTS_AND_PREVIEWS"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryAssetState`.
+        @frozen package enum AppAssetLibraryAssetState: String, Codable, Hashable, Sendable, CaseIterable {
+            case AWAITING_UPLOAD = "AWAITING_UPLOAD"
+            case UPLOAD_COMPLETE = "UPLOAD_COMPLETE"
+            case FAILED = "FAILED"
+            case COMPLETE = "COMPLETE"
+            case PREPARE_FOR_SUBMISSION = "PREPARE_FOR_SUBMISSION"
+            case READY_FOR_REVIEW = "READY_FOR_REVIEW"
+            case WAITING_FOR_REVIEW = "WAITING_FOR_REVIEW"
+            case IN_REVIEW = "IN_REVIEW"
+            case ACCEPTED = "ACCEPTED"
+            case APPROVED = "APPROVED"
+            case REJECTED = "REJECTED"
+            case ARCHIVED = "ARCHIVED"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryDisplayClass`.
+        @frozen package enum AppAssetLibraryDisplayClass: String, Codable, Hashable, Sendable, CaseIterable {
+            case DEFAULT = "DEFAULT"
+            case WATCH_ULTRA = "WATCH_ULTRA"
+            case WATCH_SERIES_10 = "WATCH_SERIES_10"
+            case WATCH_SERIES_7 = "WATCH_SERIES_7"
+            case WATCH_SERIES_4 = "WATCH_SERIES_4"
+            case WATCH_SERIES_3 = "WATCH_SERIES_3"
+            case IPHONE_DUO = "IPHONE_DUO"
+            case IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY = "IPHONE_DYNAMIC_ISLAND_LARGE_DISPLAY"
+            case IPHONE_DYNAMIC_ISLAND_MEDIUM_DISPLAY = "IPHONE_DYNAMIC_ISLAND_MEDIUM_DISPLAY"
+            case IPHONE_FACE_ID_LARGE_DISPLAY = "IPHONE_FACE_ID_LARGE_DISPLAY"
+            case IPHONE_FACE_ID_MEDIUM_DISPLAY = "IPHONE_FACE_ID_MEDIUM_DISPLAY"
+            case IPHONE_HOME_BUTTON_LARGE_DISPLAY = "IPHONE_HOME_BUTTON_LARGE_DISPLAY"
+            case IPHONE_HOME_BUTTON_MEDIUM_DISPLAY = "IPHONE_HOME_BUTTON_MEDIUM_DISPLAY"
+            case IPHONE_HOME_BUTTON_40_DISPLAY = "IPHONE_HOME_BUTTON_40_DISPLAY"
+            case IPHONE_HOME_BUTTON_35_DISPLAY = "IPHONE_HOME_BUTTON_35_DISPLAY"
+            case IPAD_13_DISPLAY = "IPAD_13_DISPLAY"
+            case IPAD_11_DISPLAY = "IPAD_11_DISPLAY"
+            case IPAD_129_DISPLAY = "IPAD_129_DISPLAY"
+            case IPAD_105_DISPLAY = "IPAD_105_DISPLAY"
+            case IPAD_97_DISPLAY = "IPAD_97_DISPLAY"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryFeature`.
+        @frozen package enum AppAssetLibraryFeature: String, Codable, Hashable, Sendable, CaseIterable {
+            case APP_STORE_VERSIONS = "APP_STORE_VERSIONS"
+            case CUSTOM_PRODUCT_PAGES = "CUSTOM_PRODUCT_PAGES"
+            case PRODUCT_PAGE_OPTIMIZATIONS = "PRODUCT_PAGE_OPTIMIZATIONS"
+            case IN_APP_EVENTS = "IN_APP_EVENTS"
+            case IN_APP_PURCHASES = "IN_APP_PURCHASES"
+            case SUBSCRIPTIONS = "SUBSCRIPTIONS"
+            case RETENTION_MESSAGING = "RETENTION_MESSAGING"
+            case GAME_CENTER = "GAME_CENTER"
+            case APP_CLIPS = "APP_CLIPS"
+            case APPLE_ADS = "APPLE_ADS"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage`.
+        package struct AppAssetLibraryImage: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes`.
+            @frozen package enum attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageAcceptedAttributes`.
+                case ACCEPTED(Components.Schemas.AppAssetLibraryImageAcceptedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageApprovedAttributes`.
+                case APPROVED(Components.Schemas.AppAssetLibraryImageApprovedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageArchivedAttributes`.
+                case ARCHIVED(Components.Schemas.AppAssetLibraryImageArchivedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageAwaitingUploadAttributes`.
+                case AWAITING_UPLOAD(Components.Schemas.AppAssetLibraryImageAwaitingUploadAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageCommonAttributes`.
+                case COMPLETE(Components.Schemas.AppAssetLibraryImageCommonAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageFailedAttributes`.
+                case FAILED(Components.Schemas.AppAssetLibraryImageFailedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageInReviewAttributes`.
+                case IN_REVIEW(Components.Schemas.AppAssetLibraryImageInReviewAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageCommonAttributes`.
+                case PREPARE_FOR_SUBMISSION(Components.Schemas.AppAssetLibraryImageCommonAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageReadyForReviewAttributes`.
+                case READY_FOR_REVIEW(Components.Schemas.AppAssetLibraryImageReadyForReviewAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageRejectedAttributes`.
+                case REJECTED(Components.Schemas.AppAssetLibraryImageRejectedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageUploadCompleteAttributes`.
+                case UPLOAD_COMPLETE(Components.Schemas.AppAssetLibraryImageUploadCompleteAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes/AppAssetLibraryImageWaitingForReviewAttributes`.
+                case WAITING_FOR_REVIEW(Components.Schemas.AppAssetLibraryImageWaitingForReviewAttributes)
+                package enum CodingKeys: String, CodingKey {
+                    case state
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: .state
+                    )
+                    switch discriminator {
+                    case "ACCEPTED":
+                        self = .ACCEPTED(try .init(from: decoder))
+                    case "APPROVED":
+                        self = .APPROVED(try .init(from: decoder))
+                    case "ARCHIVED":
+                        self = .ARCHIVED(try .init(from: decoder))
+                    case "AWAITING_UPLOAD":
+                        self = .AWAITING_UPLOAD(try .init(from: decoder))
+                    case "COMPLETE":
+                        self = .COMPLETE(try .init(from: decoder))
+                    case "FAILED":
+                        self = .FAILED(try .init(from: decoder))
+                    case "IN_REVIEW":
+                        self = .IN_REVIEW(try .init(from: decoder))
+                    case "PREPARE_FOR_SUBMISSION":
+                        self = .PREPARE_FOR_SUBMISSION(try .init(from: decoder))
+                    case "READY_FOR_REVIEW":
+                        self = .READY_FOR_REVIEW(try .init(from: decoder))
+                    case "REJECTED":
+                        self = .REJECTED(try .init(from: decoder))
+                    case "UPLOAD_COMPLETE":
+                        self = .UPLOAD_COMPLETE(try .init(from: decoder))
+                    case "WAITING_FOR_REVIEW":
+                        self = .WAITING_FOR_REVIEW(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys.state,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .ACCEPTED(value):
+                        try value.encode(to: encoder)
+                    case let .APPROVED(value):
+                        try value.encode(to: encoder)
+                    case let .ARCHIVED(value):
+                        try value.encode(to: encoder)
+                    case let .AWAITING_UPLOAD(value):
+                        try value.encode(to: encoder)
+                    case let .COMPLETE(value):
+                        try value.encode(to: encoder)
+                    case let .FAILED(value):
+                        try value.encode(to: encoder)
+                    case let .IN_REVIEW(value):
+                        try value.encode(to: encoder)
+                    case let .PREPARE_FOR_SUBMISSION(value):
+                        try value.encode(to: encoder)
+                    case let .READY_FOR_REVIEW(value):
+                        try value.encode(to: encoder)
+                    case let .REJECTED(value):
+                        try value.encode(to: encoder)
+                    case let .UPLOAD_COMPLETE(value):
+                        try value.encode(to: encoder)
+                    case let .WAITING_FOR_REVIEW(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/attributes`.
+            package var attributes: Components.Schemas.AppAssetLibraryImage.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/data`.
+                    package var data: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships/placements`.
+                package var placements: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - placements:
+                package init(placements: Components.Schemas.AppAssetLibraryImage.relationshipsPayload.placementsPayload? = nil) {
+                    self.placements = placements
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case placements
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/relationships`.
+            package var relationships: Components.Schemas.AppAssetLibraryImage.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraryImages = "appAssetLibraryImages"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImage/type`.
+            package var _type: Components.Schemas.AppAssetLibraryImage._typePayload
+            /// Creates a new `AppAssetLibraryImage`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppAssetLibraryImage.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppAssetLibraryImage.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppAssetLibraryImage._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAcceptedAttributes`.
+        package struct AppAssetLibraryImageAcceptedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAcceptedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAcceptedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageAcceptedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageApprovedAttributes`.
+        package struct AppAssetLibraryImageApprovedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageApprovedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageApprovedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageApprovedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageArchivedAttributes`.
+        package struct AppAssetLibraryImageArchivedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageArchivedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageArchivedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageArchivedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAwaitingUploadAttributes`.
+        package struct AppAssetLibraryImageAwaitingUploadAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAwaitingUploadAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAwaitingUploadAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAwaitingUploadAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageAwaitingUploadAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryImageAwaitingUploadAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryImageAwaitingUploadAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryImageAwaitingUploadAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes`.
+        package struct AppAssetLibraryImageCommonAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/category`.
+            package var category: Components.Schemas.AppAssetLibraryAssetCategory?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/createdDate`.
+            package var createdDate: Foundation.Date?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/fileName`.
+            package var fileName: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/fileSize`.
+            package var fileSize: Swift.Int64?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/imageAsset`.
+            package var imageAsset: Components.Schemas.ImageAsset?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/lastModifiedDate`.
+            package var lastModifiedDate: Foundation.Date?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/referenceName`.
+            package var referenceName: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/specId`.
+            package var specId: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/state`.
+            package var state: Components.Schemas.AppAssetLibraryAssetState
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCommonAttributes/stateDetails`.
+            package var stateDetails: [Components.Schemas.StateDetail]?
+            /// Creates a new `AppAssetLibraryImageCommonAttributes`.
+            ///
+            /// - Parameters:
+            ///   - category:
+            ///   - createdDate:
+            ///   - fileName:
+            ///   - fileSize:
+            ///   - imageAsset:
+            ///   - lastModifiedDate:
+            ///   - referenceName:
+            ///   - specId:
+            ///   - state:
+            ///   - stateDetails:
+            package init(
+                category: Components.Schemas.AppAssetLibraryAssetCategory? = nil,
+                createdDate: Foundation.Date? = nil,
+                fileName: Swift.String? = nil,
+                fileSize: Swift.Int64? = nil,
+                imageAsset: Components.Schemas.ImageAsset? = nil,
+                lastModifiedDate: Foundation.Date? = nil,
+                referenceName: Swift.String? = nil,
+                specId: Swift.String? = nil,
+                state: Components.Schemas.AppAssetLibraryAssetState,
+                stateDetails: [Components.Schemas.StateDetail]? = nil
+            ) {
+                self.category = category
+                self.createdDate = createdDate
+                self.fileName = fileName
+                self.fileSize = fileSize
+                self.imageAsset = imageAsset
+                self.lastModifiedDate = lastModifiedDate
+                self.referenceName = referenceName
+                self.specId = specId
+                self.state = state
+                self.stateDetails = stateDetails
+            }
+            package enum CodingKeys: String, CodingKey {
+                case category
+                case createdDate
+                case fileName
+                case fileSize
+                case imageAsset
+                case lastModifiedDate
+                case referenceName
+                case specId
+                case state
+                case stateDetails
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest`.
+        package struct AppAssetLibraryImageCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes/category`.
+                    package var category: Components.Schemas.AppAssetLibraryAssetCategory
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes/fileName`.
+                    package var fileName: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes/fileSize`.
+                    package var fileSize: Swift.Int64
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes/referenceName`.
+                    package var referenceName: Swift.String?
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - category:
+                    ///   - fileName:
+                    ///   - fileSize:
+                    ///   - referenceName:
+                    package init(
+                        category: Components.Schemas.AppAssetLibraryAssetCategory,
+                        fileName: Swift.String,
+                        fileSize: Swift.Int64,
+                        referenceName: Swift.String? = nil
+                    ) {
+                        self.category = category
+                        self.fileName = fileName
+                        self.fileSize = fileSize
+                        self.referenceName = referenceName
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case category
+                        case fileName
+                        case fileSize
+                        case referenceName
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.attributesPayload
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships`.
+                package struct relationshipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary`.
+                    package struct assetLibraryPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appAssetLibraries = "appAssetLibraries"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary/data/type`.
+                            package var _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary/data`.
+                        package var data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload.dataPayload
+                        /// Creates a new `assetLibraryPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload.dataPayload) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/assetLibrary`.
+                    package var assetLibrary: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements`.
+                    package struct placementsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/dataPayload`.
+                        package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/dataPayload/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/dataPayload/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/dataPayload/type`.
+                            package var _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                            /// Creates a new `dataPayloadPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/data`.
+                        package typealias dataPayload = [Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements/data`.
+                        package var data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload.dataPayload?
+                        /// Creates a new `placementsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships/placements`.
+                    package var placements: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload?
+                    /// Creates a new `relationshipsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - assetLibrary:
+                    ///   - placements:
+                    package init(
+                        assetLibrary: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.assetLibraryPayload,
+                        placements: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload.placementsPayload? = nil
+                    ) {
+                        self.assetLibrary = assetLibrary
+                        self.placements = placements
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case assetLibrary
+                        case placements
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/relationships`.
+                package var relationships: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appAssetLibraryImages = "appAssetLibraryImages"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data/type`.
+                package var _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - relationships:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.attributesPayload,
+                    relationships: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload.relationshipsPayload,
+                    _type: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.relationships = relationships
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case relationships
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageCreateRequest/data`.
+            package var data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload
+            /// Creates a new `AppAssetLibraryImageCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppAssetLibraryImageCreateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageFailedAttributes`.
+        package struct AppAssetLibraryImageFailedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageFailedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageFailedAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageFailedAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageFailedAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryImageFailedAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryImageFailedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryImageFailedAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageInReviewAttributes`.
+        package struct AppAssetLibraryImageInReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageInReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageInReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageInReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageReadyForReviewAttributes`.
+        package struct AppAssetLibraryImageReadyForReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageReadyForReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageReadyForReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageReadyForReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageRejectedAttributes`.
+        package struct AppAssetLibraryImageRejectedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageRejectedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageRejectedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageRejectedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageResponse`.
+        package struct AppAssetLibraryImageResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageResponse/data`.
+            package var data: Components.Schemas.AppAssetLibraryImage
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageResponse/included`.
+            package var included: [Components.Schemas.AppAssetLibraryPlacement]?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppAssetLibraryImageResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppAssetLibraryImage,
+                included: [Components.Schemas.AppAssetLibraryPlacement]? = nil,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest`.
+        package struct AppAssetLibraryImageUpdateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/attributes`.
+                package struct attributesPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/attributes/archived`.
+                    package var archived: Swift.Bool?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/attributes/referenceName`.
+                    package var referenceName: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/attributes/uploaded`.
+                    package var uploaded: Swift.Bool?
+                    /// Creates a new `attributesPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - archived:
+                    ///   - referenceName:
+                    ///   - uploaded:
+                    package init(
+                        archived: Swift.Bool? = nil,
+                        referenceName: Swift.String? = nil,
+                        uploaded: Swift.Bool? = nil
+                    ) {
+                        self.archived = archived
+                        self.referenceName = referenceName
+                        self.uploaded = uploaded
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case archived
+                        case referenceName
+                        case uploaded
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/attributes`.
+                package var attributes: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload.attributesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/id`.
+                package var id: Swift.String
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/type`.
+                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case appAssetLibraryImages = "appAssetLibraryImages"
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data/type`.
+                package var _type: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload._typePayload
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - attributes:
+                ///   - id:
+                ///   - _type:
+                package init(
+                    attributes: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload.attributesPayload? = nil,
+                    id: Swift.String,
+                    _type: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload._typePayload
+                ) {
+                    self.attributes = attributes
+                    self.id = id
+                    self._type = _type
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case attributes
+                    case id
+                    case _type = "type"
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUpdateRequest/data`.
+            package var data: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload
+            /// Creates a new `AppAssetLibraryImageUpdateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppAssetLibraryImageUpdateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUploadCompleteAttributes`.
+        package struct AppAssetLibraryImageUploadCompleteAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUploadCompleteAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUploadCompleteAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUploadCompleteAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageUploadCompleteAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryImageUploadCompleteAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryImageUploadCompleteAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryImageUploadCompleteAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageWaitingForReviewAttributes`.
+        package struct AppAssetLibraryImageWaitingForReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageWaitingForReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryImageCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryImageWaitingForReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryImageWaitingForReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryImageCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryMediaType`.
+        @frozen package enum AppAssetLibraryMediaType: String, Codable, Hashable, Sendable, CaseIterable {
+            case IMAGE = "IMAGE"
+            case VIDEO = "VIDEO"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement`.
+        package struct AppAssetLibraryPlacement: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/createdDate`.
+                package var createdDate: Foundation.Date?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/lastModifiedDate`.
+                package var lastModifiedDate: Foundation.Date?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/mediaType`.
+                package var mediaType: Components.Schemas.AppAssetLibraryMediaType?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/placementGroup`.
+                package var placementGroup: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/placementType`.
+                package var placementType: Components.Schemas.AppAssetLibraryPlacementType?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/state`.
+                package var state: Components.Schemas.AppAssetLibraryPlacementState?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes/stateDetails`.
+                package var stateDetails: [Components.Schemas.StateDetail]?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - createdDate:
+                ///   - lastModifiedDate:
+                ///   - mediaType:
+                ///   - placementGroup:
+                ///   - placementType:
+                ///   - state:
+                ///   - stateDetails:
+                package init(
+                    createdDate: Foundation.Date? = nil,
+                    lastModifiedDate: Foundation.Date? = nil,
+                    mediaType: Components.Schemas.AppAssetLibraryMediaType? = nil,
+                    placementGroup: Swift.String? = nil,
+                    placementType: Components.Schemas.AppAssetLibraryPlacementType? = nil,
+                    state: Components.Schemas.AppAssetLibraryPlacementState? = nil,
+                    stateDetails: [Components.Schemas.StateDetail]? = nil
+                ) {
+                    self.createdDate = createdDate
+                    self.lastModifiedDate = lastModifiedDate
+                    self.mediaType = mediaType
+                    self.placementGroup = placementGroup
+                    self.placementType = placementType
+                    self.state = state
+                    self.stateDetails = stateDetails
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case createdDate
+                    case lastModifiedDate
+                    case mediaType
+                    case placementGroup
+                    case placementType
+                    case state
+                    case stateDetails
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/attributes`.
+            package var attributes: Components.Schemas.AppAssetLibraryPlacement.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/relationships`.
+            @frozen package enum relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/relationships/case1`.
+                case AppAssetLibraryPlacementImageRelationships(Components.Schemas.AppAssetLibraryPlacementImageRelationships)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/relationships/case2`.
+                case AppAssetLibraryPlacementVideoRelationships(Components.Schemas.AppAssetLibraryPlacementVideoRelationships)
+                package init(from decoder: any Swift.Decoder) throws {
+                    var errors: [any Swift.Error] = []
+                    do {
+                        self = .AppAssetLibraryPlacementImageRelationships(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .AppAssetLibraryPlacementVideoRelationships(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .AppAssetLibraryPlacementImageRelationships(value):
+                        try value.encode(to: encoder)
+                    case let .AppAssetLibraryPlacementVideoRelationships(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/relationships`.
+            package var relationships: Components.Schemas.AppAssetLibraryPlacement.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacement/type`.
+            package var _type: Components.Schemas.AppAssetLibraryPlacement._typePayload
+            /// Creates a new `AppAssetLibraryPlacement`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppAssetLibraryPlacement.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppAssetLibraryPlacement.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppAssetLibraryPlacement._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships`.
+        package struct AppAssetLibraryPlacementCommonRelationships: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization`.
+            package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization/data`.
+                package struct dataPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization/data/id`.
+                    package var id: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization/data/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization/data/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                    /// Creates a new `dataPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - id:
+                    ///   - _type:
+                    package init(
+                        id: Swift.String,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                    ) {
+                        self.id = id
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case id
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization/data`.
+                package var data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload.dataPayload?
+                /// Creates a new `appCustomProductPageLocalizationPayload`.
+                ///
+                /// - Parameters:
+                ///   - data:
+                package init(data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                    self.data = data
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case data
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appCustomProductPageLocalization`.
+            package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization`.
+            package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization/data`.
+                package struct dataPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization/data/id`.
+                    package var id: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization/data/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appEventLocalizations = "appEventLocalizations"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization/data/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload.dataPayload._typePayload
+                    /// Creates a new `dataPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - id:
+                    ///   - _type:
+                    package init(
+                        id: Swift.String,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload.dataPayload._typePayload
+                    ) {
+                        self.id = id
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case id
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization/data`.
+                package var data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload.dataPayload?
+                /// Creates a new `appEventLocalizationPayload`.
+                ///
+                /// - Parameters:
+                ///   - data:
+                package init(data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload.dataPayload? = nil) {
+                    self.data = data
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case data
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appEventLocalization`.
+            package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization`.
+            package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                package struct dataPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                    package var id: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                    /// Creates a new `dataPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - id:
+                    ///   - _type:
+                    package init(
+                        id: Swift.String,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                    ) {
+                        self.id = id
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case id
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                package var data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                ///
+                /// - Parameters:
+                ///   - data:
+                package init(data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                    self.data = data
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case data
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionExperimentTreatmentLocalization`.
+            package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization`.
+            package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization/data`.
+                package struct dataPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization/data/id`.
+                    package var id: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization/data/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization/data/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                    /// Creates a new `dataPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - id:
+                    ///   - _type:
+                    package init(
+                        id: Swift.String,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                    ) {
+                        self.id = id
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case id
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization/data`.
+                package var data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload.dataPayload?
+                /// Creates a new `appStoreVersionLocalizationPayload`.
+                ///
+                /// - Parameters:
+                ///   - data:
+                package init(data: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                    self.data = data
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case data
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCommonRelationships/appStoreVersionLocalization`.
+            package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload?
+            /// Creates a new `AppAssetLibraryPlacementCommonRelationships`.
+            ///
+            /// - Parameters:
+            ///   - appCustomProductPageLocalization:
+            ///   - appEventLocalization:
+            ///   - appStoreVersionExperimentTreatmentLocalization:
+            ///   - appStoreVersionLocalization:
+            package init(
+                appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appCustomProductPageLocalizationPayload? = nil,
+                appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appEventLocalizationPayload? = nil,
+                appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCommonRelationships.appStoreVersionLocalizationPayload? = nil
+            ) {
+                self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                self.appEventLocalization = appEventLocalization
+                self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                self.appStoreVersionLocalization = appStoreVersionLocalization
+            }
+            package enum CodingKeys: String, CodingKey {
+                case appCustomProductPageLocalization
+                case appEventLocalization
+                case appStoreVersionExperimentTreatmentLocalization
+                case appStoreVersionLocalization
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest`.
+        package struct AppAssetLibraryPlacementCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1`.
+                package struct Value1Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload?
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appEventLocalizationPayload,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.imagePayload,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload.videoPayload? = nil
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload._typePayload
+                    /// Creates a new `Value1Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value1`.
+                package var value1: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2`.
+                package struct Value2Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload?
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.imagePayload,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload.videoPayload? = nil
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload._typePayload
+                    /// Creates a new `Value2Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value2`.
+                package var value2: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3`.
+                package struct Value3Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload?
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.imagePayload,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload.videoPayload? = nil
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload._typePayload
+                    /// Creates a new `Value3Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value3`.
+                package var value3: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4`.
+                package struct Value4Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload?
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.imagePayload,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload.videoPayload? = nil
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload._typePayload
+                    /// Creates a new `Value4Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value4`.
+                package var value4: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5`.
+                package struct Value5Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appEventLocalizationPayload,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.imagePayload? = nil,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload.videoPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload._typePayload
+                    /// Creates a new `Value5Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value5`.
+                package var value5: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6`.
+                package struct Value6Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.appStoreVersionLocalizationPayload,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.imagePayload? = nil,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload.videoPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload._typePayload
+                    /// Creates a new `Value6Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value6`.
+                package var value6: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7`.
+                package struct Value7Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appCustomProductPageLocalizationPayload,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.imagePayload? = nil,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload.videoPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload._typePayload
+                    /// Creates a new `Value7Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value7`.
+                package var value7: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8`.
+                package struct Value8Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/attributes/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        ///   - placementType:
+                        package init(
+                            placementGroup: Swift.String? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType
+                        ) {
+                            self.placementGroup = placementGroup
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization`.
+                        package struct appEventLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appEventLocalizations = "appEventLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload?
+                            /// Creates a new `appEventLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appEventLocalization`.
+                        package var appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image`.
+                        package struct imagePayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryImages = "appAssetLibraryImages"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload.dataPayload?
+                            /// Creates a new `imagePayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/image`.
+                        package var image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video`.
+                        package struct videoPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryVideos = "appAssetLibraryVideos"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload.dataPayload?
+                            /// Creates a new `videoPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships/video`.
+                        package var video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appEventLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - image:
+                        ///   - video:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appEventLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appEventLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            image: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.imagePayload? = nil,
+                            video: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload.videoPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appEventLocalization = appEventLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.image = image
+                            self.video = video
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appEventLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case image
+                            case video
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload._typePayload
+                    /// Creates a new `Value8Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data/value8`.
+                package var value8: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload?
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                ///   - value3:
+                ///   - value4:
+                ///   - value5:
+                ///   - value6:
+                ///   - value7:
+                ///   - value8:
+                package init(
+                    value1: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value1Payload? = nil,
+                    value2: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value2Payload? = nil,
+                    value3: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value3Payload? = nil,
+                    value4: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value4Payload? = nil,
+                    value5: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value5Payload? = nil,
+                    value6: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value6Payload? = nil,
+                    value7: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value7Payload? = nil,
+                    value8: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload.Value8Payload? = nil
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                    self.value3 = value3
+                    self.value4 = value4
+                    self.value5 = value5
+                    self.value6 = value6
+                    self.value7 = value7
+                    self.value8 = value8
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    var errors: [any Swift.Error] = []
+                    do {
+                        self.value1 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value2 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value3 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value4 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value5 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value6 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value7 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value8 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
+                        [
+                            self.value1,
+                            self.value2,
+                            self.value3,
+                            self.value4,
+                            self.value5,
+                            self.value6,
+                            self.value7,
+                            self.value8
+                        ],
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    try self.value1?.encode(to: encoder)
+                    try self.value2?.encode(to: encoder)
+                    try self.value3?.encode(to: encoder)
+                    try self.value4?.encode(to: encoder)
+                    try self.value5?.encode(to: encoder)
+                    try self.value6?.encode(to: encoder)
+                    try self.value7?.encode(to: encoder)
+                    try self.value8?.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementCreateRequest/data`.
+            package var data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload
+            /// Creates a new `AppAssetLibraryPlacementCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppAssetLibraryPlacementCreateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships`.
+        package struct AppAssetLibraryPlacementImageRelationships: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryPlacementCommonRelationships
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image`.
+                package struct imagePayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryImages = "appAssetLibraryImages"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image/data/type`.
+                        package var _type: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image/data`.
+                    package var data: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload.dataPayload?
+                    /// Creates a new `imagePayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2/image`.
+                package var image: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - image:
+                package init(image: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload.imagePayload) {
+                    self.image = image
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case image
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementImageRelationships/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload
+            /// Creates a new `AppAssetLibraryPlacementImageRelationships`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryPlacementCommonRelationships,
+                value2: Components.Schemas.AppAssetLibraryPlacementImageRelationships.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest`.
+        package struct AppAssetLibraryPlacementOrderingRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements`.
+                package struct orderedPlacementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/data`.
+                    package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `orderedPlacementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload.dataPayload? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships/orderedPlacements`.
+                package var orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - orderedPlacements:
+                package init(orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload.orderedPlacementsPayload? = nil) {
+                    self.orderedPlacements = orderedPlacements
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case orderedPlacements
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/relationships`.
+            package var relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraryPlacementOrderingRequests = "appAssetLibraryPlacementOrderingRequests"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequest/type`.
+            package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequest._typePayload
+            /// Creates a new `AppAssetLibraryPlacementOrderingRequest`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequest.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequest._typePayload
+            ) {
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest`.
+        package struct AppAssetLibraryPlacementOrderingRequestCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data`.
+            package struct dataPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1`.
+                package struct Value1Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        package init(placementGroup: Swift.String? = nil) {
+                            self.placementGroup = placementGroup
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements`.
+                        package struct orderedPlacementsPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/dataPayload`.
+                            package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/dataPayload/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/dataPayload/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/dataPayload/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                /// Creates a new `dataPayloadPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/data`.
+                            package typealias dataPayload = [Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload]
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload?
+                            /// Creates a new `orderedPlacementsPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships/orderedPlacements`.
+                        package var orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - orderedPlacements:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.appStoreVersionLocalizationPayload,
+                            orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload.orderedPlacementsPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.orderedPlacements = orderedPlacements
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case orderedPlacements
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacementOrderingRequests = "appAssetLibraryPlacementOrderingRequests"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload._typePayload
+                    /// Creates a new `Value1Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value1`.
+                package var value1: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2`.
+                package struct Value2Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        package init(placementGroup: Swift.String? = nil) {
+                            self.placementGroup = placementGroup
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements`.
+                        package struct orderedPlacementsPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/dataPayload`.
+                            package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/dataPayload/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/dataPayload/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/dataPayload/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                /// Creates a new `dataPayloadPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/data`.
+                            package typealias dataPayload = [Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload]
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload?
+                            /// Creates a new `orderedPlacementsPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships/orderedPlacements`.
+                        package var orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - orderedPlacements:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appCustomProductPageLocalizationPayload,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload? = nil,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload.orderedPlacementsPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.orderedPlacements = orderedPlacements
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case orderedPlacements
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacementOrderingRequests = "appAssetLibraryPlacementOrderingRequests"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload._typePayload
+                    /// Creates a new `Value2Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value2`.
+                package var value2: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3`.
+                package struct Value3Payload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/attributes`.
+                    package struct attributesPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/attributes/placementGroup`.
+                        package var placementGroup: Swift.String?
+                        /// Creates a new `attributesPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroup:
+                        package init(placementGroup: Swift.String? = nil) {
+                            self.placementGroup = placementGroup
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroup
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/attributes`.
+                    package var attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.attributesPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships`.
+                    package struct relationshipsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization`.
+                        package struct appCustomProductPageLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appCustomProductPageLocalizations = "appCustomProductPageLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload?
+                            /// Creates a new `appCustomProductPageLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appCustomProductPageLocalization`.
+                        package var appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package struct appStoreVersionExperimentTreatmentLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionExperimentTreatmentLocalizations = "appStoreVersionExperimentTreatmentLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionExperimentTreatmentLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionExperimentTreatmentLocalization`.
+                        package var appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization`.
+                        package struct appStoreVersionLocalizationPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization/data`.
+                            package struct dataPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appStoreVersionLocalizations = "appStoreVersionLocalizations"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization/data/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                /// Creates a new `dataPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload?
+                            /// Creates a new `appStoreVersionLocalizationPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/appStoreVersionLocalization`.
+                        package var appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements`.
+                        package struct orderedPlacementsPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/dataPayload`.
+                            package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/dataPayload/id`.
+                                package var id: Swift.String
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/dataPayload/type`.
+                                @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                    case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                                }
+                                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/dataPayload/type`.
+                                package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                /// Creates a new `dataPayloadPayload`.
+                                ///
+                                /// - Parameters:
+                                ///   - id:
+                                ///   - _type:
+                                package init(
+                                    id: Swift.String,
+                                    _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload._typePayload
+                                ) {
+                                    self.id = id
+                                    self._type = _type
+                                }
+                                package enum CodingKeys: String, CodingKey {
+                                    case id
+                                    case _type = "type"
+                                }
+                            }
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/data`.
+                            package typealias dataPayload = [Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload.dataPayloadPayload]
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements/data`.
+                            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload?
+                            /// Creates a new `orderedPlacementsPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - data:
+                            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload.dataPayload? = nil) {
+                                self.data = data
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case data
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships/orderedPlacements`.
+                        package var orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload
+                        /// Creates a new `relationshipsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - appCustomProductPageLocalization:
+                        ///   - appStoreVersionExperimentTreatmentLocalization:
+                        ///   - appStoreVersionLocalization:
+                        ///   - orderedPlacements:
+                        package init(
+                            appCustomProductPageLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appCustomProductPageLocalizationPayload? = nil,
+                            appStoreVersionExperimentTreatmentLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionExperimentTreatmentLocalizationPayload,
+                            appStoreVersionLocalization: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.appStoreVersionLocalizationPayload? = nil,
+                            orderedPlacements: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload.orderedPlacementsPayload
+                        ) {
+                            self.appCustomProductPageLocalization = appCustomProductPageLocalization
+                            self.appStoreVersionExperimentTreatmentLocalization = appStoreVersionExperimentTreatmentLocalization
+                            self.appStoreVersionLocalization = appStoreVersionLocalization
+                            self.orderedPlacements = orderedPlacements
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case appCustomProductPageLocalization
+                            case appStoreVersionExperimentTreatmentLocalization
+                            case appStoreVersionLocalization
+                            case orderedPlacements
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/relationships`.
+                    package var relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/type`.
+                    @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case appAssetLibraryPlacementOrderingRequests = "appAssetLibraryPlacementOrderingRequests"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3/type`.
+                    package var _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload._typePayload
+                    /// Creates a new `Value3Payload`.
+                    ///
+                    /// - Parameters:
+                    ///   - attributes:
+                    ///   - relationships:
+                    ///   - _type:
+                    package init(
+                        attributes: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.attributesPayload,
+                        relationships: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload.relationshipsPayload,
+                        _type: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload._typePayload
+                    ) {
+                        self.attributes = attributes
+                        self.relationships = relationships
+                        self._type = _type
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case attributes
+                        case relationships
+                        case _type = "type"
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data/value3`.
+                package var value3: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload?
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                ///   - value3:
+                package init(
+                    value1: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value1Payload? = nil,
+                    value2: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value2Payload? = nil,
+                    value3: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload.Value3Payload? = nil
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                    self.value3 = value3
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    var errors: [any Swift.Error] = []
+                    do {
+                        self.value1 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value2 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self.value3 = try .init(from: decoder)
+                    } catch {
+                        errors.append(error)
+                    }
+                    try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
+                        [
+                            self.value1,
+                            self.value2,
+                            self.value3
+                        ],
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    try self.value1?.encode(to: encoder)
+                    try self.value2?.encode(to: encoder)
+                    try self.value3?.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestCreateRequest/data`.
+            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload
+            /// Creates a new `AppAssetLibraryPlacementOrderingRequestCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            package init(data: Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest.dataPayload) {
+                self.data = data
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestResponse`.
+        package struct AppAssetLibraryPlacementOrderingRequestResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestResponse/data`.
+            package var data: Components.Schemas.AppAssetLibraryPlacementOrderingRequest
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestResponse/included`.
+            package var included: [Components.Schemas.AppAssetLibraryPlacement]?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementOrderingRequestResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppAssetLibraryPlacementOrderingRequestResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppAssetLibraryPlacementOrderingRequest,
+                included: [Components.Schemas.AppAssetLibraryPlacement]? = nil,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementPlatform`.
+        @frozen package enum AppAssetLibraryPlacementPlatform: String, Codable, Hashable, Sendable, CaseIterable {
+            case IPHONE_APP_STORE = "IPHONE_APP_STORE"
+            case IPAD_APP_STORE = "IPAD_APP_STORE"
+            case WATCH_APP_STORE = "WATCH_APP_STORE"
+            case IMESSAGE_APP_STORE = "IMESSAGE_APP_STORE"
+            case VISION_PRO_APP_STORE = "VISION_PRO_APP_STORE"
+            case MAC_APP_STORE = "MAC_APP_STORE"
+            case TV_APP_STORE = "TV_APP_STORE"
+            case ANY = "ANY"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse`.
+        package struct AppAssetLibraryPlacementResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/data`.
+            package var data: Components.Schemas.AppAssetLibraryPlacement
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppAssetLibraryImage`.
+                case appAssetLibraryImages(Components.Schemas.AppAssetLibraryImage)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppAssetLibraryVideo`.
+                case appAssetLibraryVideos(Components.Schemas.AppAssetLibraryVideo)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppCustomProductPageLocalization`.
+                case appCustomProductPageLocalizations(Components.Schemas.AppCustomProductPageLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppEventLocalization`.
+                case appEventLocalizations(Components.Schemas.AppEventLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppStoreVersionExperimentTreatmentLocalization`.
+                case appStoreVersionExperimentTreatmentLocalizations(Components.Schemas.AppStoreVersionExperimentTreatmentLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/includedPayload/AppStoreVersionLocalization`.
+                case appStoreVersionLocalizations(Components.Schemas.AppStoreVersionLocalization)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "appAssetLibraryImages":
+                        self = .appAssetLibraryImages(try .init(from: decoder))
+                    case "appAssetLibraryVideos":
+                        self = .appAssetLibraryVideos(try .init(from: decoder))
+                    case "appCustomProductPageLocalizations":
+                        self = .appCustomProductPageLocalizations(try .init(from: decoder))
+                    case "appEventLocalizations":
+                        self = .appEventLocalizations(try .init(from: decoder))
+                    case "appStoreVersionExperimentTreatmentLocalizations":
+                        self = .appStoreVersionExperimentTreatmentLocalizations(try .init(from: decoder))
+                    case "appStoreVersionLocalizations":
+                        self = .appStoreVersionLocalizations(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .appAssetLibraryImages(value):
+                        try value.encode(to: encoder)
+                    case let .appAssetLibraryVideos(value):
+                        try value.encode(to: encoder)
+                    case let .appCustomProductPageLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appEventLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionExperimentTreatmentLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionLocalizations(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/included`.
+            package typealias includedPayload = [Components.Schemas.AppAssetLibraryPlacementResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/included`.
+            package var included: Components.Schemas.AppAssetLibraryPlacementResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppAssetLibraryPlacementResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppAssetLibraryPlacement,
+                included: Components.Schemas.AppAssetLibraryPlacementResponse.includedPayload? = nil,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse`.
+        package struct AppAssetLibraryPlacementsResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/data`.
+            package var data: [Components.Schemas.AppAssetLibraryPlacement]
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload`.
+            @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppAssetLibraryImage`.
+                case appAssetLibraryImages(Components.Schemas.AppAssetLibraryImage)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppAssetLibraryVideo`.
+                case appAssetLibraryVideos(Components.Schemas.AppAssetLibraryVideo)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppCustomProductPageLocalization`.
+                case appCustomProductPageLocalizations(Components.Schemas.AppCustomProductPageLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppEventLocalization`.
+                case appEventLocalizations(Components.Schemas.AppEventLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppStoreVersionExperimentTreatmentLocalization`.
+                case appStoreVersionExperimentTreatmentLocalizations(Components.Schemas.AppStoreVersionExperimentTreatmentLocalization)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/includedPayload/AppStoreVersionLocalization`.
+                case appStoreVersionLocalizations(Components.Schemas.AppStoreVersionLocalization)
+                package enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: ._type
+                    )
+                    switch discriminator {
+                    case "appAssetLibraryImages":
+                        self = .appAssetLibraryImages(try .init(from: decoder))
+                    case "appAssetLibraryVideos":
+                        self = .appAssetLibraryVideos(try .init(from: decoder))
+                    case "appCustomProductPageLocalizations":
+                        self = .appCustomProductPageLocalizations(try .init(from: decoder))
+                    case "appEventLocalizations":
+                        self = .appEventLocalizations(try .init(from: decoder))
+                    case "appStoreVersionExperimentTreatmentLocalizations":
+                        self = .appStoreVersionExperimentTreatmentLocalizations(try .init(from: decoder))
+                    case "appStoreVersionLocalizations":
+                        self = .appStoreVersionLocalizations(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys._type,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .appAssetLibraryImages(value):
+                        try value.encode(to: encoder)
+                    case let .appAssetLibraryVideos(value):
+                        try value.encode(to: encoder)
+                    case let .appCustomProductPageLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appEventLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionExperimentTreatmentLocalizations(value):
+                        try value.encode(to: encoder)
+                    case let .appStoreVersionLocalizations(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/included`.
+            package typealias includedPayload = [Components.Schemas.AppAssetLibraryPlacementsResponse.includedPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/included`.
+            package var included: Components.Schemas.AppAssetLibraryPlacementsResponse.includedPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementsResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `AppAssetLibraryPlacementsResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - included:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.AppAssetLibraryPlacement],
+                included: Components.Schemas.AppAssetLibraryPlacementsResponse.includedPayload? = nil,
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.included = included
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case included
+                case links
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementState`.
+        @frozen package enum AppAssetLibraryPlacementState: String, Codable, Hashable, Sendable, CaseIterable {
+            case ASSET_PROCESSING = "ASSET_PROCESSING"
+            case FAILED = "FAILED"
+            case PARENT_PREPARE_FOR_SUBMISSION = "PARENT_PREPARE_FOR_SUBMISSION"
+            case PARENT_READY_FOR_REVIEW = "PARENT_READY_FOR_REVIEW"
+            case PARENT_WAITING_FOR_REVIEW = "PARENT_WAITING_FOR_REVIEW"
+            case PARENT_IN_REVIEW = "PARENT_IN_REVIEW"
+            case PARENT_APPROVED = "PARENT_APPROVED"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementType`.
+        @frozen package enum AppAssetLibraryPlacementType: String, Codable, Hashable, Sendable, CaseIterable {
+            case APP_SCREENSHOT = "APP_SCREENSHOT"
+            case IMESSAGE_APP_SCREENSHOT = "IMESSAGE_APP_SCREENSHOT"
+            case APP_PREVIEW = "APP_PREVIEW"
+            case PRODUCT_PAGE_HEADER_ASSET = "PRODUCT_PAGE_HEADER_ASSET"
+            case APP_STORE_SEARCH_RESULTS_ASSET = "APP_STORE_SEARCH_RESULTS_ASSET"
+            case SEARCH_RESULTS_ADS_ASSET = "SEARCH_RESULTS_ADS_ASSET"
+            case TODAY_TAB_ADS_ASSET = "TODAY_TAB_ADS_ASSET"
+            case EVENT_CARD_ASSET = "EVENT_CARD_ASSET"
+            case EVENT_DETAILS_PAGE_ASSET = "EVENT_DETAILS_PAGE_ASSET"
+            case RETENTION_MESSAGE_ASSET = "RETENTION_MESSAGE_ASSET"
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships`.
+        package struct AppAssetLibraryPlacementVideoRelationships: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryPlacementCommonRelationships
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video`.
+                package struct videoPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryVideos = "appAssetLibraryVideos"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video/data/type`.
+                        package var _type: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video/data`.
+                    package var data: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload.dataPayload?
+                    /// Creates a new `videoPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2/video`.
+                package var video: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - video:
+                package init(video: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload.videoPayload) {
+                    self.video = video
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case video
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementVideoRelationships/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload
+            /// Creates a new `AppAssetLibraryPlacementVideoRelationships`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryPlacementCommonRelationships,
+                value2: Components.Schemas.AppAssetLibraryPlacementVideoRelationships.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDataResponse`.
+        package struct AppAssetLibraryRefDataResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDataResponse/data`.
+            package var data: [Components.Schemas.AppAssetLibraryRefDatum]
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDataResponse/links`.
+            package var links: Components.Schemas.PagedDocumentLinks
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDataResponse/meta`.
+            package var meta: Components.Schemas.PagingInformation?
+            /// Creates a new `AppAssetLibraryRefDataResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - links:
+            ///   - meta:
+            package init(
+                data: [Components.Schemas.AppAssetLibraryRefDatum],
+                links: Components.Schemas.PagedDocumentLinks,
+                meta: Components.Schemas.PagingInformation? = nil
+            ) {
+                self.data = data
+                self.links = links
+                self.meta = meta
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case links
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum`.
+        package struct AppAssetLibraryRefDatum: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClassesPayload`.
+                package struct displayClassesPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClassesPayload/deviceFamily`.
+                    package var deviceFamily: Components.Schemas.DeviceFamily?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClassesPayload/displayClassId`.
+                    package var displayClassId: Components.Schemas.AppAssetLibraryDisplayClass?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClassesPayload/screenDimensions`.
+                    package var screenDimensions: [Swift.String]?
+                    /// Creates a new `displayClassesPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - deviceFamily:
+                    ///   - displayClassId:
+                    ///   - screenDimensions:
+                    package init(
+                        deviceFamily: Components.Schemas.DeviceFamily? = nil,
+                        displayClassId: Components.Schemas.AppAssetLibraryDisplayClass? = nil,
+                        screenDimensions: [Swift.String]? = nil
+                    ) {
+                        self.deviceFamily = deviceFamily
+                        self.displayClassId = displayClassId
+                        self.screenDimensions = screenDimensions
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case deviceFamily
+                        case displayClassId
+                        case screenDimensions
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClasses`.
+                package typealias displayClassesPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.displayClassesPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/displayClasses`.
+                package var displayClasses: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.displayClassesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload`.
+                package struct featuresPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/featureId`.
+                    package var featureId: Components.Schemas.AppAssetLibraryFeature?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload`.
+                    package struct placementPoliciesPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/groupLimitsPayload`.
+                        package struct groupLimitsPayloadPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/groupLimitsPayload/groupIds`.
+                            package var groupIds: [Swift.String]?
+                            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/groupLimitsPayload/maxCount`.
+                            package var maxCount: Swift.Int?
+                            /// Creates a new `groupLimitsPayloadPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - groupIds:
+                            ///   - maxCount:
+                            package init(
+                                groupIds: [Swift.String]? = nil,
+                                maxCount: Swift.Int? = nil
+                            ) {
+                                self.groupIds = groupIds
+                                self.maxCount = maxCount
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case groupIds
+                                case maxCount
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/groupLimits`.
+                        package typealias groupLimitsPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayloadPayload.groupLimitsPayloadPayload]
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/groupLimits`.
+                        package var groupLimits: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayloadPayload.groupLimitsPayload?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPoliciesPayload/placementType`.
+                        package var placementType: Components.Schemas.AppAssetLibraryPlacementType?
+                        /// Creates a new `placementPoliciesPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - groupLimits:
+                        ///   - placementType:
+                        package init(
+                            groupLimits: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayloadPayload.groupLimitsPayload? = nil,
+                            placementType: Components.Schemas.AppAssetLibraryPlacementType? = nil
+                        ) {
+                            self.groupLimits = groupLimits
+                            self.placementType = placementType
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case groupLimits
+                            case placementType
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPolicies`.
+                    package typealias placementPoliciesPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/featuresPayload/placementPolicies`.
+                    package var placementPolicies: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayload?
+                    /// Creates a new `featuresPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - featureId:
+                    ///   - placementPolicies:
+                    package init(
+                        featureId: Components.Schemas.AppAssetLibraryFeature? = nil,
+                        placementPolicies: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload.placementPoliciesPayload? = nil
+                    ) {
+                        self.featureId = featureId
+                        self.placementPolicies = placementPolicies
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case featureId
+                        case placementPolicies
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/features`.
+                package typealias featuresPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/features`.
+                package var features: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload`.
+                package struct imageSpecsPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/alphaAllowed`.
+                    package var alphaAllowed: Swift.Bool?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/aspectRatio`.
+                    package var aspectRatio: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/compatiblePlacementTypes`.
+                    package var compatiblePlacementTypes: [Components.Schemas.AppAssetLibraryPlacementType]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions`.
+                    package struct dimensionsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions/maxHeight`.
+                        package var maxHeight: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions/maxWidth`.
+                        package var maxWidth: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions/minHeight`.
+                        package var minHeight: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions/minWidth`.
+                        package var minWidth: Swift.Int?
+                        /// Creates a new `dimensionsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - maxHeight:
+                        ///   - maxWidth:
+                        ///   - minHeight:
+                        ///   - minWidth:
+                        package init(
+                            maxHeight: Swift.Int? = nil,
+                            maxWidth: Swift.Int? = nil,
+                            minHeight: Swift.Int? = nil,
+                            minWidth: Swift.Int? = nil
+                        ) {
+                            self.maxHeight = maxHeight
+                            self.maxWidth = maxWidth
+                            self.minHeight = minHeight
+                            self.minWidth = minWidth
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case maxHeight
+                            case maxWidth
+                            case minHeight
+                            case minWidth
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/dimensions`.
+                    package var dimensions: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.imageSpecsPayloadPayload.dimensionsPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/fileExtensions`.
+                    package var fileExtensions: [Swift.String]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/maxFileSize`.
+                    package var maxFileSize: Swift.Int64?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/mimeTypes`.
+                    package var mimeTypes: [Swift.String]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/shortName`.
+                    package var shortName: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/specId`.
+                    package var specId: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecsPayload/universalAsset`.
+                    package var universalAsset: Swift.Bool?
+                    /// Creates a new `imageSpecsPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - alphaAllowed:
+                    ///   - aspectRatio:
+                    ///   - compatiblePlacementTypes:
+                    ///   - dimensions:
+                    ///   - fileExtensions:
+                    ///   - maxFileSize:
+                    ///   - mimeTypes:
+                    ///   - shortName:
+                    ///   - specId:
+                    ///   - universalAsset:
+                    package init(
+                        alphaAllowed: Swift.Bool? = nil,
+                        aspectRatio: Swift.String? = nil,
+                        compatiblePlacementTypes: [Components.Schemas.AppAssetLibraryPlacementType]? = nil,
+                        dimensions: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.imageSpecsPayloadPayload.dimensionsPayload? = nil,
+                        fileExtensions: [Swift.String]? = nil,
+                        maxFileSize: Swift.Int64? = nil,
+                        mimeTypes: [Swift.String]? = nil,
+                        shortName: Swift.String? = nil,
+                        specId: Swift.String? = nil,
+                        universalAsset: Swift.Bool? = nil
+                    ) {
+                        self.alphaAllowed = alphaAllowed
+                        self.aspectRatio = aspectRatio
+                        self.compatiblePlacementTypes = compatiblePlacementTypes
+                        self.dimensions = dimensions
+                        self.fileExtensions = fileExtensions
+                        self.maxFileSize = maxFileSize
+                        self.mimeTypes = mimeTypes
+                        self.shortName = shortName
+                        self.specId = specId
+                        self.universalAsset = universalAsset
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case alphaAllowed
+                        case aspectRatio
+                        case compatiblePlacementTypes
+                        case dimensions
+                        case fileExtensions
+                        case maxFileSize
+                        case mimeTypes
+                        case shortName
+                        case specId
+                        case universalAsset
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecs`.
+                package typealias imageSpecsPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.imageSpecsPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/imageSpecs`.
+                package var imageSpecs: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.imageSpecsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroupsPayload`.
+                package struct placementProfileGroupsPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroupsPayload/displayClassId`.
+                    package var displayClassId: Components.Schemas.AppAssetLibraryDisplayClass?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroupsPayload/placementProfileGroupId`.
+                    package var placementProfileGroupId: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroupsPayload/platform`.
+                    package var platform: Components.Schemas.AppAssetLibraryPlacementPlatform?
+                    /// Creates a new `placementProfileGroupsPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - displayClassId:
+                    ///   - placementProfileGroupId:
+                    ///   - platform:
+                    package init(
+                        displayClassId: Components.Schemas.AppAssetLibraryDisplayClass? = nil,
+                        placementProfileGroupId: Swift.String? = nil,
+                        platform: Components.Schemas.AppAssetLibraryPlacementPlatform? = nil
+                    ) {
+                        self.displayClassId = displayClassId
+                        self.placementProfileGroupId = placementProfileGroupId
+                        self.platform = platform
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case displayClassId
+                        case placementProfileGroupId
+                        case platform
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroups`.
+                package typealias placementProfileGroupsPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementProfileGroupsPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementProfileGroups`.
+                package var placementProfileGroups: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementProfileGroupsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload`.
+                package struct placementTypesPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/acceptsAssetCategories`.
+                    package var acceptsAssetCategories: [Components.Schemas.AppAssetLibraryAssetCategory]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/placementTypeId`.
+                    package var placementTypeId: Components.Schemas.AppAssetLibraryPlacementType?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/specMappingsPayload`.
+                    package struct specMappingsPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/specMappingsPayload/placementGroupId`.
+                        package var placementGroupId: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/specMappingsPayload/specs`.
+                        package var specs: [Swift.String]?
+                        /// Creates a new `specMappingsPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - placementGroupId:
+                        ///   - specs:
+                        package init(
+                            placementGroupId: Swift.String? = nil,
+                            specs: [Swift.String]? = nil
+                        ) {
+                            self.placementGroupId = placementGroupId
+                            self.specs = specs
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case placementGroupId
+                            case specs
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/specMappings`.
+                    package typealias specMappingsPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayloadPayload.specMappingsPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypesPayload/specMappings`.
+                    package var specMappings: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayloadPayload.specMappingsPayload?
+                    /// Creates a new `placementTypesPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - acceptsAssetCategories:
+                    ///   - placementTypeId:
+                    ///   - specMappings:
+                    package init(
+                        acceptsAssetCategories: [Components.Schemas.AppAssetLibraryAssetCategory]? = nil,
+                        placementTypeId: Components.Schemas.AppAssetLibraryPlacementType? = nil,
+                        specMappings: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayloadPayload.specMappingsPayload? = nil
+                    ) {
+                        self.acceptsAssetCategories = acceptsAssetCategories
+                        self.placementTypeId = placementTypeId
+                        self.specMappings = specMappings
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case acceptsAssetCategories
+                        case placementTypeId
+                        case specMappings
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypes`.
+                package typealias placementTypesPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/placementTypes`.
+                package var placementTypes: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayload?
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload`.
+                package struct videoSpecsPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/aspectRatio`.
+                    package var aspectRatio: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/audioRequired`.
+                    package var audioRequired: Swift.Bool?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/compatiblePlacementTypes`.
+                    package var compatiblePlacementTypes: [Components.Schemas.AppAssetLibraryPlacementType]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions`.
+                    package struct dimensionsPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions/maxHeight`.
+                        package var maxHeight: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions/maxWidth`.
+                        package var maxWidth: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions/minHeight`.
+                        package var minHeight: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions/minWidth`.
+                        package var minWidth: Swift.Int?
+                        /// Creates a new `dimensionsPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - maxHeight:
+                        ///   - maxWidth:
+                        ///   - minHeight:
+                        ///   - minWidth:
+                        package init(
+                            maxHeight: Swift.Int? = nil,
+                            maxWidth: Swift.Int? = nil,
+                            minHeight: Swift.Int? = nil,
+                            minWidth: Swift.Int? = nil
+                        ) {
+                            self.maxHeight = maxHeight
+                            self.maxWidth = maxWidth
+                            self.minHeight = minHeight
+                            self.minWidth = minWidth
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case maxHeight
+                            case maxWidth
+                            case minHeight
+                            case minWidth
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/dimensions`.
+                    package var dimensions: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.dimensionsPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/duration`.
+                    package struct durationPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/duration/max`.
+                        package var max: Swift.String?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/duration/min`.
+                        package var min: Swift.String?
+                        /// Creates a new `durationPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - max:
+                        ///   - min:
+                        package init(
+                            max: Swift.String? = nil,
+                            min: Swift.String? = nil
+                        ) {
+                            self.max = max
+                            self.min = min
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case max
+                            case min
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/duration`.
+                    package var duration: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.durationPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/fileExtensions`.
+                    package var fileExtensions: [Swift.String]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/frameRatesPayload`.
+                    package struct frameRatesPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/frameRatesPayload/maxFps`.
+                        package var maxFps: Swift.Int?
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/frameRatesPayload/minFps`.
+                        package var minFps: Swift.Int?
+                        /// Creates a new `frameRatesPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - maxFps:
+                        ///   - minFps:
+                        package init(
+                            maxFps: Swift.Int? = nil,
+                            minFps: Swift.Int? = nil
+                        ) {
+                            self.maxFps = maxFps
+                            self.minFps = minFps
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case maxFps
+                            case minFps
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/frameRates`.
+                    package typealias frameRatesPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.frameRatesPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/frameRates`.
+                    package var frameRates: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.frameRatesPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/maxFileSize`.
+                    package var maxFileSize: Swift.Int64?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/mimeTypes`.
+                    package var mimeTypes: [Swift.String]?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/shortName`.
+                    package var shortName: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/specId`.
+                    package var specId: Swift.String?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecsPayload/universalAsset`.
+                    package var universalAsset: Swift.Bool?
+                    /// Creates a new `videoSpecsPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - aspectRatio:
+                    ///   - audioRequired:
+                    ///   - compatiblePlacementTypes:
+                    ///   - dimensions:
+                    ///   - duration:
+                    ///   - fileExtensions:
+                    ///   - frameRates:
+                    ///   - maxFileSize:
+                    ///   - mimeTypes:
+                    ///   - shortName:
+                    ///   - specId:
+                    ///   - universalAsset:
+                    package init(
+                        aspectRatio: Swift.String? = nil,
+                        audioRequired: Swift.Bool? = nil,
+                        compatiblePlacementTypes: [Components.Schemas.AppAssetLibraryPlacementType]? = nil,
+                        dimensions: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.dimensionsPayload? = nil,
+                        duration: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.durationPayload? = nil,
+                        fileExtensions: [Swift.String]? = nil,
+                        frameRates: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload.frameRatesPayload? = nil,
+                        maxFileSize: Swift.Int64? = nil,
+                        mimeTypes: [Swift.String]? = nil,
+                        shortName: Swift.String? = nil,
+                        specId: Swift.String? = nil,
+                        universalAsset: Swift.Bool? = nil
+                    ) {
+                        self.aspectRatio = aspectRatio
+                        self.audioRequired = audioRequired
+                        self.compatiblePlacementTypes = compatiblePlacementTypes
+                        self.dimensions = dimensions
+                        self.duration = duration
+                        self.fileExtensions = fileExtensions
+                        self.frameRates = frameRates
+                        self.maxFileSize = maxFileSize
+                        self.mimeTypes = mimeTypes
+                        self.shortName = shortName
+                        self.specId = specId
+                        self.universalAsset = universalAsset
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case aspectRatio
+                        case audioRequired
+                        case compatiblePlacementTypes
+                        case dimensions
+                        case duration
+                        case fileExtensions
+                        case frameRates
+                        case maxFileSize
+                        case mimeTypes
+                        case shortName
+                        case specId
+                        case universalAsset
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecs`.
+                package typealias videoSpecsPayload = [Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes/videoSpecs`.
+                package var videoSpecs: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayload?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - displayClasses:
+                ///   - features:
+                ///   - imageSpecs:
+                ///   - placementProfileGroups:
+                ///   - placementTypes:
+                ///   - videoSpecs:
+                package init(
+                    displayClasses: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.displayClassesPayload? = nil,
+                    features: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.featuresPayload? = nil,
+                    imageSpecs: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.imageSpecsPayload? = nil,
+                    placementProfileGroups: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementProfileGroupsPayload? = nil,
+                    placementTypes: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.placementTypesPayload? = nil,
+                    videoSpecs: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload.videoSpecsPayload? = nil
+                ) {
+                    self.displayClasses = displayClasses
+                    self.features = features
+                    self.imageSpecs = imageSpecs
+                    self.placementProfileGroups = placementProfileGroups
+                    self.placementTypes = placementTypes
+                    self.videoSpecs = videoSpecs
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case displayClasses
+                    case features
+                    case imageSpecs
+                    case placementProfileGroups
+                    case placementTypes
+                    case videoSpecs
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/attributes`.
+            package var attributes: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraryRefData = "appAssetLibraryRefData"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryRefDatum/type`.
+            package var _type: Components.Schemas.AppAssetLibraryRefDatum._typePayload
+            /// Creates a new `AppAssetLibraryRefDatum`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppAssetLibraryRefDatum.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                _type: Components.Schemas.AppAssetLibraryRefDatum._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryResponse`.
+        package struct AppAssetLibraryResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryResponse/data`.
+            package var data: Components.Schemas.AppAssetLibrary
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryResponse/links`.
+            package var links: Components.Schemas.DocumentLinks
+            /// Creates a new `AppAssetLibraryResponse`.
+            ///
+            /// - Parameters:
+            ///   - data:
+            ///   - links:
+            package init(
+                data: Components.Schemas.AppAssetLibrary,
+                links: Components.Schemas.DocumentLinks
+            ) {
+                self.data = data
+                self.links = links
+            }
+            package enum CodingKeys: String, CodingKey {
+                case data
+                case links
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo`.
+        package struct AppAssetLibraryVideo: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes`.
+            @frozen package enum attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoAcceptedAttributes`.
+                case ACCEPTED(Components.Schemas.AppAssetLibraryVideoAcceptedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoApprovedAttributes`.
+                case APPROVED(Components.Schemas.AppAssetLibraryVideoApprovedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoArchivedAttributes`.
+                case ARCHIVED(Components.Schemas.AppAssetLibraryVideoArchivedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoAwaitingUploadAttributes`.
+                case AWAITING_UPLOAD(Components.Schemas.AppAssetLibraryVideoAwaitingUploadAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoCommonAttributes`.
+                case COMPLETE(Components.Schemas.AppAssetLibraryVideoCommonAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoFailedAttributes`.
+                case FAILED(Components.Schemas.AppAssetLibraryVideoFailedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoInReviewAttributes`.
+                case IN_REVIEW(Components.Schemas.AppAssetLibraryVideoInReviewAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoCommonAttributes`.
+                case PREPARE_FOR_SUBMISSION(Components.Schemas.AppAssetLibraryVideoCommonAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoReadyForReviewAttributes`.
+                case READY_FOR_REVIEW(Components.Schemas.AppAssetLibraryVideoReadyForReviewAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoRejectedAttributes`.
+                case REJECTED(Components.Schemas.AppAssetLibraryVideoRejectedAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoUploadCompleteAttributes`.
+                case UPLOAD_COMPLETE(Components.Schemas.AppAssetLibraryVideoUploadCompleteAttributes)
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes/AppAssetLibraryVideoWaitingForReviewAttributes`.
+                case WAITING_FOR_REVIEW(Components.Schemas.AppAssetLibraryVideoWaitingForReviewAttributes)
+                package enum CodingKeys: String, CodingKey {
+                    case state
+                }
+                package init(from decoder: any Swift.Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let discriminator = try container.decode(
+                        Swift.String.self,
+                        forKey: .state
+                    )
+                    switch discriminator {
+                    case "ACCEPTED":
+                        self = .ACCEPTED(try .init(from: decoder))
+                    case "APPROVED":
+                        self = .APPROVED(try .init(from: decoder))
+                    case "ARCHIVED":
+                        self = .ARCHIVED(try .init(from: decoder))
+                    case "AWAITING_UPLOAD":
+                        self = .AWAITING_UPLOAD(try .init(from: decoder))
+                    case "COMPLETE":
+                        self = .COMPLETE(try .init(from: decoder))
+                    case "FAILED":
+                        self = .FAILED(try .init(from: decoder))
+                    case "IN_REVIEW":
+                        self = .IN_REVIEW(try .init(from: decoder))
+                    case "PREPARE_FOR_SUBMISSION":
+                        self = .PREPARE_FOR_SUBMISSION(try .init(from: decoder))
+                    case "READY_FOR_REVIEW":
+                        self = .READY_FOR_REVIEW(try .init(from: decoder))
+                    case "REJECTED":
+                        self = .REJECTED(try .init(from: decoder))
+                    case "UPLOAD_COMPLETE":
+                        self = .UPLOAD_COMPLETE(try .init(from: decoder))
+                    case "WAITING_FOR_REVIEW":
+                        self = .WAITING_FOR_REVIEW(try .init(from: decoder))
+                    default:
+                        throw Swift.DecodingError.unknownOneOfDiscriminator(
+                            discriminatorKey: CodingKeys.state,
+                            discriminatorValue: discriminator,
+                            codingPath: decoder.codingPath
+                        )
+                    }
+                }
+                package func encode(to encoder: any Swift.Encoder) throws {
+                    switch self {
+                    case let .ACCEPTED(value):
+                        try value.encode(to: encoder)
+                    case let .APPROVED(value):
+                        try value.encode(to: encoder)
+                    case let .ARCHIVED(value):
+                        try value.encode(to: encoder)
+                    case let .AWAITING_UPLOAD(value):
+                        try value.encode(to: encoder)
+                    case let .COMPLETE(value):
+                        try value.encode(to: encoder)
+                    case let .FAILED(value):
+                        try value.encode(to: encoder)
+                    case let .IN_REVIEW(value):
+                        try value.encode(to: encoder)
+                    case let .PREPARE_FOR_SUBMISSION(value):
+                        try value.encode(to: encoder)
+                    case let .READY_FOR_REVIEW(value):
+                        try value.encode(to: encoder)
+                    case let .REJECTED(value):
+                        try value.encode(to: encoder)
+                    case let .UPLOAD_COMPLETE(value):
+                        try value.encode(to: encoder)
+                    case let .WAITING_FOR_REVIEW(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/attributes`.
+            package var attributes: Components.Schemas.AppAssetLibraryVideo.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/data`.
+                    package var data: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships/placements`.
+                package var placements: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - placements:
+                package init(placements: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload.placementsPayload? = nil) {
+                    self.placements = placements
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case placements
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/relationships`.
+            package var relationships: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appAssetLibraryVideos = "appAssetLibraryVideos"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideo/type`.
+            package var _type: Components.Schemas.AppAssetLibraryVideo._typePayload
+            /// Creates a new `AppAssetLibraryVideo`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppAssetLibraryVideo.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppAssetLibraryVideo.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppAssetLibraryVideo._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAcceptedAttributes`.
+        package struct AppAssetLibraryVideoAcceptedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAcceptedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAcceptedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoAcceptedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoApprovedAttributes`.
+        package struct AppAssetLibraryVideoApprovedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoApprovedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoApprovedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoApprovedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoArchivedAttributes`.
+        package struct AppAssetLibraryVideoArchivedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoArchivedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoArchivedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoArchivedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAwaitingUploadAttributes`.
+        package struct AppAssetLibraryVideoAwaitingUploadAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAwaitingUploadAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAwaitingUploadAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAwaitingUploadAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoAwaitingUploadAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryVideoAwaitingUploadAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryVideoAwaitingUploadAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryVideoAwaitingUploadAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes`.
+        package struct AppAssetLibraryVideoCommonAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/category`.
+            package var category: Components.Schemas.AppAssetLibraryAssetCategory?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/createdDate`.
+            package var createdDate: Foundation.Date?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/fileName`.
+            package var fileName: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/fileSize`.
+            package var fileSize: Swift.Int64?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/lastModifiedDate`.
+            package var lastModifiedDate: Foundation.Date?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/previewFrameImage`.
+            package var previewFrameImage: Components.Schemas.PreviewFrameImage?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/previewFrameTimeCode`.
+            package var previewFrameTimeCode: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/referenceName`.
+            package var referenceName: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/specId`.
+            package var specId: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/state`.
+            package var state: Components.Schemas.AppAssetLibraryAssetState
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/stateDetails`.
+            package var stateDetails: [Components.Schemas.StateDetail]?
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoCommonAttributes/videoAsset`.
+            package var videoAsset: Swift.String?
+            /// Creates a new `AppAssetLibraryVideoCommonAttributes`.
+            ///
+            /// - Parameters:
+            ///   - category:
+            ///   - createdDate:
+            ///   - fileName:
+            ///   - fileSize:
+            ///   - lastModifiedDate:
+            ///   - previewFrameImage:
+            ///   - previewFrameTimeCode:
+            ///   - referenceName:
+            ///   - specId:
+            ///   - state:
+            ///   - stateDetails:
+            ///   - videoAsset:
+            package init(
+                category: Components.Schemas.AppAssetLibraryAssetCategory? = nil,
+                createdDate: Foundation.Date? = nil,
+                fileName: Swift.String? = nil,
+                fileSize: Swift.Int64? = nil,
+                lastModifiedDate: Foundation.Date? = nil,
+                previewFrameImage: Components.Schemas.PreviewFrameImage? = nil,
+                previewFrameTimeCode: Swift.String? = nil,
+                referenceName: Swift.String? = nil,
+                specId: Swift.String? = nil,
+                state: Components.Schemas.AppAssetLibraryAssetState,
+                stateDetails: [Components.Schemas.StateDetail]? = nil,
+                videoAsset: Swift.String? = nil
+            ) {
+                self.category = category
+                self.createdDate = createdDate
+                self.fileName = fileName
+                self.fileSize = fileSize
+                self.lastModifiedDate = lastModifiedDate
+                self.previewFrameImage = previewFrameImage
+                self.previewFrameTimeCode = previewFrameTimeCode
+                self.referenceName = referenceName
+                self.specId = specId
+                self.state = state
+                self.stateDetails = stateDetails
+                self.videoAsset = videoAsset
+            }
+            package enum CodingKeys: String, CodingKey {
+                case category
+                case createdDate
+                case fileName
+                case fileSize
+                case lastModifiedDate
+                case previewFrameImage
+                case previewFrameTimeCode
+                case referenceName
+                case specId
+                case state
+                case stateDetails
+                case videoAsset
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoFailedAttributes`.
+        package struct AppAssetLibraryVideoFailedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoFailedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoFailedAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoFailedAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoFailedAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryVideoFailedAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryVideoFailedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryVideoFailedAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoInReviewAttributes`.
+        package struct AppAssetLibraryVideoInReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoInReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoInReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoInReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoReadyForReviewAttributes`.
+        package struct AppAssetLibraryVideoReadyForReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoReadyForReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoReadyForReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoReadyForReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoRejectedAttributes`.
+        package struct AppAssetLibraryVideoRejectedAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoRejectedAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoRejectedAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoRejectedAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoUploadCompleteAttributes`.
+        package struct AppAssetLibraryVideoUploadCompleteAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoUploadCompleteAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoUploadCompleteAttributes/value2`.
+            package struct Value2Payload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoUploadCompleteAttributes/value2/uploadOperations`.
+                package var uploadOperations: [Components.Schemas.UploadOperation]?
+                /// Creates a new `Value2Payload`.
+                ///
+                /// - Parameters:
+                ///   - uploadOperations:
+                package init(uploadOperations: [Components.Schemas.UploadOperation]? = nil) {
+                    self.uploadOperations = uploadOperations
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case uploadOperations
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoUploadCompleteAttributes/value2`.
+            package var value2: Components.Schemas.AppAssetLibraryVideoUploadCompleteAttributes.Value2Payload
+            /// Creates a new `AppAssetLibraryVideoUploadCompleteAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: Components.Schemas.AppAssetLibraryVideoUploadCompleteAttributes.Value2Payload
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoWaitingForReviewAttributes`.
+        package struct AppAssetLibraryVideoWaitingForReviewAttributes: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoWaitingForReviewAttributes/value1`.
+            package var value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes
+            /// - Remark: Generated from `#/components/schemas/AppAssetLibraryVideoWaitingForReviewAttributes/value2`.
+            package var value2: OpenAPIRuntime.OpenAPIObjectContainer
+            /// Creates a new `AppAssetLibraryVideoWaitingForReviewAttributes`.
+            ///
+            /// - Parameters:
+            ///   - value1:
+            ///   - value2:
+            package init(
+                value1: Components.Schemas.AppAssetLibraryVideoCommonAttributes,
+                value2: OpenAPIRuntime.OpenAPIObjectContainer
+            ) {
+                self.value1 = value1
+                self.value2 = value2
+            }
+            package init(from decoder: any Swift.Decoder) throws {
+                self.value1 = try .init(from: decoder)
+                self.value2 = try .init(from: decoder)
+            }
+            package func encode(to encoder: any Swift.Encoder) throws {
+                try self.value1.encode(to: encoder)
+                try self.value2.encode(to: encoder)
             }
         }
         /// - Remark: Generated from `#/components/schemas/AppClip`.
@@ -3753,6 +10869,66 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/appScreenshotSets`.
                 package var appScreenshotSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/data`.
+                    package var data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/placements`.
+                package var placements: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload?
                 /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords`.
                 package struct searchKeywordsPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/AppCustomProductPageLocalization/relationships/searchKeywords/dataPayload`.
@@ -3819,22 +10995,26 @@ package enum Components {
                 ///   - appCustomProductPageVersion:
                 ///   - appPreviewSets:
                 ///   - appScreenshotSets:
+                ///   - placements:
                 ///   - searchKeywords:
                 package init(
                     appCustomProductPageVersion: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appCustomProductPageVersionPayload? = nil,
                     appPreviewSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appPreviewSetsPayload? = nil,
                     appScreenshotSets: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.appScreenshotSetsPayload? = nil,
+                    placements: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.placementsPayload? = nil,
                     searchKeywords: Components.Schemas.AppCustomProductPageLocalization.relationshipsPayload.searchKeywordsPayload? = nil
                 ) {
                     self.appCustomProductPageVersion = appCustomProductPageVersion
                     self.appPreviewSets = appPreviewSets
                     self.appScreenshotSets = appScreenshotSets
+                    self.placements = placements
                     self.searchKeywords = searchKeywords
                 }
                 package enum CodingKeys: String, CodingKey {
                     case appCustomProductPageVersion
                     case appPreviewSets
                     case appScreenshotSets
+                    case placements
                     case searchKeywords
                 }
             }
@@ -4717,6 +11897,337 @@ package enum Components {
                 case _type = "type"
             }
         }
+        /// - Remark: Generated from `#/components/schemas/AppEventLocalization`.
+        package struct AppEventLocalization: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes`.
+            package struct attributesPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes/locale`.
+                package var locale: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes/longDescription`.
+                package var longDescription: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes/name`.
+                package var name: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes/shortDescription`.
+                package var shortDescription: Swift.String?
+                /// Creates a new `attributesPayload`.
+                ///
+                /// - Parameters:
+                ///   - locale:
+                ///   - longDescription:
+                ///   - name:
+                ///   - shortDescription:
+                package init(
+                    locale: Swift.String? = nil,
+                    longDescription: Swift.String? = nil,
+                    name: Swift.String? = nil,
+                    shortDescription: Swift.String? = nil
+                ) {
+                    self.locale = locale
+                    self.longDescription = longDescription
+                    self.name = name
+                    self.shortDescription = shortDescription
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case locale
+                    case longDescription
+                    case name
+                    case shortDescription
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/attributes`.
+            package var attributes: Components.Schemas.AppEventLocalization.attributesPayload?
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/id`.
+            package var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/links`.
+            package var links: Components.Schemas.ResourceLinks?
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships`.
+            package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent`.
+                package struct appEventPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appEvents = "appEvents"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent/data/type`.
+                        package var _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent/data`.
+                    package var data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload.dataPayload?
+                    /// Creates a new `appEventPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEvent`.
+                package var appEvent: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots`.
+                package struct appEventScreenshotsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appEventScreenshots = "appEventScreenshots"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/dataPayload/type`.
+                        package var _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/data`.
+                    package typealias dataPayload = [Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/data`.
+                    package var data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appEventScreenshotsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventScreenshots`.
+                package var appEventScreenshots: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips`.
+                package struct appEventVideoClipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appEventVideoClips = "appEventVideoClips"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/dataPayload/type`.
+                        package var _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/data`.
+                    package typealias dataPayload = [Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/data`.
+                    package var data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `appEventVideoClipsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/appEventVideoClips`.
+                package var appEventVideoClips: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload?
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/data`.
+                    package var data: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships/placements`.
+                package var placements: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload?
+                /// Creates a new `relationshipsPayload`.
+                ///
+                /// - Parameters:
+                ///   - appEvent:
+                ///   - appEventScreenshots:
+                ///   - appEventVideoClips:
+                ///   - placements:
+                package init(
+                    appEvent: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventPayload? = nil,
+                    appEventScreenshots: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventScreenshotsPayload? = nil,
+                    appEventVideoClips: Components.Schemas.AppEventLocalization.relationshipsPayload.appEventVideoClipsPayload? = nil,
+                    placements: Components.Schemas.AppEventLocalization.relationshipsPayload.placementsPayload? = nil
+                ) {
+                    self.appEvent = appEvent
+                    self.appEventScreenshots = appEventScreenshots
+                    self.appEventVideoClips = appEventVideoClips
+                    self.placements = placements
+                }
+                package enum CodingKeys: String, CodingKey {
+                    case appEvent
+                    case appEventScreenshots
+                    case appEventVideoClips
+                    case placements
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/relationships`.
+            package var relationships: Components.Schemas.AppEventLocalization.relationshipsPayload?
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/type`.
+            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case appEventLocalizations = "appEventLocalizations"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppEventLocalization/type`.
+            package var _type: Components.Schemas.AppEventLocalization._typePayload
+            /// Creates a new `AppEventLocalization`.
+            ///
+            /// - Parameters:
+            ///   - attributes:
+            ///   - id:
+            ///   - links:
+            ///   - relationships:
+            ///   - _type:
+            package init(
+                attributes: Components.Schemas.AppEventLocalization.attributesPayload? = nil,
+                id: Swift.String,
+                links: Components.Schemas.ResourceLinks? = nil,
+                relationships: Components.Schemas.AppEventLocalization.relationshipsPayload? = nil,
+                _type: Components.Schemas.AppEventLocalization._typePayload
+            ) {
+                self.attributes = attributes
+                self.id = id
+                self.links = links
+                self.relationships = relationships
+                self._type = _type
+            }
+            package enum CodingKeys: String, CodingKey {
+                case attributes
+                case id
+                case links
+                case relationships
+                case _type = "type"
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/AppInfo`.
         package struct AppInfo: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/AppInfo/attributes`.
@@ -4757,8 +12268,6 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/AppInfo/attributes/franceAgeRating`.
                 package var franceAgeRating: Components.Schemas.AppInfo.attributesPayload.franceAgeRatingPayload?
-                /// - Remark: Generated from `#/components/schemas/AppInfo/attributes/kidsAgeBand`.
-                package var kidsAgeBand: Components.Schemas.KidsAgeBand?
                 /// - Remark: Generated from `#/components/schemas/AppInfo/attributes/koreaAgeRating`.
                 @frozen package enum koreaAgeRatingPayload: String, Codable, Hashable, Sendable, CaseIterable {
                     case ALL = "ALL"
@@ -4793,7 +12302,6 @@ package enum Components {
                 ///   - brazilAgeRating:
                 ///   - brazilAgeRatingV2:
                 ///   - franceAgeRating:
-                ///   - kidsAgeBand:
                 ///   - koreaAgeRating:
                 ///   - state:
                 package init(
@@ -4803,7 +12311,6 @@ package enum Components {
                     brazilAgeRating: Components.Schemas.BrazilAgeRating? = nil,
                     brazilAgeRatingV2: Components.Schemas.AppInfo.attributesPayload.brazilAgeRatingV2Payload? = nil,
                     franceAgeRating: Components.Schemas.AppInfo.attributesPayload.franceAgeRatingPayload? = nil,
-                    kidsAgeBand: Components.Schemas.KidsAgeBand? = nil,
                     koreaAgeRating: Components.Schemas.AppInfo.attributesPayload.koreaAgeRatingPayload? = nil,
                     state: Components.Schemas.AppInfo.attributesPayload.statePayload? = nil
                 ) {
@@ -4813,7 +12320,6 @@ package enum Components {
                     self.brazilAgeRating = brazilAgeRating
                     self.brazilAgeRatingV2 = brazilAgeRatingV2
                     self.franceAgeRating = franceAgeRating
-                    self.kidsAgeBand = kidsAgeBand
                     self.koreaAgeRating = koreaAgeRating
                     self.state = state
                 }
@@ -4824,7 +12330,6 @@ package enum Components {
                     case brazilAgeRating
                     case brazilAgeRatingV2
                     case franceAgeRating
-                    case kidsAgeBand
                     case koreaAgeRating
                     case state
                 }
@@ -5465,6 +12970,41 @@ package enum Components {
             package init(
                 errors: [Components.Schemas.AppMediaStateError]? = nil,
                 state: Components.Schemas.AppMediaAssetState.statePayload? = nil,
+                warnings: [Components.Schemas.AppMediaStateError]? = nil
+            ) {
+                self.errors = errors
+                self.state = state
+                self.warnings = warnings
+            }
+            package enum CodingKeys: String, CodingKey {
+                case errors
+                case state
+                case warnings
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/AppMediaPreviewFrameImageState`.
+        package struct AppMediaPreviewFrameImageState: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AppMediaPreviewFrameImageState/errors`.
+            package var errors: [Components.Schemas.AppMediaStateError]?
+            /// - Remark: Generated from `#/components/schemas/AppMediaPreviewFrameImageState/state`.
+            @frozen package enum statePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case PROCESSING = "PROCESSING"
+                case COMPLETE = "COMPLETE"
+                case FAILED = "FAILED"
+            }
+            /// - Remark: Generated from `#/components/schemas/AppMediaPreviewFrameImageState/state`.
+            package var state: Components.Schemas.AppMediaPreviewFrameImageState.statePayload?
+            /// - Remark: Generated from `#/components/schemas/AppMediaPreviewFrameImageState/warnings`.
+            package var warnings: [Components.Schemas.AppMediaStateError]?
+            /// Creates a new `AppMediaPreviewFrameImageState`.
+            ///
+            /// - Parameters:
+            ///   - errors:
+            ///   - state:
+            ///   - warnings:
+            package init(
+                errors: [Components.Schemas.AppMediaStateError]? = nil,
+                state: Components.Schemas.AppMediaPreviewFrameImageState.statePayload? = nil,
                 warnings: [Components.Schemas.AppMediaStateError]? = nil
             ) {
                 self.errors = errors
@@ -9151,25 +16691,89 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/appStoreVersionExperimentTreatment`.
                 package var appStoreVersionExperimentTreatment: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/data`.
+                    package var data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships/placements`.
+                package var placements: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload?
                 /// Creates a new `relationshipsPayload`.
                 ///
                 /// - Parameters:
                 ///   - appPreviewSets:
                 ///   - appScreenshotSets:
                 ///   - appStoreVersionExperimentTreatment:
+                ///   - placements:
                 package init(
                     appPreviewSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appPreviewSetsPayload? = nil,
                     appScreenshotSets: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appScreenshotSetsPayload? = nil,
-                    appStoreVersionExperimentTreatment: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload? = nil
+                    appStoreVersionExperimentTreatment: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.appStoreVersionExperimentTreatmentPayload? = nil,
+                    placements: Components.Schemas.AppStoreVersionExperimentTreatmentLocalization.relationshipsPayload.placementsPayload? = nil
                 ) {
                     self.appPreviewSets = appPreviewSets
                     self.appScreenshotSets = appScreenshotSets
                     self.appStoreVersionExperimentTreatment = appStoreVersionExperimentTreatment
+                    self.placements = placements
                 }
                 package enum CodingKeys: String, CodingKey {
                     case appPreviewSets
                     case appScreenshotSets
                     case appStoreVersionExperimentTreatment
+                    case placements
                 }
             }
             /// - Remark: Generated from `#/components/schemas/AppStoreVersionExperimentTreatmentLocalization/relationships`.
@@ -9775,6 +17379,66 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/appStoreVersion`.
                 package var appStoreVersion: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.appStoreVersionPayload?
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements`.
+                package struct placementsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/dataPayload`.
+                    package struct dataPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/dataPayload/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/dataPayload/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryPlacements = "appAssetLibraryPlacements"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/dataPayload/type`.
+                        package var _type: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        /// Creates a new `dataPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/data`.
+                    package typealias dataPayload = [Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload.dataPayloadPayload]
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/data`.
+                    package var data: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload.dataPayload?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements/meta`.
+                    package var meta: Components.Schemas.PagingInformation?
+                    /// Creates a new `placementsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    ///   - links:
+                    ///   - meta:
+                    package init(
+                        data: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload.dataPayload? = nil,
+                        links: Components.Schemas.RelationshipLinks? = nil,
+                        meta: Components.Schemas.PagingInformation? = nil
+                    ) {
+                        self.data = data
+                        self.links = links
+                        self.meta = meta
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                        case links
+                        case meta
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/placements`.
+                package var placements: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload?
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/searchKeywords`.
                 package struct searchKeywordsPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalization/relationships/searchKeywords/dataPayload`.
@@ -9841,22 +17505,26 @@ package enum Components {
                 ///   - appPreviewSets:
                 ///   - appScreenshotSets:
                 ///   - appStoreVersion:
+                ///   - placements:
                 ///   - searchKeywords:
                 package init(
                     appPreviewSets: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.appPreviewSetsPayload? = nil,
                     appScreenshotSets: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.appScreenshotSetsPayload? = nil,
                     appStoreVersion: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.appStoreVersionPayload? = nil,
+                    placements: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.placementsPayload? = nil,
                     searchKeywords: Components.Schemas.AppStoreVersionLocalization.relationshipsPayload.searchKeywordsPayload? = nil
                 ) {
                     self.appPreviewSets = appPreviewSets
                     self.appScreenshotSets = appScreenshotSets
                     self.appStoreVersion = appStoreVersion
+                    self.placements = placements
                     self.searchKeywords = searchKeywords
                 }
                 package enum CodingKeys: String, CodingKey {
                     case appPreviewSets
                     case appScreenshotSets
                     case appStoreVersion
+                    case placements
                     case searchKeywords
                 }
             }
@@ -9903,6 +17571,8 @@ package enum Components {
             package var data: Components.Schemas.AppStoreVersionLocalization
             /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationResponse/includedPayload`.
             @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationResponse/includedPayload/AppAssetLibraryPlacement`.
+                case appAssetLibraryPlacements(Components.Schemas.AppAssetLibraryPlacement)
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationResponse/includedPayload/AppKeyword`.
                 case appKeywords(Components.Schemas.AppKeyword)
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationResponse/includedPayload/AppPreviewSet`.
@@ -9921,6 +17591,8 @@ package enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
+                    case "appAssetLibraryPlacements":
+                        self = .appAssetLibraryPlacements(try .init(from: decoder))
                     case "appKeywords":
                         self = .appKeywords(try .init(from: decoder))
                     case "appPreviewSets":
@@ -9939,6 +17611,8 @@ package enum Components {
                 }
                 package func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
+                    case let .appAssetLibraryPlacements(value):
+                        try value.encode(to: encoder)
                     case let .appKeywords(value):
                         try value.encode(to: encoder)
                     case let .appPreviewSets(value):
@@ -9983,6 +17657,8 @@ package enum Components {
             package var data: [Components.Schemas.AppStoreVersionLocalization]
             /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationsResponse/includedPayload`.
             @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationsResponse/includedPayload/AppAssetLibraryPlacement`.
+                case appAssetLibraryPlacements(Components.Schemas.AppAssetLibraryPlacement)
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationsResponse/includedPayload/AppKeyword`.
                 case appKeywords(Components.Schemas.AppKeyword)
                 /// - Remark: Generated from `#/components/schemas/AppStoreVersionLocalizationsResponse/includedPayload/AppPreviewSet`.
@@ -10001,6 +17677,8 @@ package enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
+                    case "appAssetLibraryPlacements":
+                        self = .appAssetLibraryPlacements(try .init(from: decoder))
                     case "appKeywords":
                         self = .appKeywords(try .init(from: decoder))
                     case "appPreviewSets":
@@ -10019,6 +17697,8 @@ package enum Components {
                 }
                 package func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
+                    case let .appAssetLibraryPlacements(value):
+                        try value.encode(to: encoder)
                     case let .appKeywords(value):
                         try value.encode(to: encoder)
                     case let .appPreviewSets(value):
@@ -17904,6 +25584,23 @@ package enum Components {
                 }
                 /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/app`.
                 package var app: Components.Schemas.GameCenterDetail.relationshipsPayload.appPayload?
+                /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/blockedPlayers`.
+                package struct blockedPlayersPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/blockedPlayers/links`.
+                    package var links: Components.Schemas.RelationshipLinks?
+                    /// Creates a new `blockedPlayersPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - links:
+                    package init(links: Components.Schemas.RelationshipLinks? = nil) {
+                        self.links = links
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case links
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/blockedPlayers`.
+                package var blockedPlayers: Components.Schemas.GameCenterDetail.relationshipsPayload.blockedPlayersPayload?
                 /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/challengeReleases`.
                 package struct challengeReleasesPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/GameCenterDetail/relationships/challengeReleases/dataPayload`.
@@ -18918,6 +26615,7 @@ package enum Components {
                 ///   - achievementReleases:
                 ///   - activityReleases:
                 ///   - app:
+                ///   - blockedPlayers:
                 ///   - challengeReleases:
                 ///   - challengesMinimumPlatformVersions:
                 ///   - defaultGroupLeaderboard:
@@ -18940,6 +26638,7 @@ package enum Components {
                     achievementReleases: Components.Schemas.GameCenterDetail.relationshipsPayload.achievementReleasesPayload? = nil,
                     activityReleases: Components.Schemas.GameCenterDetail.relationshipsPayload.activityReleasesPayload? = nil,
                     app: Components.Schemas.GameCenterDetail.relationshipsPayload.appPayload? = nil,
+                    blockedPlayers: Components.Schemas.GameCenterDetail.relationshipsPayload.blockedPlayersPayload? = nil,
                     challengeReleases: Components.Schemas.GameCenterDetail.relationshipsPayload.challengeReleasesPayload? = nil,
                     challengesMinimumPlatformVersions: Components.Schemas.GameCenterDetail.relationshipsPayload.challengesMinimumPlatformVersionsPayload? = nil,
                     defaultGroupLeaderboard: Components.Schemas.GameCenterDetail.relationshipsPayload.defaultGroupLeaderboardPayload? = nil,
@@ -18962,6 +26661,7 @@ package enum Components {
                     self.achievementReleases = achievementReleases
                     self.activityReleases = activityReleases
                     self.app = app
+                    self.blockedPlayers = blockedPlayers
                     self.challengeReleases = challengeReleases
                     self.challengesMinimumPlatformVersions = challengesMinimumPlatformVersions
                     self.defaultGroupLeaderboard = defaultGroupLeaderboard
@@ -18985,6 +26685,7 @@ package enum Components {
                     case achievementReleases
                     case activityReleases
                     case app
+                    case blockedPlayers
                     case challengeReleases
                     case challengesMinimumPlatformVersions
                     case defaultGroupLeaderboard
@@ -20205,12 +27906,6 @@ package enum Components {
             case EXPIRED = "EXPIRED"
             case IN_EXPORT_COMPLIANCE_REVIEW = "IN_EXPORT_COMPLIANCE_REVIEW"
         }
-        /// - Remark: Generated from `#/components/schemas/KidsAgeBand`.
-        @frozen package enum KidsAgeBand: String, Codable, Hashable, Sendable, CaseIterable {
-            case FIVE_AND_UNDER = "FIVE_AND_UNDER"
-            case SIX_TO_EIGHT = "SIX_TO_EIGHT"
-            case NINE_TO_ELEVEN = "NINE_TO_ELEVEN"
-        }
         /// - Remark: Generated from `#/components/schemas/PagedDocumentLinks`.
         package struct PagedDocumentLinks: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/PagedDocumentLinks/first`.
@@ -20495,6 +28190,29 @@ package enum Components {
                 case links
                 case relationships
                 case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/PreviewFrameImage`.
+        package struct PreviewFrameImage: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/PreviewFrameImage/image`.
+            package var image: Components.Schemas.ImageAsset?
+            /// - Remark: Generated from `#/components/schemas/PreviewFrameImage/state`.
+            package var state: Components.Schemas.AppMediaPreviewFrameImageState?
+            /// Creates a new `PreviewFrameImage`.
+            ///
+            /// - Parameters:
+            ///   - image:
+            ///   - state:
+            package init(
+                image: Components.Schemas.ImageAsset? = nil,
+                state: Components.Schemas.AppMediaPreviewFrameImageState? = nil
+            ) {
+                self.image = image
+                self.state = state
+            }
+            package enum CodingKeys: String, CodingKey {
+                case image
+                case state
             }
         }
         /// - Remark: Generated from `#/components/schemas/PreviewType`.
@@ -21246,6 +28964,94 @@ package enum Components {
             package var links: Components.Schemas.ResourceLinks?
             /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships`.
             package struct relationshipsPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage`.
+                package struct appAssetLibraryImagePayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryImages = "appAssetLibraryImages"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage/data/type`.
+                        package var _type: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage/data`.
+                    package var data: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload.dataPayload?
+                    /// Creates a new `appAssetLibraryImagePayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryImage`.
+                package var appAssetLibraryImage: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload?
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo`.
+                package struct appAssetLibraryVideoPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo/data`.
+                    package struct dataPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo/data/id`.
+                        package var id: Swift.String
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo/data/type`.
+                        @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                            case appAssetLibraryVideos = "appAssetLibraryVideos"
+                        }
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo/data/type`.
+                        package var _type: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload._typePayload
+                        /// Creates a new `dataPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - _type:
+                        package init(
+                            id: Swift.String,
+                            _type: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload._typePayload
+                        ) {
+                            self.id = id
+                            self._type = _type
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case id
+                            case _type = "type"
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo/data`.
+                    package var data: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload?
+                    /// Creates a new `appAssetLibraryVideoPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - data:
+                    package init(data: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload? = nil) {
+                        self.data = data
+                    }
+                    package enum CodingKeys: String, CodingKey {
+                        case data
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appAssetLibraryVideo`.
+                package var appAssetLibraryVideo: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload?
                 /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appCustomProductPageVersion`.
                 package struct appCustomProductPageVersionPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItem/relationships/appCustomProductPageVersion/data`.
@@ -21865,6 +29671,8 @@ package enum Components {
                 /// Creates a new `relationshipsPayload`.
                 ///
                 /// - Parameters:
+                ///   - appAssetLibraryImage:
+                ///   - appAssetLibraryVideo:
                 ///   - appCustomProductPageVersion:
                 ///   - appEvent:
                 ///   - appStoreVersion:
@@ -21880,6 +29688,8 @@ package enum Components {
                 ///   - subscriptionGroupVersion:
                 ///   - subscriptionVersion:
                 package init(
+                    appAssetLibraryImage: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryImagePayload? = nil,
+                    appAssetLibraryVideo: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appAssetLibraryVideoPayload? = nil,
                     appCustomProductPageVersion: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appCustomProductPageVersionPayload? = nil,
                     appEvent: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appEventPayload? = nil,
                     appStoreVersion: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.appStoreVersionPayload? = nil,
@@ -21895,6 +29705,8 @@ package enum Components {
                     subscriptionGroupVersion: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.subscriptionGroupVersionPayload? = nil,
                     subscriptionVersion: Components.Schemas.ReviewSubmissionItem.relationshipsPayload.subscriptionVersionPayload? = nil
                 ) {
+                    self.appAssetLibraryImage = appAssetLibraryImage
+                    self.appAssetLibraryVideo = appAssetLibraryVideo
                     self.appCustomProductPageVersion = appCustomProductPageVersion
                     self.appEvent = appEvent
                     self.appStoreVersion = appStoreVersion
@@ -21911,6 +29723,8 @@ package enum Components {
                     self.subscriptionVersion = subscriptionVersion
                 }
                 package enum CodingKeys: String, CodingKey {
+                    case appAssetLibraryImage
+                    case appAssetLibraryVideo
                     case appCustomProductPageVersion
                     case appEvent
                     case appStoreVersion
@@ -21970,6 +29784,94 @@ package enum Components {
             package struct dataPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships`.
                 package struct relationshipsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage`.
+                    package struct appAssetLibraryImagePayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appAssetLibraryImages = "appAssetLibraryImages"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage/data/type`.
+                            package var _type: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage/data`.
+                        package var data: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload.dataPayload?
+                        /// Creates a new `appAssetLibraryImagePayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryImage`.
+                    package var appAssetLibraryImage: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload?
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo`.
+                    package struct appAssetLibraryVideoPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo/data`.
+                        package struct dataPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo/data/id`.
+                            package var id: Swift.String
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo/data/type`.
+                            @frozen package enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                                case appAssetLibraryVideos = "appAssetLibraryVideos"
+                            }
+                            /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo/data/type`.
+                            package var _type: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload._typePayload
+                            /// Creates a new `dataPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - id:
+                            ///   - _type:
+                            package init(
+                                id: Swift.String,
+                                _type: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload._typePayload
+                            ) {
+                                self.id = id
+                                self._type = _type
+                            }
+                            package enum CodingKeys: String, CodingKey {
+                                case id
+                                case _type = "type"
+                            }
+                        }
+                        /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo/data`.
+                        package var data: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload?
+                        /// Creates a new `appAssetLibraryVideoPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - data:
+                        package init(data: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload.dataPayload? = nil) {
+                            self.data = data
+                        }
+                        package enum CodingKeys: String, CodingKey {
+                            case data
+                        }
+                    }
+                    /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appAssetLibraryVideo`.
+                    package var appAssetLibraryVideo: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload?
                     /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appCustomProductPageVersion`.
                     package struct appCustomProductPageVersionPayload: Codable, Hashable, Sendable {
                         /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemCreateRequest/data/relationships/appCustomProductPageVersion/data`.
@@ -22633,6 +30535,8 @@ package enum Components {
                     /// Creates a new `relationshipsPayload`.
                     ///
                     /// - Parameters:
+                    ///   - appAssetLibraryImage:
+                    ///   - appAssetLibraryVideo:
                     ///   - appCustomProductPageVersion:
                     ///   - appEvent:
                     ///   - appStoreVersion:
@@ -22649,6 +30553,8 @@ package enum Components {
                     ///   - subscriptionGroupVersion:
                     ///   - subscriptionVersion:
                     package init(
+                        appAssetLibraryImage: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryImagePayload? = nil,
+                        appAssetLibraryVideo: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appAssetLibraryVideoPayload? = nil,
                         appCustomProductPageVersion: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appCustomProductPageVersionPayload? = nil,
                         appEvent: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appEventPayload? = nil,
                         appStoreVersion: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.appStoreVersionPayload? = nil,
@@ -22665,6 +30571,8 @@ package enum Components {
                         subscriptionGroupVersion: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.subscriptionGroupVersionPayload? = nil,
                         subscriptionVersion: Components.Schemas.ReviewSubmissionItemCreateRequest.dataPayload.relationshipsPayload.subscriptionVersionPayload? = nil
                     ) {
+                        self.appAssetLibraryImage = appAssetLibraryImage
+                        self.appAssetLibraryVideo = appAssetLibraryVideo
                         self.appCustomProductPageVersion = appCustomProductPageVersion
                         self.appEvent = appEvent
                         self.appStoreVersion = appStoreVersion
@@ -22682,6 +30590,8 @@ package enum Components {
                         self.subscriptionVersion = subscriptionVersion
                     }
                     package enum CodingKeys: String, CodingKey {
+                        case appAssetLibraryImage
+                        case appAssetLibraryVideo
                         case appCustomProductPageVersion
                         case appEvent
                         case appStoreVersion
@@ -22743,6 +30653,10 @@ package enum Components {
             package var data: Components.Schemas.ReviewSubmissionItem
             /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemResponse/includedPayload`.
             @frozen package enum includedPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemResponse/includedPayload/AppAssetLibraryImage`.
+                case appAssetLibraryImages(Components.Schemas.AppAssetLibraryImage)
+                /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemResponse/includedPayload/AppAssetLibraryVideo`.
+                case appAssetLibraryVideos(Components.Schemas.AppAssetLibraryVideo)
                 /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemResponse/includedPayload/AppCustomProductPageVersion`.
                 case appCustomProductPageVersions(Components.Schemas.AppCustomProductPageVersion)
                 /// - Remark: Generated from `#/components/schemas/ReviewSubmissionItemResponse/includedPayload/AppEvent`.
@@ -22779,6 +30693,10 @@ package enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
+                    case "appAssetLibraryImages":
+                        self = .appAssetLibraryImages(try .init(from: decoder))
+                    case "appAssetLibraryVideos":
+                        self = .appAssetLibraryVideos(try .init(from: decoder))
                     case "appCustomProductPageVersions":
                         self = .appCustomProductPageVersions(try .init(from: decoder))
                     case "appEvents":
@@ -22815,6 +30733,10 @@ package enum Components {
                 }
                 package func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
+                    case let .appAssetLibraryImages(value):
+                        try value.encode(to: encoder)
+                    case let .appAssetLibraryVideos(value):
+                        try value.encode(to: encoder)
                     case let .appCustomProductPageVersions(value):
                         try value.encode(to: encoder)
                     case let .appEvents(value):
@@ -24723,6 +32645,3051 @@ package enum Components {
 
 /// API operations, with input and output types, generated from `#/paths` in the OpenAPI document.
 package enum Operations {
+    /// - Remark: HTTP `POST /v1/appAssetLibraryImages`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)`.
+    package enum appAssetLibraryImages_createInstance {
+        package static let id: Swift.String = "appAssetLibraryImages_createInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_createInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_createInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryImages_createInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppAssetLibraryImageCreateRequest)
+            }
+            package var body: Operations.appAssetLibraryImages_createInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            package init(
+                headers: Operations.appAssetLibraryImages_createInstance.Input.Headers = .init(),
+                body: Operations.appAssetLibraryImages_createInstance.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/201/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryImageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryImageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibraryImage
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.appAssetLibraryImages_createInstance.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            package var created: Operations.appAssetLibraryImages_createInstance.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryImages_createInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryImages_createInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryImages_createInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryImages_createInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryImages_createInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryImages_createInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appAssetLibraryImages_createInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appAssetLibraryImages_createInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appAssetLibraryImages_createInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appAssetLibraryImages_createInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/POST/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_createInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_createInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/post(appAssetLibraryImages_createInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryImages_createInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryImages_createInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)`.
+    package enum appAssetLibraryImages_getInstance {
+        package static let id: Swift.String = "appAssetLibraryImages_getInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appAssetLibraryImages_getInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields_lbrack_appAssetLibraryImages_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryImages_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case category = "category"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case fileName = "fileName"
+                    case fileSize = "fileSize"
+                    case imageAsset = "imageAsset"
+                    case referenceName = "referenceName"
+                    case specId = "specId"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case uploadOperations = "uploadOperations"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields[appAssetLibraryImages]`.
+                package typealias fields_lbrack_appAssetLibraryImages_rbrack_Payload = [Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryImages
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields[appAssetLibraryImages]`.
+                package var fields_lbrack_appAssetLibraryImages_rbrack_: Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields_lbrack_appAssetLibraryPlacements_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case mediaType = "mediaType"
+                    case placementType = "placementType"
+                    case placementGroup = "placementGroup"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case image = "image"
+                    case video = "video"
+                    case appEventLocalization = "appEventLocalization"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields[appAssetLibraryPlacements]`.
+                package typealias fields_lbrack_appAssetLibraryPlacements_rbrack_Payload = [Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryPlacements
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/fields[appAssetLibraryPlacements]`.
+                package var fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/include`.
+                package typealias includePayload = [Operations.appAssetLibraryImages_getInstance.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/include`.
+                package var include: Operations.appAssetLibraryImages_getInstance.Input.Query.includePayload?
+                /// maximum number of related placements returned (when they are included)
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/query/limit[placements]`.
+                package var limit_lbrack_placements_rbrack_: Swift.Int?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_appAssetLibraryImages_rbrack_: the fields to include for returned resources of type appAssetLibraryImages
+                ///   - fields_lbrack_appAssetLibraryPlacements_rbrack_: the fields to include for returned resources of type appAssetLibraryPlacements
+                ///   - include: comma-separated list of relationships to include
+                ///   - limit_lbrack_placements_rbrack_: maximum number of related placements returned (when they are included)
+                package init(
+                    fields_lbrack_appAssetLibraryImages_rbrack_: Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_Payload? = nil,
+                    fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appAssetLibraryImages_getInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload? = nil,
+                    include: Operations.appAssetLibraryImages_getInstance.Input.Query.includePayload? = nil,
+                    limit_lbrack_placements_rbrack_: Swift.Int? = nil
+                ) {
+                    self.fields_lbrack_appAssetLibraryImages_rbrack_ = fields_lbrack_appAssetLibraryImages_rbrack_
+                    self.fields_lbrack_appAssetLibraryPlacements_rbrack_ = fields_lbrack_appAssetLibraryPlacements_rbrack_
+                    self.include = include
+                    self.limit_lbrack_placements_rbrack_ = limit_lbrack_placements_rbrack_
+                }
+            }
+            package var query: Operations.appAssetLibraryImages_getInstance.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_getInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_getInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryImages_getInstance.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.appAssetLibraryImages_getInstance.Input.Path,
+                query: Operations.appAssetLibraryImages_getInstance.Input.Query = .init(),
+                headers: Operations.appAssetLibraryImages_getInstance.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryImageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryImageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibraryImage
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appAssetLibraryImages_getInstance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appAssetLibraryImages_getInstance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryImages_getInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryImages_getInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryImages_getInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryImages_getInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryImages_getInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryImages_getInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appAssetLibraryImages_getInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appAssetLibraryImages_getInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_getInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_getInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/get(appAssetLibraryImages_getInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryImages_getInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryImages_getInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `PATCH /v1/appAssetLibraryImages/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)`.
+    package enum appAssetLibraryImages_updateInstance {
+        package static let id: Swift.String = "appAssetLibraryImages_updateInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appAssetLibraryImages_updateInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_updateInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryImages_updateInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryImages_updateInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppAssetLibraryImageUpdateRequest)
+            }
+            package var body: Operations.appAssetLibraryImages_updateInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            package init(
+                path: Operations.appAssetLibraryImages_updateInstance.Input.Path,
+                headers: Operations.appAssetLibraryImages_updateInstance.Input.Headers = .init(),
+                body: Operations.appAssetLibraryImages_updateInstance.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryImageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryImageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibraryImage
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appAssetLibraryImages_updateInstance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appAssetLibraryImages_updateInstance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryImages_updateInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryImages_updateInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryImages_updateInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryImages_updateInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryImages_updateInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryImages_updateInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appAssetLibraryImages_updateInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appAssetLibraryImages_updateInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appAssetLibraryImages_updateInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appAssetLibraryImages_updateInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appAssetLibraryImages_updateInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appAssetLibraryImages_updateInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryImages/{id}/PATCH/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryImages_updateInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryImages_updateInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryImages/{id}/patch(appAssetLibraryImages_updateInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryImages_updateInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryImages_updateInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacementOrderingRequests`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)`.
+    package enum appAssetLibraryPlacementOrderingRequests_createInstance {
+        package static let id: Swift.String = "appAssetLibraryPlacementOrderingRequests_createInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields_lbrack_appAssetLibraryPlacements_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case mediaType = "mediaType"
+                    case placementType = "placementType"
+                    case placementGroup = "placementGroup"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case image = "image"
+                    case video = "video"
+                    case appEventLocalization = "appEventLocalization"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields[appAssetLibraryPlacements]`.
+                package typealias fields_lbrack_appAssetLibraryPlacements_rbrack_Payload = [Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryPlacements
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields[appAssetLibraryPlacements]`.
+                package var fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case orderedPlacements = "orderedPlacements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/include`.
+                package typealias includePayload = [Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/include`.
+                package var include: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.includePayload?
+                /// maximum number of related orderedPlacements returned (when they are included)
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/limit[orderedPlacements]`.
+                package var limit_lbrack_orderedPlacements_rbrack_: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case orderedPlacements = "orderedPlacements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields[appAssetLibraryPlacementOrderingRequests]`.
+                package typealias fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_Payload = [Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryPlacementOrderingRequests
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/query/fields[appAssetLibraryPlacementOrderingRequests]`.
+                package var fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_Payload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_appAssetLibraryPlacements_rbrack_: the fields to include for returned resources of type appAssetLibraryPlacements
+                ///   - include: comma-separated list of relationships to include
+                ///   - limit_lbrack_orderedPlacements_rbrack_: maximum number of related orderedPlacements returned (when they are included)
+                ///   - fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_: the fields to include for returned resources of type appAssetLibraryPlacementOrderingRequests
+                package init(
+                    fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload? = nil,
+                    include: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.includePayload? = nil,
+                    limit_lbrack_orderedPlacements_rbrack_: Swift.Int? = nil,
+                    fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query.fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_Payload? = nil
+                ) {
+                    self.fields_lbrack_appAssetLibraryPlacements_rbrack_ = fields_lbrack_appAssetLibraryPlacements_rbrack_
+                    self.include = include
+                    self.limit_lbrack_orderedPlacements_rbrack_ = limit_lbrack_orderedPlacements_rbrack_
+                    self.fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_ = fields_lbrack_appAssetLibraryPlacementOrderingRequests_rbrack_
+                }
+            }
+            package var query: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacementOrderingRequests_createInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacementOrderingRequests_createInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppAssetLibraryPlacementOrderingRequestCreateRequest)
+            }
+            package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            package init(
+                query: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Query = .init(),
+                headers: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Headers = .init(),
+                body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/201/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryPlacementOrderingRequestResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryPlacementOrderingRequestResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibraryPlacementOrderingRequest
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            package var created: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacementOrderingRequests/POST/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacementOrderingRequests/post(appAssetLibraryPlacementOrderingRequests_createInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryPlacementOrderingRequests_createInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /v1/appAssetLibraryPlacements`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)`.
+    package enum appAssetLibraryPlacements_createInstance {
+        package static let id: Swift.String = "appAssetLibraryPlacements_createInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacements_createInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacements_createInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryPlacements_createInstance.Input.Headers
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/requestBody`.
+            @frozen package enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.AppAssetLibraryPlacementCreateRequest)
+            }
+            package var body: Operations.appAssetLibraryPlacements_createInstance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            package init(
+                headers: Operations.appAssetLibraryPlacements_createInstance.Input.Headers = .init(),
+                body: Operations.appAssetLibraryPlacements_createInstance.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/201/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryPlacementResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryPlacementResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibraryPlacement
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.appAssetLibraryPlacements_createInstance.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            package var created: Operations.appAssetLibraryPlacements_createInstance.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryPlacements_createInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryPlacements_createInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryPlacements_createInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryPlacements_createInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryPlacements_createInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryPlacements_createInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Conflict: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/409/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/409/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.Conflict.Body
+                /// Creates a new `Conflict`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.Conflict.Body) {
+                    self.body = body
+                }
+            }
+            /// Request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/409`.
+            ///
+            /// HTTP response code: `409 conflict`.
+            case conflict(Operations.appAssetLibraryPlacements_createInstance.Output.Conflict)
+            /// The associated value of the enum case if `self` is `.conflict`.
+            ///
+            /// - Throws: An error if `self` is not `.conflict`.
+            /// - SeeAlso: `.conflict`.
+            package var conflict: Operations.appAssetLibraryPlacements_createInstance.Output.Conflict {
+                get throws {
+                    switch self {
+                    case let .conflict(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "conflict",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct UnprocessableContent: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/422/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/422/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.UnprocessableContent.Body
+                /// Creates a new `UnprocessableContent`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.UnprocessableContent.Body) {
+                    self.body = body
+                }
+            }
+            /// Unprocessable request entity error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/422`.
+            ///
+            /// HTTP response code: `422 unprocessableContent`.
+            case unprocessableContent(Operations.appAssetLibraryPlacements_createInstance.Output.UnprocessableContent)
+            /// The associated value of the enum case if `self` is `.unprocessableContent`.
+            ///
+            /// - Throws: An error if `self` is not `.unprocessableContent`.
+            /// - SeeAlso: `.unprocessableContent`.
+            package var unprocessableContent: Operations.appAssetLibraryPlacements_createInstance.Output.UnprocessableContent {
+                get throws {
+                    switch self {
+                    case let .unprocessableContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unprocessableContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/POST/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_createInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_createInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/post(appAssetLibraryPlacements_createInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryPlacements_createInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryPlacements_createInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `DELETE /v1/appAssetLibraryPlacements/{id}`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)`.
+    package enum appAssetLibraryPlacements_deleteInstance {
+        package static let id: Swift.String = "appAssetLibraryPlacements_deleteInstance"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appAssetLibraryPlacements_deleteInstance.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacements_deleteInstance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryPlacements_deleteInstance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryPlacements_deleteInstance.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            package init(
+                path: Operations.appAssetLibraryPlacements_deleteInstance.Input.Path,
+                headers: Operations.appAssetLibraryPlacements_deleteInstance.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct NoContent: Sendable, Hashable {
+                /// Creates a new `NoContent`.
+                package init() {}
+            }
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            case noContent(Operations.appAssetLibraryPlacements_deleteInstance.Output.NoContent)
+            /// Success (no content)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/204`.
+            ///
+            /// HTTP response code: `204 noContent`.
+            package static var noContent: Self {
+                .noContent(.init())
+            }
+            /// The associated value of the enum case if `self` is `.noContent`.
+            ///
+            /// - Throws: An error if `self` is not `.noContent`.
+            /// - SeeAlso: `.noContent`.
+            package var noContent: Operations.appAssetLibraryPlacements_deleteInstance.Output.NoContent {
+                get throws {
+                    switch self {
+                    case let .noContent(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "noContent",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_deleteInstance.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_deleteInstance.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryPlacements_deleteInstance.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryPlacements_deleteInstance.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_deleteInstance.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_deleteInstance.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryPlacements_deleteInstance.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryPlacements_deleteInstance.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_deleteInstance.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_deleteInstance.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryPlacements_deleteInstance.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryPlacements_deleteInstance.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_deleteInstance.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_deleteInstance.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appAssetLibraryPlacements_deleteInstance.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appAssetLibraryPlacements_deleteInstance.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryPlacements/{id}/DELETE/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryPlacements_deleteInstance.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryPlacements_deleteInstance.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryPlacements/{id}/delete(appAssetLibraryPlacements_deleteInstance)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryPlacements_deleteInstance.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryPlacements_deleteInstance.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appAssetLibraryRefData`.
+    /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)`.
+    package enum appAssetLibraryRefData_getCollection {
+        package static let id: Swift.String = "appAssetLibraryRefData_getCollection"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// filter by attribute 'placementTypes'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/filter[placementTypes]`.
+                package var filter_lbrack_placementTypes_rbrack_: [Swift.String]?
+                /// filter by attribute 'placementProfileGroups'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/filter[placementProfileGroups]`.
+                package var filter_lbrack_placementProfileGroups_rbrack_: [Swift.String]?
+                /// filter by attribute 'features'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/filter[features]`.
+                package var filter_lbrack_features_rbrack_: [Swift.String]?
+                /// filter by specs
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/filter[specs]`.
+                package var filter_lbrack_specs_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/fields_lbrack_appAssetLibraryRefData_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryRefData_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case features = "features"
+                    case placementProfileGroups = "placementProfileGroups"
+                    case imageSpecs = "imageSpecs"
+                    case videoSpecs = "videoSpecs"
+                    case placementTypes = "placementTypes"
+                    case displayClasses = "displayClasses"
+                }
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/fields[appAssetLibraryRefData]`.
+                package typealias fields_lbrack_appAssetLibraryRefData_rbrack_Payload = [Operations.appAssetLibraryRefData_getCollection.Input.Query.fields_lbrack_appAssetLibraryRefData_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryRefData
+                ///
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/query/fields[appAssetLibraryRefData]`.
+                package var fields_lbrack_appAssetLibraryRefData_rbrack_: Operations.appAssetLibraryRefData_getCollection.Input.Query.fields_lbrack_appAssetLibraryRefData_rbrack_Payload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - filter_lbrack_placementTypes_rbrack_: filter by attribute 'placementTypes'
+                ///   - filter_lbrack_placementProfileGroups_rbrack_: filter by attribute 'placementProfileGroups'
+                ///   - filter_lbrack_features_rbrack_: filter by attribute 'features'
+                ///   - filter_lbrack_specs_rbrack_: filter by specs
+                ///   - fields_lbrack_appAssetLibraryRefData_rbrack_: the fields to include for returned resources of type appAssetLibraryRefData
+                package init(
+                    filter_lbrack_placementTypes_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_placementProfileGroups_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_features_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_specs_rbrack_: [Swift.String]? = nil,
+                    fields_lbrack_appAssetLibraryRefData_rbrack_: Operations.appAssetLibraryRefData_getCollection.Input.Query.fields_lbrack_appAssetLibraryRefData_rbrack_Payload? = nil
+                ) {
+                    self.filter_lbrack_placementTypes_rbrack_ = filter_lbrack_placementTypes_rbrack_
+                    self.filter_lbrack_placementProfileGroups_rbrack_ = filter_lbrack_placementProfileGroups_rbrack_
+                    self.filter_lbrack_features_rbrack_ = filter_lbrack_features_rbrack_
+                    self.filter_lbrack_specs_rbrack_ = filter_lbrack_specs_rbrack_
+                    self.fields_lbrack_appAssetLibraryRefData_rbrack_ = fields_lbrack_appAssetLibraryRefData_rbrack_
+                }
+            }
+            package var query: Operations.appAssetLibraryRefData_getCollection.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryRefData_getCollection.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appAssetLibraryRefData_getCollection.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appAssetLibraryRefData_getCollection.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            package init(
+                query: Operations.appAssetLibraryRefData_getCollection.Input.Query = .init(),
+                headers: Operations.appAssetLibraryRefData_getCollection.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryRefDataResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryRefDataResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryRefData_getCollection.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryRefData_getCollection.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of AppAssetLibraryRefData
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appAssetLibraryRefData_getCollection.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appAssetLibraryRefData_getCollection.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryRefData_getCollection.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryRefData_getCollection.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appAssetLibraryRefData_getCollection.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appAssetLibraryRefData_getCollection.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryRefData_getCollection.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryRefData_getCollection.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appAssetLibraryRefData_getCollection.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appAssetLibraryRefData_getCollection.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryRefData_getCollection.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryRefData_getCollection.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appAssetLibraryRefData_getCollection.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appAssetLibraryRefData_getCollection.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appAssetLibraryRefData/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appAssetLibraryRefData_getCollection.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appAssetLibraryRefData_getCollection.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appAssetLibraryRefData/get(appAssetLibraryRefData_getCollection)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appAssetLibraryRefData_getCollection.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appAssetLibraryRefData_getCollection.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
     /// - Remark: HTTP `GET /v1/apps`.
     /// - Remark: Generated from `#/paths//v1/apps/get(apps_getCollection)`.
     package enum apps_getCollection {
@@ -24900,6 +35867,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -24916,6 +35884,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -25147,7 +36116,6 @@ package enum Operations {
                     case brazilAgeRatingV2 = "brazilAgeRatingV2"
                     case franceAgeRating = "franceAgeRating"
                     case koreaAgeRating = "koreaAgeRating"
-                    case kidsAgeBand = "kidsAgeBand"
                     case app = "app"
                     case ageRatingDeclaration = "ageRatingDeclaration"
                     case appInfoLocalizations = "appInfoLocalizations"
@@ -25347,6 +36315,7 @@ package enum Operations {
                     case challengeReleases = "challengeReleases"
                     case leaderboardReleases = "leaderboardReleases"
                     case leaderboardSetReleases = "leaderboardSetReleases"
+                    case blockedPlayers = "blockedPlayers"
                     case challengesMinimumPlatformVersions = "challengesMinimumPlatformVersions"
                 }
                 /// - Remark: Generated from `#/paths/v1/apps/GET/query/fields[gameCenterDetails]`.
@@ -26045,6 +37014,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -26061,6 +37031,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -26292,7 +37263,6 @@ package enum Operations {
                     case brazilAgeRatingV2 = "brazilAgeRatingV2"
                     case franceAgeRating = "franceAgeRating"
                     case koreaAgeRating = "koreaAgeRating"
-                    case kidsAgeBand = "kidsAgeBand"
                     case app = "app"
                     case ageRatingDeclaration = "ageRatingDeclaration"
                     case appInfoLocalizations = "appInfoLocalizations"
@@ -26492,6 +37462,7 @@ package enum Operations {
                     case challengeReleases = "challengeReleases"
                     case leaderboardReleases = "leaderboardReleases"
                     case leaderboardSetReleases = "leaderboardSetReleases"
+                    case blockedPlayers = "blockedPlayers"
                     case challengesMinimumPlatformVersions = "challengesMinimumPlatformVersions"
                 }
                 /// - Remark: Generated from `#/paths/v1/apps/{id}/GET/query/fields[gameCenterDetails]`.
@@ -27308,6 +38279,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -27324,6 +38296,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -27349,6 +38322,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/apps/{id}/appStoreVersions/GET/query/fields[appStoreVersionLocalizations]`.
                 package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.apps_appStoreVersions_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
@@ -27940,6 +38914,414 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.apps_appStoreVersions_getToManyRelated.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/apps/{id}/assetLibrary`.
+    /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)`.
+    package enum apps_assetLibrary_getToOneRelated {
+        package static let id: Swift.String = "apps_assetLibrary_getToOneRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.apps_assetLibrary_getToOneRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/query/fields_lbrack_appAssetLibraries_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraries_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case images = "images"
+                    case videos = "videos"
+                }
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/query/fields[appAssetLibraries]`.
+                package typealias fields_lbrack_appAssetLibraries_rbrack_Payload = [Operations.apps_assetLibrary_getToOneRelated.Input.Query.fields_lbrack_appAssetLibraries_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraries
+                ///
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/query/fields[appAssetLibraries]`.
+                package var fields_lbrack_appAssetLibraries_rbrack_: Operations.apps_assetLibrary_getToOneRelated.Input.Query.fields_lbrack_appAssetLibraries_rbrack_Payload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - fields_lbrack_appAssetLibraries_rbrack_: the fields to include for returned resources of type appAssetLibraries
+                package init(fields_lbrack_appAssetLibraries_rbrack_: Operations.apps_assetLibrary_getToOneRelated.Input.Query.fields_lbrack_appAssetLibraries_rbrack_Payload? = nil) {
+                    self.fields_lbrack_appAssetLibraries_rbrack_ = fields_lbrack_appAssetLibraries_rbrack_
+                }
+            }
+            package var query: Operations.apps_assetLibrary_getToOneRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_assetLibrary_getToOneRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.apps_assetLibrary_getToOneRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.apps_assetLibrary_getToOneRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.apps_assetLibrary_getToOneRelated.Input.Path,
+                query: Operations.apps_assetLibrary_getToOneRelated.Input.Query = .init(),
+                headers: Operations.apps_assetLibrary_getToOneRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Single AppAssetLibrary
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.apps_assetLibrary_getToOneRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.apps_assetLibrary_getToOneRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.apps_assetLibrary_getToOneRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.apps_assetLibrary_getToOneRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.apps_assetLibrary_getToOneRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.apps_assetLibrary_getToOneRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.apps_assetLibrary_getToOneRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.apps_assetLibrary_getToOneRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.apps_assetLibrary_getToOneRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.apps_assetLibrary_getToOneRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/apps/{id}/assetLibrary/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.apps_assetLibrary_getToOneRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.apps_assetLibrary_getToOneRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/apps/{id}/assetLibrary/get(apps_assetLibrary_getToOneRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.apps_assetLibrary_getToOneRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.apps_assetLibrary_getToOneRelated.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):
@@ -29240,6 +40622,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -29256,6 +40639,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -33351,6 +44735,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionLocalizations]`.
                 package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
@@ -33366,6 +44751,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appCustomProductPageLocalizations]`.
                 package typealias fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_PayloadPayload]
@@ -33379,6 +44765,7 @@ package enum Operations {
                     case appStoreVersionExperimentTreatment = "appStoreVersionExperimentTreatment"
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/appScreenshotSets/GET/query/fields[appStoreVersionExperimentTreatmentLocalizations]`.
                 package typealias fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_PayloadPayload]
@@ -33789,6 +45176,690 @@ package enum Operations {
             /// - Throws: An error if `self` is not `.tooManyRequests`.
             /// - SeeAlso: `.tooManyRequests`.
             package var tooManyRequests: Operations.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated.Output.TooManyRequests {
+                get throws {
+                    switch self {
+                    case let .tooManyRequests(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "tooManyRequests",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen package enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            package init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            package var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            package static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `GET /v1/appStoreVersionLocalizations/{id}/placements`.
+    /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)`.
+    package enum appStoreVersionLocalizations_placements_getToManyRelated {
+        package static let id: Swift.String = "appStoreVersionLocalizations_placements_getToManyRelated"
+        package struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/path`.
+            package struct Path: Sendable, Hashable {
+                /// the id of the requested resource
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/path/id`.
+                package var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id: the id of the requested resource
+                package init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            package var path: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Path
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query`.
+            package struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter_lbrack_placementType_rbrack_Payload`.
+                @frozen package enum filter_lbrack_placementType_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case APP_SCREENSHOT = "APP_SCREENSHOT"
+                    case IMESSAGE_APP_SCREENSHOT = "IMESSAGE_APP_SCREENSHOT"
+                    case APP_PREVIEW = "APP_PREVIEW"
+                    case PRODUCT_PAGE_HEADER_ASSET = "PRODUCT_PAGE_HEADER_ASSET"
+                    case APP_STORE_SEARCH_RESULTS_ASSET = "APP_STORE_SEARCH_RESULTS_ASSET"
+                    case SEARCH_RESULTS_ADS_ASSET = "SEARCH_RESULTS_ADS_ASSET"
+                    case TODAY_TAB_ADS_ASSET = "TODAY_TAB_ADS_ASSET"
+                    case EVENT_CARD_ASSET = "EVENT_CARD_ASSET"
+                    case EVENT_DETAILS_PAGE_ASSET = "EVENT_DETAILS_PAGE_ASSET"
+                    case RETENTION_MESSAGE_ASSET = "RETENTION_MESSAGE_ASSET"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[placementType]`.
+                package typealias filter_lbrack_placementType_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_placementType_rbrack_PayloadPayload]
+                /// filter by attribute 'placementType'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[placementType]`.
+                package var filter_lbrack_placementType_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_placementType_rbrack_Payload?
+                /// filter by attribute 'placementGroup'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[placementGroup]`.
+                package var filter_lbrack_placementGroup_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter_lbrack_state_rbrack_Payload`.
+                @frozen package enum filter_lbrack_state_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case ASSET_PROCESSING = "ASSET_PROCESSING"
+                    case FAILED = "FAILED"
+                    case PARENT_PREPARE_FOR_SUBMISSION = "PARENT_PREPARE_FOR_SUBMISSION"
+                    case PARENT_READY_FOR_REVIEW = "PARENT_READY_FOR_REVIEW"
+                    case PARENT_WAITING_FOR_REVIEW = "PARENT_WAITING_FOR_REVIEW"
+                    case PARENT_IN_REVIEW = "PARENT_IN_REVIEW"
+                    case PARENT_APPROVED = "PARENT_APPROVED"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[state]`.
+                package typealias filter_lbrack_state_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_state_rbrack_PayloadPayload]
+                /// filter by attribute 'state'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[state]`.
+                package var filter_lbrack_state_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_state_rbrack_Payload?
+                /// filter by id(s) of related 'image'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[image]`.
+                package var filter_lbrack_image_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'video'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[video]`.
+                package var filter_lbrack_video_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'appEventLocalization'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[appEventLocalization]`.
+                package var filter_lbrack_appEventLocalization_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'appCustomProductPageLocalization'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[appCustomProductPageLocalization]`.
+                package var filter_lbrack_appCustomProductPageLocalization_rbrack_: [Swift.String]?
+                /// filter by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[appStoreVersionExperimentTreatmentLocalization]`.
+                package var filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: [Swift.String]?
+                /// filter by id(s)
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/filter[id]`.
+                package var filter_lbrack_id_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/sortPayload`.
+                @frozen package enum sortPayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case createdDate = "createdDate"
+                    case _hyphen_createdDate = "-createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case _hyphen_lastModifiedDate = "-lastModifiedDate"
+                    case placementGroupPosition = "placementGroupPosition"
+                    case _hyphen_placementGroupPosition = "-placementGroupPosition"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/sort`.
+                package typealias sortPayload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.sortPayloadPayload]
+                /// comma-separated list of sort expressions; resources will be sorted as specified
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/sort`.
+                package var sort: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.sortPayload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appAssetLibraryPlacements_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case mediaType = "mediaType"
+                    case placementType = "placementType"
+                    case placementGroup = "placementGroup"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case image = "image"
+                    case video = "video"
+                    case appEventLocalization = "appEventLocalization"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryPlacements]`.
+                package typealias fields_lbrack_appAssetLibraryPlacements_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryPlacements
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryPlacements]`.
+                package var fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appAssetLibraryImages_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryImages_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case category = "category"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case fileName = "fileName"
+                    case fileSize = "fileSize"
+                    case imageAsset = "imageAsset"
+                    case referenceName = "referenceName"
+                    case specId = "specId"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case uploadOperations = "uploadOperations"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryImages]`.
+                package typealias fields_lbrack_appAssetLibraryImages_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryImages
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryImages]`.
+                package var fields_lbrack_appAssetLibraryImages_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appAssetLibraryVideos_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryVideos_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case category = "category"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case fileName = "fileName"
+                    case fileSize = "fileSize"
+                    case previewFrameImage = "previewFrameImage"
+                    case previewFrameTimeCode = "previewFrameTimeCode"
+                    case referenceName = "referenceName"
+                    case specId = "specId"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case uploadOperations = "uploadOperations"
+                    case videoAsset = "videoAsset"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryVideos]`.
+                package typealias fields_lbrack_appAssetLibraryVideos_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryVideos_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryVideos
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appAssetLibraryVideos]`.
+                package var fields_lbrack_appAssetLibraryVideos_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryVideos_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appEventLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appEventLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case locale = "locale"
+                    case name = "name"
+                    case shortDescription = "shortDescription"
+                    case longDescription = "longDescription"
+                    case appEvent = "appEvent"
+                    case appEventScreenshots = "appEventScreenshots"
+                    case appEventVideoClips = "appEventVideoClips"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appEventLocalizations]`.
+                package typealias fields_lbrack_appEventLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appEventLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appEventLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appEventLocalizations]`.
+                package var fields_lbrack_appEventLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appEventLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appStoreVersionLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case description = "description"
+                    case locale = "locale"
+                    case keywords = "keywords"
+                    case marketingUrl = "marketingUrl"
+                    case promotionalText = "promotionalText"
+                    case supportUrl = "supportUrl"
+                    case whatsNew = "whatsNew"
+                    case appStoreVersion = "appStoreVersion"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                    case searchKeywords = "searchKeywords"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appStoreVersionLocalizations]`.
+                package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appStoreVersionLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appStoreVersionLocalizations]`.
+                package var fields_lbrack_appStoreVersionLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appCustomProductPageLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case locale = "locale"
+                    case promotionalText = "promotionalText"
+                    case appCustomProductPageVersion = "appCustomProductPageVersion"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                    case searchKeywords = "searchKeywords"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appCustomProductPageLocalizations]`.
+                package typealias fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appCustomProductPageLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appCustomProductPageLocalizations]`.
+                package var fields_lbrack_appCustomProductPageLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case locale = "locale"
+                    case appStoreVersionExperimentTreatment = "appStoreVersionExperimentTreatment"
+                    case appScreenshotSets = "appScreenshotSets"
+                    case appPreviewSets = "appPreviewSets"
+                    case placements = "placements"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appStoreVersionExperimentTreatmentLocalizations]`.
+                package typealias fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appStoreVersionExperimentTreatmentLocalizations
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/fields[appStoreVersionExperimentTreatmentLocalizations]`.
+                package var fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload?
+                /// maximum resources per page
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/limit`.
+                package var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/includePayload`.
+                @frozen package enum includePayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case image = "image"
+                    case video = "video"
+                    case appEventLocalization = "appEventLocalization"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/include`.
+                package typealias includePayload = [Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.includePayloadPayload]
+                /// comma-separated list of relationships to include
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/query/include`.
+                package var include: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.includePayload?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - filter_lbrack_placementType_rbrack_: filter by attribute 'placementType'
+                ///   - filter_lbrack_placementGroup_rbrack_: filter by attribute 'placementGroup'
+                ///   - filter_lbrack_state_rbrack_: filter by attribute 'state'
+                ///   - filter_lbrack_image_rbrack_: filter by id(s) of related 'image'
+                ///   - filter_lbrack_video_rbrack_: filter by id(s) of related 'video'
+                ///   - filter_lbrack_appEventLocalization_rbrack_: filter by id(s) of related 'appEventLocalization'
+                ///   - filter_lbrack_appCustomProductPageLocalization_rbrack_: filter by id(s) of related 'appCustomProductPageLocalization'
+                ///   - filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: filter by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+                ///   - filter_lbrack_id_rbrack_: filter by id(s)
+                ///   - sort: comma-separated list of sort expressions; resources will be sorted as specified
+                ///   - fields_lbrack_appAssetLibraryPlacements_rbrack_: the fields to include for returned resources of type appAssetLibraryPlacements
+                ///   - fields_lbrack_appAssetLibraryImages_rbrack_: the fields to include for returned resources of type appAssetLibraryImages
+                ///   - fields_lbrack_appAssetLibraryVideos_rbrack_: the fields to include for returned resources of type appAssetLibraryVideos
+                ///   - fields_lbrack_appEventLocalizations_rbrack_: the fields to include for returned resources of type appEventLocalizations
+                ///   - fields_lbrack_appStoreVersionLocalizations_rbrack_: the fields to include for returned resources of type appStoreVersionLocalizations
+                ///   - fields_lbrack_appCustomProductPageLocalizations_rbrack_: the fields to include for returned resources of type appCustomProductPageLocalizations
+                ///   - fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: the fields to include for returned resources of type appStoreVersionExperimentTreatmentLocalizations
+                ///   - limit: maximum resources per page
+                ///   - include: comma-separated list of relationships to include
+                package init(
+                    filter_lbrack_placementType_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_placementType_rbrack_Payload? = nil,
+                    filter_lbrack_placementGroup_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_state_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.filter_lbrack_state_rbrack_Payload? = nil,
+                    filter_lbrack_image_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_video_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appEventLocalization_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appCustomProductPageLocalization_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_: [Swift.String]? = nil,
+                    filter_lbrack_id_rbrack_: [Swift.String]? = nil,
+                    sort: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.sortPayload? = nil,
+                    fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload? = nil,
+                    fields_lbrack_appAssetLibraryImages_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryImages_rbrack_Payload? = nil,
+                    fields_lbrack_appAssetLibraryVideos_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryVideos_rbrack_Payload? = nil,
+                    fields_lbrack_appEventLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appEventLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appStoreVersionLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appCustomProductPageLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appCustomProductPageLocalizations_rbrack_Payload? = nil,
+                    fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_Payload? = nil,
+                    limit: Swift.Int? = nil,
+                    include: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query.includePayload? = nil
+                ) {
+                    self.filter_lbrack_placementType_rbrack_ = filter_lbrack_placementType_rbrack_
+                    self.filter_lbrack_placementGroup_rbrack_ = filter_lbrack_placementGroup_rbrack_
+                    self.filter_lbrack_state_rbrack_ = filter_lbrack_state_rbrack_
+                    self.filter_lbrack_image_rbrack_ = filter_lbrack_image_rbrack_
+                    self.filter_lbrack_video_rbrack_ = filter_lbrack_video_rbrack_
+                    self.filter_lbrack_appEventLocalization_rbrack_ = filter_lbrack_appEventLocalization_rbrack_
+                    self.filter_lbrack_appCustomProductPageLocalization_rbrack_ = filter_lbrack_appCustomProductPageLocalization_rbrack_
+                    self.filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_ = filter_lbrack_appStoreVersionExperimentTreatmentLocalization_rbrack_
+                    self.filter_lbrack_id_rbrack_ = filter_lbrack_id_rbrack_
+                    self.sort = sort
+                    self.fields_lbrack_appAssetLibraryPlacements_rbrack_ = fields_lbrack_appAssetLibraryPlacements_rbrack_
+                    self.fields_lbrack_appAssetLibraryImages_rbrack_ = fields_lbrack_appAssetLibraryImages_rbrack_
+                    self.fields_lbrack_appAssetLibraryVideos_rbrack_ = fields_lbrack_appAssetLibraryVideos_rbrack_
+                    self.fields_lbrack_appEventLocalizations_rbrack_ = fields_lbrack_appEventLocalizations_rbrack_
+                    self.fields_lbrack_appStoreVersionLocalizations_rbrack_ = fields_lbrack_appStoreVersionLocalizations_rbrack_
+                    self.fields_lbrack_appCustomProductPageLocalizations_rbrack_ = fields_lbrack_appCustomProductPageLocalizations_rbrack_
+                    self.fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_ = fields_lbrack_appStoreVersionExperimentTreatmentLocalizations_rbrack_
+                    self.limit = limit
+                    self.include = include
+                }
+            }
+            package var query: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query
+            /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/header`.
+            package struct Headers: Sendable, Hashable {
+                package var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersionLocalizations_placements_getToManyRelated.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                package init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.appStoreVersionLocalizations_placements_getToManyRelated.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            package var headers: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            package init(
+                path: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Path,
+                query: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Query = .init(),
+                headers: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen package enum Output: Sendable, Hashable {
+            package struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/200/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AppAssetLibraryPlacementsResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.AppAssetLibraryPlacementsResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// List of AppAssetLibraryPlacements
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            package var ok: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/400/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Parameter error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            package var badRequest: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Unauthorized: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/401/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/401/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Unauthorized.Body
+                /// Creates a new `Unauthorized`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Unauthorized.Body) {
+                    self.body = body
+                }
+            }
+            /// Unauthorized error(s)
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/401`.
+            ///
+            /// HTTP response code: `401 unauthorized`.
+            case unauthorized(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Unauthorized)
+            /// The associated value of the enum case if `self` is `.unauthorized`.
+            ///
+            /// - Throws: An error if `self` is not `.unauthorized`.
+            /// - SeeAlso: `.unauthorized`.
+            package var unauthorized: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Unauthorized {
+                get throws {
+                    switch self {
+                    case let .unauthorized(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "unauthorized",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct Forbidden: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/403/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/403/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Forbidden.Body
+                /// Creates a new `Forbidden`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Forbidden.Body) {
+                    self.body = body
+                }
+            }
+            /// Forbidden error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/403`.
+            ///
+            /// HTTP response code: `403 forbidden`.
+            case forbidden(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Forbidden)
+            /// The associated value of the enum case if `self` is `.forbidden`.
+            ///
+            /// - Throws: An error if `self` is not `.forbidden`.
+            /// - SeeAlso: `.forbidden`.
+            package var forbidden: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.Forbidden {
+                get throws {
+                    switch self {
+                    case let .forbidden(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "forbidden",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct NotFound: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/404/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/404/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.NotFound.Body
+                /// Creates a new `NotFound`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.NotFound.Body) {
+                    self.body = body
+                }
+            }
+            /// Not found error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/404`.
+            ///
+            /// HTTP response code: `404 notFound`.
+            case notFound(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.NotFound)
+            /// The associated value of the enum case if `self` is `.notFound`.
+            ///
+            /// - Throws: An error if `self` is not `.notFound`.
+            /// - SeeAlso: `.notFound`.
+            package var notFound: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.NotFound {
+                get throws {
+                    switch self {
+                    case let .notFound(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "notFound",
+                            response: self
+                        )
+                    }
+                }
+            }
+            package struct TooManyRequests: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/429/content`.
+                @frozen package enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/v1/appStoreVersionLocalizations/{id}/placements/GET/responses/429/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    package var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                package var body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.TooManyRequests.Body
+                /// Creates a new `TooManyRequests`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                package init(body: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.TooManyRequests.Body) {
+                    self.body = body
+                }
+            }
+            /// Rate limit exceeded error
+            ///
+            /// - Remark: Generated from `#/paths//v1/appStoreVersionLocalizations/{id}/placements/get(appStoreVersionLocalizations_placements_getToManyRelated)/responses/429`.
+            ///
+            /// HTTP response code: `429 tooManyRequests`.
+            case tooManyRequests(Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.TooManyRequests)
+            /// The associated value of the enum case if `self` is `.tooManyRequests`.
+            ///
+            /// - Throws: An error if `self` is not `.tooManyRequests`.
+            /// - SeeAlso: `.tooManyRequests`.
+            package var tooManyRequests: Operations.appStoreVersionLocalizations_placements_getToManyRelated.Output.TooManyRequests {
                 get throws {
                     switch self {
                     case let .tooManyRequests(response):
@@ -34348,6 +46419,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -34364,6 +46436,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -34389,6 +46462,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/GET/query/fields[appStoreVersionLocalizations]`.
                 package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.appStoreVersions_getInstance.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
@@ -35534,6 +47608,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/fields[appStoreVersionLocalizations]`.
                 package typealias fields_lbrack_appStoreVersionLocalizations_rbrack_Payload = [Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_PayloadPayload]
@@ -35606,6 +47681,28 @@ package enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/fields[appKeywords]`.
                 package var fields_lbrack_appKeywords_rbrack_: [Swift.String]?
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/fields_lbrack_appAssetLibraryPlacements_rbrack_Payload`.
+                @frozen package enum fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                    case mediaType = "mediaType"
+                    case placementType = "placementType"
+                    case placementGroup = "placementGroup"
+                    case createdDate = "createdDate"
+                    case lastModifiedDate = "lastModifiedDate"
+                    case state = "state"
+                    case stateDetails = "stateDetails"
+                    case image = "image"
+                    case video = "video"
+                    case appEventLocalization = "appEventLocalization"
+                    case appStoreVersionLocalization = "appStoreVersionLocalization"
+                    case appCustomProductPageLocalization = "appCustomProductPageLocalization"
+                    case appStoreVersionExperimentTreatmentLocalization = "appStoreVersionExperimentTreatmentLocalization"
+                }
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/fields[appAssetLibraryPlacements]`.
+                package typealias fields_lbrack_appAssetLibraryPlacements_rbrack_Payload = [Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_PayloadPayload]
+                /// the fields to include for returned resources of type appAssetLibraryPlacements
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/fields[appAssetLibraryPlacements]`.
+                package var fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload?
                 /// maximum resources per page
                 ///
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/limit`.
@@ -35616,6 +47713,7 @@ package enum Operations {
                     case appScreenshotSets = "appScreenshotSets"
                     case appPreviewSets = "appPreviewSets"
                     case searchKeywords = "searchKeywords"
+                    case placements = "placements"
                 }
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/include`.
                 package typealias includePayload = [Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.includePayloadPayload]
@@ -35635,6 +47733,10 @@ package enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/limit[searchKeywords]`.
                 package var limit_lbrack_searchKeywords_rbrack_: Swift.Int?
+                /// maximum number of related placements returned (when they are included)
+                ///
+                /// - Remark: Generated from `#/paths/v1/appStoreVersions/{id}/appStoreVersionLocalizations/GET/query/limit[placements]`.
+                package var limit_lbrack_placements_rbrack_: Swift.Int?
                 /// Creates a new `Query`.
                 ///
                 /// - Parameters:
@@ -35644,11 +47746,13 @@ package enum Operations {
                 ///   - fields_lbrack_appScreenshotSets_rbrack_: the fields to include for returned resources of type appScreenshotSets
                 ///   - fields_lbrack_appPreviewSets_rbrack_: the fields to include for returned resources of type appPreviewSets
                 ///   - fields_lbrack_appKeywords_rbrack_: the fields to include for returned resources of type appKeywords
+                ///   - fields_lbrack_appAssetLibraryPlacements_rbrack_: the fields to include for returned resources of type appAssetLibraryPlacements
                 ///   - limit: maximum resources per page
                 ///   - include: comma-separated list of relationships to include
                 ///   - limit_lbrack_appScreenshotSets_rbrack_: maximum number of related appScreenshotSets returned (when they are included)
                 ///   - limit_lbrack_appPreviewSets_rbrack_: maximum number of related appPreviewSets returned (when they are included)
                 ///   - limit_lbrack_searchKeywords_rbrack_: maximum number of related searchKeywords returned (when they are included)
+                ///   - limit_lbrack_placements_rbrack_: maximum number of related placements returned (when they are included)
                 package init(
                     filter_lbrack_locale_rbrack_: [Swift.String]? = nil,
                     fields_lbrack_appStoreVersionLocalizations_rbrack_: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appStoreVersionLocalizations_rbrack_Payload? = nil,
@@ -35656,11 +47760,13 @@ package enum Operations {
                     fields_lbrack_appScreenshotSets_rbrack_: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appScreenshotSets_rbrack_Payload? = nil,
                     fields_lbrack_appPreviewSets_rbrack_: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appPreviewSets_rbrack_Payload? = nil,
                     fields_lbrack_appKeywords_rbrack_: [Swift.String]? = nil,
+                    fields_lbrack_appAssetLibraryPlacements_rbrack_: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.fields_lbrack_appAssetLibraryPlacements_rbrack_Payload? = nil,
                     limit: Swift.Int? = nil,
                     include: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query.includePayload? = nil,
                     limit_lbrack_appScreenshotSets_rbrack_: Swift.Int? = nil,
                     limit_lbrack_appPreviewSets_rbrack_: Swift.Int? = nil,
-                    limit_lbrack_searchKeywords_rbrack_: Swift.Int? = nil
+                    limit_lbrack_searchKeywords_rbrack_: Swift.Int? = nil,
+                    limit_lbrack_placements_rbrack_: Swift.Int? = nil
                 ) {
                     self.filter_lbrack_locale_rbrack_ = filter_lbrack_locale_rbrack_
                     self.fields_lbrack_appStoreVersionLocalizations_rbrack_ = fields_lbrack_appStoreVersionLocalizations_rbrack_
@@ -35668,11 +47774,13 @@ package enum Operations {
                     self.fields_lbrack_appScreenshotSets_rbrack_ = fields_lbrack_appScreenshotSets_rbrack_
                     self.fields_lbrack_appPreviewSets_rbrack_ = fields_lbrack_appPreviewSets_rbrack_
                     self.fields_lbrack_appKeywords_rbrack_ = fields_lbrack_appKeywords_rbrack_
+                    self.fields_lbrack_appAssetLibraryPlacements_rbrack_ = fields_lbrack_appAssetLibraryPlacements_rbrack_
                     self.limit = limit
                     self.include = include
                     self.limit_lbrack_appScreenshotSets_rbrack_ = limit_lbrack_appScreenshotSets_rbrack_
                     self.limit_lbrack_appPreviewSets_rbrack_ = limit_lbrack_appPreviewSets_rbrack_
                     self.limit_lbrack_searchKeywords_rbrack_ = limit_lbrack_searchKeywords_rbrack_
+                    self.limit_lbrack_placements_rbrack_ = limit_lbrack_placements_rbrack_
                 }
             }
             package var query: Operations.appStoreVersions_appStoreVersionLocalizations_getToManyRelated.Input.Query
@@ -37217,6 +49325,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -37233,6 +49342,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -38027,6 +50137,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -38043,6 +50154,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -39157,6 +51269,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -39173,6 +51286,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -39193,6 +51307,8 @@ package enum Operations {
                     case appStoreVersionExperiment = "appStoreVersionExperiment"
                     case appStoreVersionExperimentV2 = "appStoreVersionExperimentV2"
                     case appEvent = "appEvent"
+                    case appAssetLibraryImage = "appAssetLibraryImage"
+                    case appAssetLibraryVideo = "appAssetLibraryVideo"
                     case backgroundAssetVersion = "backgroundAssetVersion"
                     case gameCenterAchievementVersion = "gameCenterAchievementVersion"
                     case gameCenterActivityVersion = "gameCenterActivityVersion"
@@ -40131,6 +52247,7 @@ package enum Operations {
                     case inAppPurchases = "inAppPurchases"
                     case subscriptionGroups = "subscriptionGroups"
                     case gameCenterEnabledVersions = "gameCenterEnabledVersions"
+                    case performanceOverviews = "performanceOverviews"
                     case perfPowerMetrics = "perfPowerMetrics"
                     case appCustomProductPages = "appCustomProductPages"
                     case inAppPurchasesV2 = "inAppPurchasesV2"
@@ -40147,6 +52264,7 @@ package enum Operations {
                     case marketplaceSearchDetail = "marketplaceSearchDetail"
                     case buildUploads = "buildUploads"
                     case backgroundAssets = "backgroundAssets"
+                    case assetLibrary = "assetLibrary"
                     case betaFeedbackScreenshotSubmissions = "betaFeedbackScreenshotSubmissions"
                     case betaFeedbackCrashSubmissions = "betaFeedbackCrashSubmissions"
                     case searchKeywords = "searchKeywords"
@@ -40167,6 +52285,8 @@ package enum Operations {
                     case appStoreVersionExperiment = "appStoreVersionExperiment"
                     case appStoreVersionExperimentV2 = "appStoreVersionExperimentV2"
                     case appEvent = "appEvent"
+                    case appAssetLibraryImage = "appAssetLibraryImage"
+                    case appAssetLibraryVideo = "appAssetLibraryVideo"
                     case backgroundAssetVersion = "backgroundAssetVersion"
                     case gameCenterAchievementVersion = "gameCenterAchievementVersion"
                     case gameCenterActivityVersion = "gameCenterActivityVersion"

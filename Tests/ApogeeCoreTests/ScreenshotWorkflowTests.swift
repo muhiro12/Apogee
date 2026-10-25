@@ -419,10 +419,10 @@ private struct ScreenshotFixture {
     }
 }
 
-func screenshotPNG(seed: UInt8) throws -> Data {
-    let pixels = Data(repeating: seed, count: 12)
+func screenshotPNG(seed: UInt8, width: Int = 2, height: Int = 2) throws -> Data {
+    let pixels = Data(repeating: seed, count: width * height * 3)
     let provider = try #require(CGDataProvider(data: pixels as CFData))
-    let image = try #require(CGImage(width: 2, height: 2, bitsPerComponent: 8, bitsPerPixel: 24, bytesPerRow: 6,
+    let image = try #require(CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 24, bytesPerRow: width * 3,
                                     space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: [], provider: provider,
                                     decode: nil, shouldInterpolate: false, intent: .defaultIntent))
     let result = NSMutableData()

@@ -9,6 +9,10 @@ struct ScreenshotImage: Sendable {
     let data: Data
     let checksum: String
     let digest: String
+    let width: Int
+    let height: Int
+    let mimeType: String
+    let fileExtension: String
 
     init(url: URL) throws {
         try ScreenshotFiles.requireRegular(url)
@@ -32,6 +36,10 @@ struct ScreenshotImage: Sendable {
             throw ScreenshotError.invalidInput
         }
         self.data = data
+        self.width = width
+        self.height = height
+        mimeType = type == UTType.png.identifier ? "image/png" : "image/jpeg"
+        fileExtension = url.pathExtension.lowercased()
         checksum = Self.md5(data)
         digest = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
         fileName = url.lastPathComponent
@@ -68,13 +76,16 @@ enum ScreenshotFiles {
             .sorted { $0.lastPathComponent < $1.lastPathComponent }
     }
 
-    static func load(_ path: String, platform: Platform) throws -> [(String, String, [ScreenshotImage])] {
+    static func load(_ path: String, platform: Platform, assetLibrary: Bool = false) throws -> [(String, String, [ScreenshotImage])] {
         var result: [(String, String, [ScreenshotImage])] = []
         for locale in try children(URL(fileURLWithPath: path)) {
             for display in try children(locale) {
                 let name = display.lastPathComponent
-                guard Components.Schemas.ScreenshotDisplayType(rawValue: name) != nil else {
-                    throw ScreenshotError.invalidInput
+                let supported = assetLibrary
+                    ? Components.Schemas.AppAssetLibraryDisplayClass(rawValue: name) != nil
+                    : Components.Schemas.ScreenshotDisplayType(rawValue: name) != nil
+                guard supported else {
+                    throw ScreenshotError.unsupportedDisplayType
                 }
                 let validPlatform: Bool
                 switch platform {
@@ -87,7 +98,7 @@ enum ScreenshotFiles {
                 case .visionOS:
                     validPlatform = name == "APP_APPLE_VISION_PRO"
                 }
-                guard validPlatform else {
+                guard assetLibrary || validPlatform else {
                     throw ScreenshotError.invalidInput
                 }
                 let urls = try children(display)

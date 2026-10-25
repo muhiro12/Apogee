@@ -70,8 +70,22 @@ Apple's OpenAPI document or run the generator during normal `swift build`.
 Current generation baseline:
 
 - Source URL: `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`
-- Download checked: `2026-07-02`
-- Apple zip `Last-Modified`: `2026-06-12 22:26:57 GMT`
-- App Store Connect API version in spec: `4.4`
+- Download checked: `2026-10-25`
+- App Store Connect API version in spec: `4.5.1`
 - Swift OpenAPI Generator version: `1.12.2`
-- Specification SHA-256: `ed0202ef37155b9334772482d2ea0be688c3046b284c895bcbea5455fbe54fd8`
+- Specification SHA-256: `7518d3a94a8bd701ac25c1c601b95b8f53aad92091affb15a2a9d331713dac1a`
+
+Asset Library operations include reference data, the app's library, image
+reservation/read/commit, scoped localization placements, placement creation and
+removal, and ordering. Image deletion is deliberately absent because images can
+be shared across surfaces. Legacy screenshot operations remain generated only
+for Apogee's existing low-level public API; production automation uses the new
+operations and never falls back to the legacy endpoints.
+
+For generator 1.12.2, the trimmer distributes common object properties into
+`anyOf` request alternatives so required-only constraints keep their fields.
+It also decodes placement relationships by their required image/video key:
+the source schema's nested `mediaType` discriminator refers to an attribute
+outside the relationships object. The adapter separately validates media type
+and parent scope. Regression coverage checks normalized constraints and actual
+request/response encoding; generated Swift is never patched by hand.
