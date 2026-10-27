@@ -115,8 +115,8 @@ intervals. A timeout or mismatch fails and retains recovery evidence.
 
 This proves the documented asset and placement observations. It does not prove
 a server-side source checksum, visual quality, App Review acceptance, or release.
-No live Duo upload has been verified. Separate read-only validation is described
-in the placement lifecycle evidence below.
+The completed live trial and its scope are described in the placement lifecycle
+evidence below; synthetic tests alone do not establish live upload support.
 
 ## Placement lifecycle
 
@@ -139,17 +139,29 @@ rather than a claim that Apple documents its complete transition model. The
 workflow still independently verifies version editability, image processing,
 image specification and byte count, placement identity/scope, and order.
 
-Sanitized HTTP-200 fixtures exercise the generated adapter through the production
-workflow, including an unchanged active composition and rejected unknown states.
+A successful HTTP-201 creation response can omit relationship linkage. Apogee
+uses its returned placement ID to read the exact localization/group back, then
+verifies the image ID and complete scope before accepting that creation. It never
+repeats the create request automatically. If read-back fails, the placement may
+already exist; inspect a fresh plan before resuming.
+
+Sanitized HTTP-200 and sparse HTTP-201 fixtures exercise the generated adapter
+through readiness, unchanged composition, and exact creation read-back checks.
 Synthetic create/poll tests cover both ready states and processing/failure paths.
-Separate controlled read-only validation on 2026-10-28 confirmed live `ACTIVE`
-placements and an `APPROVED` image through the production adapter, with zero
-remote writes. The inspected version was already released, with no editable
-version available for a live workflow dry-run. Creating placements and actual
-Duo uploads remain unverified. Fixture and read-only success do not establish
-write permissions or upload support; see
-[Issue #18](https://github.com/muhiro12/Apogee/issues/18) for that remaining
-verification. App Store Connect's Asset Library UI remains the manual alternative.
+
+A controlled live trial on 2026-10-28 completed three 2853 × 2007 Duo screenshots
+for one locale of an editable version using the standard CLI and private recovery
+journal. It verified processed images, compatible specification IDs, byte counts,
+placement identities and order, followed by an unchanged dry-run. Separate full
+inventories check the published version and omitted groups for changes. The
+source files were Apple-delivered copies of an already approved composition.
+The trial recovered from API timeouts and HTTP 500 responses and exposed the
+sparse creation response handled above. The default transport remains unchanged.
+
+This evidence covers the tested account, locale, display dimensions, and workflow;
+it does not establish App Review acceptance or a server-side source checksum.
+See [Issue #18](https://github.com/muhiro12/Apogee/issues/18) for the investigation.
+App Store Connect's Asset Library UI remains the manual alternative.
 
 ## Recovery
 

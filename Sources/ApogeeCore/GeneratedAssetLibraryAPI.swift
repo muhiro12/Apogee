@@ -131,16 +131,16 @@ extension GeneratedAppStoreConnectAPI: AssetLibraryAPI {
                 _type: .appAssetLibraryPlacements
             )))
             let response = try await client().appAssetLibraryPlacements_createInstance(.init(body: .json(request)))
-            let wire = try Self.project(response.created.body.json.data, as: PlacementWire.self)
-            guard wire.attributes.mediaType == "IMAGE",
-                  wire.relationships.image.data.type == "appAssetLibraryImages",
-                  wire.relationships.appStoreVersionLocalization.data.type == "appStoreVersionLocalizations" else {
+            let id = try response.created.body.json.data.id
+            guard !id.isEmpty else {
                 throw ScreenshotError.incompleteInventory
             }
-            return .init(id: wire.id, imageID: wire.relationships.image.data.id,
-                         localizationID: wire.relationships.appStoreVersionLocalization.data.id,
-                         placementType: wire.attributes.placementType, group: wire.attributes.placementGroup,
-                         state: wire.attributes.state)
+            // Creation can omit relationship linkage; verify the exact scoped resource by reading it back.
+            let placements = try await libraryPlacements(localizationID: localizationID, group: group)
+            guard let created = placements.first(where: { $0.id == id }), created.imageID == imageID else {
+                throw ScreenshotError.incompleteInventory
+            }
+            return created
         }
     }
 

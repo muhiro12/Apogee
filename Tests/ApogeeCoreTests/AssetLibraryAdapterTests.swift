@@ -75,10 +75,16 @@ func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums(state: Stri
     let image = try ScreenshotImage(url: path)
     let size = image.data.count
     let transport = StubTransport { request, body, index in
-        if index == 4 {
+        if index == 5 {
             #expect(request.method == .delete)
             #expect(request.path == "/v1/appAssetLibraryPlacements/placement")
             return (HTTPResponse(status: .noContent), nil)
+        }
+        if index == 3 {
+            #expect(request.method == .get)
+            #expect((request.path ?? "").contains("/appStoreVersionLocalizations/localization/placements"))
+            return try jsonResponse(["data": [libraryPlacementFixture(id: "placement", imageID: "image", state: state)],
+                                     "links": ["self": "unused"]])
         }
         let payload = try #require(body.flatMap { try JSONSerialization.jsonObject(with: Data($0.utf8)) as? [String: Any] })
         let data = try #require(payload["data"] as? [String: Any])
@@ -125,7 +131,7 @@ func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums(state: Stri
     #expect(placement.state == state)
     try await api.orderLibraryPlacements(localizationID: "localization", group: "runtime-duo-group", ids: ["b", "a"])
     try await api.deleteLibraryPlacement(id: placement.id)
-    #expect(await transport.requests.count == 5)
+    #expect(await transport.requests.count == 6)
 }
 
 func libraryReferenceFixture() -> [String: Any] {
@@ -256,4 +262,47 @@ func existingPlacementStateRunsThroughTheProductionAdapterAndWorkflow(state: Str
         #expect(!diagnostic.contains("Bearer"))
     }
     #expect(await transport.requests.allSatisfy { $0.method == .get })
+}
+
+@Test(arguments: ["sparse", "id-only", "missing", "wrong-image", "wrong-id", "wrong-parent", "duplicate"])
+func placementCreationRequiresExactScopedReadBackWithoutRetryingTheWrite(scenario: String) async throws {
+    let transport = StubTransport { request, _, index in
+        if index == 0 {
+            #expect(request.method == .post)
+            #expect(request.path == "/v1/appAssetLibraryPlacements")
+            var created = libraryPlacementFixture(id: "placement", imageID: "image", state: "ACTIVE")
+            created.removeValue(forKey: "relationships")
+            if scenario == "id-only" {
+                created.removeValue(forKey: "attributes")
+            }
+            return try jsonResponse(["data": created, "links": ["self": "unused"]], status: 201)
+        }
+        #expect(request.method == .get)
+        let path = request.path?.removingPercentEncoding ?? ""
+        #expect(path.contains("/appStoreVersionLocalizations/localization/placements"))
+        #expect(path.contains("filter[placementGroup]=runtime-duo-group"))
+        #expect(path.contains("filter[placementType]=APP_SCREENSHOT"))
+        var item = libraryPlacementFixture(id: scenario == "wrong-id" ? "other" : "placement",
+                                          imageID: scenario == "wrong-image" ? "other" : "image", state: "ACTIVE")
+        if scenario == "wrong-parent" {
+            var relationships = try #require(item["relationships"] as? [String: Any])
+            relationships["appStoreVersionLocalization"] = ["data": ["type": "appStoreVersionLocalizations", "id": "other"]]
+            item["relationships"] = relationships
+        }
+        let values = scenario == "missing" ? [] : (scenario == "duplicate" ? [item, item] : [item])
+        return try jsonResponse(["data": values, "links": ["self": "unused"]])
+    }
+    let api = testAPI(transport: transport)
+    if scenario == "sparse" || scenario == "id-only" {
+        let created = try await api.createLibraryPlacement(imageID: "image", localizationID: "localization", group: "runtime-duo-group")
+        #expect(created.id == "placement")
+        #expect(created.imageID == "image")
+        #expect(created.state == "ACTIVE")
+    } else {
+        await #expect(throws: ScreenshotError.incompleteInventory) {
+            _ = try await api.createLibraryPlacement(imageID: "image", localizationID: "localization", group: "runtime-duo-group")
+        }
+    }
+    #expect(await transport.requests.count == 2)
+    #expect(await transport.requests.filter { $0.method == .post }.count == 1)
 }
