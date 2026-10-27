@@ -259,7 +259,8 @@ for target identity, verification scope, and failure handling.
 
 `create-version` creates only the version resource and defaults to manual release.
 Use `--release-type AFTER_APPROVAL`, or `SCHEDULED` with `--earliest-release-date`,
-to choose an explicit automatic policy. It refuses existing versions and verifies the new version after apply.
+to choose an explicit automatic policy. It refuses existing versions and verifies
+the new version after apply.
 See [version creation](docs/version-creation.md) for permissions and recovery.
 
 Dry-run mode is the default. A dry run still authenticates to App Store Connect,

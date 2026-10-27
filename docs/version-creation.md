@@ -85,7 +85,8 @@ opt into manual version creation. The overload accepting `releasePolicy` default
 to the original method only for `.manual`; other policies fail as unsupported.
 Implement the overload to opt into automatic or scheduled creation. The original
 library signatures remain available, including as function values. Low-level API
-calls write immediately; use `ReleaseAutomation.createVersion` for planning and read-back verification.
+calls write immediately; use `ReleaseAutomation.createVersion` for planning and
+read-back verification.
 
 `VersionCreationError` also distinguishes invalid local version input and an
 already-existing version. Shared lookup, request, and verification failures keep
