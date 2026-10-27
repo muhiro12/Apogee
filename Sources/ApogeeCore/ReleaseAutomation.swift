@@ -91,6 +91,23 @@ public struct ReleaseAutomation: Sendable {
         platform: Platform = .iOS,
         options: ReleaseExecutionOptions
     ) async throws -> ReleasePlan {
+        try await createVersion(appLookup: appLookup, version: version, platform: platform,
+                                releasePolicy: .manual, options: options)
+    }
+
+    /// Plans or creates an absent app version with the explicitly selected publication policy.
+    ///
+    /// No policy or date is inherited. Scheduled dates must be in the future at planning
+    /// and immediately before writing. Creation does not attach a build or submit for review.
+    /// A failed create or read-back may leave a version; inspect release status before retrying.
+    public func createVersion(
+        appLookup: AppLookup,
+        version: String,
+        platform: Platform = .iOS,
+        releasePolicy: VersionReleasePolicy,
+        options: ReleaseExecutionOptions
+    ) async throws -> ReleasePlan {
+        try VersionSettingsPatch(releasePolicy: releasePolicy).validate()
         guard !version.isEmpty, version == version.trimmingCharacters(in: .whitespacesAndNewlines) else {
             throw VersionCreationError.invalidVersion(version)
         }
@@ -106,28 +123,31 @@ public struct ReleaseAutomation: Sendable {
             title: "Create App Store version \(version) for \(app.id) (\(platform.rawValue))",
             actions: [
                 .init(kind: .create, resource: "app/\(app.id)/appStoreVersions",
-                      desiredValue: "\(version) (\(platform.rawValue)), release type MANUAL"),
+                      desiredValue: "\(version) (\(platform.rawValue)), release type \(releasePolicy.releaseType)"
+                        + (releasePolicy.earliestReleaseDate.map { ", earliest release date \($0.ISO8601Format())" } ?? "")),
             ]
         ).targeting(app: app)
         guard options.mode == .apply else {
             return plan
         }
         try Task.checkCancellation()
-        let created = try await api.createAppStoreVersion(appID: app.id, version: version, platform: platform)
+        try VersionSettingsPatch(releasePolicy: releasePolicy).validate()
+        let created = try await api.createAppStoreVersion(appID: app.id, version: version, platform: platform, releasePolicy: releasePolicy)
         guard !created.id.isEmpty else {
             throw ApogeeError.unexpectedAPIResponse("Version creation returned no resource ID. Inspect release status before retrying.")
         }
         let versions = try await api.appStoreVersions(appID: app.id, version: version, platform: platform)
         guard versions.count == 1, let readBack = versions.first,
               readBack.id == created.id, readBack.versionString == version,
-              readBack.platform == platform, readBack.releaseType == "MANUAL",
+              readBack.platform == platform, readBack.releaseType == releasePolicy.releaseType,
+              readBack.effectiveReleaseDate == releasePolicy.earliestReleaseDate,
               readBack.state == "PREPARE_FOR_SUBMISSION" else {
-            throw ApogeeError.unexpectedAPIResponse("Created version read-back did not match its identity, manual release setting, or preparation state. Inspect release status before retrying.")
+            throw ApogeeError.unexpectedAPIResponse("Created version read-back did not match its identity, requested release policy, scheduled date, or preparation state. Inspect release status before retrying.")
         }
         plan.target = .init(app: app, version: readBack)
         plan.actions.append(.init(
             kind: .verify, resource: "appStoreVersion/\(readBack.id)",
-            desiredValue: "version identity, MANUAL release, and PREPARE_FOR_SUBMISSION state matched"
+            desiredValue: "version identity, \(releasePolicy.releaseType) release policy and date, and PREPARE_FOR_SUBMISSION state matched"
         ))
         return plan
     }

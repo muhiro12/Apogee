@@ -22,6 +22,70 @@ func createVersionCommandDefaultsToPlanningAndAppliesExplicitly(apply: Bool) asy
     #expect(requests.filter { $0.method == .post }.count == (apply ? 1 : 0))
 }
 
+@Test(arguments: ["MANUAL", "AFTER_APPROVAL", "SCHEDULED"], [false, true])
+func versionCreationUsesExplicitPolicy(policy: String, apply: Bool) async throws {
+    let date = policy == "SCHEDULED" ? "2100-01-01T00:00:00Z" : nil
+    let transport = versionCreationTransport(releaseType: policy, earliestReleaseDate: date)
+    let command = try CreateVersion.parse([
+        "--app-id", "app-1", "--version", "2.0", "--platform", "MAC_OS", "--release-type", policy,
+    ] + (date.map { ["--earliest-release-date", $0] } ?? []) + (apply ? ["--apply"] : []))
+    let plan = try await command.createVersion(
+        automation: ReleaseAutomation(api: testAPI(transport: transport)), configuration: .init()
+    )
+    #expect(plan.actions.first?.desiredValue?.contains(policy) == true)
+    if let date {
+        #expect(plan.actions.first?.desiredValue?.contains(date) == true)
+    }
+    #expect(plan.actions.map(\.kind) == (apply ? [.create, .verify] : [.create]))
+    #expect(await transport.requests.filter { $0.method == .post }.count == (apply ? 1 : 0))
+}
+
+@Test(arguments: [
+    ["--release-type", "UNKNOWN"], ["--release-type", "SCHEDULED"],
+    ["--earliest-release-date", "2100-01-01T00:00:00Z"],
+    ["--release-type", "MANUAL", "--earliest-release-date", "2100-01-01T00:00:00Z"],
+    ["--release-type", "AFTER_APPROVAL", "--earliest-release-date", "2100-01-01T00:00:00Z"],
+    ["--release-type", "SCHEDULED", "--earliest-release-date", "2020-01-01T00:00:00Z"],
+    ["--release-type", "SCHEDULED", "--earliest-release-date", "2100-02-30T00:00:00Z"],
+])
+func versionCreationRejectsInvalidPolicyBeforeRequests(arguments: [String]) async throws {
+    let command = try CreateVersion.parse(["--app-id", "app-1", "--version", "2.0", "--apply"] + arguments)
+    let transport = versionCreationTransport()
+    await #expect(throws: VersionSettingsError.self) {
+        _ = try await command.createVersion(
+            automation: ReleaseAutomation(api: testAPI(transport: transport)), configuration: .init()
+        )
+    }
+    #expect(await transport.requests.isEmpty)
+}
+
+@Test(arguments: [Date(timeIntervalSince1970: 0), Date(timeIntervalSince1970: .infinity),
+                  Date(timeIntervalSince1970: 4_102_444_800.5)])
+func versionCreationValidatesLibraryScheduleBeforeRequests(date: Date) async throws {
+    let transport = versionCreationTransport()
+    await #expect(throws: VersionSettingsError.invalidDate) {
+        _ = try await ReleaseAutomation(api: testAPI(transport: transport)).createVersion(
+            appLookup: .appID("app-1"), version: "2.0", releasePolicy: .scheduled(date), options: .init(mode: .apply)
+        )
+    }
+    #expect(await transport.requests.isEmpty)
+}
+
+@Test(arguments: ["release", "date"])
+func versionCreationRejectsAutomaticPolicyReadBackMismatch(scenario: String) async throws {
+    let command = try CreateVersion.parse([
+        "--app-id", "app-1", "--version", "2.0", "--platform", "MAC_OS", "--apply",
+        "--release-type", "SCHEDULED", "--earliest-release-date", "2100-01-01T00:00:00Z",
+    ])
+    let transport = versionCreationTransport(scenario: scenario, releaseType: "SCHEDULED", earliestReleaseDate: "2100-01-01T00:00:00Z")
+    await #expect(throws: ApogeeError.self) {
+        _ = try await command.createVersion(
+            automation: ReleaseAutomation(api: testAPI(transport: transport)), configuration: .init()
+        )
+    }
+    #expect(await transport.requests.filter { $0.method == .post }.count == 1)
+}
+
 @Test(arguments: [Platform.iOS, .macOS, .tvOS, .visionOS])
 func versionCreationScopesRequestsToTheSelectedPlatform(platform: Platform) async throws {
     let transport = versionCreationTransport(platform: platform)
@@ -96,17 +160,34 @@ func versionCreationRejectsEmptyOrPaddedVersionStrings(version: String) async th
     #expect(await transport.requests.isEmpty)
 }
 
-@Test
-func existingAdaptersFailClosedForVersionCreation() async throws {
+@Test(arguments: [VersionReleasePolicy.manual, .afterApproval])
+func existingAdaptersFailClosedForVersionCreation(policy: VersionReleasePolicy) async throws {
     let api = FakeAppStoreConnectAPI()
     await #expect(throws: VersionCreationError.unsupportedAdapter) {
         _ = try await ReleaseAutomation(api: api).createVersion(
-            appLookup: .appID("app-1"), version: "2.0", options: .init(mode: .apply)
+            appLookup: .appID("app-1"), version: "2.0", releasePolicy: policy, options: .init(mode: .apply)
         )
     }
     #expect(await api.updatedLocalizationIDs.isEmpty)
     #expect(await api.attachedBuildIDs.isEmpty)
     #expect(await api.createdReviewSubmissionIDs.isEmpty)
+}
+
+@Test
+func manualOnlyAdaptersRetainCreationWithoutSilentlyAcceptingAutomaticRelease() async throws {
+    let api = FakeAppStoreConnectAPI(supportsManualCreation: true)
+    let automation = ReleaseAutomation(api: api)
+    await #expect(throws: VersionCreationError.unsupportedAdapter) {
+        _ = try await automation.createVersion(
+            appLookup: .appID("app-1"), version: "2.0", releasePolicy: .afterApproval, options: .init(mode: .apply)
+        )
+    }
+    #expect(try await api.appStoreVersions(appID: "app-1", version: "2.0", platform: .iOS).isEmpty)
+    let plan = try await automation.createVersion(
+        appLookup: .appID("app-1"), version: "2.0", options: .init(mode: .apply)
+    )
+    #expect(plan.actions.last?.kind == .verify)
+    #expect(plan.target?.version?.releaseType == "MANUAL")
 }
 
 @Test(arguments: [false, true])
@@ -131,7 +212,10 @@ func creationJSONSeparatesRequestedAndObservedVersion(apply: Bool) async throws 
     #expect(requested["version"] as? String == "2.0")
 }
 
-private func versionCreationTransport(scenario: String = "success", platform: Platform = .macOS) -> StubTransport {
+private func versionCreationTransport(
+    scenario: String = "success", platform: Platform = .macOS,
+    releaseType: String = "MANUAL", earliestReleaseDate: String? = nil
+) -> StubTransport {
     StubTransport { request, body, index in
         let path = request.path ?? ""
         if request.method == .post {
@@ -142,7 +226,9 @@ private func versionCreationTransport(scenario: String = "success", platform: Pl
             let data = try #require(object["data"] as? [String: Any])
             #expect(data["type"] as? String == "appStoreVersions")
             let attributes = try #require(data["attributes"] as? [String: String])
-            #expect(attributes == ["platform": platform.rawValue, "versionString": "2.0", "releaseType": "MANUAL"])
+            var expectedAttributes = ["platform": platform.rawValue, "versionString": "2.0", "releaseType": releaseType]
+            expectedAttributes["earliestReleaseDate"] = earliestReleaseDate
+            #expect(attributes == expectedAttributes)
             let relationships = try #require(data["relationships"] as? [String: Any])
             #expect(Set(relationships.keys) == ["app"])
             let app = try #require(relationships["app"] as? [String: Any])
@@ -170,12 +256,15 @@ private func versionCreationTransport(scenario: String = "success", platform: Pl
             let nextPage = path.contains("cursor=second")
             let existing = ["existing", "ambiguous"].contains(scenario) || nextPage
             let readBack = index > 2
-            let attributes: [String: Any] = scenario == "unknown" ? [:] : [
+            var attributes: [String: Any] = scenario == "unknown" ? [:] : [
                 "versionString": scenario == "version" ? "3.0" : "2.0",
                 "platform": scenario == "platform" ? "IOS" : platform.rawValue,
-                "releaseType": scenario == "release" ? "AFTER_APPROVAL" : "MANUAL",
+                "releaseType": scenario == "release" ? (releaseType == "MANUAL" ? "AFTER_APPROVAL" : "MANUAL") : releaseType,
                 "appVersionState": scenario == "state" ? "WAITING_FOR_REVIEW" : "PREPARE_FOR_SUBMISSION",
             ]
+            if let earliestReleaseDate {
+                attributes["earliestReleaseDate"] = scenario == "date" ? "2100-01-02T00:00:00Z" : earliestReleaseDate
+            }
             let version: [String: Any] = [
                 "type": "appStoreVersions", "id": scenario == "id" ? "different" : "version-new",
                 "attributes": attributes,

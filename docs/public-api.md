@@ -154,8 +154,11 @@ and preserve cancellation. Use `ReleaseAutomation` for guarded operations.
 
 `AppStoreConnectAPI.createAppStoreVersion` has a default implementation that throws
 `VersionCreationError.unsupportedAdapter`. Existing adapters remain source-compatible;
-adapters opting into creation must configure manual release. The production adapter
-implements this operation through the generated client.
+the original method creates manual-release versions. The new `releasePolicy`
+overload delegates to it only for `.manual` and otherwise throws unsupported by
+default. Adapters must implement that overload to support automatic or scheduled
+creation. Both original library signatures remain available as function values.
+The production adapter implements all policies through the generated client.
 
 ### Unrecoverable replacement migration
 
@@ -212,7 +215,7 @@ hashing, human rendering, or confirmation tokens.
 | `build-feedback` | Lookup, `--version`, `--build-version`, `--platform`, `--output`, `--export-path` | Remote feedback reads; artifacts download only into an explicit private destination |
 | `release-status` | Lookup, `--version`, `--platform` | Remote read only |
 | `read-metadata` | Lookup, `--version`, `--platform`, `--save-to` | Remote read only; JSON snapshot with optional new-file export |
-| `create-version` | Lookup, `--version`, `--platform`, mode | Create an absent version for manual release; verify identity, release type, and preparation state |
+| `create-version` | Lookup, `--version`, `--platform`, `--release-type`, `--earliest-release-date`, mode | Create an absent version; default to manual release and verify identity, requested policy/date, and preparation state |
 | `update-release-notes` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | What's New only |
 | `update-metadata` | Lookup, `--version`, `--platform`, mode, `--metadata-path` | Four supported fields |
 | `update-version-settings` | Lookup, `--version`, `--platform`, mode, `--copyright`, `--release-type`, `--earliest-release-date` | Explicit version settings; no options reads the current effective values |

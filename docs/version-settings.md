@@ -2,8 +2,7 @@
 
 `update-version-settings` reads or updates copyright and publication policy for
 one existing app/platform/version. It does not create a version, attach a build,
-submit for review, or call the publication endpoint. `create-version` continues
-to create versions for manual release.
+submit for review, or call the publication endpoint. `create-version` can also select an explicit policy, defaulting to manual release.
 
 With no setting options, the default dry-run reads all three effective settings:
 

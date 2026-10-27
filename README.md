@@ -31,7 +31,7 @@ Supported in the first implementation:
 - Read-only localized metadata inspection and JSON snapshot export
 - Read-only TestFlight crash and screenshot feedback summaries for candidate builds
 - Optional feedback artifact export to explicit private storage without overwriting files
-- Explicit App Store version creation configured for manual release
+- Explicit App Store version creation with a manual default and optional release policy
 - Offline metadata validation without API credentials
 - Multiple-locale What's New updates
 - Description, keywords, promotional text, support URL, and marketing URL updates
@@ -257,8 +257,9 @@ Status and plan commands accept `--output json` for versioned, machine-readable
 successful results. Text remains the default. See [JSON output](docs/json-output.md)
 for target identity, verification scope, and failure handling.
 
-`create-version` creates only the version resource and configures it for manual
-release. It refuses existing versions and verifies the new version after apply.
+`create-version` creates only the version resource and defaults to manual release.
+Use `--release-type AFTER_APPROVAL`, or `SCHEDULED` with `--earliest-release-date`,
+to choose an explicit automatic policy. It refuses existing versions and verifies the new version after apply.
 See [version creation](docs/version-creation.md) for permissions and recovery.
 
 Dry-run mode is the default. A dry run still authenticates to App Store Connect,

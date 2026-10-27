@@ -33,13 +33,15 @@ func readRemoteMetadata(automation: ReleaseAutomation) async throws -> MetadataS
 // Compiles the version-creation API without creating a remote resource.
 func planNewVersion(automation: ReleaseAutomation) async throws -> ReleasePlan {
     try await automation.createVersion(
-        appLookup: .bundleID("com.example.app"), version: "2.0", options: .init(mode: .dryRun)
+        appLookup: .bundleID("com.example.app"), version: "2.0", releasePolicy: .afterApproval, options: .init(mode: .dryRun)
     )
 }
 
 // Default arguments do not preserve function-reference types. Compile the original
 // API signatures as values so additive minor releases retain source compatibility.
 func compileOriginalFeedbackAPI(automation: ReleaseAutomation) {
+    let _: (AppLookup, String, Platform, ReleaseExecutionOptions) async throws -> ReleasePlan =
+        automation.createVersion(appLookup:version:platform:options:)
     let _: (AppLookup, String, String, Platform) async throws -> BuildFeedback =
         automation.buildFeedback(appLookup:version:buildVersion:platform:)
     let _: (OperationMode, Bool, String?) -> ReleaseExecutionOptions =

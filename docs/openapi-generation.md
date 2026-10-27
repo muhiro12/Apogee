@@ -41,8 +41,9 @@ The trim step keeps only the operations called by the production adapter and
 their transitive referenced schemas. Unused resource endpoints are not generated
 speculatively; add an operation when its
 adapter implementation and verification require it.
-`appStoreVersions_createInstance` is retained for explicit manual-release version
-creation; the adapter does not use its optional metadata or build relationships.
+`appStoreVersions_createInstance` supports explicit version creation with manual,
+automatic, or scheduled release; the adapter sends only platform, version, release
+policy, and a scheduled date when selected, without metadata or build relationships.
 `appStoreVersions_updateInstance` supports explicit version settings; only copyright,
 release type, and a scheduled date are sent, never build relationships or other
 attributes.

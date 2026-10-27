@@ -18,11 +18,29 @@ swift package plugin --allow-network-connections all apogee create-version \
   --app-id EXAMPLE_APP_ID --platform IOS --version 2.0 --dry-run
 ```
 
+For automatic release after approval:
+
+```sh
+apogee create-version --version 2.0 --release-type AFTER_APPROVAL --dry-run
+```
+
+For a scheduled release, supply an explicit date:
+
+```sh
+apogee create-version --version 2.0 --release-type SCHEDULED \
+  --earliest-release-date '2100-01-01T09:00:00+09:00' --dry-run
+```
+
+Review the plan and repeat with `--apply` to create the version with that policy.
+
 ## Scope and safety
 
-- Every created version explicitly uses `MANUAL` release. After approval, release
-  it manually or change its release settings in App Store Connect. This command
-  does not accept automatic or scheduled release options.
+- Omitted `--release-type` explicitly uses `MANUAL`. Choose `AFTER_APPROVAL` to
+  publish automatically after approval, or `SCHEDULED` with a future
+  `--earliest-release-date`. No policy or date is inherited from another version.
+  The same [policy and date rules](version-settings.md#publication-policy) apply
+  to creation and settings updates. Invalid combinations fail before API reads;
+  scheduled dates are revalidated immediately before writing.
 - Metadata updates, build attachment, review submission, and publication remain
   separate operations. Apogee sends no metadata or build relationships during
   creation. Apple may carry metadata forward from the current version; inspect
@@ -37,9 +55,9 @@ swift package plugin --allow-network-connections all apogee create-version \
 - Empty version strings and surrounding whitespace are rejected locally. The
   version is otherwise passed unchanged to App Store Connect.
 - Successful apply requires exactly one read-back match under the selected app,
-  with the returned resource ID, requested version and platform, `MANUAL`
-  release type, and `PREPARE_FOR_SUBMISSION` state. Missing or mismatched values
-  fail closed. No verification action is returned on failure.
+  with the returned resource ID, requested version and platform, exact requested
+  release type and effective scheduled date, and `PREPARE_FOR_SUBMISSION` state.
+  Missing or mismatched values fail closed. No verification action is returned on failure.
 
 ## Permissions and recovery
 
@@ -63,8 +81,11 @@ If the version exists, continue with the later release operations instead.
 Custom `AppStoreConnectAPI` adapters remain source-compatible through a default
 implementation of `createAppStoreVersion` that throws
 `VersionCreationError.unsupportedAdapter`. Implement that method to
-opt into manual version creation. Low-level API calls write immediately; use
-`ReleaseAutomation.createVersion` for planning and read-back verification.
+opt into manual version creation. The overload accepting `releasePolicy` defaults
+to the original method only for `.manual`; other policies fail as unsupported.
+Implement the overload to opt into automatic or scheduled creation. The original
+library signatures remain available, including as function values. Low-level API
+calls write immediately; use `ReleaseAutomation.createVersion` for planning and read-back verification.
 
 `VersionCreationError` also distinguishes invalid local version input and an
 already-existing version. Shared lookup, request, and verification failures keep

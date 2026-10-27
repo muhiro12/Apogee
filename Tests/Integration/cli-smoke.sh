@@ -44,11 +44,15 @@ if "$binary" create-version --version 2.0 --apply --dry-run > "$temporary_direct
 fi
 grep -q 'Use either --dry-run or --apply' "$temporary_directory/create-conflict.txt"
 
-if "$binary" create-version --version 2.0 --release-type AFTER_APPROVAL > "$temporary_directory/create-release-type.txt" 2>&1; then
-    echo 'Version creation unexpectedly accepted an automatic release option.' >&2
+for option in release-type earliest-release-date; do
+    grep -q -- "--$option" "$temporary_directory/create-help.txt"
+done
+if "$binary" create-version --version 2.0 --release-type AFTER_APPROVAL --earliest-release-date 2100-01-01T00:00:00Z --output json > "$temporary_directory/create-out.txt" 2> "$temporary_directory/create-error.txt"; then
+    echo 'Version creation unexpectedly accepted an invalid release policy.' >&2
     exit 1
 fi
-grep -q 'Unknown option' "$temporary_directory/create-release-type.txt"
+test ! -s "$temporary_directory/create-out.txt"
+grep -q 'Only SCHEDULED requires' "$temporary_directory/create-error.txt"
 
 if "$binary" release-status --version 1.2.3 --apply > "$temporary_directory/status-apply.txt" 2>&1; then
     echo 'The read-only status command unexpectedly accepted --apply.' >&2

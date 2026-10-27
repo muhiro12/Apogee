@@ -407,9 +407,15 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
     }
 
     public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
-        try await perform(operation: "createAppStoreVersion") {
+        try await createAppStoreVersion(appID: appID, version: version, platform: platform, releasePolicy: .manual)
+    }
+
+    public func createAppStoreVersion(appID: String, version: String, platform: Platform, releasePolicy: VersionReleasePolicy) async throws -> AppStoreConnectVersion {
+        try VersionSettingsPatch(releasePolicy: releasePolicy).validate()
+        return try await perform(operation: "createAppStoreVersion") {
             let request = Components.Schemas.AppStoreVersionCreateRequest(data: .init(
-                attributes: .init(platform: platform.generated, releaseType: .MANUAL, versionString: version),
+                attributes: .init(earliestReleaseDate: releasePolicy.earliestReleaseDate, platform: platform.generated,
+                                  releaseType: .init(rawValue: releasePolicy.releaseType), versionString: version),
                 relationships: .init(app: .init(data: .init(id: appID, _type: .apps))),
                 _type: .appStoreVersions
             ))

@@ -29,6 +29,10 @@ public protocol AppStoreConnectAPI: Sendable {
     ///
     /// The default implementation throws unsupported so existing adapters remain source-compatible.
     func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion
+    /// Immediately creates a version with an explicit release policy.
+    ///
+    /// The default supports manual creation through the original method and rejects other policies.
+    func createAppStoreVersion(appID: String, version: String, platform: Platform, releasePolicy: VersionReleasePolicy) async throws -> AppStoreConnectVersion
     /// Immediately updates explicit version settings; existing adapters default to unsupported.
     func updateVersionSettings(id: String, patch: VersionSettingsPatch) async throws -> AppStoreConnectVersion
     /// Returns all existing localizations of an App Store version.
@@ -84,6 +88,14 @@ extension AppStoreConnectAPI {
 
     public func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
         throw VersionCreationError.unsupportedAdapter
+    }
+
+    public func createAppStoreVersion(appID: String, version: String, platform: Platform, releasePolicy: VersionReleasePolicy) async throws -> AppStoreConnectVersion {
+        try VersionSettingsPatch(releasePolicy: releasePolicy).validate()
+        guard releasePolicy == .manual else {
+            throw VersionCreationError.unsupportedAdapter
+        }
+        return try await createAppStoreVersion(appID: appID, version: version, platform: platform)
     }
 }
 

@@ -535,6 +535,8 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     private var webhooksByAppID: [String: [AppStoreConnectWebhook]]
     private var reviewSubmissionsByAppID: [String: [AppStoreConnectReviewSubmission]]
     private let submittedReviewState: String
+    private let supportsManualCreation: Bool
+    private var createdVersion: AppStoreConnectVersion?
     private let availableBuildState: String?
     private let reviewReadBackOverride: AppStoreConnectReviewSubmission?
     private var failItemCreationOnce: Bool
@@ -553,9 +555,11 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         attachedBuild: AppStoreConnectBuild? = .init(id: "build-123", version: "123", processingState: "VALID"),
         availableBuildState: String? = "VALID",
         reviewReadBackOverride: AppStoreConnectReviewSubmission? = nil,
-        failItemCreationOnce: Bool = false
+        failItemCreationOnce: Bool = false,
+        supportsManualCreation: Bool = false
     ) {
         self.submittedReviewState = submittedReviewState
+        self.supportsManualCreation = supportsManualCreation
         self.availableBuildState = availableBuildState
         self.reviewReadBackOverride = reviewReadBackOverride
         self.failItemCreationOnce = failItemCreationOnce
@@ -594,8 +598,21 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         bundleID == "com.example.app" ? [.init(id: "app-1", bundleID: bundleID, name: "Example")] : []
     }
 
+    func createAppStoreVersion(appID: String, version: String, platform: Platform) async throws -> AppStoreConnectVersion {
+        guard supportsManualCreation else {
+            throw VersionCreationError.unsupportedAdapter
+        }
+        let created = AppStoreConnectVersion(id: "created-version", versionString: version,
+                                             state: "PREPARE_FOR_SUBMISSION", platform: platform, releaseType: "MANUAL")
+        createdVersion = created
+        return created
+    }
+
     func appStoreVersions(appID: String, version: String, platform: Platform) async throws -> [AppStoreConnectVersion] {
-        appID == "app-1" && version == "1.2.3" ? [.init(id: "version-1", versionString: version, state: "PREPARE_FOR_SUBMISSION", platform: platform)] : []
+        if let createdVersion, createdVersion.versionString == version, createdVersion.platform == platform {
+            return [createdVersion]
+        }
+        return appID == "app-1" && version == "1.2.3" ? [.init(id: "version-1", versionString: version, state: "PREPARE_FOR_SUBMISSION", platform: platform)] : []
     }
 
     func appStoreVersionLocalizations(versionID: String) async throws -> [AppStoreConnectLocalization] {
