@@ -115,8 +115,41 @@ intervals. A timeout or mismatch fails and retains recovery evidence.
 
 This proves the documented asset and placement observations. It does not prove
 a server-side source checksum, visual quality, App Review acceptance, or release.
-No live Duo upload or account-specific placement has been verified as part of
-the package's synthetic test suite.
+No live Duo upload has been verified. Separate read-only validation is described
+in the placement lifecycle evidence below.
+
+## Placement lifecycle
+
+The workflow accepts `ACTIVE` and `PARENT_PREPARE_FOR_SUBMISSION` as ready
+placement states. The same rule covers existing and retained placements, creation
+responses, polling, and final verification. `ASSET_PROCESSING` is accepted only
+for newly created placements and polling; an existing processing placement blocks
+planning until a later read reports readiness. `FAILED`, other parent states,
+and unknown states stop the operation. Diagnostics name `appAssetLibraryPlacements`
+and include only a bounded state identifier, never arbitrary response text.
+Unsupported states use `ApogeeError.unexpectedAPIResponse`; malformed placement
+identity or scope still uses `ScreenshotError.incompleteInventory`.
+
+This is a narrow compatibility correction for the public-backend `ACTIVE`
+response recorded in [Issue #20](https://github.com/muhiro12/Apogee/issues/20).
+The official 4.5.1 specification, rechecked on 2026-10-28 with the same hash below,
+lists processing, failure, and parent lifecycle states but omits `ACTIVE`.
+Accepting `ACTIVE` in an editable version is based on that observed response,
+rather than a claim that Apple documents its complete transition model. The
+workflow still independently verifies version editability, image processing,
+image specification and byte count, placement identity/scope, and order.
+
+Sanitized HTTP-200 fixtures exercise the generated adapter through the production
+workflow, including an unchanged active composition and rejected unknown states.
+Synthetic create/poll tests cover both ready states and processing/failure paths.
+Separate controlled read-only validation on 2026-10-28 confirmed live `ACTIVE`
+placements and an `APPROVED` image through the production adapter, with zero
+remote writes. The inspected version was already released, with no editable
+version available for a live workflow dry-run. Creating placements and actual
+Duo uploads remain unverified. Fixture and read-only success do not establish
+write permissions or upload support; see
+[Issue #18](https://github.com/muhiro12/Apogee/issues/18) for that remaining
+verification. App Store Connect's Asset Library UI remains the manual alternative.
 
 ## Recovery
 
@@ -163,7 +196,7 @@ JSON, even if an earlier group finished.
 
 ## Apple evidence
 
-Checked on 2026-10-25 against Apple's
+Checked on 2026-10-28 against Apple's
 [OpenAPI download](https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip),
 version 4.5.1, extracted specification SHA-256
 `7518d3a94a8bd701ac25c1c601b95b8f53aad92091affb15a2a9d331713dac1a`.

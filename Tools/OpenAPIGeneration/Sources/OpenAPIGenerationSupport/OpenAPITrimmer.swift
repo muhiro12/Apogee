@@ -221,6 +221,11 @@ package struct OpenAPITrimmer {
         guard var schema = value as? [String: Any] else {
             return value
         }
+        if name == "AppAssetLibraryPlacementState" {
+            // The public backend returns ACTIVE, absent from the 4.5.1 enum.
+            // Preserve wire states so the workflow can reject unsupported values explicitly.
+            schema.removeValue(forKey: "enum")
+        }
         if name == "AppAssetLibraryPlacement",
            var properties = schema["properties"] as? [String: Any],
            var relationships = properties["relationships"] as? [String: Any] {

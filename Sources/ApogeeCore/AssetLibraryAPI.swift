@@ -20,6 +20,10 @@ struct LibraryPlacement: Codable, Equatable, Sendable {
     var placementType: String
     var group: String
     var state: String
+
+    var isReady: Bool {
+        state == "ACTIVE" || state == "PARENT_PREPARE_FOR_SUBMISSION"
+    }
 }
 
 struct LibraryReferenceData: Decodable, Sendable {

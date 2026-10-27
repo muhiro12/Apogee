@@ -3,13 +3,13 @@ import Foundation
 import Synchronization
 import Testing
 
-@Test(arguments: [0, 10])
-func assetLibraryReplacesFullSetsAfterProcessingAndPreservesSharedImages(oldCount: Int) async throws {
+@Test(arguments: [0, 10], ["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION"])
+func assetLibraryReplacesFullSetsAfterProcessingAndPreservesSharedImages(oldCount: Int, readyState: String) async throws {
     let fixture = try LibraryFixture(oldCount: oldCount, desiredCount: 10)
     defer {
         fixture.remove()
     }
-    let api = LibraryTestAPI(oldCount: oldCount, includeUnrelated: true)
+    let api = LibraryTestAPI(oldCount: oldCount, includeUnrelated: true, readyState: readyState)
     let plan = try await fixture.run(api: api, mode: .dryRun)
     #expect(await api.writes.isEmpty)
     #expect(!FileManager.default.fileExists(atPath: fixture.recovery.path))
@@ -196,15 +196,18 @@ private actor LibraryTestAPI: AssetLibraryAPI {
     let width: Int
     let height: Int
     var counter = 0
+    let readyState: String
+    var placementPolls = 0
 
-    init(oldCount: Int, width: Int = 2, height: Int = 2, includeUnrelated: Bool = false) {
+    init(oldCount: Int, width: Int = 2, height: Int = 2, includeUnrelated: Bool = false, readyState: String = "ACTIVE") {
         self.width = width
         self.height = height
+        self.readyState = readyState
         for index in 0..<oldCount {
             let id = "old-\(index)"
             images[id] = .init(id: id, fileName: "old.png", byteCount: 123, referenceName: nil, specID: "runtime-spec", state: "COMPLETE")
             placements.append(.init(id: "placement-\(index)", imageID: id, localizationID: "localization",
-                                    placementType: "APP_SCREENSHOT", group: "runtime-duo-group", state: "PARENT_PREPARE_FOR_SUBMISSION"))
+                                    placementType: "APP_SCREENSHOT", group: "runtime-duo-group", state: readyState))
         }
         if includeUnrelated {
             images["shared"] = .init(id: "shared", fileName: "shared.png", byteCount: 123, referenceName: nil, specID: "runtime-spec", state: "APPROVED")
@@ -226,7 +229,15 @@ private actor LibraryTestAPI: AssetLibraryAPI {
               features: [.init(featureId: "APP_STORE_VERSIONS", placementPolicies: [.init(placementType: "APP_SCREENSHOT", groupLimits: [.init(groupIds: ["runtime-duo-group"], maxCount: 10)])])])
     }
     func libraryPlacements(localizationID: String, group: String) async throws -> [LibraryPlacement] {
-        placements.filter { $0.localizationID == localizationID && $0.group == group }
+        if failure == "placement-processing", writes.contains("order") {
+            placementPolls += 1
+            if placementPolls > 1 {
+                for index in placements.indices where placements[index].state == "ASSET_PROCESSING" {
+                    placements[index].state = readyState
+                }
+            }
+        }
+        return placements.filter { $0.localizationID == localizationID && $0.group == group }
     }
     func libraryImage(id: String) async throws -> LibraryImage {
         try #require(images[id])
@@ -262,9 +273,20 @@ private actor LibraryTestAPI: AssetLibraryAPI {
             throw ScreenshotError.remoteChanged
         }
         #expect(placements.filter { $0.group == group && $0.localizationID == localizationID }.count < 10)
+        let state: String
+        switch failure {
+        case "placement-processing", "placement-timeout":
+            state = "ASSET_PROCESSING"
+        case "placement-failed":
+            state = "FAILED"
+        case "placement-unknown":
+            state = "FUTURE_STATE"
+        default:
+            state = readyState
+        }
         let placement = LibraryPlacement(id: "placement-\(imageID)", imageID: imageID, localizationID: localizationID,
                                          placementType: "APP_SCREENSHOT", group: group,
-                                         state: failure == "placement-timeout" ? "ASSET_PROCESSING" : "PARENT_PREPARE_FOR_SUBMISSION")
+                                         state: state)
         placements.append(placement)
         writes.append("create-placement")
         return placement
@@ -285,6 +307,11 @@ private actor LibraryTestAPI: AssetLibraryAPI {
         }
         let unrelated = placements.filter { $0.group != group || $0.localizationID != localizationID }
         placements = (failure == "wrong-order" ? Array(selected.reversed()) : selected) + unrelated
+        if failure == "poll-failed" || failure == "poll-unknown" {
+            for index in placements.indices where placements[index].localizationID == localizationID && placements[index].group == group {
+                placements[index].state = failure == "poll-failed" ? "FAILED" : "FUTURE_STATE"
+            }
+        }
         writes.append("order")
     }
 }
@@ -334,4 +361,34 @@ func assetLibraryDoesNotCommitAnAssetFromAnInconsistentRecoveryRecord() async th
         _ = try await fixture.run(api: api, mode: .apply, token: plan.token)
     }
     #expect(await api.writes.isEmpty)
+}
+
+@Test(arguments: ["placement-processing", "placement-timeout", "placement-failed", "placement-unknown", "poll-failed", "poll-unknown"])
+func assetLibraryNewPlacementsWaitForReadinessAndRejectFailures(scenario: String) async throws {
+    let fixture = try LibraryFixture(oldCount: 0, desiredCount: 1)
+    defer {
+        fixture.remove()
+    }
+    let api = LibraryTestAPI(oldCount: 0)
+    await api.setFailure(scenario)
+    let events = Mutex<[ScreenshotProgress]>([])
+    do {
+        let plan = try await fixture.run(api: api, mode: .apply) { event in
+            events.withLock { $0.append(event) }
+        }
+        #expect(scenario == "placement-processing")
+        #expect(plan.actions.last?.kind == .verify)
+        #expect(await api.placementPolls == 2)
+        #expect(await api.placements.allSatisfy(\.isReady))
+    } catch {
+        #expect(scenario != "placement-processing")
+        if scenario == "placement-timeout" {
+            #expect(error as? ScreenshotError == .processingTimedOut)
+        } else {
+            #expect(String(describing: error).contains(scenario.hasSuffix("failed") ? "FAILED" : "FUTURE_STATE"))
+        }
+    }
+    #expect(events.withLock { $0.contains { $0.stage == .completed } } == (scenario == "placement-processing"))
+    #expect(await api.writes.contains("create-placement"))
+    #expect(await !api.writes.contains("delete-placement"))
 }

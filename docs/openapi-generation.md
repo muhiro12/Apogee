@@ -71,7 +71,7 @@ Apple's OpenAPI document or run the generator during normal `swift build`.
 Current generation baseline:
 
 - Source URL: `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`
-- Download checked: `2026-10-25`
+- Download checked: `2026-10-28`
 - App Store Connect API version in spec: `4.5.1`
 - Swift OpenAPI Generator version: `1.12.2`
 - Specification SHA-256: `7518d3a94a8bd701ac25c1c601b95b8f53aad92091affb15a2a9d331713dac1a`
@@ -90,3 +90,12 @@ the source schema's nested `mediaType` discriminator refers to an attribute
 outside the relationships object. The adapter separately validates media type
 and parent scope. Regression coverage checks normalized constraints and actual
 request/response encoding; generated Swift is never patched by hand.
+
+The trimmer preserves `AppAssetLibraryPlacementState` as a string rather than a
+closed generated enum. The public backend was observed returning `ACTIVE`, which
+is absent from the unchanged 4.5.1 specification. Keeping raw values lets the
+workflow accept the established ready states and report unsupported states
+explicitly before placement changes. This normalization applies only to placement
+state; other generated enums and identity/scope validation remain unchanged.
+See [placement lifecycle](screenshots.md#placement-lifecycle) for the acceptance
+boundary and remaining live-verification limits.

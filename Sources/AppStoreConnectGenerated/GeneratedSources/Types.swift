@@ -8644,15 +8644,7 @@ package enum Components {
             }
         }
         /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementState`.
-        @frozen package enum AppAssetLibraryPlacementState: String, Codable, Hashable, Sendable, CaseIterable {
-            case ASSET_PROCESSING = "ASSET_PROCESSING"
-            case FAILED = "FAILED"
-            case PARENT_PREPARE_FOR_SUBMISSION = "PARENT_PREPARE_FOR_SUBMISSION"
-            case PARENT_READY_FOR_REVIEW = "PARENT_READY_FOR_REVIEW"
-            case PARENT_WAITING_FOR_REVIEW = "PARENT_WAITING_FOR_REVIEW"
-            case PARENT_IN_REVIEW = "PARENT_IN_REVIEW"
-            case PARENT_APPROVED = "PARENT_APPROVED"
-        }
+        package typealias AppAssetLibraryPlacementState = Swift.String
         /// - Remark: Generated from `#/components/schemas/AppAssetLibraryPlacementType`.
         @frozen package enum AppAssetLibraryPlacementType: String, Codable, Hashable, Sendable, CaseIterable {
             case APP_SCREENSHOT = "APP_SCREENSHOT"

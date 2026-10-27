@@ -252,7 +252,7 @@ struct AssetLibraryScreenshotWorkflow {
                 guard observed.map(\.id) == ordered, observed.map(\.imageID) == desired.map(\.id) else {
                     throw ScreenshotError.remoteChanged
                 }
-                if observed.allSatisfy({ $0.state == "PARENT_PREPARE_FOR_SUBMISSION" }) {
+                if observed.allSatisfy(\.isReady) {
                     ready = true
                     break
                 }
@@ -297,9 +297,16 @@ struct AssetLibraryScreenshotWorkflow {
               placements.allSatisfy({
                   !$0.id.isEmpty && !$0.imageID.isEmpty && $0.localizationID == localizationID
                       && $0.group == group && $0.placementType == "APP_SCREENSHOT"
-                      && ($0.state == "PARENT_PREPARE_FOR_SUBMISSION" || (allowProcessing && $0.state == "ASSET_PROCESSING"))
               }) else {
             throw ScreenshotError.incompleteInventory
+        }
+        for placement in placements where !placement.isReady && !(allowProcessing && placement.state == "ASSET_PROCESSING") {
+            // Only bounded state identifiers belong in diagnostics, never arbitrary server text.
+            let state = placement.state.range(of: #"\A[A-Z][A-Z0-9_]{0,79}\z"#, options: .regularExpression) != nil
+                ? placement.state : "<unrecognized>"
+            throw ApogeeError.unexpectedAPIResponse(
+                "Unsupported appAssetLibraryPlacements state \(state). Inspect the placement and obtain a fresh dry-run before retrying."
+            )
         }
     }
 

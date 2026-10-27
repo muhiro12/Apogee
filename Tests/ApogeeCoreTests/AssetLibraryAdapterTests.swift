@@ -20,8 +20,8 @@ func assetLibraryReferenceAndIdentityUsePublicResources() async throws {
     #expect(reference.imageSpecs.first?.specId == "runtime-spec")
 }
 
-@Test
-func assetLibraryPlacementsPreserveScopeOrderAndPagination() async throws {
+@Test(arguments: ["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION", "ASSET_PROCESSING", "FAILED", "FUTURE_STATE"])
+func assetLibraryPlacementsPreserveScopeOrderAndPagination(state: String) async throws {
     let transport = StubTransport { request, _, index in
         let path = try #require(request.path)
         let decoded = path.removingPercentEncoding ?? path
@@ -32,11 +32,12 @@ func assetLibraryPlacementsPreserveScopeOrderAndPagination() async throws {
         if index == 0 {
             links["next"] = "https://api.appstoreconnect.apple.com" + path + "&cursor=next"
         }
-        return try jsonResponse(["data": [libraryPlacementFixture(id: "placement-\(index)", imageID: "image-\(index)")],
+        return try jsonResponse(["data": [libraryPlacementFixture(id: "placement-\(index)", imageID: "image-\(index)", state: state)],
                                  "links": links, "meta": ["paging": ["limit": 200, "total": 2]]])
     }
     let placements = try await testAPI(transport: transport).libraryPlacements(localizationID: "localization", group: "runtime-duo-group")
     #expect(placements.map(\.id) == ["placement-0", "placement-1"])
+    #expect(placements.allSatisfy { $0.state == state })
     #expect(await transport.requests.count == 2)
 }
 
@@ -62,8 +63,8 @@ func assetLibraryRefusesIncompleteOrOutOfScopePlacements(scenario: String) async
     }
 }
 
-@Test
-func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums() async throws {
+@Test(arguments: ["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION", "ASSET_PROCESSING"])
+func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums(state: String) async throws {
     let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     defer {
@@ -105,7 +106,7 @@ func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums() async thr
             #expect(attributes["placementType"] as? String == "APP_SCREENSHOT")
             let relationships = try #require(data["relationships"] as? [String: Any])
             #expect(Set(relationships.keys) == ["image", "appStoreVersionLocalization"])
-            return try jsonResponse(["data": libraryPlacementFixture(id: "placement", imageID: "image"), "links": ["self": "unused"]], status: 201)
+            return try jsonResponse(["data": libraryPlacementFixture(id: "placement", imageID: "image", state: state), "links": ["self": "unused"]], status: 201)
         default:
             #expect(request.path == "/v1/appAssetLibraryPlacementOrderingRequests")
             let relationships = try #require(data["relationships"] as? [String: Any])
@@ -121,6 +122,7 @@ func assetLibraryEncodesUploadsPlacementsAndOrderingWithoutChecksums() async thr
     try await api.commitLibraryImage(id: reserved.id)
     let placement = try await api.createLibraryPlacement(imageID: reserved.id, localizationID: "localization", group: "runtime-duo-group")
     #expect(placement.imageID == reserved.id)
+    #expect(placement.state == state)
     try await api.orderLibraryPlacements(localizationID: "localization", group: "runtime-duo-group", ids: ["b", "a"])
     try await api.deleteLibraryPlacement(id: placement.id)
     #expect(await transport.requests.count == 5)
@@ -151,9 +153,9 @@ func libraryImageFixture(size: Int, state: String = "COMPLETE") -> [String: Any]
     ]]
 }
 
-func libraryPlacementFixture(id: String, imageID: String) -> [String: Any] {
+func libraryPlacementFixture(id: String, imageID: String, state: String = "PARENT_PREPARE_FOR_SUBMISSION") -> [String: Any] {
     ["type": "appAssetLibraryPlacements", "id": id,
-     "attributes": ["mediaType": "IMAGE", "placementType": "APP_SCREENSHOT", "placementGroup": "runtime-duo-group", "state": "PARENT_PREPARE_FOR_SUBMISSION"],
+     "attributes": ["mediaType": "IMAGE", "placementType": "APP_SCREENSHOT", "placementGroup": "runtime-duo-group", "state": state],
      "relationships": [
         "image": ["data": ["type": "appAssetLibraryImages", "id": imageID]],
         "appStoreVersionLocalization": ["data": ["type": "appStoreVersionLocalizations", "id": "localization"]],
@@ -193,4 +195,65 @@ func productionScreenshotErrorsNeverFallBackToLegacyEndpoints() async throws {
     }
     #expect(await transport.requests.last?.path == "/v1/appAssetLibraryRefData")
     #expect(await !transport.requests.contains { ($0.path ?? "").contains("appScreenshot") })
+}
+
+@Test(arguments: ["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION", "ASSET_PROCESSING", "FAILED", "FUTURE_STATE", "PARENT_APPROVED",
+                  "https://example.invalid/signed?token=private-sentinel", "FUTURE_STATE\nprivate-sentinel"], [false, true])
+func existingPlacementStateRunsThroughTheProductionAdapterAndWorkflow(state: String, apply: Bool) async throws {
+    let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
+    let display = directory.appendingPathComponent("en-US/IPHONE_DUO")
+    try FileManager.default.createDirectory(at: display, withIntermediateDirectories: true)
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
+    let file = display.appendingPathComponent("image.png")
+    try screenshotPNG(seed: 1).write(to: file)
+    let image = try ScreenshotImage(url: file)
+    let transport = StubTransport { request, _, _ in
+        #expect(request.method == .get)
+        let path = request.path ?? ""
+        if path == "/v1/apps/app" {
+            return try jsonResponse(["data": ["type": "apps", "id": "app"], "links": ["self": "unused"]])
+        }
+        if path.contains("/apps/app/appStoreVersions") {
+            return try jsonResponse(["data": [["type": "appStoreVersions", "id": "version", "attributes": [
+                "versionString": "2.0", "platform": "IOS", "appVersionState": "PREPARE_FOR_SUBMISSION",
+            ]]], "links": ["self": "unused"]])
+        }
+        if path.contains("/appStoreVersions/version/appStoreVersionLocalizations") {
+            return try jsonResponse(["data": [["type": "appStoreVersionLocalizations", "id": "localization", "attributes": ["locale": "en-US"]]], "links": ["self": "unused"]])
+        }
+        if path == "/v1/appAssetLibraryRefData" {
+            return try jsonResponse(libraryReferenceFixture())
+        }
+        if path.contains("/appStoreVersionLocalizations/localization/placements") {
+            return try jsonResponse([
+                "data": [libraryPlacementFixture(id: "placement", imageID: "image", state: state)],
+                "links": ["self": "unused"], "meta": ["paging": ["limit": 200, "total": 1]],
+            ])
+        }
+        #expect(path == "/v1/appAssetLibraryImages/image")
+        var item = libraryImageFixture(size: image.data.count)
+        var attributes = try #require(item["attributes"] as? [String: Any])
+        attributes["referenceName"] = AssetLibraryScreenshotWorkflow.reference(image)
+        item["attributes"] = attributes
+        return try jsonResponse(["data": item, "links": ["self": "unused"]])
+    }
+    do {
+        let plan = try await ReleaseAutomation(api: testAPI(transport: transport)).updateScreenshots(
+            appLookup: .appID("app"), version: "2.0", screenshotsPath: directory.path,
+            options: .init(mode: apply ? .apply : .dryRun)
+        )
+        #expect(["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION"].contains(state))
+        #expect(!plan.hasChanges)
+        #expect(plan.actions.allSatisfy { $0.kind == .unchanged })
+    } catch {
+        #expect(!["ACTIVE", "PARENT_PREPARE_FOR_SUBMISSION"].contains(state))
+        let diagnostic = String(describing: error)
+        #expect(diagnostic.contains("appAssetLibraryPlacements"))
+        #expect(diagnostic.contains(state.contains("private-sentinel") ? "<unrecognized>" : state))
+        #expect(!diagnostic.contains("private-sentinel"))
+        #expect(!diagnostic.contains("Bearer"))
+    }
+    #expect(await transport.requests.allSatisfy { $0.method == .get })
 }

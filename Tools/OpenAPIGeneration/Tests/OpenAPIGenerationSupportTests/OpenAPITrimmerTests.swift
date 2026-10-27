@@ -105,3 +105,34 @@ func trimmerPreservesCommonFieldsAndRequiredConstraintsInComposedRequests() thro
     #expect(Set(fields.keys) == ["image", "localization"])
     #expect(schemas["Identity"] != nil)
 }
+
+@Test
+func trimmerPreservesPlacementStatesWithoutOpeningUnrelatedEnums() throws {
+    let source = Data("""
+    {"paths":{"/placements":{"get":{
+      "operationId":"appStoreVersionLocalizations_placements_getToManyRelated",
+      "responses":{"200":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Placement"}}}}}
+    }}},"components":{"schemas":{
+      "Placement":{"type":"object","properties":{
+        "state":{"$ref":"#/components/schemas/AppAssetLibraryPlacementState"},
+        "type":{"$ref":"#/components/schemas/PlacementType"}
+      }},
+      "AppAssetLibraryPlacementState":{"type":"string","enum":["ASSET_PROCESSING","FAILED","PARENT_PREPARE_FOR_SUBMISSION"]},
+      "PlacementType":{"type":"string","enum":["APP_SCREENSHOT"]}
+    }}}
+    """.utf8)
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
+    let output = directory.appendingPathComponent("openapi.json")
+    _ = try OpenAPITrimmer().trim(sourceData: source, outputURL: output)
+    let document = try #require(JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any])
+    let components = try #require(document["components"] as? [String: Any])
+    let schemas = try #require(components["schemas"] as? [String: Any])
+    let state = try #require(schemas["AppAssetLibraryPlacementState"] as? [String: Any])
+    #expect(state["type"] as? String == "string")
+    #expect(state["enum"] == nil)
+    let type = try #require(schemas["PlacementType"] as? [String: Any])
+    #expect(type["enum"] as? [String] == ["APP_SCREENSHOT"])
+}
