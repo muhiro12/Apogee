@@ -43,10 +43,12 @@ follow-up before release.
 
 ## November 2026 dependency review
 
-The API 4.6 refresh updates Swift OpenAPI Generator to 1.14.4, Runtime to 1.13.4,
-URLSession to 1.4.0, HTTP Types to 1.8.0, and ASN.1 to 1.7.4. The generator's
-Runtime 1.13.0 minimum is declared in the package manifest so consumer resolution
-cannot select an older runtime.
+The API 4.6 refresh updates Runtime to 1.13.4, URLSession to 1.4.0, HTTP Types to
+1.8.0, and ASN.1 to 1.7.4. The package declares Runtime 1.13.0 as its minimum.
+Swift OpenAPI Generator 1.14.4 was evaluated but fails the supported Xcode 26
+warnings-as-errors checks because of unused access-level imports. Generation
+therefore remains pinned to 1.12.2; see the
+[generation compatibility boundary](openapi-generation.md).
 
 Swift Collections remains at 1.6.0 in the root lockfile: 1.7.5 requires Swift 6.4,
 while Apogee supports Swift 6.2. Swift Argument Parser 1.8.2 and Swift Crypto 3.15.1

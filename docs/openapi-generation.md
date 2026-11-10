@@ -23,7 +23,7 @@ Apogee uses, creates a temporary Swift package under `.build/`, resolves and
 runs Swift OpenAPI Generator from that temporary package, and copies only the
 generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
 
-Generator 1.14.4 splits types into namespace files (`Types+*.swift`). The updater
+Newer generators split types into namespace files (`Types+*.swift`). The updater
 installs every client/type fragment, clears temporary output before generation,
 and removes obsolete installed fragments when switching generator versions.
 Apple's specification and other generator inputs are never copied into the target.
@@ -78,11 +78,18 @@ Current generation baseline:
 - Source URL: `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`
 - Download checked: `2026-11-10`
 - App Store Connect API version in spec: `4.6`
-- Swift OpenAPI Generator version: `1.14.4`
+- Swift OpenAPI Generator version: `1.12.2`
 - Specification SHA-256: `74732362a91236dcb66eb1620f8be18c2b6060771269b483eab578473bb32763`
 
-The package requires Swift OpenAPI Runtime 1.13.0 or later, matching the generator's
-runtime requirement even when a consumer resolves its own dependency graph.
+The package requires Swift OpenAPI Runtime 1.13.0 or later and is verified with
+1.13.4. Generator 1.12.2 remains pinned for the supported Swift 6.2/6.3 toolchains:
+1.14.4 emits unused access-level imports in generated namespace files, causing
+the [warnings-as-errors builds](https://github.com/muhiro12/Apogee/actions/runs/42818525225)
+to fail on Xcode 26.0.1 and 26.6. Its generated
+diagnostic annotations only apply to Swift 6.4 and later. Reconsider the pin when
+upstream output passes both supported CI toolchains; do not patch generated Swift
+or disable the warning gate. The API 4.6 specification remains the source for
+Apogee's selected operations.
 
 Asset Library operations include reference data, the app's library, image
 reservation/read/commit, scoped localization placements, placement creation and

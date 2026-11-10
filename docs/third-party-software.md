@@ -30,8 +30,8 @@ has the same license when redistributing its sources or changing platforms.
 
 The maintainer workflow uses
 [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator),
-under [Apache 2.0](https://github.com/apple/swift-openapi-generator/blob/1.14.4/LICENSE.txt)
-with its own [notices](https://github.com/apple/swift-openapi-generator/blob/1.14.4/NOTICE.txt).
+under [Apache 2.0](https://github.com/apple/swift-openapi-generator/blob/1.12.2/LICENSE.txt)
+with its own [notices](https://github.com/apple/swift-openapi-generator/blob/1.12.2/NOTICE.txt).
 The generator is downloaded as a maintainer tool and is not distributed as part
 of Apogee's executable. Generated files identify their generator in the header.
 Apple's App Store Connect OpenAPI document is downloaded locally and is not

@@ -4,7 +4,8 @@ import Foundation
 import OpenAPIGenerationSupport
 
 let defaultSpecURL = "https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip"
-let defaultGeneratorVersion = "1.14.4"
+// Generator 1.14.4 emits unused access-level imports that fail Swift 6.2/6.3 warning checks.
+let defaultGeneratorVersion = "1.12.2"
 
 do {
     let options = try Options(arguments: Array(CommandLine.arguments.dropFirst()))
