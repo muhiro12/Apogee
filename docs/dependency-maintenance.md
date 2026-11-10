@@ -40,3 +40,16 @@ maintainer owns its triage. A passing build, an empty alert list, or the absence
 of a scanner is not a security audit. Do not leave failing security checks or
 update pull requests unattended; fix, dismiss with evidence, or track a bounded
 follow-up before release.
+
+## November 2026 dependency review
+
+The API 4.6 refresh updates Swift OpenAPI Generator to 1.14.4, Runtime to 1.13.4,
+URLSession to 1.4.0, HTTP Types to 1.8.0, and ASN.1 to 1.7.4. The generator's
+Runtime 1.13.0 minimum is declared in the package manifest so consumer resolution
+cannot select an older runtime.
+
+Swift Collections remains at 1.6.0 in the root lockfile: 1.7.5 requires Swift 6.4,
+while Apogee supports Swift 6.2. Swift Argument Parser 1.8.2 and Swift Crypto 3.15.1
+remain unchanged. Crypto 5 is a separate major-version migration; Apogee's current
+macOS signing path uses CryptoKit through the existing Crypto product and does not
+need its new APIs for this update.

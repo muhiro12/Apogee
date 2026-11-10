@@ -4,7 +4,7 @@ import Foundation
 import OpenAPIGenerationSupport
 
 let defaultSpecURL = "https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip"
-let defaultGeneratorVersion = "1.12.2"
+let defaultGeneratorVersion = "1.14.4"
 
 do {
     let options = try Options(arguments: Array(CommandLine.arguments.dropFirst()))
@@ -50,7 +50,7 @@ struct Options {
     OPTIONS:
       --repository-root <path>   Apogee repository root. Defaults to the current directory or an ancestor.
       --spec-url <url>           App Store Connect OpenAPI zip URL.
-      --generator-version <ver>  Swift OpenAPI Generator version. Defaults to APOGEE_OPENAPI_GENERATOR_VERSION or 1.12.2.
+      --generator-version <ver>  Swift OpenAPI Generator version. Defaults to APOGEE_OPENAPI_GENERATOR_VERSION or \(defaultGeneratorVersion).
       -h, --help                 Show help information.
     """
 
@@ -89,6 +89,10 @@ struct Updater {
         )
 
         try fileManager.createDirectory(at: generatorInputDirectory, withIntermediateDirectories: true)
+        // Older generators do not overwrite split type files left by newer versions.
+        if fileManager.fileExists(atPath: generatedDirectory.path) {
+            try fileManager.removeItem(at: generatedDirectory)
+        }
         try fileManager.createDirectory(at: generatedDirectory, withIntermediateDirectories: true)
         try fileManager.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
         defer { try? fileManager.removeItem(at: specZipURL) }
@@ -141,19 +145,7 @@ struct Updater {
             currentDirectory: generatorPackageDirectory
         )
 
-        try fileManager.copyReplacingItem(
-            at: generatedDirectory.appendingPathComponent("Client.swift"),
-            to: outputDirectory.appendingPathComponent("Client.swift")
-        )
-        try fileManager.copyReplacingItem(
-            at: generatedDirectory.appendingPathComponent("Types.swift"),
-            to: outputDirectory.appendingPathComponent("Types.swift")
-        )
-
-        let serverURL = outputDirectory.appendingPathComponent("Server.swift")
-        if fileManager.fileExists(atPath: serverURL.path) {
-            try fileManager.removeItem(at: serverURL)
-        }
+        try GeneratedSourceInstaller().install(from: generatedDirectory, to: outputDirectory)
 
         print("Updated generated App Store Connect client sources.")
         print("Spec SHA-256: \(Self.sha256Hex(openAPIData))")

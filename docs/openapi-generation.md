@@ -23,6 +23,11 @@ Apogee uses, creates a temporary Swift package under `.build/`, resolves and
 runs Swift OpenAPI Generator from that temporary package, and copies only the
 generated Swift sources into `Sources/AppStoreConnectGenerated/GeneratedSources/`.
 
+Generator 1.14.4 splits types into namespace files (`Types+*.swift`). The updater
+installs every client/type fragment, clears temporary output before generation,
+and removes obsolete installed fragments when switching generator versions.
+Apple's specification and other generator inputs are never copied into the target.
+
 Generated declarations use `accessModifier: package`: only targets in Apogee can
 use them. The supported consumer boundary is `ApogeeCore`. Change generation
 configuration and rerun this tool instead of editing generated Swift directly.
@@ -71,10 +76,13 @@ Apple's OpenAPI document or run the generator during normal `swift build`.
 Current generation baseline:
 
 - Source URL: `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`
-- Download checked: `2026-10-28`
-- App Store Connect API version in spec: `4.5.1`
-- Swift OpenAPI Generator version: `1.12.2`
-- Specification SHA-256: `7518d3a94a8bd701ac25c1c601b95b8f53aad92091affb15a2a9d331713dac1a`
+- Download checked: `2026-11-10`
+- App Store Connect API version in spec: `4.6`
+- Swift OpenAPI Generator version: `1.14.4`
+- Specification SHA-256: `74732362a91236dcb66eb1620f8be18c2b6060771269b483eab578473bb32763`
+
+The package requires Swift OpenAPI Runtime 1.13.0 or later, matching the generator's
+runtime requirement even when a consumer resolves its own dependency graph.
 
 Asset Library operations include reference data, the app's library, image
 reservation/read/commit, scoped localization placements, placement creation and
@@ -83,7 +91,7 @@ be shared across surfaces. Legacy screenshot operations remain generated only
 for Apogee's existing low-level public API; production automation uses the new
 operations and never falls back to the legacy endpoints.
 
-For generator 1.12.2, the trimmer distributes common object properties into
+The trimmer distributes common object properties into
 `anyOf` request alternatives so required-only constraints keep their fields.
 It also decodes placement relationships by their required image/video key:
 the source schema's nested `mediaType` discriminator refers to an attribute
@@ -93,9 +101,23 @@ request/response encoding; generated Swift is never patched by hand.
 
 The trimmer preserves `AppAssetLibraryPlacementState` as a string rather than a
 closed generated enum. The public backend was observed returning `ACTIVE`, which
-is absent from the unchanged 4.5.1 specification. Keeping raw values lets the
+is absent from both the 4.5.1 and 4.6 specifications. Keeping raw values lets the
 workflow accept the established ready states and report unsupported states
 explicitly before placement changes. This normalization applies only to placement
 state; other generated enums and identity/scope validation remain unchanged.
 See [placement lifecycle](screenshots.md#placement-lifecycle) for the acceptance
 boundary and remaining live-verification limits.
+
+## API 4.6 update
+
+[API 4.6](https://developer.apple.com/documentation/appstoreconnectapi/app-store-connect-api-4-6-release-notes)
+adds subscription retention messaging and deprecates the `INSTALLS` sales report
+type. Apogee uses neither operation family. Its selected operations are unchanged;
+the regenerated shared models include the new retention-message relationships and
+related response types. This does not add retention-message automation to Apogee.
+
+Screenshot placement creation still sends only the image and standard version
+localization relationships. The existing schema normalizations remain in place:
+4.6 still omits `ACTIVE` from placement states and retains the nested discriminator
+and composed request shapes described above. Adapter tests verify request encoding,
+scoped read-back, and rejection of placements belonging to other parent resources.

@@ -132,8 +132,10 @@ identity or scope still uses `ScreenshotError.incompleteInventory`.
 
 This is a narrow compatibility correction for the public-backend `ACTIVE`
 response recorded in [Issue #20](https://github.com/muhiro12/Apogee/issues/20).
-The official 4.5.1 specification, rechecked on 2026-10-28 with the same hash below,
+The official 4.5.1 specification, rechecked on 2026-10-28 with the hash below,
 lists processing, failure, and parent lifecycle states but omits `ACTIVE`.
+The 4.6 specification rechecked on 2026-11-10 retains the same state enum; see
+the [current generation baseline](openapi-generation.md).
 Accepting `ACTIVE` in an editable version is based on that observed response,
 rather than a claim that Apple documents its complete transition model. The
 workflow still independently verifies version editability, image processing,

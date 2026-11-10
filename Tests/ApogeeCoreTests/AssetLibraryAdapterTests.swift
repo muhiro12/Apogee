@@ -41,12 +41,18 @@ func assetLibraryPlacementsPreserveScopeOrderAndPagination(state: String) async 
     #expect(await transport.requests.count == 2)
 }
 
-@Test(arguments: ["parent", "media", "group", "cursor", "total"])
+@Test(arguments: ["parent", "retention-parent", "media", "group", "cursor", "total"])
 func assetLibraryRefusesIncompleteOrOutOfScopePlacements(scenario: String) async throws {
     let transport = StubTransport { _, _, _ in
         var item = libraryPlacementFixture(id: "placement", imageID: "image")
         if scenario == "parent" {
             item["relationships"] = ["image": ["data": ["type": "appAssetLibraryImages", "id": "image"]]]
+        }
+        if scenario == "retention-parent" {
+            item["relationships"] = [
+                "image": ["data": ["type": "appAssetLibraryImages", "id": "image"]],
+                "retentionMessageVersion": ["data": ["type": "retentionMessageVersions", "id": "retention-version"]],
+            ]
         }
         if scenario == "media" || scenario == "group" {
             item["attributes"] = ["mediaType": scenario == "media" ? "VIDEO" : "IMAGE", "placementType": "APP_SCREENSHOT",

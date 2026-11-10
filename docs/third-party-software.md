@@ -15,11 +15,11 @@ versions actually resolved when redistributing any dependency or linked binary.
 | --- | --- | --- | --- |
 | Swift Argument Parser | 1.8.2 | [Apache 2.0 with Runtime Library Exception](https://github.com/apple/swift-argument-parser/blob/1.8.2/LICENSE.txt) | Source file notices |
 | Swift Crypto | 3.15.1 | [Apache 2.0](https://github.com/apple/swift-crypto/blob/3.15.1/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-crypto/blob/3.15.1/NOTICE.txt) |
-| Swift ASN.1 | 1.7.1 | [Apache 2.0](https://github.com/apple/swift-asn1/blob/1.7.1/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-asn1/blob/1.7.1/NOTICE.txt) |
+| Swift ASN.1 | 1.7.4 | [Apache 2.0](https://github.com/apple/swift-asn1/blob/1.7.4/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-asn1/blob/1.7.4/NOTICE.txt) |
 | Swift Collections | 1.6.0 | [Apache 2.0 with Runtime Library Exception](https://github.com/apple/swift-collections/blob/1.6.0/LICENSE.txt) | Source file notices |
-| Swift HTTP Types | 1.6.0 | [Apache 2.0](https://github.com/apple/swift-http-types/blob/1.6.0/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-http-types/blob/1.6.0/NOTICE.txt) |
-| Swift OpenAPI Runtime | 1.12.1 | [Apache 2.0](https://github.com/apple/swift-openapi-runtime/blob/1.12.1/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-openapi-runtime/blob/1.12.1/NOTICE.txt) |
-| Swift OpenAPI URLSession | 1.3.1 | [Apache 2.0](https://github.com/apple/swift-openapi-urlsession/blob/1.3.1/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-openapi-urlsession/blob/1.3.1/NOTICE.txt) |
+| Swift HTTP Types | 1.8.0 | [Apache 2.0](https://github.com/apple/swift-http-types/blob/1.8.0/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-http-types/blob/1.8.0/NOTICE.txt) |
+| Swift OpenAPI Runtime | 1.13.4 | [Apache 2.0](https://github.com/apple/swift-openapi-runtime/blob/1.13.4/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-openapi-runtime/blob/1.13.4/NOTICE.txt) |
+| Swift OpenAPI URLSession | 1.4.0 | [Apache 2.0](https://github.com/apple/swift-openapi-urlsession/blob/1.4.0/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-openapi-urlsession/blob/1.4.0/NOTICE.txt) |
 
 Apogee uses Swift Crypto's `Crypto` product, which uses Apple's CryptoKit on
 the supported macOS platform. Swift Crypto also contains BoringSSL sources for
@@ -30,8 +30,8 @@ has the same license when redistributing its sources or changing platforms.
 
 The maintainer workflow uses
 [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator),
-under [Apache 2.0](https://github.com/apple/swift-openapi-generator/blob/1.12.2/LICENSE.txt)
-with its own [notices](https://github.com/apple/swift-openapi-generator/blob/1.12.2/NOTICE.txt).
+under [Apache 2.0](https://github.com/apple/swift-openapi-generator/blob/1.14.4/LICENSE.txt)
+with its own [notices](https://github.com/apple/swift-openapi-generator/blob/1.14.4/NOTICE.txt).
 The generator is downloaded as a maintainer tool and is not distributed as part
 of Apogee's executable. Generated files identify their generator in the header.
 Apple's App Store Connect OpenAPI document is downloaded locally and is not
