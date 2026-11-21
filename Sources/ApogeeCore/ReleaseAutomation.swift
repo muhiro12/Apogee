@@ -974,9 +974,13 @@ public struct ReleaseAutomation: Sendable {
         source: String
     ) throws -> [String: AppStoreConnectWebhook] {
         var result: [String: AppStoreConnectWebhook] = [:]
+        var ids: Set<String> = []
         for webhook in webhooks {
             guard result[webhook.name] == nil else {
                 throw ApogeeError.duplicateWebhookName(webhook.name, source: source)
+            }
+            guard !webhook.id.isEmpty, !webhook.name.isEmpty, ids.insert(webhook.id).inserted else {
+                throw ApogeeError.unexpectedAPIResponse("Missing or duplicate webhook identity in \(source).")
             }
 
             result[webhook.name] = webhook

@@ -14,8 +14,13 @@ func generatedCollectionsFollowNextPage(kind: String) async throws {
             "submissions": "reviewSubmissions", "webhooks": "webhooks",
         ][kind]!
         let next = "https://api.appstoreconnect.apple.com" + (request.path ?? "") + "&cursor=second"
+        var resource: [String: Any] = ["type": resourceType, "id": "resource-\(index)"]
+        if kind == "webhooks" {
+            resource["attributes"] = ["name": "release-\(index)", "url": "https://example.com/release",
+                                      "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"], "enabled": false] as [String: Any]
+        }
         return try jsonResponse([
-            "data": [["type": resourceType, "id": "resource-\(index)"]],
+            "data": [resource],
             "links": index == 0 ? ["self": "unused", "next": next] : ["self": "unused"],
         ])
     }
@@ -38,6 +43,33 @@ func generatedCollectionsFollowNextPage(kind: String) async throws {
     #expect(ids == ["resource-0", "resource-1"])
     #expect(await transport.requests.count == 2)
     #expect(await transport.requests.last?.path?.contains("cursor=second") == true)
+}
+
+@Test(arguments: ["name", "url", "eventTypes", "enabled", "duplicate-id"])
+func incompleteWebhookInventoryCannotProduceASyncPlan(scenario: String) async throws {
+    let config = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        .appendingPathComponent("Fixtures/AppStore/webhooks.json")
+    let transport = StubTransport { request, _, _ in
+        if request.path?.contains("/webhooks") == true {
+            var attributes: [String: Any] = [
+                "name": "release", "url": "https://example.com/release",
+                "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"], "enabled": true,
+            ]
+            attributes.removeValue(forKey: scenario)
+            var hooks: [[String: Any]] = [["type": "webhooks", "id": "hook", "attributes": attributes]]
+            if scenario == "duplicate-id" {
+                attributes["name"] = "obsolete"
+                hooks.append(["type": "webhooks", "id": "hook", "attributes": attributes])
+            }
+            return try jsonResponse(["data": hooks, "links": ["self": "unused"]])
+        }
+        return try jsonResponse(["data": ["type": "apps", "id": "app"], "links": ["self": "unused"]])
+    }
+    await #expect(throws: ApogeeError.self) {
+        _ = try await ReleaseAutomation(api: testAPI(transport: transport)).syncWebhooks(
+            appLookup: .appID("app"), configPath: config.path, options: .init(mode: .dryRun)
+        )
+    }
 }
 
 @Test(arguments: [

@@ -532,7 +532,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     query: .init(limit: 200)
                 ))
                 let response = try output.ok.body.json
-                return (response.data.map(mapWebhook), response.links.next, response.meta)
+                return (try response.data.map(mapWebhook), response.links.next, response.meta)
             }
         }
     }
@@ -711,15 +711,15 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         )
     }
 
-    private func mapWebhook(_ webhook: Components.Schemas.Webhook) -> AppStoreConnectWebhook {
-        let attributes = webhook.attributes
-        return .init(
-            id: webhook.id,
-            name: attributes?.name ?? "",
-            url: attributes?.url ?? "",
-            eventTypes: attributes?.eventTypes?.map(\.rawValue) ?? [],
-            enabled: attributes?.enabled ?? false
-        )
+    private func mapWebhook(_ webhook: Components.Schemas.Webhook) throws -> AppStoreConnectWebhook {
+        guard !webhook.id.isEmpty, let attributes = webhook.attributes,
+              let name = attributes.name, !name.isEmpty,
+              let url = attributes.url, !url.isEmpty,
+              let eventTypes = attributes.eventTypes, let enabled = attributes.enabled else {
+            throw ApogeeError.unexpectedAPIResponse("Webhook response omitted its identity or observable settings.")
+        }
+        return .init(id: webhook.id, name: name, url: url,
+                     eventTypes: eventTypes.map(\.rawValue), enabled: enabled)
     }
 
     private func generatedWebhookEventType(_ rawValue: String) throws -> Components.Schemas.WebhookEventType {
