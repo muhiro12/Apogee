@@ -31,6 +31,23 @@ func assetLibraryReplacesFullSetsAfterProcessingAndPreservesSharedImages(oldCoun
     #expect(journal.contains("originals"))
 }
 
+@Test
+func assetLibraryOrdersOnlyChangedLocalizations() async throws {
+    let fixture = try LibraryFixture(oldCount: 0, desiredCount: 1)
+    defer {
+        fixture.remove()
+    }
+    let api = LibraryTestAPI(oldCount: 0)
+    _ = try await fixture.run(api: api, mode: .apply)
+    try FileManager.default.copyItem(at: fixture.input.appendingPathComponent("en-US"),
+                                     to: fixture.input.appendingPathComponent("ja"))
+    let plan = try await fixture.run(api: api, mode: .dryRun)
+    #expect(plan.actions.contains { $0.locale == "en-US" && $0.kind == .unchanged })
+    #expect(!plan.hasDestructiveActions)
+    _ = try await fixture.run(api: api, mode: .apply)
+    #expect(await api.orderedLocalizations == ["localization", "localization-ja"])
+}
+
 @Test(arguments: ["upload", "commit", "processing", "spec", "size", "timeout"])
 func assetLibraryUploadFailuresPreserveEveryExistingPlacement(scenario: String) async throws {
     let fixture = try LibraryFixture(oldCount: 10, desiredCount: 2)
@@ -181,7 +198,8 @@ private struct LibraryFixture {
              progress: (@Sendable (ScreenshotProgress) -> Void)? = nil) async throws -> ReleasePlan {
         try await AssetLibraryScreenshotWorkflow(api: api, progress: progress, pollAttempts: 2, pollDelay: .zero).run(
             app: .init(id: "app"), version: .init(id: "version"), platform: .iOS,
-            localizations: [.init(id: "localization", locale: "en-US", metadata: .init(locale: "en-US"))],
+            localizations: [.init(id: "localization", locale: "en-US", metadata: .init(locale: "en-US")),
+                            .init(id: "localization-ja", locale: "ja", metadata: .init(locale: "ja"))],
             path: input.path, options: .init(mode: mode, allowDestructive: true, planToken: token),
             recovery: .init(directory: recovery.path)
         )
@@ -192,6 +210,7 @@ private actor LibraryTestAPI: AssetLibraryAPI {
     var images: [String: LibraryImage] = [:]
     var placements: [LibraryPlacement] = []
     var writes: [String] = []
+    var orderedLocalizations: [String] = []
     var failure = ""
     let width: Int
     let height: Int
@@ -284,7 +303,7 @@ private actor LibraryTestAPI: AssetLibraryAPI {
         default:
             state = readyState
         }
-        let placement = LibraryPlacement(id: "placement-\(imageID)", imageID: imageID, localizationID: localizationID,
+        let placement = LibraryPlacement(id: "placement-\(localizationID)-\(imageID)", imageID: imageID, localizationID: localizationID,
                                          placementType: "APP_SCREENSHOT", group: group,
                                          state: state)
         placements.append(placement)
@@ -312,6 +331,7 @@ private actor LibraryTestAPI: AssetLibraryAPI {
                 placements[index].state = failure == "poll-failed" ? "FAILED" : "FUTURE_STATE"
             }
         }
+        orderedLocalizations.append(localizationID)
         writes.append("order")
     }
 }

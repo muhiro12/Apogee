@@ -242,8 +242,10 @@ struct AssetLibraryScreenshotWorkflow {
                     ordered.append(created.id)
                 }
             }
-            report(.ordering, group)
-            try await api.orderLibraryPlacements(localizationID: group.localizationID, group: group.group, ids: ordered)
+            if ordered != group.placements.map(\.id) {
+                report(.ordering, group)
+                try await api.orderLibraryPlacements(localizationID: group.localizationID, group: group.group, ids: ordered)
+            }
             report(.verifying, group)
             var ready = false
             for attempt in 1...pollAttempts {
