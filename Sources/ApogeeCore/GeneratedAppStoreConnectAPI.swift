@@ -53,12 +53,12 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         tokenProvider = .init(signer: .init(credentials: credentials))
     }
 
-    func client(nextPageURL: String? = nil) -> Client {
+    func client(nextPageURL: String? = nil, middlewares: [any ClientMiddleware] = []) -> Client {
         .init(
             serverURL: serverURL,
             configuration: .init(dateTranscoder: AppStoreConnectDateTranscoder()),
             transport: transport,
-            middlewares: [
+            middlewares: middlewares + [
                 AppStoreConnectPageMiddleware(nextPageURL: nextPageURL),
                 AppStoreConnectAuthorizationMiddleware(tokenProvider: tokenProvider),
             ]
@@ -428,18 +428,26 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func build(versionID: String) async throws -> AppStoreConnectBuild? {
         try await perform(operation: "build") {
-            let output = try await client().appStoreVersions_getInstance(.init(
+            let output = try await client(middlewares: [BuildLinkageMiddleware()]).appStoreVersions_getInstance(.init(
                 path: .init(id: versionID),
                 query: .init(fields_lbrack_appStoreVersions_rbrack_: [.build], include: [.build])
             ))
-            guard let relationship = try output.ok.body.json.data.relationships?.build else {
-                throw ApogeeError.unexpectedAPIResponse("The version response omitted its build relationship.")
+            let version = try output.ok.body.json.data
+            guard version.id == versionID, let relationship = version.relationships?.build else {
+                throw ApogeeError.unexpectedAPIResponse("The requested version or its build relationship was missing.")
             }
             guard let buildID = relationship.data?.id else {
                 return nil
             }
+            guard !buildID.isEmpty else {
+                throw ApogeeError.unexpectedAPIResponse("The linked build ID was empty.")
+            }
             let buildOutput = try await client().builds_getInstance(.init(path: .init(id: buildID)))
-            return try mapBuild(buildOutput.ok.body.json.data)
+            let build = try buildOutput.ok.body.json.data
+            guard build.id == buildID else {
+                throw ApogeeError.unexpectedAPIResponse("The returned build did not match the relationship.")
+            }
+            return mapBuild(build)
         }
     }
 
@@ -728,6 +736,33 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         }
 
         return eventType
+    }
+}
+
+// The generated optional maps both an omitted linkage and an explicit JSON null to nil.
+// Only the latter confirms that the version has no attached build.
+private struct BuildLinkageMiddleware: ClientMiddleware {
+    func intercept(
+        _ request: HTTPRequest,
+        body: HTTPBody?,
+        baseURL: URL,
+        operationID: String,
+        next: @concurrent @Sendable (HTTPRequest, HTTPBody?, URL) async throws -> (HTTPResponse, HTTPBody?)
+    ) async throws -> (HTTPResponse, HTTPBody?) {
+        let (response, body) = try await next(request, body, baseURL)
+        guard let body else {
+            return (response, nil)
+        }
+        let bytes = try await Data(collecting: body, upTo: .max)
+        guard let document = try? JSONSerialization.jsonObject(with: bytes) as? [String: Any] else {
+            throw ApogeeError.appStoreConnectResponseDecodingFailed(operation: "build", statusCode: response.status.code)
+        }
+        guard let version = document["data"] as? [String: Any],
+              let relationships = version["relationships"] as? [String: Any],
+              let build = relationships["build"] as? [String: Any], build["data"] != nil else {
+            throw ApogeeError.unexpectedAPIResponse("The build relationship omitted its linkage data.")
+        }
+        return (response, HTTPBody(bytes))
     }
 }
 

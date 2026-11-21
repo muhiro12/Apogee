@@ -92,3 +92,23 @@ func submittedReviewIsNotSubmittedAgain() async throws {
     #expect(await api.createdReviewSubmissionIDs.isEmpty)
     #expect(await api.submittedReviewSubmissionIDs.isEmpty)
 }
+
+@Test(arguments: ["missing-linkage", "wrong-version", "empty-linked-id", "wrong-build"])
+func attachedBuildRequiresExplicitLinkageToTheReturnedResource(scenario: String) async throws {
+    let transport = StubTransport { _, _, index in
+        if index > 0 {
+            return try jsonResponse(["data": ["id": "other", "type": "builds"], "links": ["self": "unused"]])
+        }
+        let build: [String: Any] = scenario == "missing-linkage" ? ["links": ["related": "unused"]] :
+            ["data": ["type": "builds", "id": scenario == "empty-linked-id" ? "" : "build"]]
+        return try jsonResponse([
+            "data": ["id": scenario == "wrong-version" ? "other" : "version-1", "type": "appStoreVersions",
+                     "relationships": ["build": build]],
+            "links": ["self": "unused"],
+        ])
+    }
+    await #expect(throws: ApogeeError.self) {
+        _ = try await testAPI(transport: transport).build(versionID: "version-1")
+    }
+    #expect(await transport.requests.count == (scenario == "wrong-build" ? 2 : 1))
+}

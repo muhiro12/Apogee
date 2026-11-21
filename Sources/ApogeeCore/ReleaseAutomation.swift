@@ -342,14 +342,10 @@ public struct ReleaseAutomation: Sendable {
         export: BuildFeedbackExport?
     ) async throws -> BuildFeedback {
         let app = try await resolveApp(appLookup)
-        let builds = try await api.builds(
-            appID: app.id, buildVersion: buildVersion, appStoreVersion: version, platform: platform
+        let build = try await candidateBuild(
+            appID: app.id, version: version, buildVersion: buildVersion, platform: platform,
+            invalidIdentity: BuildFeedbackError.incompleteInventory
         )
-        let build = try exactlyOneBuild(builds, appID: app.id, buildVersion: buildVersion)
-        try validateBuild(build)
-        guard !build.id.isEmpty, build.version == buildVersion else {
-            throw BuildFeedbackError.incompleteInventory
-        }
         let crashes = try await api.crashFeedback(appID: app.id, buildID: build.id)
         let screenshots = try await api.screenshotFeedback(appID: app.id, buildID: build.id)
         for entries in [crashes, screenshots] {
@@ -388,14 +384,10 @@ public struct ReleaseAutomation: Sendable {
         options: ReleaseExecutionOptions
     ) async throws -> ReleasePlan {
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
-        let builds = try await api.builds(
-            appID: context.app.id,
-            buildVersion: buildVersion,
-            appStoreVersion: version,
-            platform: platform
+        let build = try await candidateBuild(
+            appID: context.app.id, version: version, buildVersion: buildVersion, platform: platform,
+            invalidIdentity: ApogeeError.unexpectedAPIResponse("The candidate build did not match the requested build number.")
         )
-        let build = try exactlyOneBuild(builds, appID: context.app.id, buildVersion: buildVersion)
-        try validateBuild(build)
         let currentBuild = try await api.build(versionID: context.version.id)
         var plan = ReleasePlan(
             title: "Attach build \(buildVersion) to \(context.app.id) \(version)",
@@ -751,13 +743,22 @@ public struct ReleaseAutomation: Sendable {
         let app = try await resolveApp(appLookup)
         let versions = try await api.appStoreVersions(appID: app.id, version: version, platform: platform)
         let appStoreVersion = try exactlyOneVersion(versions, appID: app.id, version: version)
+        guard !appStoreVersion.id.isEmpty,
+              appStoreVersion.versionString == nil || appStoreVersion.versionString == version,
+              appStoreVersion.platform == nil || appStoreVersion.platform == platform else {
+            throw ApogeeError.unexpectedAPIResponse("The version response did not match the requested release target.")
+        }
         return .init(app: app, version: appStoreVersion)
     }
 
     private func resolveApp(_ appLookup: AppLookup) async throws -> AppStoreConnectApp {
         switch appLookup {
         case let .appID(appID):
-            return try await api.app(id: appID)
+            let app = try await api.app(id: appID)
+            guard !app.id.isEmpty, app.id == appID else {
+                throw ApogeeError.unexpectedAPIResponse("The returned app did not match the requested app ID.")
+            }
+            return app
         case let .bundleID(bundleID):
             let apps = try await api.apps(bundleID: bundleID)
             if apps.isEmpty {
@@ -768,7 +769,11 @@ public struct ReleaseAutomation: Sendable {
                 throw ApogeeError.appAmbiguous(bundleID: bundleID, matches: apps.count)
             }
 
-            return apps[0]
+            let app = apps[0]
+            guard !app.id.isEmpty, app.bundleID == nil || app.bundleID == bundleID else {
+                throw ApogeeError.unexpectedAPIResponse("The app response did not match the requested bundle ID.")
+            }
+            return app
         }
     }
 
@@ -784,8 +789,11 @@ public struct ReleaseAutomation: Sendable {
         return versions[0]
     }
 
-    private func exactlyOneBuild(_ builds: [AppStoreConnectBuild], appID: String, buildVersion: String) throws -> AppStoreConnectBuild {
-        if builds.isEmpty {
+    private func candidateBuild(
+        appID: String, version: String, buildVersion: String, platform: Platform, invalidIdentity: any Error
+    ) async throws -> AppStoreConnectBuild {
+        let builds = try await api.builds(appID: appID, buildVersion: buildVersion, appStoreVersion: version, platform: platform)
+        guard let build = builds.first else {
             throw ApogeeError.buildNotFound(appID: appID, buildVersion: buildVersion)
         }
 
@@ -793,7 +801,11 @@ public struct ReleaseAutomation: Sendable {
             throw ApogeeError.buildAmbiguous(appID: appID, buildVersion: buildVersion, matches: builds.count)
         }
 
-        return builds[0]
+        try validateBuild(build)
+        guard !build.id.isEmpty, build.version == buildVersion else {
+            throw invalidIdentity
+        }
+        return build
     }
 
     private func existingReviewSubmission(
