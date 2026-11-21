@@ -293,3 +293,31 @@ private func versionCreationTransport(
         return try jsonResponse(["data": app, "links": ["self": "unused"]])
     }
 }
+
+@Test(arguments: ["missing-link", "total-mismatch", "changing-total"])
+func incompleteVersionInventoryCannotAuthorizeCreation(scenario: String) async throws {
+    let transport = StubTransport { request, _, index in
+        if request.path?.contains("appStoreVersions") == true {
+            let path = request.path ?? ""
+            var paging: [String: Any] = ["limit": 200, "total": 1]
+            var links = ["self": "unused"]
+            if scenario == "missing-link" {
+                paging["nextCursor"] = "second"
+                paging["total"] = 0
+            } else if scenario == "changing-total" {
+                if index == 1 {
+                    links["next"] = "https://api.appstoreconnect.apple.com" + path + "&cursor=second"
+                } else {
+                    paging["total"] = 0
+                }
+            }
+            return try jsonResponse(["data": [], "links": links, "meta": ["paging": paging]])
+        }
+        return try jsonResponse(["data": ["type": "apps", "id": "app"], "links": ["self": "unused"]])
+    }
+    await #expect(throws: ApogeeError.self) {
+        _ = try await ReleaseAutomation(api: testAPI(transport: transport)).createVersion(
+            appLookup: .appID("app"), version: "2.0", options: .init(mode: .dryRun)
+        )
+    }
+}

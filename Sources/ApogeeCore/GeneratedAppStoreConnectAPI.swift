@@ -67,69 +67,41 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func screenshotSets(localizationID: String) async throws -> [RemoteScreenshotSet] {
         try await perform(operation: "screenshotSets") {
-            var expectedTotal: Int?
-            let result = try await allPages { pageClient in
+            try await allPages { pageClient in
                 let output = try await pageClient.appStoreVersionLocalizations_appScreenshotSets_getToManyRelated(.init(
                     path: .init(id: localizationID),
                     query: .init(fields_lbrack_appScreenshotSets_rbrack_: [.screenshotDisplayType, .appStoreVersionLocalization],
                                  limit: 200, include: [.appStoreVersionLocalization])
                 ))
                 let response = try output.ok.body.json
-                if let total = response.meta?.paging.total {
-                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
-                        throw ApogeeError.unexpectedAPIResponse("Screenshot pagination totals changed.")
-                    }
-                    expectedTotal = total
-                }
-                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
-                    throw ApogeeError.unexpectedAPIResponse("Screenshot pagination is incomplete.")
-                }
                 let sets = try response.data.map { item -> RemoteScreenshotSet in
                     guard item.relationships?.appStoreVersionLocalization?.data?.id == localizationID else {
                         throw ApogeeError.unexpectedAPIResponse("Screenshot set parent is missing or mismatched.")
                     }
                     return try mapScreenshotSet(item)
                 }
-                return (sets, response.links.next)
+                return (sets, response.links.next, response.meta)
             }
-            guard expectedTotal == nil || expectedTotal == result.count else {
-                throw ApogeeError.unexpectedAPIResponse("Screenshot inventory does not match its reported total.")
-            }
-            return result
         }
     }
 
     public func screenshots(setID: String) async throws -> [RemoteScreenshot] {
         try await perform(operation: "screenshots") {
-            var expectedTotal: Int?
-            let result = try await allPages { pageClient in
+            try await allPages { pageClient in
                 let output = try await pageClient.appScreenshotSets_appScreenshots_getToManyRelated(.init(
                     path: .init(id: setID),
                     query: .init(fields_lbrack_appScreenshots_rbrack_: [.fileSize, .fileName, .sourceFileChecksum, .assetDeliveryState, .appScreenshotSet],
                                  limit: 200, include: [.appScreenshotSet])
                 ))
                 let response = try output.ok.body.json
-                if let total = response.meta?.paging.total {
-                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
-                        throw ApogeeError.unexpectedAPIResponse("Screenshot pagination totals changed.")
-                    }
-                    expectedTotal = total
-                }
-                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
-                    throw ApogeeError.unexpectedAPIResponse("Screenshot pagination is incomplete.")
-                }
                 let items = try response.data.map { item -> RemoteScreenshot in
                     guard item.relationships?.appScreenshotSet?.data?.id == setID else {
                         throw ApogeeError.unexpectedAPIResponse("Screenshot parent is missing or mismatched.")
                     }
                     return try mapScreenshot(item)
                 }
-                return (items, response.links.next)
+                return (items, response.links.next, response.meta)
             }
-            guard expectedTotal == nil || expectedTotal == result.count else {
-                throw ApogeeError.unexpectedAPIResponse("Screenshot inventory does not match its reported total.")
-            }
-            return result
         }
     }
 
@@ -238,7 +210,6 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func crashFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         try await perform(operation: "crashFeedback") {
-            var expectedTotal: Int?
             let entries = try await allPages { pageClient in
                 let output = try await pageClient.apps_betaFeedbackCrashSubmissions_getToManyRelated(.init(
                     path: .init(id: appID),
@@ -247,15 +218,6 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                                  limit: 200, include: [.build])
                 ))
                 let response = try output.ok.body.json
-                if let total = response.meta?.paging.total {
-                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
-                        throw ApogeeError.unexpectedAPIResponse("Feedback pagination totals changed.")
-                    }
-                    expectedTotal = total
-                }
-                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
-                    throw ApogeeError.unexpectedAPIResponse("Feedback pagination is incomplete.")
-                }
                 let summaries = try response.data.map { entry -> BuildFeedbackSummary in
                     guard !entry.id.isEmpty, let attributes = entry.attributes,
                           entry.relationships?.build?.data?.id == buildID else {
@@ -265,11 +227,10 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                                  deviceModel: attributes.deviceModel, osVersion: attributes.osVersion,
                                  hasComment: attributes.comment.map { !$0.isEmpty })
                 }
-                return (summaries, response.links.next)
+                return (summaries, response.links.next, response.meta)
             }
-            guard expectedTotal == nil || expectedTotal == entries.count,
-                  Set(entries.map(\.id)).count == entries.count else {
-                throw ApogeeError.unexpectedAPIResponse("Feedback inventory is duplicated or does not match its reported total.")
+            guard Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback inventory contains duplicate IDs.")
             }
             return entries.sorted { $0.id < $1.id }
         }
@@ -277,7 +238,6 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
 
     public func screenshotFeedback(appID: String, buildID: String) async throws -> [BuildFeedbackSummary] {
         try await perform(operation: "screenshotFeedback") {
-            var expectedTotal: Int?
             let entries = try await allPages { pageClient in
                 let output = try await pageClient.apps_betaFeedbackScreenshotSubmissions_getToManyRelated(.init(
                     path: .init(id: appID),
@@ -287,15 +247,6 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                                  limit: 200, include: [.build])
                 ))
                 let response = try output.ok.body.json
-                if let total = response.meta?.paging.total {
-                    guard total >= 0, expectedTotal == nil || expectedTotal == total else {
-                        throw ApogeeError.unexpectedAPIResponse("Feedback pagination totals changed.")
-                    }
-                    expectedTotal = total
-                }
-                if response.meta?.paging.nextCursor != nil, response.links.next == nil {
-                    throw ApogeeError.unexpectedAPIResponse("Feedback pagination is incomplete.")
-                }
                 let summaries = try response.data.map { entry -> BuildFeedbackSummary in
                     guard !entry.id.isEmpty, let attributes = entry.attributes,
                           entry.relationships?.build?.data?.id == buildID else {
@@ -314,11 +265,10 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                                  hasArtifact: artifacts.map { !$0.isEmpty },
                                  artifactCount: artifacts?.count ?? 0, artifacts: artifacts ?? [])
                 }
-                return (summaries, response.links.next)
+                return (summaries, response.links.next, response.meta)
             }
-            guard expectedTotal == nil || expectedTotal == entries.count,
-                  Set(entries.map(\.id)).count == entries.count else {
-                throw ApogeeError.unexpectedAPIResponse("Feedback inventory is duplicated or does not match its reported total.")
+            guard Set(entries.map(\.id)).count == entries.count else {
+                throw ApogeeError.unexpectedAPIResponse("Feedback inventory contains duplicate IDs.")
             }
             return entries.sorted { $0.id < $1.id }
         }
@@ -367,7 +317,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     limit: 200
                 )))
                 let response = try output.ok.body.json
-                return (response.data.map(mapApp), response.links.next)
+                return (response.data.map(mapApp), response.links.next, response.meta)
             }
         }
     }
@@ -384,7 +334,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     )
                 ))
                 let response = try output.ok.body.json
-                return (response.data.map(mapVersion), response.links.next)
+                return (response.data.map(mapVersion), response.links.next, response.meta)
             }
         }
     }
@@ -432,7 +382,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     query: .init(limit: 200)
                 ))
                 let response = try output.ok.body.json
-                return (response.data.map(mapLocalization), response.links.next)
+                return (response.data.map(mapLocalization), response.links.next, response.meta)
             }
         }
     }
@@ -471,7 +421,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     limit: 200
                 )))
                 let response = try output.ok.body.json
-                return (response.data.map(mapBuild), response.links.next)
+                return (response.data.map(mapBuild), response.links.next, response.meta)
             }
         }
     }
@@ -518,7 +468,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     limit_lbrack_items_rbrack_: 50
                 )))
                 let response = try output.ok.body.json
-                return (response.data.map(mapReviewSubmission), response.links.next)
+                return (response.data.map(mapReviewSubmission), response.links.next, response.meta)
             }
         }
     }
@@ -582,7 +532,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     query: .init(limit: 200)
                 ))
                 let response = try output.ok.body.json
-                return (response.data.map(mapWebhook), response.links.next)
+                return (response.data.map(mapWebhook), response.links.next, response.meta)
             }
         }
     }
@@ -634,17 +584,28 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
     }
 
     func allPages<Value>(
-        _ load: (Client) async throws -> ([Value], String?)
+        incompleteInventory: any Error = ApogeeError.unexpectedAPIResponse("Collection pagination is incomplete or inconsistent."),
+        _ load: (Client) async throws -> ([Value], String?, Components.Schemas.PagingInformation?)
     ) async throws -> [Value] {
         var values: [Value] = []
         var nextPageURL: String?
         var visitedLinks: Set<String> = []
+        var expectedTotal: Int?
 
         for _ in 0..<100 {
             try Task.checkCancellation()
-            let (page, next) = try await load(client(nextPageURL: nextPageURL))
+            let (page, next, meta) = try await load(client(nextPageURL: nextPageURL))
+            if let total = meta?.paging.total {
+                guard total >= 0, expectedTotal == nil || expectedTotal == total else {
+                    throw incompleteInventory
+                }
+                expectedTotal = total
+            }
             values.append(contentsOf: page)
             guard let next else {
+                guard meta?.paging.nextCursor == nil, expectedTotal == nil || expectedTotal == values.count else {
+                    throw incompleteInventory
+                }
                 return values
             }
             guard visitedLinks.insert(next).inserted else {

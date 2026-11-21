@@ -15,29 +15,16 @@ extension GeneratedAppStoreConnectAPI: AssetLibraryAPI {
 
     func libraryReferenceData() async throws -> LibraryReferenceData {
         try await perform(operation: "libraryReferenceData") {
-            var total: Int?
-            let pages: [LibraryReferenceData] = try await allPages { pageClient in
+            let pages: [LibraryReferenceData] = try await allPages(incompleteInventory: ScreenshotError.incompleteInventory) { pageClient in
                 let response = try await pageClient.appAssetLibraryRefData_getCollection(.init())
                 let page = try response.ok.body.json
-                if let count = page.meta?.paging.total {
-                    guard count >= 0, total == nil || total == count else {
-                        throw ScreenshotError.incompleteInventory
-                    }
-                    total = count
-                }
-                if page.meta?.paging.nextCursor != nil, page.links.next == nil {
-                    throw ScreenshotError.incompleteInventory
-                }
                 let values = try page.data.map { item in
                     guard let attributes = item.attributes else {
                         throw ScreenshotError.incompleteInventory
                     }
                     return try Self.project(attributes, as: LibraryReferenceData.self)
                 }
-                return (values, page.links.next)
-            }
-            guard total == nil || pages.count == total else {
-                throw ScreenshotError.incompleteInventory
+                return (values, page.links.next, page.meta)
             }
             return .init(placementProfileGroups: pages.flatMap(\.placementProfileGroups),
                          imageSpecs: pages.flatMap(\.imageSpecs), placementTypes: pages.flatMap(\.placementTypes),
@@ -47,8 +34,7 @@ extension GeneratedAppStoreConnectAPI: AssetLibraryAPI {
 
     func libraryPlacements(localizationID: String, group: String) async throws -> [LibraryPlacement] {
         try await perform(operation: "libraryPlacements") {
-            var total: Int?
-            let placements: [LibraryPlacement] = try await allPages { pageClient in
+            let placements: [LibraryPlacement] = try await allPages(incompleteInventory: ScreenshotError.incompleteInventory) { pageClient in
                 let response = try await pageClient.appStoreVersionLocalizations_placements_getToManyRelated(.init(
                     path: .init(id: localizationID),
                     query: .init(filter_lbrack_placementType_rbrack_: [.APP_SCREENSHOT],
@@ -57,15 +43,6 @@ extension GeneratedAppStoreConnectAPI: AssetLibraryAPI {
                                  include: [.image, .appStoreVersionLocalization])
                 ))
                 let page = try response.ok.body.json
-                if let count = page.meta?.paging.total {
-                    guard count >= 0, total == nil || total == count else {
-                        throw ScreenshotError.incompleteInventory
-                    }
-                    total = count
-                }
-                if page.meta?.paging.nextCursor != nil, page.links.next == nil {
-                    throw ScreenshotError.incompleteInventory
-                }
                 let values = try page.data.map { item in
                     let wire = try Self.project(item, as: PlacementWire.self)
                     guard wire.attributes.mediaType == "IMAGE",
@@ -80,10 +57,9 @@ extension GeneratedAppStoreConnectAPI: AssetLibraryAPI {
                                             localizationID: localizationID, placementType: wire.attributes.placementType,
                                             group: group, state: wire.attributes.state)
                 }
-                return (values, page.links.next)
+                return (values, page.links.next, page.meta)
             }
-            guard total == nil || placements.count == total,
-                  Set(placements.map(\.id)).count == placements.count else {
+            guard Set(placements.map(\.id)).count == placements.count else {
                 throw ScreenshotError.incompleteInventory
             }
             return placements
