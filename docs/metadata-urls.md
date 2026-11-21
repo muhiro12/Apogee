@@ -33,7 +33,8 @@ reachability, redirects, or legal sufficiency. Apple performs server-side valida
 See Apple's [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information)
 for the support/contact requirements and marketing URL description.
 
-Apply verifies exact string values through a fresh remote read. A rejected update,
+Apply reads back every supplied field from the same localization ID and locale,
+including fields that already matched during planning. A rejected update,
 server normalization (including an empty value returned as null), partial write,
 or mismatched read-back is an error, not a successful verification. Earlier writes
 may persist after failure. Inspect `read-metadata` and obtain a fresh plan before

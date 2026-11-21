@@ -243,11 +243,7 @@ public struct ReleaseAutomation: Sendable {
     ) async throws -> MetadataSnapshot {
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
         let localizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
-        guard localizations.allSatisfy({ !$0.id.isEmpty && !$0.locale.isEmpty }) else {
-            throw ApogeeError.unexpectedAPIResponse("Metadata snapshot requires localization IDs and locales.")
-        }
-        _ = try uniqueLocalizations(localizations, key: \.locale)
-        _ = try uniqueLocalizations(localizations, key: \.id)
+        _ = try indexedLocalizations(localizations)
         return .init(
             app: context.app,
             version: context.version,
@@ -255,7 +251,7 @@ public struct ReleaseAutomation: Sendable {
         )
     }
 
-    /// Plans selected fields or sequentially applies patches and reads back their values.
+    /// Plans selected fields or sequentially applies patches and verifies every supplied value by locale and ID.
     ///
     /// All selected local locales must already exist remotely. Nil fields are untouched;
     /// empty strings request clearing except for the required support URL. Remote
@@ -273,7 +269,7 @@ public struct ReleaseAutomation: Sendable {
 
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
         let remoteLocalizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
-        let localizationsByLocale = try uniqueLocalizations(remoteLocalizations, key: \.locale)
+        let localizationsByLocale = try indexedLocalizations(remoteLocalizations)
         var actions: [PlannedAction] = []
         var patches: [(remote: AppStoreConnectLocalization, patch: MetadataPatch)] = []
 
@@ -311,7 +307,17 @@ public struct ReleaseAutomation: Sendable {
         }
 
         let readBackLocalizations = try await api.appStoreVersionLocalizations(versionID: context.version.id)
-        try verifyMetadataPatches(patches, readBack: readBackLocalizations)
+        let readBackByLocale = try indexedLocalizations(readBackLocalizations)
+        for local in localMetadata {
+            guard let observed = readBackByLocale[local.locale], observed.id == localizationsByLocale[local.locale]?.id else {
+                throw ApogeeError.unexpectedAPIResponse("Localization identity changed during read-back for \(local.locale).")
+            }
+            for field in fields {
+                if let desired = value(field, in: local), value(field, in: observed.metadata) != desired {
+                    throw ApogeeError.unexpectedAPIResponse("\(field.displayName) read-back mismatch for \(local.locale).")
+                }
+            }
+        }
         plan.actions.append(.init(kind: .verify, resource: "appStoreVersion/\(context.version.id)", desiredValue: "metadata read-back matched"))
         return plan
     }
@@ -934,43 +940,6 @@ public struct ReleaseAutomation: Sendable {
         }
     }
 
-    private func verifyMetadataPatches(
-        _ patches: [(remote: AppStoreConnectLocalization, patch: MetadataPatch)],
-        readBack: [AppStoreConnectLocalization]
-    ) throws {
-        let readBackByID = try uniqueLocalizations(readBack, key: \.id)
-
-        for item in patches {
-            guard let readBackLocalization = readBackByID[item.remote.id] else {
-                throw ApogeeError.unexpectedAPIResponse("Localization \(item.remote.id) was missing during read-back.")
-            }
-
-            if let releaseNotes = item.patch.releaseNotes, readBackLocalization.metadata.releaseNotes != releaseNotes {
-                throw ApogeeError.unexpectedAPIResponse("What's New read-back mismatch for \(item.remote.locale).")
-            }
-
-            if let description = item.patch.description, readBackLocalization.metadata.description != description {
-                throw ApogeeError.unexpectedAPIResponse("Description read-back mismatch for \(item.remote.locale).")
-            }
-
-            if let keywords = item.patch.keywords, readBackLocalization.metadata.keywords != keywords {
-                throw ApogeeError.unexpectedAPIResponse("Keywords read-back mismatch for \(item.remote.locale).")
-            }
-
-            if let supportURL = item.patch.supportURL, readBackLocalization.metadata.supportURL != supportURL {
-                throw ApogeeError.unexpectedAPIResponse("Support URL read-back mismatch for \(item.remote.locale).")
-            }
-
-            if let marketingURL = item.patch.marketingURL, readBackLocalization.metadata.marketingURL != marketingURL {
-                throw ApogeeError.unexpectedAPIResponse("Marketing URL read-back mismatch for \(item.remote.locale).")
-            }
-
-            if let promotionalText = item.patch.promotionalText, readBackLocalization.metadata.promotionalText != promotionalText {
-                throw ApogeeError.unexpectedAPIResponse("Promotional text read-back mismatch for \(item.remote.locale).")
-            }
-        }
-    }
-
     private func validateDestructiveGate(plan: ReleasePlan, options: ReleaseExecutionOptions) throws {
         guard options.mode == .apply, plan.hasDestructiveActions else {
             return
@@ -985,17 +954,19 @@ public struct ReleaseAutomation: Sendable {
         }
     }
 
-    private func uniqueLocalizations(
-        _ localizations: [AppStoreConnectLocalization],
-        key: KeyPath<AppStoreConnectLocalization, String>
+    private func indexedLocalizations(
+        _ localizations: [AppStoreConnectLocalization]
     ) throws -> [String: AppStoreConnectLocalization] {
-        var result: [String: AppStoreConnectLocalization] = [:]
+        var ids: Set<String> = []
+        var byLocale: [String: AppStoreConnectLocalization] = [:]
         for localization in localizations {
-            guard result.updateValue(localization, forKey: localization[keyPath: key]) == nil else {
-                throw ApogeeError.unexpectedAPIResponse("Duplicate localization identity in App Store Connect response.")
+            guard !localization.id.isEmpty, !localization.locale.isEmpty,
+                  ids.insert(localization.id).inserted,
+                  byLocale.updateValue(localization, forKey: localization.locale) == nil else {
+                throw ApogeeError.unexpectedAPIResponse("Missing or duplicate localization identity in App Store Connect response.")
             }
         }
-        return result
+        return byLocale
     }
 
     private func uniqueWebhooksByName(

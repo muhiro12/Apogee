@@ -149,13 +149,12 @@ public struct MetadataLoader: Sendable {
     }
 
     private func optionalTextFile(_ url: URL) throws -> String? {
-        guard FileManager.default.fileExists(atPath: url.path) else {
+        let resourceValues: URLResourceValues
+        do {
+            resourceValues = try url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+        } catch let error as CocoaError where error.code == .fileReadNoSuchFile {
             return nil
         }
-
-        let resourceValues = try url.resourceValues(
-            forKeys: [.isRegularFileKey, .isSymbolicLinkKey]
-        )
         guard resourceValues.isRegularFile == true, resourceValues.isSymbolicLink != true else {
             throw ApogeeError.invalidPath(url.path)
         }

@@ -70,3 +70,20 @@ func webhookLoaderRejectsUnknownEventsDuringPlanning() throws {
         _ = try WebhookConfigurationLoader().load(from: path.path)
     }
 }
+
+@Test
+func metadataRejectsDanglingSelectedFilesAlongsideValidText() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    let locale = directory.appendingPathComponent("ja")
+    try FileManager.default.createDirectory(at: locale, withIntermediateDirectories: true)
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
+    try Data("Release notes".utf8).write(to: locale.appendingPathComponent("release_notes.txt"))
+    try FileManager.default.createSymbolicLink(at: locale.appendingPathComponent("description.txt"),
+                                              withDestinationURL: locale.appendingPathComponent("missing"))
+    #expect(throws: ApogeeError.self) {
+        _ = try MetadataLoader().load(from: directory.path)
+    }
+    #expect(try MetadataLoader().load(from: directory.path, fields: [.releaseNotes]).count == 1)
+}

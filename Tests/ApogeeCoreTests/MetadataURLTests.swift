@@ -120,6 +120,52 @@ func metadataURLFailuresNeverProduceSuccessJSON(scenario: String) async throws {
     #expect(await transport.requests.filter { $0.method == .patch }.count == 2)
 }
 
+@Test(arguments: ["duplicate-id", "renamed-locale", "unchanged-field", "missing-unchanged-locale"])
+func metadataApplyRequiresTheSelectedLocaleAndValuesAtReadBack(scenario: String) async throws {
+    let desired = "https://example.com/current"
+    let previous = "https://example.com/previous"
+    let directory = try metadataURLDirectory(support: desired, marketing: desired)
+    defer {
+        try? FileManager.default.removeItem(at: directory)
+    }
+    let transport = StubTransport { request, _, index in
+        let path = request.path ?? ""
+        if path.contains("appStoreVersionLocalizations") {
+            let initial = index == 2
+            var attributes = [
+                "locale": !initial && scenario == "renamed-locale" ? "en-US" : "ja",
+                "supportUrl": initial && scenario != "missing-unchanged-locale" ? previous : desired,
+                "marketingUrl": !initial && scenario == "unchanged-field" ? previous : desired,
+            ]
+            let localization: [String: Any] = ["type": "appStoreVersionLocalizations", "id": "loc", "attributes": attributes]
+            if request.method == .patch {
+                return try jsonResponse(["data": localization, "links": ["self": "unused"]])
+            }
+            var rows = [localization]
+            if initial && scenario == "duplicate-id" {
+                attributes["locale"] = "en-US"
+                rows.append(["type": "appStoreVersionLocalizations", "id": "loc", "attributes": attributes])
+            }
+            if !initial && scenario == "missing-unchanged-locale" {
+                rows = []
+            }
+            return try jsonResponse(["data": rows, "links": ["self": "unused"]])
+        }
+        if path.contains("appStoreVersions") {
+            return try jsonResponse(["data": [["type": "appStoreVersions", "id": "version",
+                                               "attributes": ["versionString": "1.2.3", "platform": "IOS"]]], "links": ["self": "unused"]])
+        }
+        return try jsonResponse(["data": ["type": "apps", "id": "app"], "links": ["self": "unused"]])
+    }
+    await #expect(throws: ApogeeError.self) {
+        _ = try await ReleaseAutomation(api: testAPI(transport: transport)).updateMetadata(
+            appLookup: .appID("app"), version: "1.2.3", metadataPath: directory.path, options: .init(mode: .apply)
+        )
+    }
+    let expectedWrites = ["duplicate-id", "missing-unchanged-locale"].contains(scenario) ? 0 : 1
+    #expect(await transport.requests.filter { $0.method == .patch }.count == expectedWrites)
+}
+
 private func metadataURLDirectory(support: String?, marketing: String?) throws -> URL {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     let locale = directory.appendingPathComponent("ja")
