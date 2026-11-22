@@ -540,7 +540,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                     query: .init(limit: 200)
                 ))
                 let response = try output.ok.body.json
-                return (try response.data.map(mapWebhook), response.links.next, response.meta)
+                return (try response.data.map(mapObservableWebhook), response.links.next, response.meta)
             }
         }
     }
@@ -559,7 +559,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 _type: .webhooks
             ))
             let output = try await client().webhooks_createInstance(.init(body: .json(request)))
-            return try mapWebhook(output.created.body.json.data)
+            return mapWebhook(try output.created.body.json.data)
         }
     }
 
@@ -580,7 +580,7 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
                 path: .init(id: id),
                 body: .json(request)
             ))
-            return try mapWebhook(output.ok.body.json.data)
+            return mapWebhook(try output.ok.body.json.data)
         }
     }
 
@@ -719,15 +719,25 @@ public struct GeneratedAppStoreConnectAPI: AppStoreConnectAPI, ScreenshotAPI {
         )
     }
 
-    private func mapWebhook(_ webhook: Components.Schemas.Webhook) throws -> AppStoreConnectWebhook {
+    private func mapObservableWebhook(_ webhook: Components.Schemas.Webhook) throws -> AppStoreConnectWebhook {
         guard !webhook.id.isEmpty, let attributes = webhook.attributes,
-              let name = attributes.name, !name.isEmpty,
-              let url = attributes.url, !url.isEmpty,
-              let eventTypes = attributes.eventTypes, let enabled = attributes.enabled else {
+              attributes.name?.isEmpty == false, attributes.url?.isEmpty == false,
+              attributes.eventTypes != nil, attributes.enabled != nil else {
             throw ApogeeError.unexpectedAPIResponse("Webhook response omitted its identity or observable settings.")
         }
-        return .init(id: webhook.id, name: name, url: url,
-                     eventTypes: eventTypes.map(\.rawValue), enabled: enabled)
+        return mapWebhook(webhook)
+    }
+
+    // A successful mutation can return partial settings. Sync verifies them with a fresh list.
+    private func mapWebhook(_ webhook: Components.Schemas.Webhook) -> AppStoreConnectWebhook {
+        let attributes = webhook.attributes
+        return .init(
+            id: webhook.id,
+            name: attributes?.name ?? "",
+            url: attributes?.url ?? "",
+            eventTypes: attributes?.eventTypes?.map(\.rawValue) ?? [],
+            enabled: attributes?.enabled ?? false
+        )
     }
 
     private func generatedWebhookEventType(_ rawValue: String) throws -> Components.Schemas.WebhookEventType {

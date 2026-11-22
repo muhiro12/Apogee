@@ -72,6 +72,41 @@ func incompleteWebhookInventoryCannotProduceASyncPlan(scenario: String) async th
     }
 }
 
+@Test(arguments: [true, false])
+func webhookSyncVerifiesSuccessfulMutationsWithSparseResponses(updatesExisting: Bool) async throws {
+    let config = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        .appendingPathComponent("Fixtures/AppStore/webhooks.json")
+    let transport = StubTransport { request, _, index in
+        if request.method == .post || request.method == .patch {
+            return try jsonResponse(
+                ["data": ["type": "webhooks", "id": "hook"], "links": ["self": "unused"]],
+                status: request.method == .post ? 201 : 200
+            )
+        }
+        if request.path?.contains("/webhooks") == true {
+            let webhook: [String: Any] = [
+                "type": "webhooks", "id": "hook",
+                "attributes": [
+                    "name": "release", "url": "https://example.com/release",
+                    "eventTypes": ["BUILD_UPLOAD_STATE_UPDATED"], "enabled": index != 1,
+                ] as [String: Any],
+            ]
+            let inventory = index == 1 && !updatesExisting ? [] : [webhook]
+            return try jsonResponse(["data": inventory, "links": ["self": "unused"]])
+        }
+        return try jsonResponse(["data": ["type": "apps", "id": "app"], "links": ["self": "unused"]])
+    }
+    let automation = ReleaseAutomation(
+        api: testAPI(transport: transport),
+        secretEnvironment: .init(values: ["WEBHOOK_SECRET": "fixture-value"])
+    )
+    let plan = try await automation.syncWebhooks(
+        appLookup: .appID("app"), configPath: config.path, options: .init(mode: .apply)
+    )
+    #expect(plan.actions.map(\.kind) == [updatesExisting ? .update : .create, .verify])
+    #expect(await transport.requests.map(\.method) == [.get, .get, updatesExisting ? .patch : .post, .get])
+}
+
 @Test(arguments: [
     "https://untrusted.example/v1/apps?filter%5BbundleId%5D=com.example.app",
     "http://api.appstoreconnect.apple.com/v1/apps?filter%5BbundleId%5D=com.example.app",
