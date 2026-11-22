@@ -42,3 +42,24 @@ func attachmentRejectsMismatchedReleaseTargetsBeforeWriting(scenario: String) as
     }
     #expect(await transport.requests.allSatisfy { $0.method == .get })
 }
+
+@Test
+func customScopedBuildCanAttachByIDWithoutAReportedBuildNumber() async throws {
+    let api = FakeAppStoreConnectAPI(attachedBuild: nil, reportsBuildNumber: false)
+    let automation = ReleaseAutomation(api: api)
+    let dryRun = try await automation.attachBuild(
+        appLookup: .appID("app-1"), version: "1.2.3", buildVersion: "123", options: .init(mode: .dryRun)
+    )
+    #expect(dryRun.actions.first?.desiredValue == "build-123")
+    #expect(await api.attachedBuildIDs.isEmpty)
+
+    let applied = try await automation.attachBuild(
+        appLookup: .appID("app-1"), version: "1.2.3", buildVersion: "123", options: .init(mode: .apply)
+    )
+    #expect(await api.attachedBuildIDs == ["build-123"])
+    #expect(applied.actions.last?.kind == .verify)
+
+    await #expect(throws: BuildFeedbackError.incompleteInventory) {
+        _ = try await automation.buildFeedback(appLookup: .appID("app-1"), version: "1.2.3", buildVersion: "123")
+    }
+}

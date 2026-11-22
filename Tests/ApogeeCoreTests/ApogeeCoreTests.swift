@@ -538,6 +538,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
     private let supportsManualCreation: Bool
     private var createdVersion: AppStoreConnectVersion?
     private let availableBuildState: String?
+    private let reportsBuildNumber: Bool
     private let reviewReadBackOverride: AppStoreConnectReviewSubmission?
     private var failItemCreationOnce: Bool
     private var attachedBuildByVersionID: [String: AppStoreConnectBuild?] = ["version-1": nil]
@@ -554,6 +555,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         submittedReviewState: String = "WAITING_FOR_REVIEW",
         attachedBuild: AppStoreConnectBuild? = .init(id: "build-123", version: "123", processingState: "VALID"),
         availableBuildState: String? = "VALID",
+        reportsBuildNumber: Bool = true,
         reviewReadBackOverride: AppStoreConnectReviewSubmission? = nil,
         failItemCreationOnce: Bool = false,
         supportsManualCreation: Bool = false
@@ -561,6 +563,7 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
         self.submittedReviewState = submittedReviewState
         self.supportsManualCreation = supportsManualCreation
         self.availableBuildState = availableBuildState
+        self.reportsBuildNumber = reportsBuildNumber
         self.reviewReadBackOverride = reviewReadBackOverride
         self.failItemCreationOnce = failItemCreationOnce
         attachedBuildByVersionID = ["version-1": attachedBuild]
@@ -647,7 +650,10 @@ actor FakeAppStoreConnectAPI: AppStoreConnectAPI {
             appStoreVersion: appStoreVersion,
             platform: platform
         ))
-        return appID == "app-1" && buildVersion == "123" && appStoreVersion == "1.2.3" ? [.init(id: "build-123", version: buildVersion, processingState: availableBuildState)] : []
+        guard appID == "app-1", buildVersion == "123", appStoreVersion == "1.2.3" else {
+            return []
+        }
+        return [.init(id: "build-123", version: reportsBuildNumber ? buildVersion : nil, processingState: availableBuildState)]
     }
 
     func build(versionID: String) async throws -> AppStoreConnectBuild? {

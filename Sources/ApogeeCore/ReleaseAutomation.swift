@@ -386,6 +386,7 @@ public struct ReleaseAutomation: Sendable {
         let context = try await releaseContext(appLookup: appLookup, version: version, platform: platform)
         let build = try await candidateBuild(
             appID: context.app.id, version: version, buildVersion: buildVersion, platform: platform,
+            allowMissingBuildNumber: !(api is GeneratedAppStoreConnectAPI),
             invalidIdentity: ApogeeError.unexpectedAPIResponse("The candidate build did not match the requested build number.")
         )
         let currentBuild = try await api.build(versionID: context.version.id)
@@ -790,7 +791,8 @@ public struct ReleaseAutomation: Sendable {
     }
 
     private func candidateBuild(
-        appID: String, version: String, buildVersion: String, platform: Platform, invalidIdentity: any Error
+        appID: String, version: String, buildVersion: String, platform: Platform,
+        allowMissingBuildNumber: Bool = false, invalidIdentity: any Error
     ) async throws -> AppStoreConnectBuild {
         let builds = try await api.builds(appID: appID, buildVersion: buildVersion, appStoreVersion: version, platform: platform)
         guard let build = builds.first else {
@@ -802,7 +804,8 @@ public struct ReleaseAutomation: Sendable {
         }
 
         try validateBuild(build)
-        guard !build.id.isEmpty, build.version == buildVersion else {
+        guard !build.id.isEmpty,
+              build.version == buildVersion || (allowMissingBuildNumber && build.version == nil) else {
             throw invalidIdentity
         }
         return build

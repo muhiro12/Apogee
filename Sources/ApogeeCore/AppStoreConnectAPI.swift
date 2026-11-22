@@ -40,6 +40,7 @@ public protocol AppStoreConnectAPI: Sendable {
     /// Immediately patches one localization; nil fields are omitted.
     func updateLocalization(id: String, patch: MetadataPatch) async throws -> AppStoreConnectLocalization
     /// Finds builds scoped by app, build number, marketing version, and platform.
+    /// Custom adapters must honor the exact scope when omitting a build number from the response.
     func builds(appID: String, buildVersion: String, appStoreVersion: String, platform: Platform) async throws -> [AppStoreConnectBuild]
     /// Reads the attached build; nil means confirmed absence, not missing relationship data.
     func build(versionID: String) async throws -> AppStoreConnectBuild?
