@@ -50,8 +50,11 @@ warnings-as-errors checks because of unused access-level imports. Generation
 therefore remains pinned to 1.12.2; see the
 [generation compatibility boundary](openapi-generation.md).
 
-Swift Collections remains at 1.6.0 in the root lockfile: 1.7.5 requires Swift 6.4,
-while Apogee supports Swift 6.2. Swift Argument Parser 1.8.2 and Swift Crypto 3.15.1
-remain unchanged. Crypto 5 is a separate major-version migration; Apogee's current
-macOS signing path uses CryptoKit through the existing Crypto product and does not
-need its new APIs for this update.
+The root lockfile keeps Swift Collections at 1.6.0 for Xcode 26.0.1.
+The [1.7 release line](https://github.com/apple/swift-collections/blob/1.7.6/README.md)
+requires at least Xcode 26.3, even when a versioned manifest supports Swift 6.2.
+
+Apogee resolves [Swift Crypto 5.1.2](https://github.com/apple/swift-crypto/releases/tag/5.1.2)
+and accepts compatible 3.x through 5.x versions so consumers can share their
+existing Crypto dependency. The macOS signing path continues to use CryptoKit
+through the Crypto product. Swift Argument Parser remains at 1.8.2.

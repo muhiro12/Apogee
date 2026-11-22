@@ -14,7 +14,7 @@ versions actually resolved when redistributing any dependency or linked binary.
 | Package | Resolved version | License | Notices |
 | --- | --- | --- | --- |
 | Swift Argument Parser | 1.8.2 | [Apache 2.0 with Runtime Library Exception](https://github.com/apple/swift-argument-parser/blob/1.8.2/LICENSE.txt) | Source file notices |
-| Swift Crypto | 3.15.1 | [Apache 2.0](https://github.com/apple/swift-crypto/blob/3.15.1/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-crypto/blob/3.15.1/NOTICE.txt) |
+| Swift Crypto | 5.1.2 | [Apache 2.0](https://github.com/apple/swift-crypto/blob/5.1.2/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-crypto/blob/5.1.2/NOTICE.txt) |
 | Swift ASN.1 | 1.7.4 | [Apache 2.0](https://github.com/apple/swift-asn1/blob/1.7.4/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-asn1/blob/1.7.4/NOTICE.txt) |
 | Swift Collections | 1.6.0 | [Apache 2.0 with Runtime Library Exception](https://github.com/apple/swift-collections/blob/1.6.0/LICENSE.txt) | Source file notices |
 | Swift HTTP Types | 1.8.0 | [Apache 2.0](https://github.com/apple/swift-http-types/blob/1.8.0/LICENSE.txt) | [NOTICE.txt](https://github.com/apple/swift-http-types/blob/1.8.0/NOTICE.txt) |
